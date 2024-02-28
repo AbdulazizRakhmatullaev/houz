@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Uzrent / {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="../../media/important/UR.png">
+
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+
+<body>
+    <nav id="navbar">
+        <div id="row">
+            <ul class="row-content">
+                <li class="row-con-itm">
+                    <a href="{% url 'home' %}">
+                        Uzrent
+                        <!-- <img class="logo-img" src="../../media/important/UR.png" alt=""> -->
+                    </a>
+                </li>
+                <li class="row-con-itm">
+                    <form action="{% url 'search' %}" class="search-form">
+                        {% csrf_token %}
+                        <input type="text" name="search" class="search-inp" placeholder="Search uzrent.com"
+                            autocomplete="off">
+                    </form>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="row-con-itm">
+                    <a href="{% url 'user_profile' request.user.username %}">
+                        {% if request.user.profile.avatar.url != null %}
+                        <img src="{{request.user.profile.avatar.url}}" alt="" class="pp">
+                        {% else %}
+                        <div class="pp" style="background: linear-gradient({{request.user.profile.avatar_default}});">
+                            <div class="grcn">
+                                {{request.user.profile.name|slice:"0:1"}}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </a>
+                </li>
+                {% else %}
+                <li class="row-con-itm">
+                    <a href="{% url 'signin' %}">Sign in</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        </div>
+    </nav>
+    <main id="main">
+        {% block content %}
+
+        {% endblock %}
+    </main>
+    <footer id="footer">
+        {% block footer %}
+        {% endblock %}
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script type='text/javascript' src="{% static 'jquery.js' %}"></script>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>

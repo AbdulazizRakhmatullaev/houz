@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<div class="room-title">
+    <div class="left-info">
+        <div class="brief-name">
+            {{ room.brief_name }}
+        </div>
+        <div class="detailed-ci-cy">
+            {{ room.get_city_display }}, Uzbekistan
+        </div>
+        <div class="howmany">
+            {{room.guests}} guests • {{room.bedrooms}} bedrooms • {{room.beds}} beds • {{room.baths}} baths
+        </div>
+    </div>
+    <div class="right-info">
+        <div class="brief-info">
+            <div class="info-col-itm">
+                <div class="rnum">
+                    {{room.average_rating}}
+                </div>
+                <div class="r-stars">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                        <path fill="currentColor"
+                            d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                        <path fill="currentColor"
+                            d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                        <path fill="currentColor"
+                            d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                        <path fill="currentColor"
+                            d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                        <path fill="currentColor"
+                            d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="info-col-itm">
+                <div class="reviews">
+                    <a href="">
+                        {{room.rating_set.count}}
+                    </a>
+                </div>
+                <div class="review-name">
+                    Reviews
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="scrollable-content">
+    <div class="room-images-content">
+        {% for photo in room.four_photos %}
+        <img src="{{photo.file.url}}" alt="" class="each-image">
+        {% endfor %}
+    </div>
+    <div class="paddles">
+        <button class="left-paddle paddle hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+                <path fill="currentColor"
+                    d="M8.7069 4.2328a.75.75 0 1 1 1.0862 1.0344L6 9.25h9.75a.75.75 0 0 1 0 1.5H6l3.7931 3.9828a.7499.7499 0 0 1-.0259 1.0603.75.75 0 0 1-1.0603-.0259l-5-5.25a.75.75 0 0 1 0-1.0344l5-5.25Z" />
+            </svg>
+        </button>
+        <button class="right-paddle paddle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+                <path fill="currentColor"
+                    d="M11.2931 15.7672a.7499.7499 0 0 1-1.0603.0259.75.75 0 0 1-.0259-1.0603L14 10.75H4.25a.75.75 0 0 1 0-1.5H14l-3.7931-3.9828a.75.75 0 0 1 .0259-1.0603.75.75 0 0 1 1.0603.0259l5 5.25a.7499.7499 0 0 1 0 1.0344l-5 5.25Z" />
+            </svg>
+        </button>
+    </div>
+</div>
+<div class="fl-spbn" style="margin-top: 20px;">
+    <div class="info-column">
+        <div class="host-info">
+            <a href="{% url 'user_profile' room.host.username %}">
+                {% if room.host.profile.avatar.url != null %}
+                <img src="{{room.host.profile.avatar.url}}" alt="" class="pp">
+                {% else %}
+                <div class="detpp" style="background: linear-gradient({{room.host.profile.avatar_default}});">
+                    <div class="detgrcn">
+                        {{room.host.profile.name|slice:"0:1"}}
+                    </div>
+                </div>
+                {% endif %}
+            </a>
+            <div class="n-d">
+                <a href="{% url 'user_profile' room.host.username %}" class="host-name">
+                    {{room.host.profile.name}}
+                </a>
+                <div class="date-joined">
+                    Joinded {{room.host.profile.created_at|date:"N Y"}}
+                </div>
+            </div>
+        </div>
+        <div class="info-title">Description</div>
+        <div class="desc">
+            {{room.description}}
+        </div>
+        <div class="info-title">Amenities</div>
+        <div class="amenities-col">
+            {% for amenity in room.amenities.all %}
+            <div class="amenity">
+                {{amenity}}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="info-title">Reviews</div>
+        <div class="room-reviews-content">
+            {% for review in reviews %}
+            <div class="review-content">
+                <a href="{% url 'user_profile' review.user.username %}">
+                    {% if review.user.profile.avatar.url != null %}
+                    <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+                    {% else %}
+                    <div class="pp" style="background: linear-gradient({{review.user.profile.avatar_default}});">
+                        <div class="grcn">
+                            {{review.user.profile.name|slice:"0:1"}}
+                        </div>
+                    </div>
+                    {% endif %}
+                </a>
+                <div class="n-d">
+                    <a href="{% url 'user_profile' review.user.username %}" class="reviewer-name">
+                        {{review.user.profile.name}}
+                    </a>
+                    <div class="date-joined">
+                        stayed {{review.user.profile.created_at|date:"N Y"}}
+                    </div>
+                    <!--  -->
+                    <div class="review-text">
+                        {{review.review_text}}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<footer class="text-muted py-5">
+
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // duration of scroll animation
+    var scrollDuration = 300;
+    // paddles
+    var leftPaddle = document.getElementsByClassName('left-paddle');
+    var rightPaddle = document.getElementsByClassName('right-paddle');
+    // get items dimensions
+    var itemsLength = $('.each-image').length;
+    var itemSize = $('.each-image').outerWidth(true);
+    // get some relevant size for the paddle triggering point
+    var paddleMargin = 20;
+
+    // get wrapper width
+    var getMenuWrapperSize = function () {
+        return $('.scrollable-content').outerWidth();
+    }
+    var menuWrapperSize = getMenuWrapperSize();
+    // the wrapper is responsive
+    $(window).on('resize', function () {
+        menuWrapperSize = getMenuWrapperSize();
+    });
+    // size of the visible part of the menu is equal as the wrapper size 
+    var menuVisibleSize = menuWrapperSize;
+
+    // get total width of all menu items
+    var getMenuSize = function () {
+        return itemsLength * itemSize;
+    };
+    var menuSize = getMenuSize();
+    // get how much of menu is invisible
+    var menuInvisibleSize = menuSize - menuWrapperSize;
+
+    // get how much have we scrolled to the left
+    var getMenuPosition = function () {
+        return $('.room-images-content').scrollLeft();
+    };
+
+    // finally, what happens when we are actually scrolling the menu
+    $('.room-images-content').on('scroll', function () {
+
+        // get how much of menu is invisible
+        menuInvisibleSize = menuSize - menuWrapperSize;
+        // get how much have we scrolled so far
+        var menuPosition = getMenuPosition();
+
+        var menuEndOffset = menuInvisibleSize - paddleMargin;
+
+        // show & hide the paddles 
+        // depending on scroll position
+        if (menuPosition <= paddleMargin) {
+            $(leftPaddle).addClass('hidden');
+            $(rightPaddle).removeClass('hidden');
+        } else if (menuPosition < menuEndOffset) {
+            // show both paddles in the middle
+            $(leftPaddle).removeClass('hidden');
+            $(rightPaddle).removeClass('hidden');
+        } else if (menuPosition >= menuEndOffset) {
+            $(leftPaddle).removeClass('hidden');
+            $(rightPaddle).addClass('hidden');
+        }
+    });
+
+    // scroll to left
+    $(rightPaddle).on('click', function () {
+        $('.room-images-content').animate({ scrollLeft: menuInvisibleSize }, scrollDuration);
+    });
+
+    // scroll to right
+    $(leftPaddle).on('click', function () {
+        $('.room-images-content').animate({ scrollLeft: '0' }, scrollDuration);
+    });
+</script>
+{% endblock %}

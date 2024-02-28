@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %} Rent {% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'your_action_url' %}">
+    {% csrf_token %}
+    {{ button_form.as_p }}
+    <button type="submit">Submit Button Form</button>
+</form>
+
+<form method="post" action="{% url 'your_action_url' %}">
+    {% csrf_token %}
+    {{ phone_form.as_p }}
+    <button type="submit">Submit Phone Form</button>
+</form>
+
+<form method="post" action="{% url 'your_action_url' %}">
+    {% csrf_token %}
+    {{ card_form.as_p }}
+    <button type="submit">Submit Card Form</button>
+</form>
+
+{% endblock %}
+
+{% block footer %}
+<footer class="text-muted py-5">
+
+</footer>
+{% endblock %}
