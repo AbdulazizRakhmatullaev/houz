@@ -7,6 +7,8 @@ from datetime import datetime
 from django_countries.fields import CountryField
 from django.db.models import Avg
 from django.core.validators import MaxValueValidator, MinValueValidator
+from location_field.models.plain import PlainLocationField
+
 
 class RangedIntegerField(models.IntegerField):
     def __init__(self, min_value=None, max_value=None, **kwargs):
@@ -189,6 +191,8 @@ class Room(models.Model):
     )
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
+    # location = models.PointField(geography=True, spatial_index=True)
+    location = PlainLocationField(based_fields=["city"], zoom=7)
     date = models.DateTimeField("Date", default=datetime.now)
 
     class Meta:
@@ -215,8 +219,14 @@ class Room(models.Model):
                 + str(self.check_out.day)
             )
 
+    def get_price(self):
+        return f"{self.price:.3f}"
+
     def get_absolute_url(self):
         return reverse("room_detail_url", kwargs={"slug": self.slug, "id": self.id})
+
+    def how_many(self):
+        return f"{self.guests} guests • {self.bedrooms} bedrooms • {self.beds} beds • {self.baths} baths"
 
     def ratings_count(self) -> float:
         rating_num = Rating.objects.filter(room=self).count()
@@ -245,6 +255,14 @@ class Room(models.Model):
     def left_photos(self):
         photos = self.photos.all()[5:]
         return photos
+
+    def fst_loc(self):
+        txt = [i for i in self.location.split(",")]
+        return txt[0]
+
+    def sec_loc(self):
+        txt = [i for i in self.location.split(",")]
+        return txt[1]
 
     def __str__(self):
         return (
@@ -275,7 +293,7 @@ class Rating(models.Model):
 
     class Meta:
         verbose_name = "Rating"
-        verbose_name_plural = "Rating"
+        verbose_name_plural = "Ratings"
 
     def get_date(self):
         time = datetime.now()
@@ -288,6 +306,11 @@ class Rating(models.Model):
             else:
                 return str(time.hour - self.date.hour) + "h"
         elif self.date.month == time.month and self.date.day != time.day:
+            if (time.day - self.date.day) == 1:
+                return "yesterday"
+            else:
+                return str(self.date.strftime("%b")) + " " + str(self.date.day)
+        elif self.date.month != time.month and self.date.day != time.day:
             return str(self.date.strftime("%b")) + " " + str(self.date.day)
 
     def __str__(self):
@@ -296,7 +319,7 @@ class Rating(models.Model):
             + " | "
             + str(self.rating)
             + " | "
-            + self.date.strftime("%Y-%m-%d")
+            + str(self.date)  # .strftime("%Y-%m-%d")
         )
 
 

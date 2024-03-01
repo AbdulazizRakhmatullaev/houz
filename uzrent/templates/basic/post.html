@@ -13,7 +13,7 @@
             {{ room.get_city_display }}, Uzbekistan
         </div>
         <div class="howmany">
-            {{room.guests}} guests • {{room.bedrooms}} bedrooms • {{room.beds}} beds • {{room.baths}} baths
+            {{room.how_many}}
         </div>
     </div>
     <div class="right-info">
@@ -51,9 +51,9 @@
                         {{room.rating_set.count}}
                     </a>
                 </div>
-                <div class="review-name">
+                <a href="#room-reviews-content" class="review-name">
                     Reviews
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -80,11 +80,11 @@
     </div>
 </div>
 <div class="fl-spbn" style="margin-top: 20px;">
-    <div class="info-column">
+    <div class="left-info-column">
         <div class="host-info">
             <a href="{% url 'user_profile' room.host.username %}">
                 {% if room.host.profile.avatar.url != null %}
-                <img src="{{room.host.profile.avatar.url}}" alt="" class="pp">
+                <img src="{{room.host.profile.avatar.url}}" alt="" class="detpp">
                 {% else %}
                 <div class="detpp" style="background: linear-gradient({{room.host.profile.avatar_default}});">
                     <div class="detgrcn">
@@ -97,17 +97,17 @@
                 <a href="{% url 'user_profile' room.host.username %}" class="host-name">
                     {{room.host.profile.name}}
                 </a>
-                <div class="date-joined">
+                <div class="host-date">
                     Joinded {{room.host.profile.created_at|date:"N Y"}}
                 </div>
             </div>
         </div>
         <div class="info-title">Description</div>
-        <div class="desc">
+        <div class="desc info-col">
             {{room.description}}
         </div>
         <div class="info-title">Amenities</div>
-        <div class="amenities-col">
+        <div class="amenities-col info-col">
             {% for amenity in room.amenities.all %}
             <div class="amenity">
                 {{amenity}}
@@ -115,9 +115,9 @@
             {% endfor %}
         </div>
         <div class="info-title">Reviews</div>
-        <div class="room-reviews-content">
+        <div id="room-reviews-content">
             {% for review in reviews %}
-            <div class="review-content">
+            <div class="review">
                 <a href="{% url 'user_profile' review.user.username %}">
                     {% if review.user.profile.avatar.url != null %}
                     <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
@@ -130,19 +130,42 @@
                     {% endif %}
                 </a>
                 <div class="n-d">
-                    <a href="{% url 'user_profile' review.user.username %}" class="reviewer-name">
-                        {{review.user.profile.name}}
-                    </a>
-                    <div class="date-joined">
-                        stayed {{review.user.profile.created_at|date:"N Y"}}
+                    <div class="n-stayed">
+                        <a href="{% url 'user_profile' review.user.username %}"
+                            class="reviewer-name">{{review.user.profile.name}}</a>
+                        <div class="spr">•</div>
+                        <div class="review-date">{{review.get_date}}</div>
                     </div>
                     <!--  -->
-                    <div class="review-text">
-                        {{review.review_text}}
-                    </div>
+                    <div class="review-text">{{review.review_text}}</div>
                 </div>
             </div>
+            {% empty %}
+            <div class="infotxt">No reviews yet...</div>
             {% endfor %}
+        </div>
+        <div class="info-title">Where it's located</div>
+        <iframe class="room-location"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11324.341457033126!2d{{room.sec_loc}}!3d{{room.fst_loc}}64999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2s!4v1709273944040!5m2!1sen!2s"
+            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="right-info-column">
+        <div class="price-info">
+            <span class="room-price">{{room.get_price}} soums</span>
+            <span>night</span>
+        </div>
+        <div class="check-inNout">
+            <div class="check-io">
+                <span class="small-title">Check-in</span>
+                <span>{{room.check_in}}</span>
+            </div>
+            <div class="check-io">
+                <span class="small-title">Check-out</span>
+                <span>{{room.check_out}}</span>
+            </div>
+        </div>
+        <div class="payment">
+
         </div>
     </div>
 </div>
@@ -150,9 +173,6 @@
 {% endblock %}
 
 {% block footer %}
-<footer class="text-muted py-5">
-
-</footer>
 {% endblock %}
 
 {% block scripts %}

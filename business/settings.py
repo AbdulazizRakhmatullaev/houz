@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-8w50pp2yu21t(!-!c#tz#+-%txm@k66rbu*uwj@@38-alnx5wd"
+SECRET_KEY = "rakhmatullaev-8w50pp2yu21t(!-!c#tz#+-%txm@k66rbu*uwj@@38-alnx5wd"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     "uzrent",
     "django.contrib.humanize",
     # rest
+    "django_countries",
     "rest_framework",
+    "location_field.apps.DefaultConfig",
 ]
 
 MIDDLEWARE = [
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "Asia/Tashkent"
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -136,3 +138,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+LOCATION_FIELD = {
+    "provider.google.api": "//maps.google.com/maps/api/js?sensor=false",
+    "provider.google.api_key": "AIzaSyDS9_Y7Qvl42SqUgh9LwlZOu26Ys2hKAzc",
+    "provider.google.api_libraries": "",
+    "provider.google.map.type": "ROADMAP",
+}

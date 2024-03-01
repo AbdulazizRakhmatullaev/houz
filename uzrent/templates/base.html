@@ -50,7 +50,6 @@
                 {% endif %}
             </ul>
         </div>
-        </div>
     </nav>
     <main id="main">
         {% block content %}
@@ -58,8 +57,11 @@
         {% endblock %}
     </main>
     <footer id="footer">
-        {% block footer %}
-        {% endblock %}
+        <div id="footer-row">
+            <div class="by">Developed by Rakhmatullaev.</div>
+            {% block footer %}
+            {% endblock %}
+        </div>
     </footer>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

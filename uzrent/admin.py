@@ -6,9 +6,13 @@ class Profile_list(admin.ModelAdmin):
     list_display = ["user", "name", "phone_number"]
 
 
+class saveAs(admin.ModelAdmin):
+    save_as = True
+
+
 admin.site.register(Profile, Profile_list)
 admin.site.register(Rating)
-admin.site.register(Room)
+admin.site.register(Room, saveAs)
 admin.site.register(Photo)
 admin.site.register(Amenity)
 admin.site.register(HouseRule)

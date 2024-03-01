@@ -4,6 +4,7 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     /* background: #f5f5f7; */
+    font-size: 14px;
 }
 
 a {
@@ -278,11 +279,24 @@ a {
     margin: 15px 0;
 }
 
-.info-column {
-    width: 60%;
+.left-info-column {
+    width: 660px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+}
+
+.right-info-column {
+    position: sticky;
+    top: 60px;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 2px 4px 12px rgba(0, 0, 0, .08);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .info-col-itm {
@@ -371,31 +385,35 @@ a {
 .info-title {
     font-size: 17px;
     font-weight: 600;
+    margin-top: 20px;
+}
+
+.info-col {
     margin-top: 10px;
 }
 
 #footer {
-    position: sticky;
-    bottom: 0;
     width: 100%;
-    height: 44px;
-    /* background: rgba(22, 22, 23, .8);
-    backdrop-filter: saturate(180%) blur(20px); */
     background: #fff;
-    font-size: 19px;
     border-top: 1px solid rgba(239, 243, 244, 1.00);
 }
 
-.room-reviews-content {
-    white-space: nowrap;
+#room-reviews-content {
+    margin-top: 10px;
+    display: flex;
     overflow-x: auto;
     overflow-y: hidden;
+    gap: 5px;
 }
 
-.review-content {
+#room-reviews-content::-webkit-scrollbar {
+    display: none;
+}
+
+.review {
     font-size: 14px;
     padding: 12px;
-    width: 180px;
+    width: 300px;
     height: 100px;
     background: rgba(239, 243, 244, 1.00);
     border-radius: 15px;
@@ -404,9 +422,10 @@ a {
 }
 
 .reviewer-name {
+    display: block;
     font-size: 14px;
-    font-weight: 500;
-    width: 200px;
+    font-weight: 600;
+    max-width: 170px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -458,4 +477,93 @@ a {
     position: relative;
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+.n-stayed {
+    display: flex;
+}
+
+.spr {
+    line-height: 18px;
+    margin: 0 4px;
+    font-size: 12px;
+    color: rgb(83, 100, 113);
+}
+
+.host-date {
+    color: rgb(83, 100, 113);
+}
+
+.review-date {
+    color: rgb(83, 100, 113);
+}
+
+.review-text {
+    margin-top: 5px;
+    width: 260px;
+    height: 69px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+    -webkit-line-clamp: 4;
+    white-space: normal;
+    overflow: hidden;
+}
+
+.by {
+    font-size: 12px;
+}
+
+#footer-row {
+    margin: 0 auto;
+    max-width: 1024px;
+    padding: 10px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.infotxt {
+    height: 100%;
+    font-size: 14px;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.room-location {
+    margin-top: 10px;
+    width: 100%;
+    height: 400px;
+    border-radius: 15px;
+}
+
+.room-price {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.check-inNout {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.check-io {
+    height: 60px;
+    width: 170px;
+    border: 1px solid rgba(239, 243, 244, 1.00);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.small-title {
+    font-size: 15px;
+    font-weight: 600;
 }

@@ -4,8 +4,8 @@
 
 {% block content %}
 
-{% for room in rooms %}
 <div class="room_posts">
+    {% for room in rooms %}
     <a href="{% url 'room_detail_url' room.id %}" class="room">
         <div class="room-info">
             <div class="fl-spbn">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="in-out">{{room.get_dates}}</div>
-            <div class="r-price">${{room.price}} night</div>
+            <div class="r-price">{{room.get_price}} soums night</div>
         </div>
         <div class="room-img">
             {% if room.first_photo != Null %}
@@ -31,8 +31,8 @@
             {% endif %}
         </div>
     </a>
+    {% endfor %}
 </div>
-{% endfor %}
 
 {% endblock %}
 
