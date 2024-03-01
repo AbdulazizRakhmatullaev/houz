@@ -7,6 +7,8 @@ body {
     font-size: 14px;
 }
 
+/* #86868b */
+
 a {
     text-decoration: none;
     color: currentColor;
@@ -29,7 +31,7 @@ a {
     backdrop-filter: saturate(180%) blur(20px); */
     background: #fff;
     font-size: 19px;
-    border-bottom: 1px solid rgba(239, 243, 244, 1.00);
+    border-bottom: 1px solid #e8e8ed;
 }
 
 #row {
@@ -62,11 +64,11 @@ a {
     position: relative;
     overflow: hidden;
     background-color: #fff;
-    border-radius: 18px;
+    border-radius: 12px;
     width: 100%;
     height: 19rem;
     white-space: normal;
-    border: 1px solid rgba(239, 243, 244, 1.00);
+    border: 1px solid #e8e8ed;
     /* box-shadow: 2px 4px 12px rgba(0, 0, 0, .08);
     transition: all .3s cubic-bezier(0, 0, .5, 1); */
 }
@@ -208,7 +210,7 @@ a {
     border-radius: 6px;
     /* background: rgba(22, 22, 23, .4); */
     /* color: rgba(255, 255, 255, .8); */
-    background: rgba(239, 243, 244, 1.00);
+    background: #f5f5f7;
     color: #1d1d1f;
 }
 
@@ -231,44 +233,47 @@ a {
     justify-content: space-between;
 }
 
-.room-images-content {
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
-.room-images-content::-webkit-scrollbar {
-    display: none;
-}
-
 .each-image {
-    width: 350px;
-    height: 230px;
+    width: 100%;
+    height: 380px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 18px;
 }
 
 .room-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
 }
 
 .brief-name {
-    font-size: 28px;
+    font-size: 25px;
+    line-height: 1.7;
     font-weight: 600;
+    letter-spacing: -.003em;
+    font-family: SF Pro Display, SF Pro Icons, AOS Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #1d1d1f;
 }
 
 .detailed-ci-cy {
-    font-size: 14px;
-    line-height: 1.4;
-    color: #1d1d1f;
+    font-size: 15px;
+    line-height: 1.47059;
+    font-weight: 400;
+    letter-spacing: -.022em;
+    font-family: SF Pro Text, SF Pro Icons, AOS Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin-top: 3px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    display: block;
+    color: #bf4800;
 }
 
 .howmany {
     font-size: 14px;
-    line-height: 1.4;
+    line-height: 1.42859;
+    font-weight: 400;
+    letter-spacing: -.016em;
+    font-family: SF Pro Text, SF Pro Icons, AOS Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
     color: #1d1d1f;
 }
 
@@ -280,9 +285,10 @@ a {
 }
 
 .left-info-column {
-    width: 660px;
+    width: 650px;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 .right-info-column {
@@ -292,36 +298,36 @@ a {
     height: 300px;
     display: flex;
     flex-direction: column;
-    border-radius: 15px;
-    background: #fff;
-    box-shadow: 2px 4px 12px rgba(0, 0, 0, .08);
+    border-radius: 12px;
     padding: 20px;
     box-sizing: border-box;
 }
 
 .info-col-itm {
-    font-size: 14px;
-    padding: 12px;
-    min-width: 95px;
-    max-height: 40px;
-    min-height: 35px;
-    background: rgba(239, 243, 244, 1.00);
-    border-radius: 18px;
+    font-size: 17px;
+    line-height: 1.17648;
+    font-weight: 400;
+    letter-spacing: -.022em;
+    font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+    border-style: solid;
+    width: 100%;
+    padding: 12px 20px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    background: #f5f5f7;
+    border: 1px solid transparent;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .info-col-name {
     font-size: 15px;
     text-transform: uppercase;
-}
-
-
-.rnum {
-    font-size: 20px;
-    font-weight: 600;
 }
 
 .r-stars svg {
@@ -360,6 +366,10 @@ a {
 
 .desc {
     font-size: 14px;
+    line-height: 1.42859;
+    font-weight: 400;
+    letter-spacing: -.016em;
+    font-family: SF Pro Text, SF Pro Icons, AOS Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 .amenities-col {
@@ -375,8 +385,8 @@ a {
     font-size: 14px;
     padding: 12px;
     min-width: 25px;
-    background: rgba(239, 243, 244, 1.00);
-    border-radius: 15px;
+    background: #f5f5f7;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -415,8 +425,8 @@ a {
     padding: 12px;
     width: 300px;
     height: 100px;
-    background: rgba(239, 243, 244, 1.00);
-    border-radius: 15px;
+    background: #f5f5f7;
+    border-radius: 12px;
     display: flex;
     align-items: start;
 }
@@ -452,7 +462,7 @@ a {
     border-radius: 50%;
     border: none;
     transition: all .3s cubic-bezier(0, 0, .5, 1);
-    background: rgba(239, 243, 244, 1.00);
+    background: #f5f5f7;
 }
 
 .left-paddle:hover,
@@ -472,11 +482,11 @@ a {
     display: none;
 }
 
-.scrollable-content {
-    margin-top: 20px;
+.slides {
+    margin: 20px 0;
     position: relative;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    /* overflow-x: hidden;
+    overflow-y: hidden; */
 }
 
 .n-stayed {
@@ -536,7 +546,7 @@ a {
     margin-top: 10px;
     width: 100%;
     height: 400px;
-    border-radius: 15px;
+    border-radius: 12px;
 }
 
 .room-price {
@@ -555,8 +565,8 @@ a {
 .check-io {
     height: 60px;
     width: 170px;
-    border: 1px solid rgba(239, 243, 244, 1.00);
-    border-radius: 15px;
+    border: 1px solid #e8e8ed;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -566,4 +576,31 @@ a {
 .small-title {
     font-size: 15px;
     font-weight: 600;
+}
+
+.payment {
+    margin-top: 10px;
+}
+
+.btn {
+    font-size: 17px;
+    line-height: 1.17648;
+    font-weight: 400;
+    letter-spacing: -.022em;
+    font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+    border-style: solid;
+    width: 100%;
+    padding: 17px 30px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    background: #0071e3;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 12px;
+}
+
+.btn:hover {
+    background: #0175e9;
 }
