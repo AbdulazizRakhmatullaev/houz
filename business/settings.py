@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     # rest
     "django_countries",
-    "rest_framework",
     "location_field.apps.DefaultConfig",
 ]
 
