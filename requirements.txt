@@ -1,0 +1,6 @@
+Django==5.0.2
+django-channels==0.7.0
+django-countries==7.5.1
+django-location-field==2.7.3
+pillow==10.2.0
+six==1.16.0
