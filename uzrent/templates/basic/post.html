@@ -58,7 +58,7 @@
         <div id="myCarousel" class="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-                {% for photo in room.four_photos %}
+                {% for photo in room.all_photos %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
                     <img src="{{photo.file.url}}" alt="" class="each-image">
                 </div>
@@ -66,7 +66,7 @@
             </div>
 
             <!-- Left and right controls -->
-            {% if room.four_photos|length > 1 %}
+            {% if room.all_photos|length > 1 %}
             <a class="carousel-control-prev" href="#" role="button" onclick="prevSlide()">
                 <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -137,10 +137,11 @@
                             class="reviewer-name">{{review.user.profile.name}}</a>
                         <div class="spr">•</div>
                         <div class="review-date">{{review.get_date}}</div>
-                        <div class="spr">•</div>
-                        <span class="review-date">{{review.rating}}</span>
                     </div>
                     <!--  -->
+                    <div class="r-stars">
+                        {{review.user_ratings|safe}}
+                    </div>
                     <div class="review-text">{{review.review_text}}</div>
                 </div>
             </div>
@@ -169,6 +170,10 @@
         </div>
         <div class="payment">
             <button class="btn" id="message-btn">Reserve it</button>
+        </div>
+        <div class="count-nights">
+            <div class="nights-math">{{room.get_price}} soums x {{num_o_days}} nights</span></div>
+            <div class="tot-price">{{room.count_nights_price}} soums</div>
         </div>
     </div>
 </div>

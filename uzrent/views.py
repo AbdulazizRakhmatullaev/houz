@@ -14,10 +14,7 @@ from django.http import JsonResponse
 
 def home(request):
     rooms = Room.objects.all()
-    if request.user.is_authenticated:
-        fu = User.objects.filter(username=request.user.username)
-
-    return render(request, "basic/home.html", {"rooms": rooms, "fu": fu})
+    return render(request, "basic/home.html", {"rooms": rooms})
 
 
 def user_profile(request, username):
@@ -225,7 +222,8 @@ def room_edit(request, id):
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     reviews = room.rating_set.order_by("-date")
-    return render(request, "basic/post.html", {"room": room, "reviews": reviews})
+    num_o_days = (room.check_out - room.check_in).days
+    return render(request, "basic/post.html", {"room": room, "reviews": reviews, "num_o_days": num_o_days})
 
 
 def search(request):
