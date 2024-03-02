@@ -327,21 +327,3 @@ class RatingLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
-
-
-class Message(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
-    reciever = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="reciever"
-    )
-    timestamp = models.DateTimeField(default=datetime.now)
-    content = models.TextField()
-
-
-class Notification(models.Model):
-    User = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="User", null=True
-    )
-    message = models.TextField()
-    channel = models.CharField(max_length=20)
-    seen = models.CharField(max_length=8, default="Unseen")
