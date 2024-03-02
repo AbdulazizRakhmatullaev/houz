@@ -38,10 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # my apps
+    # other
     "uzrent",
     "django.contrib.humanize",
-    # rest
     "django_countries",
     "location_field.apps.DefaultConfig",
 ]
@@ -75,7 +74,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "business.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

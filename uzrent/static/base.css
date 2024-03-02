@@ -550,8 +550,12 @@ a {
 }
 
 .room-price {
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.14286;
+    font-weight: 600;
+    letter-spacing: .007em;
+    font-family: SF Pro Display, SF Pro Icons, AOS Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin-bottom: 14px;
 }
 
 .check-inNout {
@@ -607,91 +611,59 @@ a {
 
 .carousel {
     position: relative;
-    height: 400px;
-    width: 500px;
-    margin: 0 auto;
-    margin-bottom: 5rem;
-}
-
-.carousel__images {
-    max-width: 500px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.carousel__track-container {
-    background: pink;
-    height: 100%;
-    width: 100%;
-    position: relative;
     overflow: hidden;
-    border-radius: 20px;
+    margin: 20px 0;
 }
 
-.carousel__track {
-    padding: 0;
-    margin: 0;
-    position: relative;
-    height: 100%;
-    transition: transform 0.4s ease-in-out;
-}
-
-.carousel__slide {
-    position: absolute;
-    top: 0;
-    bottom: 0;
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
     width: 100%;
+    /* Ensure the carousel occupies the full width */
 }
 
-.carousel__button {
+.carousel-item {
+    flex: 0 0 100%;
+    /* Each slide occupies the full width */
+}
+
+.carousel-item.active {
+    flex: 0 0 100%;
+    /* Active slide occupies the full width */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    border: 0;
-    background-color: transparent;
     cursor: pointer;
-    transition: all 0.2s ease-in;
+    background-color: rgba(210, 210, 215, .64);
+    color: rgba(0, 0, 0, .56);
+    width: 3.05882rem;
+    height: 3.05882rem;
+    border-radius: 3.05882rem;
+    display: grid;
+    place-items: center;
+    transition: .2s;
 }
 
-.carousel__button:hover {
-    background-color: rgb(254, 215, 222);
-    border-radius: 20px;
+.carousel-control-prev svg,
+.carousel-control-next svg {
+    width: 30px;
+    height: 30px;
+    fill: rgba(0, 0, 0, .56);
 }
 
-.carousel__button--left {
-    left: -40px;
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: rgba(210, 210, 215, 0.774);
 }
 
-.carousel__button--right {
-    right: -40px;
-    transform: translateY(-50%) rotate(180deg)
+.carousel-control-prev {
+    left: 10px;
 }
 
-.carousel__button img {
-    width: 25px;
-}
-
-.carousel__nav {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-    gap: 1rem;
-}
-
-.carousel__indicator {
-    border: 0;
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-    background-color: rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-}
-
-.carousel__indicator.current-slide {
-    background: rgba(0, 0, 0, 0.9);
-}
-
-.is-hidden {
-    display: none;
+.carousel-control-next {
+    right: 10px;
 }

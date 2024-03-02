@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{{ room_name|json_script:"room-name" }}
+
 <div class="room_posts">
     {% for room in rooms %}
     <a href="{% url 'room_detail_url' room.id %}" class="room">

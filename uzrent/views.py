@@ -15,7 +15,10 @@ from django.http import JsonResponse
 
 def home(request):
     rooms = Room.objects.all()
-    return render(request, "basic/home.html", {"rooms": rooms})
+    if request.user.is_authenticated:
+        fu = User.objects.filter(username=request.user.username)
+
+    return render(request, "basic/home.html", {"rooms": rooms, "fu": fu})
 
 
 def user_profile(request, username):
