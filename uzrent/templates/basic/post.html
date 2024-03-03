@@ -170,10 +170,14 @@
         </div>
         <div class="payment">
             <button class="btn" id="message-btn">Reserve it</button>
-        </div>
-        <div class="count-nights">
-            <div class="nights-math">{{room.get_price}} soums x {{num_o_days}} nights</span></div>
-            <div class="tot-price">{{room.count_nights_price}} soums</div>
+            <div class="pricing-col">
+                <div class="left-text">{{room.get_price}} soums x {{num_o_days}} nights</span></div>
+                <div class="right-text">{{room.count_nights_price}} soums</div>
+            </div>
+            <div class="pricing-col">
+                <div class="left-text">Uzrent fees</span></div>
+                <div class="right-text">{{room.fee}} soums</div>
+            </div>
         </div>
     </div>
 </div>

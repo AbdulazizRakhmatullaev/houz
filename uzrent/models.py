@@ -219,6 +219,10 @@ class Room(models.Model):
                 + str(self.check_out.day)
             )
 
+    def fee(self):
+        fee = 0.33 * self.price
+        return f"{fee:,.3f}"
+
     def get_price(self):
         return f"{self.price:,.3f}"
 
