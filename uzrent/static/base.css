@@ -14,6 +14,10 @@ a {
 }
 
 #main {
+    width: 100%;
+}
+
+.main-content {
     margin: 0 auto;
     max-width: 1180px;
     padding: 44px 20px;
@@ -291,10 +295,12 @@ a {
 }
 
 .right-info-column {
+    width: 400px;
+}
+
+.sticky-right-col {
     position: sticky;
     top: 60px;
-    width: 400px;
-    height: 300px;
     display: flex;
     flex-direction: column;
     border-radius: 12px;

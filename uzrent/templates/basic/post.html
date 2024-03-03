@@ -67,20 +67,20 @@
 
             <!-- Left and right controls -->
             {% if room.all_photos|length > 1 %}
-            <a class="carousel-control-prev" href="#" role="button" onclick="prevSlide()">
+            <span class="carousel-control-prev" role="button" onclick="prevSlide()">
                 <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="m15.8839 18.1161c.4881.4882.4881 1.2796 0 1.7678-.4882.4881-1.2796.4881-1.7678 0l-6.99998-7c-.48816-.4882-.48816-1.2796 0-1.7678l6.99998-6.99998c.4882-.48816 1.2796-.48816 1.7678 0 .4881.48815.4881 1.27961 0 1.76776l-6.11613 6.11612z"
                         fill="currentColor" />
                 </svg>
-            </a>
-            <a class="carousel-control-next" href="#" role="button" onclick="nextSlide()">
+            </span>
+            <span class="carousel-control-next" role="button" onclick="nextSlide()">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="m14.2322 12-6.11608-6.11612c-.48816-.48815-.48816-1.27961 0-1.76776.48815-.48816 1.27961-.48816 1.76776 0l7.00002 6.99998c.4881.4882.4881 1.2796 0 1.7678l-7.00002 7c-.48815.4881-1.27961.4881-1.76776 0-.48816-.4882-.48816-1.2796 0-1.7678z"
                         fill="currentColor" />
                 </svg>
-            </a>
+            </span>
             {% endif %}
         </div>
         <div class="host-info">
@@ -155,28 +155,30 @@
             style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <div class="right-info-column">
-        <div class="price-info">
-            <span class="room-price">From {{room.get_price}} soums/night</span>
-        </div>
-        <div class="check-inNout">
-            <div class="check-io">
-                <span class="small-title">Check-in</span>
-                <span>{{room.check_in}}</span>
+        <div class="sticky-right-col">
+            <div class="price-info">
+                <span class="room-price">From {{room.get_price}} soums/night</span>
             </div>
-            <div class="check-io">
-                <span class="small-title">Check-out</span>
-                <span>{{room.check_out}}</span>
+            <div class="check-inNout">
+                <div class="check-io">
+                    <span class="small-title">Check-in</span>
+                    <span>{{room.check_in}}</span>
+                </div>
+                <div class="check-io">
+                    <span class="small-title">Check-out</span>
+                    <span>{{room.check_out}}</span>
+                </div>
             </div>
-        </div>
-        <div class="payment">
-            <button class="btn" id="message-btn">Reserve it</button>
-            <div class="pricing-col">
-                <div class="left-text">{{room.get_price}} soums x {{num_o_days}} nights</span></div>
-                <div class="right-text">{{room.count_nights_price}} soums</div>
-            </div>
-            <div class="pricing-col">
-                <div class="left-text">Uzrent fees</span></div>
-                <div class="right-text">{{room.fee}} soums</div>
+            <div class="payment">
+                <button class="btn" id="message-btn">Reserve it</button>
+                <div class="pricing-col">
+                    <div class="left-text">{{room.get_price}} soums x {{num_o_days}} nights</span></div>
+                    <div class="right-text">{{room.count_nights_price}} soums</div>
+                </div>
+                <div class="pricing-col">
+                    <div class="left-text">Uzrent fee</span></div>
+                    <div class="right-text">{{room.fee}} soums</div>
+                </div>
             </div>
         </div>
     </div>
