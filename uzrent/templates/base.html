@@ -104,6 +104,19 @@
 
     <!--  -->
     <script>
+        const signin_password = document.getElementById("signin-password");
+        const toggleSigninPassword = document.getElementById("toggle-signin-password");
+
+        toggleSigninPassword.addEventListener("click", toggleClicked);
+        function toggleClicked() {
+            if (this.checked) {
+                signin_password.type = "text";
+            } else {
+                signin_password.type = "password";
+            }
+        }
+    </script>
+    <script>
         const password = document.getElementById("signup-password");
         const password2 = document.getElementById("confirm");
         const togglePassword = document.getElementById("toggle-signup-password");
