@@ -52,9 +52,10 @@ def signup(request):
 
                         # create Profile
                         user_model = User.objects.get(username=username)
-                        new_profile = Profile.objects.create(user=user_model, name=name)
+                        new_profile = Profile.objects.create(user=user_model, name=name, email=email)
                         new_profile.save()
-                        return redirect("signin")
+                        messages.success(request, "Successfuly created your account, now sign in")
+                        return redirect("home")
 
                 else:
                     messages.error(request, "Those passwords didn't match. Try again.")
@@ -101,6 +102,7 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
+        messages.info(request, "You signed out of your account")
     return redirect("home")
 
 
@@ -223,7 +225,11 @@ def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     reviews = room.rating_set.order_by("-date")
     num_o_days = (room.check_out - room.check_in).days
-    return render(request, "basic/post.html", {"room": room, "reviews": reviews, "num_o_days": num_o_days})
+    return render(
+        request,
+        "basic/post.html",
+        {"room": room, "reviews": reviews, "num_o_days": num_o_days},
+    )
 
 
 def search(request):

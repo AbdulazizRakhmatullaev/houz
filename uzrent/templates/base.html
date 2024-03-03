@@ -13,6 +13,39 @@
 </head>
 
 <body>
+    <!-- messages -->
+    {% if messages %}
+    {% for message in messages %}
+    <div id="toast-position">
+        <div class="toast">
+            <p>{{ message }}</p>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <!-- /messages -->
+    <div id="signinModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="modal-title">
+                    Sign in
+                    <span onclick="closeSigninModal()" class="close">&times;</span>
+                </div>
+                {% include 'temps/signin_temp.html' %}
+            </div>
+        </div>
+    </div>
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="modal-title">
+                    Sign up
+                    <span onclick="closeSignupModal()" class="close">&times;</span>
+                </div>
+                {% include 'temps/signup_temp.html' %}
+            </div>
+        </div>
+    </div>
     <nav id="navbar">
         <div id="row">
             <ul class="row-content">
@@ -45,7 +78,7 @@
                 </li>
                 {% else %}
                 <li class="row-con-itm">
-                    <a href="{% url 'signin' %}">Sign in</a>
+                    <div onclick="openSigninModal()">Sign in</div>
                 </li>
                 {% endif %}
             </ul>
@@ -69,6 +102,60 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script type='text/javascript' src="{% static 'jquery.js' %}"></script>
 
+    <!--  -->
+    <script>
+        const password = document.getElementById("signup-password");
+        const password2 = document.getElementById("confirm");
+        const togglePassword = document.getElementById("toggle-signup-password");
+
+        togglePassword.addEventListener("click", toggleClicked);
+        function toggleClicked() {
+            if (this.checked) {
+                password.type = "text";
+                password2.type = "text";
+            } else {
+                password.type = "password";
+                password2.type = "password";
+            }
+        }
+    </script>
+    <script>
+        const signinModal = document.getElementById("signinModal");
+        const signupModal = document.getElementById("signupModal");
+        function openSigninModal() {
+            signinModal.classList.add('show');
+            signupModal.classList.remove('show');
+        }
+        function closeSigninModal() {
+            signinModal.classList.remove('show');
+        }
+        // signup
+        function openSignupModal() {
+            signinModal.classList.remove('show');
+            signupModal.classList.add('show');
+        }
+        function closeSignupModal() {
+            signupModal.classList.remove('show');
+        }
+        window.onclick = function (event) {
+            if (event.target == signinModal) {
+                signinModal.classList.remove('show');
+            }
+            else if (event.target == signupModal) {
+                signupModal.classList.remove('show');
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#toast-position').toggleClass('active')
+
+            setTimeout(function () {
+                $('#toast-position').toggleClass('timeout')
+                $('#toast-position').fadeOut('fast');
+            }, 3000);
+        })
+    </script>
     {% block scripts %}
     {% endblock %}
 </body>

@@ -1,0 +1,37 @@
+<div class="signup-col">
+    <form action="{% url 'signup' %}" method="POST">
+        {% csrf_token %}
+        <div class="field">
+            <input type="text" class="inputText" name="name" required />
+            <div class="floating-label">Full name</div>
+        </div>
+        <div class="field">
+            <input type="text" class="inputText" name="username" required />
+            <div class="floating-label">Username</div>
+        </div>
+        <div class="field">
+            <input type="text" class="inputText" name="email" required />
+            <div class="floating-label">Email</div>
+        </div>
+        <div class="field">
+            <input type="password" class="inputText" name="password" id="password" required />
+            <div class="floating-label">Password</div>
+        </div>
+        <div class="field">
+            <input type="password" class="inputText" name="confirm" id="password" required />
+            <div class="floating-label">Confirm</div>
+        </div>
+        <div id="flex-align">
+            <input class="showPassword" type="checkbox" id="toggle-password" />
+            <div class="showPassword-txt">
+                Show password
+            </div>
+        </div>
+        <div class="fl-spbn" style="margin-top: 45px;">
+            <div class="c-ripple" onclick="openSigninModal()">Sign in instead</div>
+            <button type="submit" class="btn-primary">
+                Create account
+            </button>
+        </div>
+    </form>
+</div>

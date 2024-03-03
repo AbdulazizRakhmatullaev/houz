@@ -1,0 +1,25 @@
+<div class="signin-col">
+    <form action="{% url 'signin' %}" method="POST">
+        {% csrf_token %}
+        <div class="field">
+            <input type="text" class="inputText" name="username" required />
+            <div class="floating-label">Email or username</div>
+        </div>
+        <div class="field">
+            <input type="password" class="inputText" name="password" id="password" required />
+            <div class="floating-label">Password</div>
+        </div>
+        <div id="flex-align">
+            <input class="showPassword" type="checkbox" id="toggle-password" />
+            <div class="showPassword-txt">
+                Show password
+            </div>
+        </div>
+        <div class="fl-spbn" style="margin-top: 45px;">
+            <div class="c-ripple" onclick="openSignupModal()">Create account</div>
+            <button type="submit" class="btn-primary">
+                Sign in
+            </button>
+        </div>
+    </form>
+</div>
