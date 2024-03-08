@@ -52,10 +52,14 @@ def signup(request):
 
                         # create Profile
                         user_model = User.objects.get(username=username)
-                        new_profile = Profile.objects.create(user=user_model, name=name, email=email)
+                        new_profile = Profile.objects.create(
+                            user=user_model, name=name, email=email
+                        )
                         new_profile.save()
-                        messages.success(request, "Successfuly created your account, now sign in")
-                        return redirect("home")
+                        messages.success(
+                            request, "Successfuly created your account, now sign in"
+                        )
+                        return redirect("signin")
 
                 else:
                     messages.error(request, "Those passwords didn't match. Try again.")

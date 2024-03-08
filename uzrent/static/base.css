@@ -20,8 +20,11 @@ a {
 .main-content {
     margin: 0 auto;
     max-width: 1180px;
+    min-height: calc(100vh - 44px);
     padding: 44px 20px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
 }
 
 #navbar {
@@ -913,12 +916,12 @@ a {
     white-space: nowrap;
     color: #fff;
     border: 1px solid transparent;
-    border-radius: 10px;
-    min-width: 124px;
-    height: 46px;
+    border-radius: 40px;
+    min-width: 98px;
+    height: 38px;
+    padding: 0 15px;
     outline: none;
     background: #0071e3;
-    border: none;
     transition: .2s;
 }
 
@@ -926,13 +929,13 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 124px;
-    height: 46px;
     outline: none;
     background-color: transparent;
     border: none;
-    border-radius: 8px;
-    padding: 0 10px;
+    min-width: 98px;
+    height: 38px;
+    border-radius: 40px;
+    padding: 0 15px;
     color: #1a73e8;
     cursor: pointer;
     font-size: 14px;
@@ -1011,4 +1014,11 @@ input:not(:focus):valid~.floating-label {
     margin-top: 10px;
     display: flex;
     align-items: center;
+}
+
+.centered-content {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
