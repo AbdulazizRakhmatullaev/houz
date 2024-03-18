@@ -4,7 +4,30 @@
 
 {% block content %}
 
-div.
+<div class="p-col">
+    <div class="left-pp-col">
+        <div class="p-main">
+            <div class="p-first">
+                {% if user.profile.avatar.url != null %}
+                <img src="{{user.profile.avatar.url}}" alt="" class="pp">
+                {% else %}
+                <div class="uspp" style="background: linear-gradient({{user.profile.avatar_default}});">
+                    <div class="usgrcn">
+                        {{user.profile.name|slice:"0:1"}}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="p-names-col">
+                    <div class="p-name">{{user.profile.name}}</div>
+                    <div class="p-usname">@{{user.username}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-pp-col">
+
+    </div>
+</div>
 
 {% endblock %}
 

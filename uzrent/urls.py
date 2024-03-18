@@ -29,6 +29,8 @@ urlpatterns = [
         name="rating_delete",
     ),
     path("room/<str:id>/rating/<int:pk>/edit", views.rating_edit, name="rating_edit"),
+    # 
+    path("room/<str:id>/pickadate", views.checkin_checkout, name="checkin_checkout"),
     # Other
     path("search/", views.search, name="search"),
     path("bookmarks", views.bookmarks, name="bookmarks"),

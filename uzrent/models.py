@@ -235,7 +235,8 @@ class Room(models.Model):
         return reverse("room_detail_url", kwargs={"slug": self.slug, "id": self.id})
 
     def how_many(self):
-        return f"{self.guests} guests • {self.bedrooms} bedrooms • {self.beds} beds • {self.baths} baths"
+        spr = '<span class="tspr">•</span>'
+        return f"{self.guests} guests {spr} {self.bedrooms} bedrooms {spr} {self.beds} beds {spr} {self.baths} baths"
 
     def ratings_count(self) -> float:
         rating_num = Rating.objects.filter(room=self).count()

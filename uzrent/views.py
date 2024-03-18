@@ -1,3 +1,4 @@
+from uzrent.forms import CheckInCheckOut
 from .models import Room, Profile, Rating, RatingLike, RoomSave
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
@@ -10,6 +11,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import JsonResponse
+from .forms import CheckInCheckOut
 
 
 def home(request):
@@ -106,7 +108,7 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
-        messages.info(request, "You signed out of your account")
+        messages.info(request, "You logged out of your account")
     return redirect("home")
 
 
@@ -223,6 +225,16 @@ def room_edit(request, id):
                 return HttpResponseRedirect(current)
         return HttpResponseRedirect(current)
     return HttpResponseRedirect(current)
+
+
+def checkin_checkout(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
+    form = CheckInCheckOut()
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return render(request, "basic/post.html", {"room": room, "form": form})
+    return redirect("home")
 
 
 def room_detail(request, room_id):

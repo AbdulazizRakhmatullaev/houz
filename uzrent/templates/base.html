@@ -1,13 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" style="overflow: auto scroll; overscroll-behavior: scroll;">
+<html lang="en" style="overflow: auto scroll;">
 
 <head>
     <title>Uzrent / {% block title %}{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/x-icon" href="../../media/important/UR.png">
+    <link rel="icon" type="image/x-icon" href="../../media/important/uzrent.png">
 
     <link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
@@ -58,8 +58,7 @@
                 <li class="row-con-itm">
                     <form action="{% url 'search' %}" class="search-form">
                         {% csrf_token %}
-                        <input type="text" name="search" class="search-inp" placeholder="Search uzrent.com"
-                            autocomplete="off">
+                        <input type="text" name="search" class="search-inp" placeholder="Search" autocomplete="off">
                     </form>
                 </li>
                 {% if user.is_authenticated %}
@@ -99,10 +98,15 @@
         </div>
     </footer>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type='text/javascript' src="{% static 'jquery.js' %}"></script>
 
     <!--  -->
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
     <script>
         const signin_password = document.getElementById("signin-password");
         const toggleSigninPassword = document.getElementById("toggle-signin-password");
