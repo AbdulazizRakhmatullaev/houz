@@ -1,5 +1,4 @@
-from uzrent.forms import CheckInCheckOut
-from .models import Room, Profile, Rating, RatingLike, RoomSave
+from .models import Room, Profile, Rating, RatingLike, RoomSave, Notification
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -11,12 +10,48 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import JsonResponse
-from .forms import CheckInCheckOut
+from .forms import BookingForm
 
 
 def home(request):
     rooms = Room.objects.all()
     return render(request, "basic/home.html", {"rooms": rooms})
+
+
+def notifications(request):
+    host = request.user
+    nots = Notification.objects.filter(user=host)
+    return render(request, "basic/notifications.html", {"nots": nots})
+
+
+def book_room(request, room_id):
+    room = Room.objects.get(pk=room_id)
+    if request.method == "POST":
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            check_in = form.cleaned_data["check_in"]
+            check_out = form.cleaned_data["check_out"]
+            if (
+                room.check_in <= check_in <= room.check_out
+                and room.check_in <= check_out <= room.check_out
+            ):
+                # Notify owner
+                Notification.objects.create(
+                    user=room.host,
+                    message=f"A new booking request has been made for one of your rooms {room.id}, with check_in: {room.check_in}, check_out: {room.check_out}",
+                )
+                return redirect("home")
+            else:
+                # If dates are not within the available range, display error
+                form.add_error(
+                    None, "Selected dates are not within the available range."
+                )
+    else:
+        # Pass room check-in and check-out dates to the form to restrict date range
+        form = BookingForm(
+            initial={"check_in": room.check_in, "check_out": room.check_out}
+        )
+    return render(request, "basic/post.html", {"form": form, "room": room})
 
 
 def user_profile(request, username):
@@ -229,12 +264,15 @@ def room_edit(request, id):
 
 def checkin_checkout(request, room_id):
     room = get_object_or_404(Room, id=room_id)
-    form = CheckInCheckOut()
+    form = CheckinCheckout()
     if request.method == "POST":
         if form.is_valid():
             form.save()
-            return render(request, "basic/post.html", {"room": room, "form": form})
-    return redirect("home")
+    return render(
+        request,
+        "basic/post.html",
+        {"room": room, "reviews": reviews, "num_o_days": num_o_days},
+    )
 
 
 def room_detail(request, room_id):

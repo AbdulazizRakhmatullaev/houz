@@ -13,7 +13,6 @@
 </head>
 
 <body>
-    <!-- messages -->
     {% if messages %}
     {% for message in messages %}
     <div id="toast-position">
@@ -23,7 +22,6 @@
     </div>
     {% endfor %}
     {% endif %}
-    <!-- /messages -->
     <div id="signinModal" class="modal">
         <div class="modal-content">
             <div class="container">
@@ -62,6 +60,14 @@
                     </form>
                 </li>
                 {% if user.is_authenticated %}
+                <div class="inbox">
+                    <div class="inboxDrBtn">
+                        Inbox
+                    </div>
+                    <div id="inboxDropdown">
+                        {% include 'temps/notifications.html' %}
+                    </div>
+                </div>
                 <li class="row-con-itm">
                     <a href="{% url 'user_profile' request.user.username %}">
                         {% if request.user.profile.avatar.url != null %}
@@ -103,11 +109,6 @@
 
     <!--  -->
     <script>
-        $(function () {
-            $("#datepicker").datepicker();
-        });
-    </script>
-    <script>
         const signin_password = document.getElementById("signin-password");
         const toggleSigninPassword = document.getElementById("toggle-signin-password");
 
@@ -119,6 +120,29 @@
                 signin_password.type = "password";
             }
         }
+    </script>
+    <script>
+        // var elements = document.getElementsByClassName("postDropdown");
+        // for (var i = 0; i < elements.length; i++) {
+        const $dropdownMenu = $('[id=inboxDropdown]');
+
+        const onDrMouseUp = e => {
+            if (!$dropdownMenu.is(e.target)
+                && $dropdownMenu.has(e.target).length === 0) {
+                $dropdownMenu.removeClass('active')
+            }
+        }
+
+        $('.inboxDrBtn').on('click', () => {
+            $dropdownMenu.toggleClass('active').promise().done(() => {
+                if ($dropdownMenu.hasClass('active')) {
+                    $(document).on('drmouseup', onDrMouseUp)
+                } else {
+                    $(document).off('drmouseup', onDrMouseUp)
+                }
+            })
+        })
+        // }
     </script>
     <script>
         const password = document.getElementById("signup-password");

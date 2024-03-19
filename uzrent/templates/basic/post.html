@@ -157,9 +157,10 @@
             <div class="price-info">
                 <span class="room-price">From {{room.get_price}} soums/night</span>
             </div>
-            <form action="{% url 'checkin_checkout' room.id %}" method="POST">
+            <form action="{% url 'book_room' room.id %}" method="post">
                 {% csrf_token %}
-                {{form_p}} {# Renders form fields using django-bootstrapX #}
+                {{ form.as_p }}
+                <button type="submit">Book Room</button>
             </form>
             <div class="check-inNout">
                 <div class="check-io">

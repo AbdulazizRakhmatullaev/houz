@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django_countries",
     "location_field.apps.DefaultConfig",
-    "bootstrap_datepicker_plus",
 ]
 
 MIDDLEWARE = [
