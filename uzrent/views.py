@@ -19,9 +19,8 @@ def home(request):
 
 
 def notifications(request):
-    host = request.user
-    nots = Notification.objects.filter(user=host)
-    return render(request, "basic/notifications.html", {"nots": nots})
+    notifications = Notification.objects.filter(user=request.user)
+    return render(request, "temps/notifications.html", {"notifications": notifications})
 
 
 def book_room(request, room_id):
