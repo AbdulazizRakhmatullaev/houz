@@ -1189,13 +1189,15 @@ input:not(:focus):valid~.floating-label {
 
 #inboxDropdown {
   position: absolute;
-  top: 50px;
+  top: 37px;
   background: white;
-  border-radius: 5px;
+  border-radius: 12px;
   height: 340px;
   width: 240px;
   z-index: 2;
   display: none;
+  border: 1px solid #e8e8ed;
+  padding: 15px;
 }
 
 #inboxDropdown.active {
