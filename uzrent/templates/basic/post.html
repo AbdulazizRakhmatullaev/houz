@@ -157,11 +157,13 @@
             <div class="price-info">
                 <span class="room-price">From {{room.get_price}} soums/night</span>
             </div>
+            {% if room.host != request.user %}
             <form action="{% url 'book_room' room.id %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit">Book Room</button>
             </form>
+            {% endif %}
             <div class="check-inNout">
                 <div class="check-io">
                     <span class="small-title">Check-in</span>

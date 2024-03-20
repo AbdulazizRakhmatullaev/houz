@@ -346,7 +346,11 @@ class RatingLike(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
 
-class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class Notifications(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
+    reciever = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reciever"
+    )
     message = models.TextField()
+    room_id = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

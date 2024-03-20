@@ -65,7 +65,11 @@
                         Inbox
                     </div>
                     <div id="inboxDropdown">
-                        {% include 'temps/notifications.html' %}
+                        {% for notification in notifications %}
+                        {{ notification.message }} - {{ notification.created_at }}
+                        <br>
+                        {% endfor %}
+                        <p>{{ notification }}</p>
                     </div>
                 </div>
                 <li class="row-con-itm">
@@ -105,7 +109,6 @@
     </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script type='text/javascript' src="{% static 'jquery.js' %}"></script>
 
     <!--  -->
     <script>

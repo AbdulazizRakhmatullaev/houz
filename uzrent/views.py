@@ -1,4 +1,4 @@
-from .models import Room, Profile, Rating, RatingLike, RoomSave, Notification
+from .models import Room, Profile, Rating, RatingLike, RoomSave, Notifications
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -18,9 +18,11 @@ def home(request):
     return render(request, "basic/home.html", {"rooms": rooms})
 
 
-def notifications(request):
-    notifications = Notification.objects.filter(user=request.user)
-    return render(request, "temps/notifications.html", {"notifications": notifications})
+def host_notifications(request):
+    notifications = Notifications.objects.filter(reciever=request.user).order_by(
+        "-created_at"
+    )
+    return render(request, "basic/notifications.html", {"notifications": notifications})
 
 
 def book_room(request, room_id):
@@ -30,21 +32,41 @@ def book_room(request, room_id):
         if form.is_valid():
             check_in = form.cleaned_data["check_in"]
             check_out = form.cleaned_data["check_out"]
-            if (
-                room.check_in <= check_in <= room.check_out
-                and room.check_in <= check_out <= room.check_out
-            ):
-                # Notify owner
-                Notification.objects.create(
-                    user=room.host,
-                    message=f"A new booking request has been made for one of your rooms {room.id}, with check_in: {room.check_in}, check_out: {room.check_out}",
-                )
-                return redirect("home")
+            if room.host != request.user:
+                if (
+                    room.check_in <= check_in <= room.check_out
+                    and room.check_in <= check_out <= room.check_out
+                ):
+                    if check_in != check_in:
+                        # check if this user already notified the owner, so he can't spam him
+                        if not Notifications.objects.filter(
+                            sender=request.user, room_id=room.id
+                        ).exists():
+                            Notifications.objects.create(
+                                sender=request.user,
+                                reciever=room.host,
+                                message=f'A new booking request has been made for your Rooms "{room.brief_name}" in {room.city}, with check in: {check_in}, checkout: {check_out}',
+                                room_id=room,
+                            )
+                            messages.success(
+                                request,
+                                "Room's host has been notified, you will soon get the response",
+                            )
+                            return redirect("home")
+                        else:
+                            messages.info(
+                                request,
+                                "Please have some respect and patience, if host is not responding to notification, give him a call",
+                            )
+                    else:
+                        form.add_error(None, "The range at least should be one day")
+                else:
+                    # If dates are not within the available range, display error
+                    form.add_error(
+                        None, "Selected dates are not within the available range."
+                    )
             else:
-                # If dates are not within the available range, display error
-                form.add_error(
-                    None, "Selected dates are not within the available range."
-                )
+                form.add_error(None, "You can't book your own room")
     else:
         # Pass room check-in and check-out dates to the form to restrict date range
         form = BookingForm(
