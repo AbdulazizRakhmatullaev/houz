@@ -515,7 +515,6 @@ CREATE TABLE public.uzrent_profile (
     bio character varying(255) NOT NULL,
     email character varying(255) NOT NULL,
     phone_number character varying(255),
-    country character varying(200),
     created_at timestamp with time zone NOT NULL,
     user_id integer NOT NULL
 );
@@ -839,7 +838,7 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
 3	pbkdf2_sha256$720000$l07DMvyPY98H9Bb1CMu2tz$YQO141hUTfJAuG4evnes4AKJodrfb+CmGRFtx32xBxo=	2024-03-04 01:12:55.975894+05	f	Abdulaziz	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	f	t	2024-03-04 01:06:19.952954+05
 4	pbkdf2_sha256$720000$zyHbzWpNsP18BTOO4BJovs$pormyvL8mMgEjIdTwrmQ/YSylBf0GM53L6EaYwe79Ck=	2024-03-19 06:24:11.223153+05	f	lethalboi	Abdulaziz Rakhmatullaev		lethalboi@gmail.com	f	t	2024-03-19 05:40:57.874385+05
-1	pbkdf2_sha256$720000$8ttpd43FjVYKBXn4ZNVzGY$h3TFXoWxz3AIQSUMYTn5B0aaIds1vzKGNny1MALSoM0=	2024-03-19 20:58:15.364007+05	t	admin				t	t	2024-03-03 03:18:45.84969+05
+1	pbkdf2_sha256$720000$8ttpd43FjVYKBXn4ZNVzGY$h3TFXoWxz3AIQSUMYTn5B0aaIds1vzKGNny1MALSoM0=	2024-03-20 05:58:12.014912+05	t	admin				t	t	2024-03-03 03:18:45.84969+05
 \.
 
 
@@ -948,6 +947,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 24	uzrent	0006_message_notification	2024-03-03 03:18:24.683484+05
 25	uzrent	0007_remove_notification_user_delete_message_and_more	2024-03-03 03:18:24.695231+05
 26	uzrent	0008_notification	2024-03-19 05:25:43.068638+05
+27	uzrent	0009_remove_profile_country	2024-03-20 07:46:20.900542+05
 \.
 
 
@@ -958,6 +958,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 0l9kx3dhutmrvv0v1ykb6be4zgi52ti4	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1riQqO:ZIegqvbHo4hqehlIGq46wn2jub6YbXL6u7GN1Z_5Juw	2024-03-22 08:24:24.193699+05
 qxjcq05s8vwic76q8nfo4qbx5yvjnx6g	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rmbqW:yoTZwDv-zGJXeR9OhOE9wPOwnPovW_3ibkZLXbFvkrs	2024-04-02 20:57:48.947056+05
+nij66mgcp3v3lvsqdr72isup58ey27wz	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rmkHU:B8lK8HFH9WgiE61mX8VfNZdFPaauP15gd3CCYAd-DT0	2024-04-03 05:58:12.016395+05
 \.
 
 
@@ -1008,10 +1009,10 @@ COPY public.uzrent_photo (id, file, room_id) FROM stdin;
 -- Data for Name: uzrent_profile; Type: TABLE DATA; Schema: public; Owner: abdu
 --
 
-COPY public.uzrent_profile (id, avatar, avatar_default, name, bio, email, phone_number, country, created_at, user_id) FROM stdin;
-1		to right, #f3e03d, #0075ff	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	+998931040055	UZ	2024-03-03 04:09:06+05	1
-3		to top, #d9b7e9, #d01212	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	\N	\N	2024-03-04 01:06:20.110061+05	3
-4		to bottom right, #ffa600, #d01212	Abdulaziz Rakhmatullaev		lethalboi@gmail.com	\N	\N	2024-03-19 05:40:58.042302+05	4
+COPY public.uzrent_profile (id, avatar, avatar_default, name, bio, email, phone_number, created_at, user_id) FROM stdin;
+1		to right, #f3e03d, #0075ff	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	+998931040055	2024-03-03 04:09:06+05	1
+3		to top, #d9b7e9, #d01212	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	\N	2024-03-04 01:06:20.110061+05	3
+4		to bottom right, #ffa600, #d01212	Abdulaziz Rakhmatullaev		lethalboi@gmail.com	\N	2024-03-19 05:40:58.042302+05	4
 \.
 
 
@@ -1151,7 +1152,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 16, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 26, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 27, true);
 
 
 --

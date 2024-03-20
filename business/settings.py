@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     # other
     "uzrent",
     "django.contrib.humanize",
-    "django_countries",
     "location_field.apps.DefaultConfig",
 ]
 

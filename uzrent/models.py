@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 import random
 from datetime import datetime
-from django_countries.fields import CountryField
 from django.db.models import Avg
 from django.core.validators import MaxValueValidator, MinValueValidator
 from location_field.models.plain import PlainLocationField
@@ -108,11 +107,6 @@ class Profile(models.Model):
     bio = models.CharField("Bio", max_length=255, blank=True)
     email = models.EmailField("Email", max_length=255)
     phone_number = models.CharField("Phone", max_length=255, blank=True, null=True)
-    country = models.CharField(
-        max_length=200,
-        null=True,
-        choices=CountryField().choices + [("", "Select Country")],
-    )
     created_at = models.DateTimeField("Created at", default=timezone.now)
 
     class Meta:
@@ -350,6 +344,7 @@ class RatingLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
+
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
