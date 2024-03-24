@@ -10,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import JsonResponse
-from .forms import BookingForm
+from datetime import datetime
 
 
 def home(request):
@@ -18,61 +18,56 @@ def home(request):
     return render(request, "basic/home.html", {"rooms": rooms})
 
 
-def host_notifications(request):
-    notifications = Notifications.objects.filter(reciever=request.user).order_by(
-        "-created_at"
-    )
-    return render(request, "basic/notifications.html", {"notifications": notifications})
-
-
 def book_room(request, room_id):
     room = Room.objects.get(pk=room_id)
     if request.method == "POST":
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            check_in = form.cleaned_data["check_in"]
-            check_out = form.cleaned_data["check_out"]
-            if room.host != request.user:
-                if (
-                    room.check_in <= check_in <= room.check_out
-                    and room.check_in <= check_out <= room.check_out
-                ):
-                    if check_in != check_in:
-                        # check if this user already notified the owner, so he can't spam him
-                        if not Notifications.objects.filter(
-                            sender=request.user, room_id=room.id
-                        ).exists():
-                            Notifications.objects.create(
-                                sender=request.user,
-                                reciever=room.host,
-                                message=f'A new booking request has been made for your Rooms "{room.brief_name}" in {room.city}, with check in: {check_in}, checkout: {check_out}',
-                                room_id=room,
-                            )
-                            messages.success(
-                                request,
-                                "Room's host has been notified, you will soon get the response",
-                            )
-                            return redirect("home")
-                        else:
-                            messages.info(
-                                request,
-                                "Please have some respect and patience, if host is not responding to notification, give him a call",
-                            )
+        check_in_str = request.POST.get("check_in")
+        check_out_str = request.POST.get("check_out")
+
+        if not check_in_str or not check_out_str:
+            # Handle case where check_in or check_out is not provided
+            messages.error(request, "Please provide both check-in and check-out dates.")
+            return render(request, "basic/post.html", {"room": room})
+
+        check_in = datetime.strptime(check_in_str, "%Y-%m-%d").date()
+        check_out = datetime.strptime(check_out_str, "%Y-%m-%d").date()
+
+        if room.host != request.user:
+            if (
+                room.check_in <= check_in < room.check_out
+                and room.check_in < check_out <= room.check_out
+            ):
+                if check_in < check_out and check_in != check_out:
+                    # check if this user already notified the owner, so he can't spam him
+                    if not Notifications.objects.filter(
+                        sender=request.user, room_id=room.id
+                    ).exists():
+                        Notifications.objects.create(
+                            sender=request.user,
+                            reciever=room.host,
+                            message=f'New request for the room <span class="notbold">"{room.brief_name}"</span> in <span class="notbold">{room.city}</span> <br> <span class="notbold">Check in:</span> {check_in}<br><span class="notbold">Check out:</span> {check_out}',
+                            room_id=room,
+                        )
+                        messages.success(
+                            request,
+                            "Room's host has been notified, you will get host's response soon",
+                        )
+                        return redirect("home")
                     else:
-                        form.add_error(None, "The range at least should be one day")
+                        messages.info(
+                            request,
+                            "Please have some respect and patience, if host is not responding to notification, give him a call",
+                        )
                 else:
-                    # If dates are not within the available range, display error
-                    form.add_error(
-                        None, "Selected dates are not within the available range."
-                    )
+                    messages.info(request, "Chosen dates are incorrect")
             else:
-                form.add_error(None, "You can't book your own room")
-    else:
-        # Pass room check-in and check-out dates to the form to restrict date range
-        form = BookingForm(
-            initial={"check_in": room.check_in, "check_out": room.check_out}
-        )
-    return render(request, "basic/post.html", {"form": form, "room": room})
+                # If dates are not within the available range, display error
+                messages.info(
+                    request, "Selected dates are not within the available range."
+                )
+        else:
+            messages.info(request, "You can't book your own room")
+    return render(request, "basic/post.html", {"room": room})
 
 
 def user_profile(request, username):

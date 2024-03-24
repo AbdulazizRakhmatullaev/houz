@@ -1,4 +1,5 @@
 {% load static %}
+{% load notifications %}
 <!DOCTYPE html>
 <html lang="en" style="overflow: auto scroll;">
 
@@ -60,31 +61,34 @@
                     </form>
                 </li>
                 {% if user.is_authenticated %}
-                <div class="inbox">
-                    <div class="inboxDrBtn">
-                        Inbox
-                    </div>
-                    <div id="inboxDropdown">
-                        {% for notification in notifications %}
-                        {{ notification.message }} - {{ notification.created_at }}
-                        <br>
-                        {% endfor %}
-                        <p>{{ notification }}</p>
-                    </div>
-                </div>
-                <li class="row-con-itm">
-                    <a href="{% url 'user_profile' request.user.username %}">
-                        {% if request.user.profile.avatar.url != null %}
-                        <img src="{{request.user.profile.avatar.url}}" alt="" class="pp">
-                        {% else %}
-                        <div class="pp" style="background: linear-gradient({{request.user.profile.avatar_default}});">
-                            <div class="grcn">
-                                {{request.user.profile.name|slice:"0:1"}}
-                            </div>
+                <ul class="row-content" style="width: 70px;">
+                    <li class="row-con-itm inbox">
+                        <div class="inboxDrBtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M12.004 2.1c4.015 0 6.896 3.278 6.896 7.532v1.6c0 .228.193.531.72 1.075l.27.275c1.082 1.097 1.51 1.729 1.51 2.745 0 .445-.052.791-.268 1.206-.456.878-1.423 1.367-2.869 1.367l-1.912.001c-.629 2.332-2.13 3.6-4.351 3.6-2.245 0-3.754-1.295-4.371-3.675l.019.074H5.737c-1.488 0-2.466-.502-2.902-1.41-.191-.398-.235-.72-.235-1.163 0-1.016.428-1.648 1.51-2.745l.27-.275c.527-.544.72-.847.72-1.076v-1.6C5.1 5.38 7.988 2.1 12.004 2.1Zm2.462 15.802H9.534C9.99 19.148 10.776 19.7 12 19.7c1.224 0 2.01-.552 2.466-1.798ZM12.004 3.9C9.036 3.9 6.9 6.327 6.9 9.632v1.6c0 .852-.39 1.463-1.228 2.328-.073.075-.142.146-.281.286-.747.758-.991 1.118-.991 1.481 0 .192.014.292.057.382.107.224.433.391 1.28.391h12.526c.82 0 1.153-.169 1.272-.397.05-.095.065-.197.065-.376 0-.363-.244-.723-.99-1.48-.14-.141-.209-.212-.282-.287-.839-.865-1.228-1.476-1.228-2.329v-1.6c0-3.307-2.13-5.731-5.096-5.731Z" />
+                            </svg>
                         </div>
-                        {% endif %}
-                    </a>
-                </li>
+                        <div id="inboxDropdown">
+                            {% notifications request %}
+                        </div>
+                    </li>
+                    <li class="row-con-itm">
+                        <a href="{% url 'user_profile' request.user.username %}">
+                            {% if request.user.profile.avatar.url != null %}
+                            <img src="{{request.user.profile.avatar.url}}" alt="" class="pp">
+                            {% else %}
+                            <div class="pp"
+                                style="background: linear-gradient({{request.user.profile.avatar_default}});">
+                                <div class="grcn">
+                                    {{request.user.profile.name|slice:"0:1"}}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
                 {% else %}
                 <li class="row-con-itm">
                     <div onclick="openSigninModal()">Sign in</div>

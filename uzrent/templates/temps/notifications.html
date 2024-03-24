@@ -1,0 +1,28 @@
+<div class="notcol">
+    <div class="nottitle">Notifications</div>
+    <div class="hr"></div>
+    {% for notification in notifications %}
+    <div class="notcon">
+        <div class="notrec-msg">
+            <div class="notreciever">
+                <a href="{% url 'user_profile' notification.sender.username %}">
+                    {% if notification.sender.profile.avatar.url != null %}
+                    <img src="{{notification.sender.profile.avatar.url}}" alt="" class="pp">
+                    {% else %}
+                    <div class="pp"
+                        style="background: linear-gradient({{notification.sender.profile.avatar_default}});">
+                        <div class="grcn">
+                            {{notification.sender.profile.name|slice:"0:1"}}
+                        </div>
+                    </div>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="notmsg">
+                {{ notification.message|safe }}
+            </div>
+        </div>
+        <div class="notdt">{{ notification.get_date }}</div>
+    </div>
+    {% endfor %}
+</div>

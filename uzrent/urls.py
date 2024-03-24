@@ -33,6 +33,5 @@ urlpatterns = [
     # Other
     path("search/", views.search, name="search"),
     path("bookmarks", views.bookmarks, name="bookmarks"),
-    path("notifications", views.host_notifications, name="host_notifications"),
     path("@<str:username>", views.user_profile, name="user_profile"),
 ]

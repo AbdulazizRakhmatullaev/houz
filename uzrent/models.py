@@ -3,10 +3,11 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db.models import Avg
 from django.core.validators import MaxValueValidator, MinValueValidator
 from location_field.models.plain import PlainLocationField
+from django.utils.timezone import localtime
 
 
 class RangedIntegerField(models.IntegerField):
@@ -195,27 +196,26 @@ class Room(models.Model):
         ordering = ["-date"]
 
     def get_dates(self):
-        if self.check_in.month == self.check_in.month:
-            return (
-                str(self.date.strftime("%b"))
-                + " "
-                + str(self.check_in.day)
-                + " - "
-                + str(self.check_out.day)
-            )
+        now = localtime()
+        time_diff = now - self.date
+
+        if time_diff.total_seconds() < 60:
+            return "now"
+        elif time_diff.total_seconds() < 3600:
+            return f"{int(time_diff.total_seconds() // 60)}m"
+        elif time_diff.days == 0:
+            return f"{int(time_diff.total_seconds() // 3600)}h"
+        elif time_diff.days == 1:
+            return "yesterday"
         else:
-            return (
-                str(self.date.strftime("%b"))
-                + " "
-                + str(self.check_in.day)
-                + " - "
-                + self.check_in.month
-                + str(self.check_out.day)
-            )
+            return self.date.strftime("%b ") + str(self.date.day)
 
     def fee(self):
         fee = 0.33 * self.price
         return f"{fee:,.3f}"
+
+    def num_o_days(self):
+        return (self.check_out - self.check_in).days
 
     def get_price(self):
         return f"{self.price:,.3f}"
@@ -313,22 +313,19 @@ class Rating(models.Model):
             return svg * 5
 
     def get_date(self):
-        time = datetime.now()
-        if self.date.day == time.day:
-            if self.date.hour == time.hour:
-                if self.date.minute == time.minute:
-                    return "now"
-                else:
-                    return str(time.minute - self.date.minute) + "m"
-            else:
-                return str(time.hour - self.date.hour) + "h"
-        elif self.date.month == time.month and self.date.day != time.day:
-            if (time.day - self.date.day) == 1:
-                return "yesterday"
-            else:
-                return str(self.date.strftime("%b")) + " " + str(self.date.day)
-        elif self.date.month != time.month and self.date.day != time.day:
-            return str(self.date.strftime("%b")) + " " + str(self.date.day)
+        now = localtime()
+        time_diff = now - self.date
+
+        if time_diff.total_seconds() < 60:
+            return "now"
+        elif time_diff.total_seconds() < 3600:
+            return f"{int(time_diff.total_seconds() // 60)}m"
+        elif time_diff.days == 0:
+            return f"{int(time_diff.total_seconds() // 3600)}h"
+        elif time_diff.days == 1:
+            return "yesterday"
+        else:
+            return self.date.strftime("%b ") + str(self.date.day)
 
     def __str__(self):
         return (
@@ -353,4 +350,23 @@ class Notifications(models.Model):
     )
     message = models.TextField()
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"
+
+    def get_date(self):
+        now = localtime()
+        time_diff = now - self.created_at
+
+        if time_diff.total_seconds() < 60:
+            return "now"
+        elif time_diff.total_seconds() < 3600:
+            return f"{int(time_diff.total_seconds() // 60)}m"
+        elif time_diff.days == 0:
+            return f"{int(time_diff.total_seconds() // 3600)}h"
+        elif time_diff.days == 1:
+            return "yesterday"
+        else:
+            return self.created_at.strftime("%b ") + str(self.created_at.day)

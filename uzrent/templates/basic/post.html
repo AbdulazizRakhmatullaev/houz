@@ -157,27 +157,27 @@
             <div class="price-info">
                 <span class="room-price">From {{room.get_price}} soums/night</span>
             </div>
-            {% if room.host != request.user %}
             <form action="{% url 'book_room' room.id %}" method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Book Room</button>
+                <div class="check-inNout">
+                    <div class="check-io">
+                        <span class="small-title">Check-in</span>
+                        <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}'
+                            min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
+                    </div>
+                    <div class="check-io">
+                        <span class="small-title">Check-out</span>
+                        <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}'
+                            min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
+                    </div>
+                </div>
+                <div class="payment">
+                    <button class="btn" id="message-btn">Reserve it</button>
+                </div>
             </form>
-            {% endif %}
-            <div class="check-inNout">
-                <div class="check-io">
-                    <span class="small-title">Check-in</span>
-                    <span>{{room.check_in}}</span>
-                </div>
-                <div class="check-io">
-                    <span class="small-title">Check-out</span>
-                    <span>{{room.check_out}}</span>
-                </div>
-            </div>
             <div class="payment">
-                <button class="btn" id="message-btn">Reserve it</button>
                 <div class="pricing-col">
-                    <div class="left-text">{{room.get_price}} soums x {{num_o_days}} nights</span></div>
+                    <div class="left-text">{{room.get_price}} soums x{{room.num_o_days}} nights</span></div>
                     <div class="right-text">{{room.count_nights_price}} soums</div>
                 </div>
                 <div class="pricing-col">
