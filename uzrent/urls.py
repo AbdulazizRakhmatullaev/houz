@@ -33,5 +33,6 @@ urlpatterns = [
     # Other
     path("search/", views.search, name="search"),
     path("bookmarks", views.bookmarks, name="bookmarks"),
+    path("room/confirm/<int:noty_id>", views.confirm_room, name="confirm_room"),
     path("@<str:username>", views.user_profile, name="user_profile"),
 ]

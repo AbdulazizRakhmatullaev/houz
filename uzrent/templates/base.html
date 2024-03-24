@@ -62,8 +62,8 @@
                 </li>
                 {% if user.is_authenticated %}
                 <ul class="row-content" style="width: 70px;">
-                    <li class="row-con-itm inbox">
-                        <div class="inboxDrBtn">
+                    <li class="inbox">
+                        <div class="nav-icn inboxDrBtn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path
@@ -129,27 +129,22 @@
         }
     </script>
     <script>
-        // var elements = document.getElementsByClassName("postDropdown");
-        // for (var i = 0; i < elements.length; i++) {
         const $dropdownMenu = $('[id=inboxDropdown]');
 
-        const onDrMouseUp = e => {
-            if (!$dropdownMenu.is(e.target)
-                && $dropdownMenu.has(e.target).length === 0) {
-                $dropdownMenu.removeClass('active')
+        const onDocumentMouseUp = e => {
+            if (!$dropdownMenu.is(e.target) && $dropdownMenu.has(e.target).length === 0) {
+                $dropdownMenu.removeClass('active');
+                $(document).off('mouseup', onDocumentMouseUp);
             }
-        }
+        };
 
         $('.inboxDrBtn').on('click', () => {
-            $dropdownMenu.toggleClass('active').promise().done(() => {
-                if ($dropdownMenu.hasClass('active')) {
-                    $(document).on('drmouseup', onDrMouseUp)
-                } else {
-                    $(document).off('drmouseup', onDrMouseUp)
-                }
-            })
-        })
-        // }
+            $dropdownMenu.toggleClass('active');
+            if ($dropdownMenu.hasClass('active')) {
+                $(document).on('mouseup', onDocumentMouseUp);
+            }
+        });
+
     </script>
     <script>
         const password = document.getElementById("signup-password");

@@ -3,8 +3,8 @@
     <div class="hr"></div>
     {% for notification in notifications %}
     <div class="notcon">
-        <div class="notrec-msg">
-            <div class="notreciever">
+        <div class="notsen-msg">
+            <div class="notsender">
                 <a href="{% url 'user_profile' notification.sender.username %}">
                     {% if notification.sender.profile.avatar.url != null %}
                     <img src="{{notification.sender.profile.avatar.url}}" alt="" class="pp">
@@ -19,10 +19,20 @@
                 </a>
             </div>
             <div class="notmsg">
-                {{ notification.message|safe }}
+                <div class="notsendername">
+                    {{notification.sender.profile.name}}
+                </div>
+                <div class="">
+                    {{ notification.message|safe }}
+                </div>
             </div>
         </div>
         <div class="notdt">{{ notification.get_date }}</div>
     </div>
+    <form action="{% url 'confirm_room' notification.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" name="action" value="confirm">Confirm</button>
+        <button type="submit" name="action" value="cancel">Cancel</button>
+    </form>
     {% endfor %}
 </div>

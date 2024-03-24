@@ -10,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import JsonResponse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def home(request):
@@ -45,7 +45,9 @@ def book_room(request, room_id):
                         Notifications.objects.create(
                             sender=request.user,
                             reciever=room.host,
-                            message=f'New request for the room <span class="notbold">"{room.brief_name}"</span> in <span class="notbold">{room.city}</span> <br> <span class="notbold">Check in:</span> {check_in}<br><span class="notbold">Check out:</span> {check_out}',
+                            check_in=check_in,
+                            check_out=check_out,
+                            message=f'New request for the room <br><span class="notbold">"{room.brief_name}"</span> in <span class="notbold">{room.city}</span> <br> <span class="notbold">Check in:</span> {check_in}<br><span class="notbold">Check out:</span> {check_out}',
                             room_id=room,
                         )
                         messages.success(
@@ -68,6 +70,31 @@ def book_room(request, room_id):
         else:
             messages.info(request, "You can't book your own room")
     return render(request, "basic/post.html", {"room": room})
+
+
+def confirm_room(request, noty_id):
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "confirm":
+            notification = Notifications.objects.get(id=noty_id)
+            room = Room.objects.get(pk=notification.room_id.id)
+            check_in_date = notification.check_in
+            check_out_date = notification.check_out
+
+            # delete dates
+            room.check_in.remove(check_in_date)
+            room.check_out.remove(check_out_date)
+            room.save()
+
+            # confirm the notification
+            notification.confirmed = True
+            notification.save()
+        elif action == "cancel":
+            notification = Notifications.objects.get(id=noty_id)
+            notification.delete()
+
+    return redirect("home")
 
 
 def user_profile(request, username):

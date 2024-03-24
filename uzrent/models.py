@@ -350,6 +350,9 @@ class Notifications(models.Model):
     )
     message = models.TextField()
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
+    check_in = models.DateField(null=True)
+    check_out = models.DateField(null=True)
+    confirmed = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
