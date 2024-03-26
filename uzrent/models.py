@@ -277,7 +277,13 @@ class Room(models.Model):
         )
 
 
-class RoomSave(models.Model):
+class Booking(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    check_in = models.DateField("Check in")
+    check_out = models.DateField("Check out")
+
+
+class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Room, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
@@ -343,21 +349,49 @@ class RatingLike(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
 
-class Notifications(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
+class HostNotifications(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="host_sender")
     reciever = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="reciever"
+        User, on_delete=models.CASCADE, related_name="user_reciever"
     )
     message = models.TextField()
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
     check_in = models.DateField(null=True)
     check_out = models.DateField(null=True)
     confirmed = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
-        verbose_name = "Notification"
-        verbose_name_plural = "Notifications"
+        verbose_name = "HostNotification"
+        verbose_name_plural = "HostNotifications"
+
+    def get_date(self):
+        now = localtime()
+        time_diff = now - self.created_at
+
+        if time_diff.total_seconds() < 60:
+            return "now"
+        elif time_diff.total_seconds() < 3600:
+            return f"{int(time_diff.total_seconds() // 60)}m"
+        elif time_diff.days == 0:
+            return f"{int(time_diff.total_seconds() // 3600)}h"
+        elif time_diff.days == 1:
+            return "yesterday"
+        else:
+            return self.created_at.strftime("%b ") + str(self.created_at.day)
+
+
+class UserNotifications(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_sender")
+    reciever = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="host_reciever"
+    )
+    message = models.TextField()
+    created_at = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        verbose_name = "UserNotification"
+        verbose_name_plural = "UserNotifications"
 
     def get_date(self):
         now = localtime()

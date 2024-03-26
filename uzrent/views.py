@@ -1,4 +1,13 @@
-from .models import Room, Profile, Rating, RatingLike, RoomSave, Notifications
+from .models import (
+    Room,
+    Profile,
+    Rating,
+    RatingLike,
+    Bookmark,
+    HostNotifications,
+    UserNotifications,
+    Booking,
+)
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -7,7 +16,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import JsonResponse
 from datetime import datetime, timedelta
@@ -39,16 +48,16 @@ def book_room(request, room_id):
             ):
                 if check_in < check_out and check_in != check_out:
                     # check if this user already notified the owner, so he can't spam him
-                    if not Notifications.objects.filter(
-                        sender=request.user, room_id=room.id
+                    if not HostNotifications.objects.filter(
+                        sender=request.user, room=room
                     ).exists():
-                        Notifications.objects.create(
+                        HostNotifications.objects.create(
                             sender=request.user,
                             reciever=room.host,
                             check_in=check_in,
                             check_out=check_out,
-                            message=f'New request for the room <br><span class="notbold">"{room.brief_name}"</span> in <span class="notbold">{room.city}</span> <br> <span class="notbold">Check in:</span> {check_in}<br><span class="notbold">Check out:</span> {check_out}',
-                            room_id=room,
+                            message=f"{room.brief_name} - {room.city} - {check_in} - {check_out}",
+                            room=room,
                         )
                         messages.success(
                             request,
@@ -73,28 +82,52 @@ def book_room(request, room_id):
 
 
 def confirm_room(request, noty_id):
+    notification = HostNotifications.objects.get(id=noty_id)
+    room = Room.objects.get(pk=notification.room.id)
+
+    # Check if the current user is the host of the room
     if request.method == "POST":
         action = request.POST.get("action")
-
         if action == "confirm":
-            notification = Notifications.objects.get(id=noty_id)
-            room = Room.objects.get(pk=notification.room_id.id)
-            check_in_date = notification.check_in
-            check_out_date = notification.check_out
+            check_in = notification.check_in
+            check_out = notification.check_out
 
-            # delete dates
-            room.check_in.remove(check_in_date)
-            room.check_out.remove(check_out_date)
-            room.save()
+            if not Booking.objects.filter(
+                room=room, check_in=check_in, check_out=check_out
+            ).exists():
+                Booking.objects.create(
+                    room=room, check_in=check_in, check_out=check_out
+                )
+                UserNotifications.objects.create(
+                    reciever=notification.sender,
+                    sender=request.user,
+                    message=f"Thank you for booking our room, we will be waiting for you on {check_in}",
+                )
 
-            # confirm the notification
-            notification.confirmed = True
-            notification.save()
+                # Confirm the notification
+                notification.confirmed = True
+                notification.save()
+            else:
+                messages.info(
+                    request,
+                    "This room with these dates is already booked by other user",
+                )
+                notification.delete()
         elif action == "cancel":
-            notification = Notifications.objects.get(id=noty_id)
+            UserNotifications.objects.create(
+                reciever=notification.sender,
+                sender=request.user,
+                message=f"Unfortunately the host declined your booked room",
+            )
             notification.delete()
 
-    return redirect("home")
+        return redirect("home")
+
+    return render(
+        request,
+        "temps/notifications.html",
+        {"room": room, "notification": notification},
+    )
 
 
 def user_profile(request, username):
@@ -305,27 +338,24 @@ def room_edit(request, id):
     return HttpResponseRedirect(current)
 
 
-def checkin_checkout(request, room_id):
-    room = get_object_or_404(Room, id=room_id)
-    form = CheckinCheckout()
-    if request.method == "POST":
-        if form.is_valid():
-            form.save()
-    return render(
-        request,
-        "basic/post.html",
-        {"room": room, "reviews": reviews, "num_o_days": num_o_days},
-    )
-
-
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
+    bookings = Booking.objects.filter(room=room)
+    booked_dates = [
+        (booking.check_in.isoformat(), booking.check_out.isoformat())
+        for booking in bookings
+    ]
     reviews = room.rating_set.order_by("-date")
     num_o_days = (room.check_out - room.check_in).days
     return render(
         request,
         "basic/post.html",
-        {"room": room, "reviews": reviews, "num_o_days": num_o_days},
+        {
+            "room": room,
+            "booked_dates": booked_dates,
+            "reviews": reviews,
+            "num_o_days": num_o_days,
+        },
     )
 
 

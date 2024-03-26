@@ -1,38 +1,85 @@
 <div class="notcol">
     <div class="nottitle">Notifications</div>
     <div class="hr"></div>
-    {% for notification in notifications %}
+    {% for host_not in host_nots %}
     <div class="notcon">
         <div class="notsen-msg">
             <div class="notsender">
-                <a href="{% url 'user_profile' notification.sender.username %}">
-                    {% if notification.sender.profile.avatar.url != null %}
-                    <img src="{{notification.sender.profile.avatar.url}}" alt="" class="pp">
+                <a href="{% url 'user_profile' host_not.sender.username %}">
+                    {% if host_not.sender.profile.avatar.url != null %}
+                    <img src="{{host_not.sender.profile.avatar.url}}" alt="" class="pp">
                     {% else %}
-                    <div class="pp"
-                        style="background: linear-gradient({{notification.sender.profile.avatar_default}});">
+                    <div class="pp" style="background: linear-gradient({{host_not.sender.profile.avatar_default}});">
                         <div class="grcn">
-                            {{notification.sender.profile.name|slice:"0:1"}}
+                            {{host_not.sender.profile.name|slice:"0:1"}}
                         </div>
                     </div>
                     {% endif %}
                 </a>
             </div>
-            <div class="notmsg">
+            <div class="msgcol">
                 <div class="notsendername">
-                    {{notification.sender.profile.name}}
+                    {{host_not.sender.profile.name}}
                 </div>
-                <div class="">
-                    {{ notification.message|safe }}
+                <div class="notmsg">
+                    <div class="notmsg_ttl">
+                        Hi, I'd like to book your <a href="{% url 'room_detail_url' host_not.room.id %}"
+                            class="underline" style="color: #06c;">room</a>
+                    </div>
+                    <div class="notroominfo">
+                        <div class="not-room-col">
+                            Check in: {{host_not.check_in|date:"M d"}}
+                        </div>
+                        <div class="not-room-col">
+                            Check out: {{host_not.check_out|date:"M d"}}
+                        </div>
+                    </div>
+                </div>
+                {% if not host_not.confirmed %}
+                <form action="{% url 'confirm_room' host_not.id %}" method="POST" class="bookform">
+                    {% csrf_token %}
+                    <button type="submit" name="action" value="confirm" class="btn-2">Confirm</button>
+                    <button type="submit" name="action" value="cancel" class="btn-trspt">Cancel</button>
+                </form>
+                {% endif %}
+                <div class="notdt">
+                    <div class="conf">
+                        {% if host_not.confirmed %} (confirmed by you) {% endif %}
+                    </div>
+                    <div>
+                        {{ host_not.get_date }}
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="notdt">{{ notification.get_date }}</div>
     </div>
-    <form action="{% url 'confirm_room' notification.id %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" name="action" value="confirm">Confirm</button>
-        <button type="submit" name="action" value="cancel">Cancel</button>
-    </form>
+    {% endfor %}
+    {% for user_not in user_nots %}
+    <div class="notcon">
+        <div class="notsen-msg">
+            <div class="notsender">
+                <a href="{% url 'user_profile' user_not.sender.username %}">
+                    {% if user_not.sender.profile.avatar.url != null %}
+                    <img src="{{user_not.sender.profile.avatar.url}}" alt="" class="pp">
+                    {% else %}
+                    <div class="pp" style="background: linear-gradient({{user_not.sender.profile.avatar_default}});">
+                        <div class="grcn">
+                            {{user_not.sender.profile.name|slice:"0:1"}}
+                        </div>
+                    </div>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="msgcol">
+                <div class="notsendername">
+                    {{user_not.sender.profile.name}}
+                </div>
+                <div class="notmsg">
+                    {{ user_not.message|safe }}
+                </div>
+                <div class="notdt">{{ user_not.get_date }}</div>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </div>

@@ -195,6 +195,45 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var bookedDates = {{ booked_dates|safe }};
+        var checkInInput = document.querySelector('input[name="check_in"]');
+        var checkOutInput = document.querySelector('input[name="check_out"]');
+
+        function isDateBooked(dateString) {
+            for (var i = 0; i < bookedDates.length; i++) {
+                var startDate = new Date(bookedDates[i][0]);
+                var endDate = new Date(bookedDates[i][1]);
+                var currentDate = new Date(dateString);
+                if (currentDate >= startDate && currentDate <= endDate) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Disable booked dates in the check-in input
+        checkInInput.addEventListener('input', function() {
+            var selectedDate = checkInInput.value;
+            if (isDateBooked(selectedDate)) {
+                checkInInput.setCustomValidity('This date is already booked.');
+            } else {
+                checkInInput.setCustomValidity('');
+            }
+        });
+
+        // Disable booked dates in the check-out input
+        checkOutInput.addEventListener('input', function() {
+            var selectedDate = checkOutInput.value;
+            if (isDateBooked(selectedDate)) {
+                checkOutInput.setCustomValidity('This date is already booked.');
+            } else {
+                checkOutInput.setCustomValidity('');
+            }
+        });
+    });
+</script>
 
 <script>
     let currentSlide = 0;
