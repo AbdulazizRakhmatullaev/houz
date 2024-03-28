@@ -349,10 +349,10 @@ class RatingLike(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
 
-class HostNotifications(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="host_sender")
+class Notifications(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
     reciever = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_reciever"
+        User, on_delete=models.CASCADE, related_name="reciever"
     )
     message = models.TextField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
@@ -362,8 +362,8 @@ class HostNotifications(models.Model):
     created_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
-        verbose_name = "HostNotification"
-        verbose_name_plural = "HostNotifications"
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"
 
     def get_date(self):
         now = localtime()
@@ -380,30 +380,6 @@ class HostNotifications(models.Model):
         else:
             return self.created_at.strftime("%b ") + str(self.created_at.day)
 
-
-class UserNotifications(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_sender")
-    reciever = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="host_reciever"
-    )
-    message = models.TextField()
-    created_at = models.DateTimeField(default=datetime.now)
-
-    class Meta:
-        verbose_name = "UserNotification"
-        verbose_name_plural = "UserNotifications"
-
-    def get_date(self):
-        now = localtime()
-        time_diff = now - self.created_at
-
-        if time_diff.total_seconds() < 60:
-            return "now"
-        elif time_diff.total_seconds() < 3600:
-            return f"{int(time_diff.total_seconds() // 60)}m"
-        elif time_diff.days == 0:
-            return f"{int(time_diff.total_seconds() // 3600)}h"
-        elif time_diff.days == 1:
-            return "yesterday"
-        else:
-            return self.created_at.strftime("%b ") + str(self.created_at.day)
+    def __str__(self):
+        datetime = self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        return f"from ({self.sender}) to ({self.reciever}) on {datetime}"

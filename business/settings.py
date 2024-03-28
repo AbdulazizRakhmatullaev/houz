@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     "uzrent",
     "django.contrib.humanize",
     "location_field.apps.DefaultConfig",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -59,7 +61,7 @@ ROOT_URLCONF = "business.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -71,6 +73,8 @@ TEMPLATES = [
         },
     },
 ]
+
+ASGI_APPLICATION = "business.asgi.application"
 
 WSGI_APPLICATION = "business.wsgi.application"
 
@@ -148,3 +152,5 @@ LOCATION_FIELD = {
     "provider.google.api_libraries": "",
     "provider.google.map.type": "ROADMAP",
 }
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}

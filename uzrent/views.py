@@ -4,8 +4,7 @@ from .models import (
     Rating,
     RatingLike,
     Bookmark,
-    HostNotifications,
-    UserNotifications,
+    Notifications,
     Booking,
 )
 from django.db.models import Q, Max
@@ -20,6 +19,15 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import JsonResponse
 from datetime import datetime, timedelta
+from django.core.serializers import serialize
+from django.forms.models import model_to_dict
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+from django.template.loader import render_to_string
+
+# webscoket
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 def home(request):
@@ -27,7 +35,70 @@ def home(request):
     return render(request, "basic/home.html", {"rooms": rooms})
 
 
+def create_notification(
+    sender,
+    reciever,
+    message,
+    type,
+    profile_name,
+    avatar_url,
+    avatar_default,
+    room_host,
+    notification_id=0,
+    room_id=0,
+    room=None,
+    check_in=None,
+    check_out=None,
+):
+    if type == "host":
+        Notifications.objects.create(
+            sender=sender,
+            reciever=reciever,
+            room=room,
+            message=message,
+            check_in=check_in,
+            check_out=check_out,
+        )
+    elif type == "user":
+        Notifications.objects.create(sender=sender, reciever=reciever, message=message)
+
+    check_in_str = str(check_in) if check_in else None
+    check_out_str = str(check_out) if check_out else None
+
+    # Fetch the created_at value from the database and convert it to a string
+    created_at = (
+        Notifications.objects.filter(reciever=reciever)
+        .order_by("-created_at")
+        .values_list("created_at", flat=True)  # Get only the values from the queryset
+        .first()  # Get the first value from the queryset
+    )
+
+    # # Convert created_at to string if it exists
+    # created_at_str = str(created_at) if created_at else None
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "public_room",
+        {
+            "type": "send_notification",
+            "sender": sender.id,
+            "reciever": reciever.id,
+            "room": room_id,
+            "message": message,
+            "check_in": check_in_str,
+            "check_out": check_out_str,
+            "notification_id": notification_id,
+            "profile_name": profile_name,
+            "avatar_url": avatar_url,
+            "avatar_default": avatar_default,
+            "room_host": room_host,
+            "created_at": created_at,
+        },
+    )
+
+
 def book_room(request, room_id):
+    # noty_id = Notifications.objects.get(id+1)
     room = Room.objects.get(pk=room_id)
     if request.method == "POST":
         check_in_str = request.POST.get("check_in")
@@ -48,17 +119,31 @@ def book_room(request, room_id):
             ):
                 if check_in < check_out and check_in != check_out:
                     # check if this user already notified the owner, so he can't spam him
-                    if not HostNotifications.objects.filter(
+                    if not Notifications.objects.filter(
                         sender=request.user, room=room
                     ).exists():
-                        HostNotifications.objects.create(
+                        not_message = f'Hi, I would like to book your <a href="/rooms/{room.id}" class="underline" style="color: #06c;">room</a>'
+
+                        # websocker notification
+                        create_notification(
                             sender=request.user,
                             reciever=room.host,
+                            message=not_message,
+                            room=room,
+                            room_id=room.id,
                             check_in=check_in,
                             check_out=check_out,
-                            message=f"{room.brief_name} - {room.city} - {check_in} - {check_out}",
-                            room=room,
+                            profile_name=request.user.profile.name,
+                            avatar_url=(
+                                request.user.profile.avatar.url
+                                if request.user.profile.avatar
+                                else None
+                            ),
+                            avatar_default=request.user.profile.avatar_default,
+                            room_host=room.host.username,
+                            type="host",
                         )
+
                         messages.success(
                             request,
                             "Room's host has been notified, you will get host's response soon",
@@ -82,52 +167,99 @@ def book_room(request, room_id):
 
 
 def confirm_room(request, noty_id):
-    notification = HostNotifications.objects.get(id=noty_id)
+    notification = Notifications.objects.get(id=noty_id)
     room = Room.objects.get(pk=notification.room.id)
 
     # Check if the current user is the host of the room
     if request.method == "POST":
         action = request.POST.get("action")
         if action == "confirm":
-            check_in = notification.check_in
-            check_out = notification.check_out
+            noty_check_in = notification.check_in
+            noty_check_out = notification.check_out
 
             if not Booking.objects.filter(
-                room=room, check_in=check_in, check_out=check_out
+                room=room, check_in=noty_check_in, check_out=noty_check_out
             ).exists():
+                not_message = f"Thank you for booking our room, we will be waiting for you on {noty_check_in}"
+
                 Booking.objects.create(
-                    room=room, check_in=check_in, check_out=check_out
+                    room=room, check_in=noty_check_in, check_out=noty_check_out
                 )
-                UserNotifications.objects.create(
-                    reciever=notification.sender,
-                    sender=request.user,
-                    message=f"Thank you for booking our room, we will be waiting for you on {check_in}",
+                # websocket notification
+                create_notification(
+                    sender=notification.reciever,
+                    reciever=room.host,
+                    message=not_message,
+                    notification_id=notification.id,
+                    profile_name=notification.reciever.profile.name,
+                    avatar_url=(
+                        notification.reciever.profile.avatar.url
+                        if notification.reciever.profile.avatar
+                        else None
+                    ),
+                    avatar_default=notification.reciever.profile.avatar_default,
+                    room_host=room.host.username,
+                    type="user",
                 )
 
                 # Confirm the notification
                 notification.confirmed = True
                 notification.save()
             else:
+                not_message = f"We are really sorry, but unfortunately room was booked with the same dates by other people"
+
+                # webscoket notification
+                create_notification(
+                    sender=notification.reciever,
+                    reciever=notification.sender,
+                    message=not_message,
+                    notification_id=notification.id,
+                    profile_name=notification.reciever.profile.name,
+                    avatar_url=(
+                        notification.reciever.profile.avatar.url
+                        if notification.reciever.profile.avatar
+                        else None
+                    ),
+                    avatar_default=notification.reciever.profile.avatar_default,
+                    room_host=room.host.username,
+                    type="user",
+                )
+
                 messages.info(
                     request,
                     "This room with these dates is already booked by other user",
                 )
                 notification.delete()
         elif action == "cancel":
-            UserNotifications.objects.create(
-                reciever=notification.sender,
+            not_message = f"Unfortunately the host declined your booked room"
+            # UserNotifications.objects.create(
+            #     sender=request.user,
+            #     reciever=notification.sender,
+            #     message=not_message,
+            # )
+
+            # webscoket notification
+            create_notification(
                 sender=request.user,
-                message=f"Unfortunately the host declined your booked room",
+                reciever=notification.sender,
+                message=not_message,
+                notification_id=notification.id,
+                profile_name=notification.reciever.profile.name,
+                avatar_url=(
+                    notification.reciever.profile.avatar.url
+                    if notification.reciever.profile.avatar
+                    else None
+                ),
+                avatar_default=notification.reciever.profile.avatar_default,
+                room_host=room.host.username,
+                type="user",
             )
             notification.delete()
+            messages.info(request, "User has been notified of this cancellation")
 
         return redirect("home")
 
-    return render(
-        request,
-        "temps/notifications.html",
-        {"room": room, "notification": notification},
-    )
+    return redirect("home")
 
 
 def user_profile(request, username):

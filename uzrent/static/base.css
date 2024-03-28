@@ -1191,12 +1191,13 @@ input:not(:focus):valid~.floating-label {
 
 #inboxDropdown {
   position: absolute;
-  top: 40px;
-  right: -140px;
+  top: 100%;
+  /* Position dropdown below the icon */
+  right: 0;
+  /* Adjusted to place it at the right */
   background: white;
   border-radius: 12px;
-  height: 80vh;
-  overflow: hidden;
+  max-height: 80vh;
   overflow-y: scroll;
   width: 430px;
   z-index: 2;
@@ -1204,6 +1205,8 @@ input:not(:focus):valid~.floating-label {
   border: 1px solid #e8e8ed;
   padding: 15px;
 }
+
+
 
 /* #inboxDropdown::-webkit-scrollbar {
   width: 10px;
@@ -1225,10 +1228,10 @@ input:not(:focus):valid~.floating-label {
 
 
 #inboxDropdown.active {
-  display: flex;
+  display: block;
 }
 
-.notcol {
+#notcol {
   display: flex;
   flex-direction: column;
   width: 100%;

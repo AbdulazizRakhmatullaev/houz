@@ -99,6 +99,9 @@
     </nav>
     <main id="main">
         <div class="main-content">
+            <ul id="notify">
+
+            </ul>
             {% block content %}
 
             {% endblock %}
@@ -135,6 +138,7 @@
     </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'websocket.js' %}"></script>
 
     <!--  -->
     <script>
