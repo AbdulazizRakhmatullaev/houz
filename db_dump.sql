@@ -16,8 +16,8 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY public.uzrent_roomsave DROP CONSTRAINT uzrent_roomsave_user_id_62e0bc37_fk_auth_user_id;
-ALTER TABLE ONLY public.uzrent_roomsave DROP CONSTRAINT uzrent_roomsave_post_id_c0c630df_fk_uzrent_room_id;
+ALTER TABLE ONLY public.uzrent_bookmark DROP CONSTRAINT uzrent_roomsave_user_id_62e0bc37_fk_auth_user_id;
+ALTER TABLE ONLY public.uzrent_bookmark DROP CONSTRAINT uzrent_roomsave_post_id_c0c630df_fk_uzrent_room_id;
 ALTER TABLE ONLY public.uzrent_room DROP CONSTRAINT uzrent_room_room_type_id_a398c228_fk_uzrent_roomtype_id;
 ALTER TABLE ONLY public.uzrent_room_house_rules DROP CONSTRAINT uzrent_room_house_rules_room_id_ad1f51e8_fk_uzrent_room_id;
 ALTER TABLE ONLY public.uzrent_room_house_rules DROP CONSTRAINT uzrent_room_house_ru_houserule_id_468407b9_fk_uzrent_ho;
@@ -30,7 +30,10 @@ ALTER TABLE ONLY public.uzrent_rating DROP CONSTRAINT uzrent_rating_user_id_ffcd
 ALTER TABLE ONLY public.uzrent_rating DROP CONSTRAINT uzrent_rating_room_id_3036417f_fk_uzrent_room_id;
 ALTER TABLE ONLY public.uzrent_profile DROP CONSTRAINT uzrent_profile_user_id_3aa1f71e_fk_auth_user_id;
 ALTER TABLE ONLY public.uzrent_photo DROP CONSTRAINT uzrent_photo_room_id_48a61e18_fk_uzrent_room_id;
-ALTER TABLE ONLY public.uzrent_notification DROP CONSTRAINT uzrent_notification_user_id_594ef658_fk_auth_user_id;
+ALTER TABLE ONLY public.uzrent_notifications DROP CONSTRAINT uzrent_notifications_sender_id_f06e6b36_fk_auth_user_id;
+ALTER TABLE ONLY public.uzrent_notifications DROP CONSTRAINT uzrent_notifications_room_id_3afe7f9f_fk_uzrent_room_id;
+ALTER TABLE ONLY public.uzrent_notifications DROP CONSTRAINT uzrent_notifications_reciever_id_c3581c92_fk_auth_user_id;
+ALTER TABLE ONLY public.uzrent_booking DROP CONSTRAINT uzrent_booking_room_id_d2652f9c_fk_uzrent_room_id;
 ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id;
 ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co;
 ALTER TABLE ONLY public.auth_user_user_permissions DROP CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id;
@@ -53,7 +56,10 @@ DROP INDEX public.uzrent_ratinglike_rating_id_26cbeac5;
 DROP INDEX public.uzrent_rating_user_id_ffcd41df;
 DROP INDEX public.uzrent_rating_room_id_3036417f;
 DROP INDEX public.uzrent_photo_room_id_48a61e18;
-DROP INDEX public.uzrent_notification_user_id_594ef658;
+DROP INDEX public.uzrent_notifications_sender_id_f06e6b36;
+DROP INDEX public.uzrent_notifications_room_id_3afe7f9f;
+DROP INDEX public.uzrent_notifications_reciever_id_c3581c92;
+DROP INDEX public.uzrent_booking_room_id_d2652f9c;
 DROP INDEX public.django_session_session_key_c0390e0f_like;
 DROP INDEX public.django_session_expire_date_a5c62663;
 DROP INDEX public.django_admin_log_user_id_c564eba6;
@@ -68,7 +74,7 @@ DROP INDEX public.auth_group_permissions_permission_id_84c5c92e;
 DROP INDEX public.auth_group_permissions_group_id_b120cbf9;
 DROP INDEX public.auth_group_name_a6ea08ec_like;
 ALTER TABLE ONLY public.uzrent_roomtype DROP CONSTRAINT uzrent_roomtype_pkey;
-ALTER TABLE ONLY public.uzrent_roomsave DROP CONSTRAINT uzrent_roomsave_pkey;
+ALTER TABLE ONLY public.uzrent_bookmark DROP CONSTRAINT uzrent_roomsave_pkey;
 ALTER TABLE ONLY public.uzrent_room DROP CONSTRAINT uzrent_room_pkey;
 ALTER TABLE ONLY public.uzrent_room_house_rules DROP CONSTRAINT uzrent_room_house_rules_room_id_houserule_id_88ae1028_uniq;
 ALTER TABLE ONLY public.uzrent_room_house_rules DROP CONSTRAINT uzrent_room_house_rules_pkey;
@@ -79,8 +85,9 @@ ALTER TABLE ONLY public.uzrent_rating DROP CONSTRAINT uzrent_rating_pkey;
 ALTER TABLE ONLY public.uzrent_profile DROP CONSTRAINT uzrent_profile_user_id_key;
 ALTER TABLE ONLY public.uzrent_profile DROP CONSTRAINT uzrent_profile_pkey;
 ALTER TABLE ONLY public.uzrent_photo DROP CONSTRAINT uzrent_photo_pkey;
-ALTER TABLE ONLY public.uzrent_notification DROP CONSTRAINT uzrent_notification_pkey;
+ALTER TABLE ONLY public.uzrent_notifications DROP CONSTRAINT uzrent_notifications_pkey;
 ALTER TABLE ONLY public.uzrent_houserule DROP CONSTRAINT uzrent_houserule_pkey;
+ALTER TABLE ONLY public.uzrent_booking DROP CONSTRAINT uzrent_booking_pkey;
 ALTER TABLE ONLY public.uzrent_amenity DROP CONSTRAINT uzrent_amenity_pkey;
 ALTER TABLE ONLY public.django_session DROP CONSTRAINT django_session_pkey;
 ALTER TABLE ONLY public.django_migrations DROP CONSTRAINT django_migrations_pkey;
@@ -100,7 +107,6 @@ ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permis
 ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq;
 ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_name_key;
 DROP TABLE public.uzrent_roomtype;
-DROP TABLE public.uzrent_roomsave;
 DROP TABLE public.uzrent_room_house_rules;
 DROP TABLE public.uzrent_room_amenities;
 DROP TABLE public.uzrent_room;
@@ -108,8 +114,10 @@ DROP TABLE public.uzrent_ratinglike;
 DROP TABLE public.uzrent_rating;
 DROP TABLE public.uzrent_profile;
 DROP TABLE public.uzrent_photo;
-DROP TABLE public.uzrent_notification;
+DROP TABLE public.uzrent_notifications;
 DROP TABLE public.uzrent_houserule;
+DROP TABLE public.uzrent_bookmark;
+DROP TABLE public.uzrent_booking;
 DROP TABLE public.uzrent_amenity;
 DROP TABLE public.django_session;
 DROP TABLE public.django_migrations;
@@ -423,6 +431,48 @@ ALTER TABLE public.uzrent_amenity ALTER COLUMN id ADD GENERATED BY DEFAULT AS ID
 
 
 --
+-- Name: uzrent_booking; Type: TABLE; Schema: public; Owner: abdu
+--
+
+CREATE TABLE public.uzrent_booking (
+    id bigint NOT NULL,
+    check_in date NOT NULL,
+    check_out date NOT NULL,
+    room_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.uzrent_booking OWNER TO abdu;
+
+--
+-- Name: uzrent_booking_id_seq; Type: SEQUENCE; Schema: public; Owner: abdu
+--
+
+ALTER TABLE public.uzrent_booking ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.uzrent_booking_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: uzrent_bookmark; Type: TABLE; Schema: public; Owner: abdu
+--
+
+CREATE TABLE public.uzrent_bookmark (
+    id bigint NOT NULL,
+    date timestamp with time zone NOT NULL,
+    post_id bigint NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.uzrent_bookmark OWNER TO abdu;
+
+--
 -- Name: uzrent_houserule; Type: TABLE; Schema: public; Owner: abdu
 --
 
@@ -449,25 +499,30 @@ ALTER TABLE public.uzrent_houserule ALTER COLUMN id ADD GENERATED BY DEFAULT AS 
 
 
 --
--- Name: uzrent_notification; Type: TABLE; Schema: public; Owner: abdu
+-- Name: uzrent_notifications; Type: TABLE; Schema: public; Owner: abdu
 --
 
-CREATE TABLE public.uzrent_notification (
+CREATE TABLE public.uzrent_notifications (
     id bigint NOT NULL,
     message text NOT NULL,
+    check_in date,
+    check_out date,
+    confirmed boolean NOT NULL,
     created_at timestamp with time zone NOT NULL,
-    user_id integer NOT NULL
+    reciever_id integer NOT NULL,
+    room_id bigint,
+    sender_id integer NOT NULL
 );
 
 
-ALTER TABLE public.uzrent_notification OWNER TO abdu;
+ALTER TABLE public.uzrent_notifications OWNER TO abdu;
 
 --
--- Name: uzrent_notification_id_seq; Type: SEQUENCE; Schema: public; Owner: abdu
+-- Name: uzrent_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: abdu
 --
 
-ALTER TABLE public.uzrent_notification ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME public.uzrent_notification_id_seq
+ALTER TABLE public.uzrent_notifications ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.uzrent_notifications_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -690,24 +745,10 @@ ALTER TABLE public.uzrent_room ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENT
 
 
 --
--- Name: uzrent_roomsave; Type: TABLE; Schema: public; Owner: abdu
---
-
-CREATE TABLE public.uzrent_roomsave (
-    id bigint NOT NULL,
-    date timestamp with time zone NOT NULL,
-    post_id bigint NOT NULL,
-    user_id integer NOT NULL
-);
-
-
-ALTER TABLE public.uzrent_roomsave OWNER TO abdu;
-
---
 -- Name: uzrent_roomsave_id_seq; Type: SEQUENCE; Schema: public; Owner: abdu
 --
 
-ALTER TABLE public.uzrent_roomsave ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+ALTER TABLE public.uzrent_bookmark ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
     SEQUENCE NAME public.uzrent_roomsave_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -828,6 +869,26 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 62	Can change notification	16	change_notification
 63	Can delete notification	16	delete_notification
 64	Can view notification	16	view_notification
+65	Can add user notifications	17	add_usernotifications
+66	Can change user notifications	17	change_usernotifications
+67	Can delete user notifications	17	delete_usernotifications
+68	Can view user notifications	17	view_usernotifications
+69	Can add host notifications	18	add_hostnotifications
+70	Can change host notifications	18	change_hostnotifications
+71	Can delete host notifications	18	delete_hostnotifications
+72	Can view host notifications	18	view_hostnotifications
+73	Can add notifications	19	add_notifications
+74	Can change notifications	19	change_notifications
+75	Can delete notifications	19	delete_notifications
+76	Can view notifications	19	view_notifications
+77	Can add bookmark	15	add_bookmark
+78	Can change bookmark	15	change_bookmark
+79	Can delete bookmark	15	delete_bookmark
+80	Can view bookmark	15	view_bookmark
+81	Can add booking	20	add_booking
+82	Can change booking	20	change_booking
+83	Can delete booking	20	delete_booking
+84	Can view booking	20	view_booking
 \.
 
 
@@ -837,8 +898,9 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
 3	pbkdf2_sha256$720000$l07DMvyPY98H9Bb1CMu2tz$YQO141hUTfJAuG4evnes4AKJodrfb+CmGRFtx32xBxo=	2024-03-04 01:12:55.975894+05	f	Abdulaziz	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	f	t	2024-03-04 01:06:19.952954+05
-4	pbkdf2_sha256$720000$zyHbzWpNsP18BTOO4BJovs$pormyvL8mMgEjIdTwrmQ/YSylBf0GM53L6EaYwe79Ck=	2024-03-19 06:24:11.223153+05	f	lethalboi	Abdulaziz Rakhmatullaev		lethalboi@gmail.com	f	t	2024-03-19 05:40:57.874385+05
-1	pbkdf2_sha256$720000$8ttpd43FjVYKBXn4ZNVzGY$h3TFXoWxz3AIQSUMYTn5B0aaIds1vzKGNny1MALSoM0=	2024-03-20 05:58:12.014912+05	t	admin				t	t	2024-03-03 03:18:45.84969+05
+5	pbkdf2_sha256$720000$hggTeM3bpLLnq8myJSgSgF$UV72aZkDv8l7Kdlj75j5FE9bAscvJ1bz82yWs9UrAgI=	2024-03-27 00:19:04.47068+05	f	damnboi	damn boi		damn@gmail.com	f	t	2024-03-26 03:15:13.913925+05
+4	pbkdf2_sha256$720000$zyHbzWpNsP18BTOO4BJovs$pormyvL8mMgEjIdTwrmQ/YSylBf0GM53L6EaYwe79Ck=	2024-03-27 08:10:59.513769+05	f	lethalboi	Abdulaziz Rakhmatullaev		lethalboi@gmail.com	f	t	2024-03-19 05:40:57.874385+05
+1	pbkdf2_sha256$720000$8ttpd43FjVYKBXn4ZNVzGY$h3TFXoWxz3AIQSUMYTn5B0aaIds1vzKGNny1MALSoM0=	2024-03-27 08:11:11.703164+05	t	admin				t	t	2024-03-03 03:18:45.84969+05
 \.
 
 
@@ -889,6 +951,172 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 24	2024-03-04 01:05:47.093772+05	2	abdulazizdev	3		4	1
 25	2024-03-19 06:12:30.344458+05	2	Notification object (2)	3		16	1
 26	2024-03-19 06:12:30.353302+05	1	Notification object (1)	3		16	1
+27	2024-03-20 08:56:03.730738+05	8	Notification object (8)	3		16	1
+28	2024-03-20 08:56:03.738556+05	7	Notification object (7)	3		16	1
+29	2024-03-20 08:56:03.7408+05	6	Notification object (6)	3		16	1
+30	2024-03-20 08:56:03.742241+05	5	Notification object (5)	3		16	1
+31	2024-03-20 08:56:03.743654+05	4	Notification object (4)	3		16	1
+32	2024-03-20 08:56:03.744893+05	3	Notification object (3)	3		16	1
+33	2024-03-20 09:14:37.934052+05	9	Notification object (9)	3		16	1
+34	2024-03-24 06:53:58.774371+05	4	Notifications object (4)	3		19	1
+35	2024-03-24 06:53:58.782581+05	3	Notifications object (3)	3		19	1
+36	2024-03-24 06:53:58.783748+05	2	Notifications object (2)	3		19	1
+37	2024-03-24 06:53:58.784541+05	1	Notifications object (1)	3		19	1
+38	2024-03-24 07:24:35.284312+05	8	Notifications object (8)	3		19	1
+39	2024-03-24 07:24:35.292945+05	7	Notifications object (7)	3		19	1
+40	2024-03-24 07:24:35.294579+05	6	Notifications object (6)	3		19	1
+41	2024-03-24 07:24:35.295677+05	5	Notifications object (5)	3		19	1
+42	2024-03-24 07:28:33.99701+05	12	Notifications object (12)	3		19	1
+43	2024-03-24 07:28:34.001691+05	11	Notifications object (11)	3		19	1
+44	2024-03-24 07:28:34.003978+05	10	Notifications object (10)	3		19	1
+45	2024-03-24 07:28:34.005322+05	9	Notifications object (9)	3		19	1
+46	2024-03-24 07:43:19.25227+05	16	Notifications object (16)	2	[{"changed": {"fields": ["Created at"]}}]	19	1
+47	2024-03-24 08:00:28.826572+05	16	Notifications object (16)	3		19	1
+48	2024-03-24 08:00:28.83551+05	15	Notifications object (15)	3		19	1
+49	2024-03-24 08:00:28.836718+05	14	Notifications object (14)	3		19	1
+50	2024-03-24 08:00:28.837562+05	13	Notifications object (13)	3		19	1
+51	2024-03-24 08:05:56.895504+05	18	Notifications object (18)	3		19	1
+52	2024-03-24 08:05:56.900626+05	17	Notifications object (17)	3		19	1
+53	2024-03-24 08:15:54.817969+05	21	Notifications object (21)	3		19	1
+54	2024-03-24 08:15:54.822874+05	20	Notifications object (20)	3		19	1
+55	2024-03-24 08:15:54.824104+05	19	Notifications object (19)	3		19	1
+56	2024-03-24 08:37:48.609112+05	24	Notifications object (24)	3		19	1
+57	2024-03-24 08:37:48.613319+05	23	Notifications object (23)	3		19	1
+58	2024-03-24 08:37:48.614508+05	22	Notifications object (22)	3		19	1
+59	2024-03-24 11:22:58.403288+05	28	Notifications object (28)	3		19	1
+60	2024-03-24 11:22:58.406936+05	27	Notifications object (27)	3		19	1
+61	2024-03-24 11:22:58.407906+05	26	Notifications object (26)	3		19	1
+62	2024-03-24 11:22:58.408765+05	25	Notifications object (25)	3		19	1
+63	2024-03-25 14:15:45.232575+05	36	Notifications object (36)	3		19	1
+64	2024-03-25 14:21:31.65334+05	2	Booking object (2)	3		20	1
+65	2024-03-25 14:21:31.656376+05	1	Booking object (1)	3		20	1
+66	2024-03-25 14:21:36.578934+05	3	Booking object (3)	3		20	1
+67	2024-03-25 14:21:42.954146+05	38	Notifications object (38)	3		19	1
+68	2024-03-25 14:21:42.957521+05	37	Notifications object (37)	3		19	1
+69	2024-03-25 14:29:06.176407+05	5	Booking object (5)	3		20	1
+70	2024-03-25 14:31:37.245853+05	42	Notifications object (42)	3		19	1
+71	2024-03-25 14:31:37.250863+05	41	Notifications object (41)	3		19	1
+72	2024-03-25 14:31:37.252271+05	40	Notifications object (40)	3		19	1
+73	2024-03-26 02:36:55.665371+05	6	Booking object (6)	3		20	1
+74	2024-03-26 02:36:55.673354+05	4	Booking object (4)	3		20	1
+75	2024-03-27 00:08:29.675255+05	16	HostNotifications object (16)	3		18	1
+76	2024-03-27 00:08:29.681881+05	12	HostNotifications object (12)	3		18	1
+77	2024-03-27 00:08:29.683156+05	6	HostNotifications object (6)	3		18	1
+78	2024-03-27 00:08:29.684331+05	1	HostNotifications object (1)	3		18	1
+79	2024-03-27 00:08:37.088866+05	13	UserNotifications object (13)	3		17	1
+80	2024-03-27 00:08:37.092135+05	12	UserNotifications object (12)	3		17	1
+81	2024-03-27 00:08:37.094229+05	11	UserNotifications object (11)	3		17	1
+82	2024-03-27 00:08:37.096164+05	10	UserNotifications object (10)	3		17	1
+83	2024-03-27 00:08:37.097662+05	9	UserNotifications object (9)	3		17	1
+84	2024-03-27 00:08:37.098954+05	8	UserNotifications object (8)	3		17	1
+85	2024-03-27 00:08:37.100393+05	7	UserNotifications object (7)	3		17	1
+86	2024-03-27 00:08:37.101377+05	6	UserNotifications object (6)	3		17	1
+87	2024-03-27 00:08:37.103405+05	5	UserNotifications object (5)	3		17	1
+88	2024-03-27 00:08:37.104271+05	4	UserNotifications object (4)	3		17	1
+89	2024-03-27 00:08:37.105128+05	3	UserNotifications object (3)	3		17	1
+90	2024-03-27 00:08:37.106135+05	2	UserNotifications object (2)	3		17	1
+91	2024-03-27 00:08:37.10724+05	1	UserNotifications object (1)	3		17	1
+92	2024-03-27 00:08:49.040136+05	10	Booking object (10)	3		20	1
+93	2024-03-27 00:08:49.043185+05	9	Booking object (9)	3		20	1
+94	2024-03-27 00:08:49.04488+05	8	Booking object (8)	3		20	1
+95	2024-03-27 00:08:49.046561+05	7	Booking object (7)	3		20	1
+96	2024-03-27 00:31:42.193203+05	15	UserNotifications object (15)	3		17	1
+97	2024-03-27 06:55:32.686634+05	43	HostNotifications object (43)	1	[{"added": {}}]	18	1
+98	2024-03-27 07:09:07.927449+05	46	HostNotifications object (46)	3		18	1
+99	2024-03-27 07:09:07.931448+05	45	HostNotifications object (45)	3		18	1
+100	2024-03-27 07:09:07.932267+05	44	HostNotifications object (44)	3		18	1
+101	2024-03-27 07:09:07.933012+05	17	HostNotifications object (17)	3		18	1
+102	2024-03-27 07:09:15.858795+05	38	UserNotifications object (38)	3		17	1
+103	2024-03-27 07:09:15.862325+05	37	UserNotifications object (37)	3		17	1
+104	2024-03-27 07:09:15.86483+05	36	UserNotifications object (36)	3		17	1
+105	2024-03-27 07:09:15.866108+05	35	UserNotifications object (35)	3		17	1
+106	2024-03-27 07:09:15.867141+05	34	UserNotifications object (34)	3		17	1
+107	2024-03-27 07:09:15.868046+05	33	UserNotifications object (33)	3		17	1
+108	2024-03-27 07:09:15.868881+05	32	UserNotifications object (32)	3		17	1
+109	2024-03-27 07:09:15.869693+05	31	UserNotifications object (31)	3		17	1
+110	2024-03-27 07:09:15.870573+05	30	UserNotifications object (30)	3		17	1
+111	2024-03-27 07:09:15.871487+05	29	UserNotifications object (29)	3		17	1
+112	2024-03-27 07:09:15.873504+05	28	UserNotifications object (28)	3		17	1
+113	2024-03-27 07:09:15.874482+05	27	UserNotifications object (27)	3		17	1
+114	2024-03-27 07:09:15.875328+05	26	UserNotifications object (26)	3		17	1
+115	2024-03-27 07:09:15.876216+05	25	UserNotifications object (25)	3		17	1
+116	2024-03-27 07:09:15.877304+05	24	UserNotifications object (24)	3		17	1
+117	2024-03-27 07:09:15.879479+05	23	UserNotifications object (23)	3		17	1
+118	2024-03-27 07:09:15.880689+05	22	UserNotifications object (22)	3		17	1
+119	2024-03-27 07:09:15.881485+05	21	UserNotifications object (21)	3		17	1
+120	2024-03-27 07:09:15.882234+05	20	UserNotifications object (20)	3		17	1
+121	2024-03-27 07:09:15.883074+05	19	UserNotifications object (19)	3		17	1
+122	2024-03-27 07:09:15.883872+05	18	UserNotifications object (18)	3		17	1
+123	2024-03-27 07:09:15.884671+05	17	UserNotifications object (17)	3		17	1
+124	2024-03-27 07:09:15.88563+05	16	UserNotifications object (16)	3		17	1
+125	2024-03-27 07:09:15.886784+05	14	UserNotifications object (14)	3		17	1
+126	2024-03-27 07:49:45.224841+05	2	Notifications object (2)	3		19	1
+127	2024-03-27 09:49:38.327201+05	6	from (admin) to (admin) on 2024-03-27 04:25:17.059611+00:00	3		19	1
+128	2024-03-28 07:38:54.097152+05	75	from (lethalboi) to (admin) on 2024-03-28 02:35:38	3		19	1
+129	2024-03-28 07:38:54.101413+05	74	from (lethalboi) to (admin) on 2024-03-28 02:34:43	3		19	1
+130	2024-03-28 07:38:54.102154+05	73	from (lethalboi) to (admin) on 2024-03-28 02:33:28	3		19	1
+131	2024-03-28 07:38:54.102758+05	72	from (admin) to (lethalboi) on 2024-03-28 02:33:19	3		19	1
+132	2024-03-28 07:38:54.103332+05	70	from (admin) to (lethalboi) on 2024-03-28 02:32:35	3		19	1
+133	2024-03-28 07:38:54.103835+05	68	from (admin) to (lethalboi) on 2024-03-28 02:31:04	3		19	1
+134	2024-03-28 07:38:54.104382+05	66	from (admin) to (lethalboi) on 2024-03-28 02:26:57	3		19	1
+135	2024-03-28 07:38:54.104863+05	64	from (admin) to (lethalboi) on 2024-03-28 02:23:45	3		19	1
+136	2024-03-28 07:38:54.105312+05	62	from (admin) to (lethalboi) on 2024-03-28 02:22:36	3		19	1
+137	2024-03-28 07:38:54.10575+05	60	from (admin) to (lethalboi) on 2024-03-28 02:16:51	3		19	1
+138	2024-03-28 07:38:54.106166+05	58	from (admin) to (lethalboi) on 2024-03-28 02:12:45	3		19	1
+139	2024-03-28 07:38:54.106574+05	56	from (admin) to (lethalboi) on 2024-03-28 02:09:23	3		19	1
+140	2024-03-28 07:38:54.10696+05	54	from (admin) to (lethalboi) on 2024-03-28 02:05:54	3		19	1
+141	2024-03-28 07:38:54.107357+05	52	from (admin) to (lethalboi) on 2024-03-28 01:58:38	3		19	1
+142	2024-03-28 07:38:54.107753+05	50	from (admin) to (lethalboi) on 2024-03-27 21:28:18	3		19	1
+143	2024-03-28 07:38:54.108155+05	48	from (admin) to (lethalboi) on 2024-03-27 21:18:56	3		19	1
+144	2024-03-28 07:38:54.108574+05	46	from (admin) to (lethalboi) on 2024-03-27 06:35:52	3		19	1
+145	2024-03-28 07:38:54.109019+05	44	from (admin) to (lethalboi) on 2024-03-27 06:29:14	3		19	1
+146	2024-03-28 07:38:54.109366+05	42	from (admin) to (lethalboi) on 2024-03-27 06:27:29	3		19	1
+147	2024-03-28 07:38:54.109978+05	40	from (admin) to (lethalboi) on 2024-03-27 06:26:29	3		19	1
+148	2024-03-28 07:38:54.110302+05	38	from (admin) to (lethalboi) on 2024-03-27 06:16:03	3		19	1
+149	2024-03-28 07:38:54.110621+05	36	from (admin) to (lethalboi) on 2024-03-27 06:14:47	3		19	1
+150	2024-03-28 07:38:54.110946+05	34	from (admin) to (lethalboi) on 2024-03-27 06:02:39	3		19	1
+151	2024-03-28 07:38:54.111262+05	32	from (admin) to (lethalboi) on 2024-03-27 05:48:14	3		19	1
+152	2024-03-28 07:38:54.111574+05	30	from (admin) to (lethalboi) on 2024-03-27 05:41:17	3		19	1
+153	2024-03-28 07:38:54.111884+05	28	from (admin) to (lethalboi) on 2024-03-27 05:37:10	3		19	1
+154	2024-03-28 07:38:54.112207+05	26	from (admin) to (lethalboi) on 2024-03-27 05:28:47	3		19	1
+155	2024-03-28 07:38:54.112501+05	24	from (admin) to (lethalboi) on 2024-03-27 05:26:11	3		19	1
+156	2024-03-28 07:38:54.112788+05	22	from (admin) to (lethalboi) on 2024-03-27 05:21:54	3		19	1
+157	2024-03-28 07:38:54.113082+05	20	from (admin) to (lethalboi) on 2024-03-27 05:18:17	3		19	1
+158	2024-03-28 07:38:54.113362+05	18	from (admin) to (lethalboi) on 2024-03-27 05:16:36	3		19	1
+159	2024-03-28 07:38:54.113642+05	16	from (admin) to (lethalboi) on 2024-03-27 05:15:57	3		19	1
+160	2024-03-28 07:38:54.113923+05	15	from (admin) to (lethalboi) on 2024-03-27 05:04:32	3		19	1
+161	2024-03-28 07:38:54.114201+05	12	from (admin) to (lethalboi) on 2024-03-27 05:02:31	3		19	1
+162	2024-03-28 07:38:54.114481+05	10	from (admin) to (lethalboi) on 2024-03-27 04:27:27	3		19	1
+163	2024-03-28 07:38:54.114762+05	8	from (admin) to (lethalboi) on 2024-03-27 04:27:10	3		19	1
+164	2024-03-28 07:38:54.115061+05	5	from (damnboi) to (admin) on 2024-03-27 02:52:55	3		19	1
+165	2024-03-28 07:38:54.115341+05	4	from (admin) to (damnboi) on 2024-03-27 02:50:04	3		19	1
+166	2024-03-28 10:57:11.656959+05	76	from (lethalboi) to (admin) on 2024-03-28 02:39:09	3		19	1
+167	2024-03-28 11:00:22.198101+05	80	from (admin) to (lethalboi) on 2024-03-28 05:59:43	3		19	1
+168	2024-03-28 11:00:22.204326+05	78	from (admin) to (lethalboi) on 2024-03-28 05:58:26	3		19	1
+169	2024-03-28 11:00:41.635076+05	12	Booking object (12)	3		20	1
+170	2024-03-28 11:00:41.638619+05	11	Booking object (11)	3		20	1
+171	2024-03-28 12:06:58.905382+05	96	from (lethalboi) to (admin) on 2024-03-28 07:03:36	3		19	1
+172	2024-03-28 12:06:58.918109+05	95	from (lethalboi) to (admin) on 2024-03-28 07:01:38	3		19	1
+173	2024-03-28 12:06:58.919925+05	94	from (lethalboi) to (admin) on 2024-03-28 07:00:32	3		19	1
+174	2024-03-28 12:06:58.921025+05	93	from (lethalboi) to (admin) on 2024-03-28 06:59:33	3		19	1
+175	2024-03-28 12:06:58.92198+05	92	from (admin) to (lethalboi) on 2024-03-28 06:58:46	3		19	1
+176	2024-03-28 12:06:58.923085+05	90	from (admin) to (lethalboi) on 2024-03-28 06:53:39	3		19	1
+177	2024-03-28 12:06:58.923961+05	88	from (admin) to (lethalboi) on 2024-03-28 06:45:50	3		19	1
+178	2024-03-28 12:06:58.925182+05	86	from (admin) to (lethalboi) on 2024-03-28 06:42:31	3		19	1
+179	2024-03-28 12:06:58.92614+05	84	from (admin) to (lethalboi) on 2024-03-28 06:42:07	3		19	1
+180	2024-03-28 12:06:58.927096+05	82	from (admin) to (lethalboi) on 2024-03-28 06:22:34	3		19	1
+181	2024-03-28 12:23:53.857474+05	100	from (lethalboi) to (admin) on 2024-03-28 07:21:16	3		19	1
+182	2024-03-28 12:23:53.860402+05	99	from (lethalboi) to (admin) on 2024-03-28 07:14:26	3		19	1
+183	2024-03-28 12:23:53.861415+05	98	from (lethalboi) to (admin) on 2024-03-28 07:11:15	3		19	1
+184	2024-03-28 12:23:53.862292+05	97	from (lethalboi) to (admin) on 2024-03-28 07:09:56	3		19	1
+185	2024-03-28 12:46:37.518868+05	114	from (admin) to (admin) on 2024-03-28 07:45:04	3		19	1
+186	2024-03-28 12:46:37.525295+05	113	from (lethalboi) to (admin) on 2024-03-28 07:43:23	3		19	1
+187	2024-03-28 12:46:37.526764+05	112	from (admin) to (lethalboi) on 2024-03-28 07:40:06	3		19	1
+188	2024-03-28 12:46:37.528073+05	110	from (admin) to (lethalboi) on 2024-03-28 07:36:20	3		19	1
+189	2024-03-28 12:46:37.529609+05	109	from (admin) to (lethalboi) on 2024-03-28 07:36:14	3		19	1
+190	2024-03-28 12:46:37.531154+05	106	from (admin) to (lethalboi) on 2024-03-28 07:33:33	3		19	1
+191	2024-03-28 12:46:37.532346+05	104	from (admin) to (lethalboi) on 2024-03-28 07:24:56	3		19	1
+192	2024-03-28 12:46:37.533414+05	103	from (admin) to (lethalboi) on 2024-03-28 07:24:39	3		19	1
 \.
 
 
@@ -911,8 +1139,12 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 12	uzrent	ratinglike
 13	uzrent	room
 14	uzrent	photo
-15	uzrent	roomsave
 16	uzrent	notification
+17	uzrent	usernotifications
+18	uzrent	hostnotifications
+19	uzrent	notifications
+15	uzrent	bookmark
+20	uzrent	booking
 \.
 
 
@@ -948,6 +1180,18 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 25	uzrent	0007_remove_notification_user_delete_message_and_more	2024-03-03 03:18:24.695231+05
 26	uzrent	0008_notification	2024-03-19 05:25:43.068638+05
 27	uzrent	0009_remove_profile_country	2024-03-20 07:46:20.900542+05
+28	uzrent	0010_remove_notification_user_notification_reciever_and_more	2024-03-20 08:58:27.680005+05
+29	uzrent	0011_notification_room_id	2024-03-20 09:12:30.89977+05
+30	uzrent	0012_hostnotifications_usernotifications_and_more	2024-03-20 09:18:42.989477+05
+31	uzrent	0013_remove_usernotifications_reciever_and_more	2024-03-20 09:41:08.35151+05
+32	uzrent	0014_alter_notifications_options	2024-03-24 07:03:57.342354+05
+33	uzrent	0015_alter_notifications_created_at	2024-03-24 08:18:24.600704+05
+34	uzrent	0016_notifications_check_in_notifications_check_out	2024-03-24 11:50:07.055166+05
+35	uzrent	0017_notifications_confirmed	2024-03-24 12:16:16.204912+05
+36	uzrent	0018_rename_roomsave_bookmark_booking	2024-03-25 09:32:26.138095+05
+37	uzrent	0019_rename_room_id_notifications_room	2024-03-25 21:21:20.58723+05
+38	uzrent	0020_hostnotifications_usernotifications_and_more	2024-03-26 02:28:42.393212+05
+39	uzrent	0021_remove_usernotifications_reciever_and_more	2024-03-27 07:29:42.549503+05
 \.
 
 
@@ -957,8 +1201,10 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 0l9kx3dhutmrvv0v1ykb6be4zgi52ti4	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1riQqO:ZIegqvbHo4hqehlIGq46wn2jub6YbXL6u7GN1Z_5Juw	2024-03-22 08:24:24.193699+05
-qxjcq05s8vwic76q8nfo4qbx5yvjnx6g	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rmbqW:yoTZwDv-zGJXeR9OhOE9wPOwnPovW_3ibkZLXbFvkrs	2024-04-02 20:57:48.947056+05
-nij66mgcp3v3lvsqdr72isup58ey27wz	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rmkHU:B8lK8HFH9WgiE61mX8VfNZdFPaauP15gd3CCYAd-DT0	2024-04-03 05:58:12.016395+05
+n62mb0zn92zgtsmdb9rc5x5ylqe54fvi	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1roD2g:gfLvM-eWoRMJ0cvL9QK1bElixZl82aAAU8SkQnRZrYo	2024-04-07 06:52:58.809728+05
+iragoloezydjxmo7ipaqm5pvdtyr2276	.eJxVjDsOwjAQRO_iGlm7-E9Jzxms9drBAeRIcVIh7k4ipYAp572Zt4i0LjWuvcxxzOIitDj9don4WdoO8oPafZI8tWUek9wVedAub1Mur-vh_h1U6nVbG8tnBYAUgjKMaYvzdqDBE1PWGhA0QVaOdXEGPJPGEnJJgFYFj-LzBeFFN7g:1roD3z:ZBCXxK7U4miW0G9CAl0eS9IhXxX2wIkt4IDPcimEH0o	2024-04-07 06:54:19.094234+05
+0ku0ybn14iok1dy5ud40hkr89y4aqmqe	.eJxVjDsOwjAQRO_iGlm7-E9Jzxms9drBAeRIcVIh7k4ipYAp572Zt4i0LjWuvcxxzOIitDj9don4WdoO8oPafZI8tWUek9wVedAub1Mur-vh_h1U6nVbG8tnBYAUgjKMaYvzdqDBE1PWGhA0QVaOdXEGPJPGEnJJgFYFj-LzBeFFN7g:1rpJgp:Jxa66RsRHy0Mxmm0vlgwl2gKuJXQWa9T5ffBEyiBnY8	2024-04-10 08:10:59.516443+05
+qswp2g6adpi49illb1g4lud8o5nfzxuf	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rpJh1:fY9grbAUqgjJ5pu-vKmuDwGkwExlzfvnrL7KrrtYMFE	2024-04-10 08:11:11.705418+05
 \.
 
 
@@ -973,6 +1219,23 @@ COPY public.uzrent_amenity (id, name) FROM stdin;
 
 
 --
+-- Data for Name: uzrent_booking; Type: TABLE DATA; Schema: public; Owner: abdu
+--
+
+COPY public.uzrent_booking (id, check_in, check_out, room_id) FROM stdin;
+13	2024-03-02	2024-03-26	2
+\.
+
+
+--
+-- Data for Name: uzrent_bookmark; Type: TABLE DATA; Schema: public; Owner: abdu
+--
+
+COPY public.uzrent_bookmark (id, date, post_id, user_id) FROM stdin;
+\.
+
+
+--
 -- Data for Name: uzrent_houserule; Type: TABLE DATA; Schema: public; Owner: abdu
 --
 
@@ -982,13 +1245,15 @@ COPY public.uzrent_houserule (id, rule) FROM stdin;
 
 
 --
--- Data for Name: uzrent_notification; Type: TABLE DATA; Schema: public; Owner: abdu
+-- Data for Name: uzrent_notifications; Type: TABLE DATA; Schema: public; Owner: abdu
 --
 
-COPY public.uzrent_notification (id, message, created_at, user_id) FROM stdin;
-3	A new booking request has been made for one of your rooms 2, with check_in: 2024-03-02, check_out: 2024-03-26	2024-03-19 06:13:31.622107+05	1
-4	A new booking request has been made for one of your rooms 2, with check_in: 2024-03-02, check_out: 2024-03-26	2024-03-19 06:13:56.347036+05	1
-5	A new booking request has been made for one of your rooms 2, with check_in: 2024-03-02, check_out: 2024-03-26	2024-03-19 20:57:12.054251+05	1
+COPY public.uzrent_notifications (id, message, check_in, check_out, confirmed, created_at, reciever_id, room_id, sender_id) FROM stdin;
+122	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-28 13:00:13.397211+05	4	\N	1
+116	Unfortunately the host declined your booked room	\N	\N	f	2024-03-28 12:47:53.232649+05	4	\N	1
+118	Unfortunately the host declined your booked room	\N	\N	f	2024-03-28 12:50:46.279846+05	4	\N	1
+120	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-28 12:53:21.661758+05	4	\N	1
+124	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-28 13:01:41.101668+05	4	\N	1
 \.
 
 
@@ -1013,6 +1278,7 @@ COPY public.uzrent_profile (id, avatar, avatar_default, name, bio, email, phone_
 1		to right, #f3e03d, #0075ff	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	+998931040055	2024-03-03 04:09:06+05	1
 3		to top, #d9b7e9, #d01212	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	\N	2024-03-04 01:06:20.110061+05	3
 4		to bottom right, #ffa600, #d01212	Abdulaziz Rakhmatullaev		lethalboi@gmail.com	\N	2024-03-19 05:40:58.042302+05	4
+5		to bottom, #00b8ff, #d01212	damn boi		damn@gmail.com	\N	2024-03-26 03:15:14.072537+05	5
 \.
 
 
@@ -1076,14 +1342,6 @@ COPY public.uzrent_room_house_rules (id, room_id, houserule_id) FROM stdin;
 
 
 --
--- Data for Name: uzrent_roomsave; Type: TABLE DATA; Schema: public; Owner: abdu
---
-
-COPY public.uzrent_roomsave (id, date, post_id, user_id) FROM stdin;
-\.
-
-
---
 -- Data for Name: uzrent_roomtype; Type: TABLE DATA; Schema: public; Owner: abdu
 --
 
@@ -1110,7 +1368,7 @@ SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 64, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 84, true);
 
 
 --
@@ -1124,7 +1382,7 @@ SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
 -- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.auth_user_id_seq', 4, true);
+SELECT pg_catalog.setval('public.auth_user_id_seq', 5, true);
 
 
 --
@@ -1138,21 +1396,21 @@ SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 26, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 192, true);
 
 
 --
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 16, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 20, true);
 
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 27, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 39, true);
 
 
 --
@@ -1163,6 +1421,13 @@ SELECT pg_catalog.setval('public.uzrent_amenity_id_seq', 2, true);
 
 
 --
+-- Name: uzrent_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
+--
+
+SELECT pg_catalog.setval('public.uzrent_booking_id_seq', 13, true);
+
+
+--
 -- Name: uzrent_houserule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
@@ -1170,10 +1435,10 @@ SELECT pg_catalog.setval('public.uzrent_houserule_id_seq', 1, true);
 
 
 --
--- Name: uzrent_notification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
+-- Name: uzrent_notifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_notification_id_seq', 5, true);
+SELECT pg_catalog.setval('public.uzrent_notifications_id_seq', 124, true);
 
 
 --
@@ -1187,7 +1452,7 @@ SELECT pg_catalog.setval('public.uzrent_photo_id_seq', 5, true);
 -- Name: uzrent_profile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_profile_id_seq', 4, true);
+SELECT pg_catalog.setval('public.uzrent_profile_id_seq', 5, true);
 
 
 --
@@ -1384,6 +1649,14 @@ ALTER TABLE ONLY public.uzrent_amenity
 
 
 --
+-- Name: uzrent_booking uzrent_booking_pkey; Type: CONSTRAINT; Schema: public; Owner: abdu
+--
+
+ALTER TABLE ONLY public.uzrent_booking
+    ADD CONSTRAINT uzrent_booking_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: uzrent_houserule uzrent_houserule_pkey; Type: CONSTRAINT; Schema: public; Owner: abdu
 --
 
@@ -1392,11 +1665,11 @@ ALTER TABLE ONLY public.uzrent_houserule
 
 
 --
--- Name: uzrent_notification uzrent_notification_pkey; Type: CONSTRAINT; Schema: public; Owner: abdu
+-- Name: uzrent_notifications uzrent_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: abdu
 --
 
-ALTER TABLE ONLY public.uzrent_notification
-    ADD CONSTRAINT uzrent_notification_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.uzrent_notifications
+    ADD CONSTRAINT uzrent_notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -1480,10 +1753,10 @@ ALTER TABLE ONLY public.uzrent_room
 
 
 --
--- Name: uzrent_roomsave uzrent_roomsave_pkey; Type: CONSTRAINT; Schema: public; Owner: abdu
+-- Name: uzrent_bookmark uzrent_roomsave_pkey; Type: CONSTRAINT; Schema: public; Owner: abdu
 --
 
-ALTER TABLE ONLY public.uzrent_roomsave
+ALTER TABLE ONLY public.uzrent_bookmark
     ADD CONSTRAINT uzrent_roomsave_pkey PRIMARY KEY (id);
 
 
@@ -1587,10 +1860,31 @@ CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session U
 
 
 --
--- Name: uzrent_notification_user_id_594ef658; Type: INDEX; Schema: public; Owner: abdu
+-- Name: uzrent_booking_room_id_d2652f9c; Type: INDEX; Schema: public; Owner: abdu
 --
 
-CREATE INDEX uzrent_notification_user_id_594ef658 ON public.uzrent_notification USING btree (user_id);
+CREATE INDEX uzrent_booking_room_id_d2652f9c ON public.uzrent_booking USING btree (room_id);
+
+
+--
+-- Name: uzrent_notifications_reciever_id_c3581c92; Type: INDEX; Schema: public; Owner: abdu
+--
+
+CREATE INDEX uzrent_notifications_reciever_id_c3581c92 ON public.uzrent_notifications USING btree (reciever_id);
+
+
+--
+-- Name: uzrent_notifications_room_id_3afe7f9f; Type: INDEX; Schema: public; Owner: abdu
+--
+
+CREATE INDEX uzrent_notifications_room_id_3afe7f9f ON public.uzrent_notifications USING btree (room_id);
+
+
+--
+-- Name: uzrent_notifications_sender_id_f06e6b36; Type: INDEX; Schema: public; Owner: abdu
+--
+
+CREATE INDEX uzrent_notifications_sender_id_f06e6b36 ON public.uzrent_notifications USING btree (sender_id);
 
 
 --
@@ -1674,14 +1968,14 @@ CREATE INDEX uzrent_room_room_type_id_a398c228 ON public.uzrent_room USING btree
 -- Name: uzrent_roomsave_post_id_c0c630df; Type: INDEX; Schema: public; Owner: abdu
 --
 
-CREATE INDEX uzrent_roomsave_post_id_c0c630df ON public.uzrent_roomsave USING btree (post_id);
+CREATE INDEX uzrent_roomsave_post_id_c0c630df ON public.uzrent_bookmark USING btree (post_id);
 
 
 --
 -- Name: uzrent_roomsave_user_id_62e0bc37; Type: INDEX; Schema: public; Owner: abdu
 --
 
-CREATE INDEX uzrent_roomsave_user_id_62e0bc37 ON public.uzrent_roomsave USING btree (user_id);
+CREATE INDEX uzrent_roomsave_user_id_62e0bc37 ON public.uzrent_bookmark USING btree (user_id);
 
 
 --
@@ -1757,11 +2051,35 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
--- Name: uzrent_notification uzrent_notification_user_id_594ef658_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
+-- Name: uzrent_booking uzrent_booking_room_id_d2652f9c_fk_uzrent_room_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
 --
 
-ALTER TABLE ONLY public.uzrent_notification
-    ADD CONSTRAINT uzrent_notification_user_id_594ef658_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY public.uzrent_booking
+    ADD CONSTRAINT uzrent_booking_room_id_d2652f9c_fk_uzrent_room_id FOREIGN KEY (room_id) REFERENCES public.uzrent_room(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: uzrent_notifications uzrent_notifications_reciever_id_c3581c92_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
+--
+
+ALTER TABLE ONLY public.uzrent_notifications
+    ADD CONSTRAINT uzrent_notifications_reciever_id_c3581c92_fk_auth_user_id FOREIGN KEY (reciever_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: uzrent_notifications uzrent_notifications_room_id_3afe7f9f_fk_uzrent_room_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
+--
+
+ALTER TABLE ONLY public.uzrent_notifications
+    ADD CONSTRAINT uzrent_notifications_room_id_3afe7f9f_fk_uzrent_room_id FOREIGN KEY (room_id) REFERENCES public.uzrent_room(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: uzrent_notifications uzrent_notifications_sender_id_f06e6b36_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
+--
+
+ALTER TABLE ONLY public.uzrent_notifications
+    ADD CONSTRAINT uzrent_notifications_sender_id_f06e6b36_fk_auth_user_id FOREIGN KEY (sender_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -1861,18 +2179,18 @@ ALTER TABLE ONLY public.uzrent_room
 
 
 --
--- Name: uzrent_roomsave uzrent_roomsave_post_id_c0c630df_fk_uzrent_room_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
+-- Name: uzrent_bookmark uzrent_roomsave_post_id_c0c630df_fk_uzrent_room_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
 --
 
-ALTER TABLE ONLY public.uzrent_roomsave
+ALTER TABLE ONLY public.uzrent_bookmark
     ADD CONSTRAINT uzrent_roomsave_post_id_c0c630df_fk_uzrent_room_id FOREIGN KEY (post_id) REFERENCES public.uzrent_room(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
--- Name: uzrent_roomsave uzrent_roomsave_user_id_62e0bc37_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
+-- Name: uzrent_bookmark uzrent_roomsave_user_id_62e0bc37_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: abdu
 --
 
-ALTER TABLE ONLY public.uzrent_roomsave
+ALTER TABLE ONLY public.uzrent_bookmark
     ADD CONSTRAINT uzrent_roomsave_user_id_62e0bc37_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 
 
