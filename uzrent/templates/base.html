@@ -63,7 +63,7 @@
                 {% if user.is_authenticated %}
                 <ul class="row-content" style="width: 70px;">
                     <li class="inbox">
-                        <div class="nav-icn inboxDrBtn">
+                        <div id="inboxDrBtn" class="nav-icn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path
@@ -142,6 +142,9 @@
 
     <!--  -->
     <script>
+        const currentUser = "{{ request.user.username }}"; // Assuming you're using the default User model
+    </script>
+    <script>
         const signin_password = document.getElementById("signin-password");
         const toggleSigninPassword = document.getElementById("toggle-signin-password");
 
@@ -164,7 +167,7 @@
             }
         };
 
-        $('.inboxDrBtn').on('click', () => {
+        $('#inboxDrBtn').on('click', () => {
             $dropdownMenu.toggleClass('active');
             if ($dropdownMenu.hasClass('active')) {
                 $(document).on('mouseup', onDocumentMouseUp);

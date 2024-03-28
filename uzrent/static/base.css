@@ -1175,7 +1175,7 @@ input:not(:focus):valid~.floating-label {
 
 }
 
-.inboxDrBtn {
+#inboxDrBtn {
   cursor: pointer;
   color: currentColor;
   text-decoration: none;
@@ -1185,7 +1185,7 @@ input:not(:focus):valid~.floating-label {
   transition: color 0.32s cubic-bezier(0.4, 0, 0.6, 1);
 }
 
-.inboxDrBtn svg {
+#inboxDrBtn svg {
   vertical-align: middle;
 }
 
@@ -1288,6 +1288,7 @@ input:not(:focus):valid~.floating-label {
 }
 
 .nav-icn {
+  position: relative;
   border-radius: 50%;
   height: 28px;
   width: 28px;
@@ -1297,6 +1298,21 @@ input:not(:focus):valid~.floating-label {
 
 .nav-icn:hover {
   background: #e8e8ed;
+}
+
+.notification-count {
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  background: red;
+  color: #fff;
+  height: 10px;
+  width: 10px;
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border-radius: 50%;
+  line-height: 1;
 }
 
 .notsendername {
