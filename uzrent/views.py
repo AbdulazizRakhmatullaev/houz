@@ -119,40 +119,48 @@ def book_room(request, room_id):
             ):
                 if check_in < check_out and check_in != check_out:
                     # check if this user already notified the owner, so he can't spam him
-                    if not Notifications.objects.filter(
-                        sender=request.user, room=room
+                    if not Booking.objects.filter(
+                        room=room, check_in=check_in, check_out=check_out
                     ).exists():
-                        not_message = f'Hi, I would like to book your <a href="/rooms/{room.id}" class="underline" style="color: #06c;">room</a>'
+                        if not Notifications.objects.filter(
+                            sender=request.user, room=room
+                        ).exists():
+                            not_message = f'Hi, I would like to book your <a href="/rooms/{room.id}" class="underline" style="color: #06c;">room</a>'
 
-                        # websocker notification
-                        create_notification(
-                            sender=request.user,
-                            reciever=room.host,
-                            message=not_message,
-                            room=room,
-                            room_id=room.id,
-                            check_in=check_in,
-                            check_out=check_out,
-                            profile_name=request.user.profile.name,
-                            avatar_url=(
-                                request.user.profile.avatar.url
-                                if request.user.profile.avatar
-                                else None
-                            ),
-                            avatar_default=request.user.profile.avatar_default,
-                            room_host=room.host.username,
-                            type="host",
-                        )
+                            # websocker notification
+                            create_notification(
+                                sender=request.user,
+                                reciever=room.host,
+                                message=not_message,
+                                room=room,
+                                room_id=room.id,
+                                check_in=check_in,
+                                check_out=check_out,
+                                profile_name=request.user.profile.name,
+                                avatar_url=(
+                                    request.user.profile.avatar.url
+                                    if request.user.profile.avatar
+                                    else None
+                                ),
+                                avatar_default=request.user.profile.avatar_default,
+                                room_host=room.host.username,
+                                type="host",
+                            )
 
-                        messages.success(
-                            request,
-                            "Room's host has been notified, you will get host's response soon",
-                        )
-                        return redirect("home")
+                            messages.success(
+                                request,
+                                "Room's host has been notified, you will get host's response soon",
+                            )
+                            return redirect("home")
+                        else:
+                            messages.info(
+                                request,
+                                "Please have some respect and patience, if host is not responding to notification, give him a call",
+                            )
                     else:
                         messages.info(
                             request,
-                            "Please have some respect and patience, if host is not responding to notification, give him a call",
+                            "You already booked the same room with the same dates",
                         )
                 else:
                     messages.info(request, "Chosen dates are incorrect")
@@ -188,7 +196,7 @@ def confirm_room(request, noty_id):
                 # websocket notification
                 create_notification(
                     sender=notification.reciever,
-                    reciever=room.host,
+                    reciever=notification.sender,
                     message=not_message,
                     notification_id=notification.id,
                     profile_name=notification.reciever.profile.name,
