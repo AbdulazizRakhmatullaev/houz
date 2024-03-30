@@ -1117,6 +1117,17 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 190	2024-03-28 12:46:37.531154+05	106	from (admin) to (lethalboi) on 2024-03-28 07:33:33	3		19	1
 191	2024-03-28 12:46:37.532346+05	104	from (admin) to (lethalboi) on 2024-03-28 07:24:56	3		19	1
 192	2024-03-28 12:46:37.533414+05	103	from (admin) to (lethalboi) on 2024-03-28 07:24:39	3		19	1
+193	2024-03-29 01:52:09.587892+05	135	from (admin) to (lethalboi) on 2024-03-28 20:47:26	3		19	1
+194	2024-03-29 01:52:09.597622+05	133	from (lethalboi) to (admin) on 2024-03-28 20:43:20	3		19	1
+195	2024-03-29 01:52:09.598759+05	132	from (admin) to (lethalboi) on 2024-03-28 20:00:14	3		19	1
+196	2024-03-29 01:52:09.599657+05	130	from (admin) to (lethalboi) on 2024-03-28 16:47:56	3		19	1
+197	2024-03-29 01:52:09.600563+05	128	from (admin) to (lethalboi) on 2024-03-28 16:38:39	3		19	1
+198	2024-03-29 01:52:09.601946+05	126	from (admin) to (lethalboi) on 2024-03-28 16:15:32	3		19	1
+199	2024-03-29 01:52:09.602826+05	124	from (admin) to (lethalboi) on 2024-03-28 08:01:41	3		19	1
+200	2024-03-29 01:52:09.603653+05	122	from (admin) to (lethalboi) on 2024-03-28 08:00:13	3		19	1
+201	2024-03-29 01:52:09.604926+05	120	from (admin) to (lethalboi) on 2024-03-28 07:53:21	3		19	1
+202	2024-03-29 01:52:09.606214+05	118	from (admin) to (lethalboi) on 2024-03-28 07:50:46	3		19	1
+203	2024-03-29 01:52:09.607137+05	116	from (admin) to (lethalboi) on 2024-03-28 07:47:53	3		19	1
 \.
 
 
@@ -1224,6 +1235,7 @@ COPY public.uzrent_amenity (id, name) FROM stdin;
 
 COPY public.uzrent_booking (id, check_in, check_out, room_id) FROM stdin;
 13	2024-03-02	2024-03-26	2
+14	2024-03-02	2024-03-26	1
 \.
 
 
@@ -1249,11 +1261,25 @@ COPY public.uzrent_houserule (id, rule) FROM stdin;
 --
 
 COPY public.uzrent_notifications (id, message, check_in, check_out, confirmed, created_at, reciever_id, room_id, sender_id) FROM stdin;
-122	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-28 13:00:13.397211+05	4	\N	1
-116	Unfortunately the host declined your booked room	\N	\N	f	2024-03-28 12:47:53.232649+05	4	\N	1
-118	Unfortunately the host declined your booked room	\N	\N	f	2024-03-28 12:50:46.279846+05	4	\N	1
-120	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-28 12:53:21.661758+05	4	\N	1
-124	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-28 13:01:41.101668+05	4	\N	1
+138	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:54:56.137675+05	4	\N	1
+142	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:57:17.335327+05	4	\N	1
+143	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:57:19.33523+05	4	\N	1
+144	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:57:21.144481+05	4	\N	1
+145	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:57:22.892654+05	4	\N	1
+150	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:58:22.179418+05	4	\N	1
+151	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:58:24.96374+05	4	\N	1
+152	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:58:27.578422+05	4	\N	1
+153	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 01:58:29.862967+05	4	\N	1
+156	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 06:34:26.9912+05	4	\N	1
+157	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 06:34:29.472749+05	4	\N	1
+159	Thank you for booking our room, we will be waiting for you on 2024-03-02	\N	\N	f	2024-03-29 06:40:23.732387+05	1	\N	1
+158	Hi, I would like to book your <a href="/rooms/1" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	t	2024-03-29 06:34:36.464275+05	1	1	4
+161	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-29 13:54:27.360248+05	4	\N	1
+164	We are really sorry, but unfortunately room was booked with the same dates by other people	\N	\N	f	2024-03-29 13:55:48.695002+05	4	\N	1
+165	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 13:57:36.970314+05	4	\N	1
+169	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 14:00:48.452088+05	4	\N	1
+170	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 14:00:51.255925+05	4	\N	1
+171	Unfortunately the host declined your booked room	\N	\N	f	2024-03-29 14:00:53.18415+05	4	\N	1
 \.
 
 
@@ -1396,7 +1422,7 @@ SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 192, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 203, true);
 
 
 --
@@ -1424,7 +1450,7 @@ SELECT pg_catalog.setval('public.uzrent_amenity_id_seq', 2, true);
 -- Name: uzrent_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_booking_id_seq', 13, true);
+SELECT pg_catalog.setval('public.uzrent_booking_id_seq', 14, true);
 
 
 --
@@ -1438,7 +1464,7 @@ SELECT pg_catalog.setval('public.uzrent_houserule_id_seq', 1, true);
 -- Name: uzrent_notifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_notifications_id_seq', 124, true);
+SELECT pg_catalog.setval('public.uzrent_notifications_id_seq', 171, true);
 
 
 --
