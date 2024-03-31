@@ -108,15 +108,15 @@ function updateDateTime() {
 }
 
 function updateDateTime() {
-    console.log("Updating datetime...");
+    // console.log("Updating datetime...");
     const notificationDates = document.querySelectorAll(".notdt");
     notificationDates.forEach(function (element) {
         // Get the original datetime value from data attribute
         const createdAt = element.dataset.createdAt;
-        console.log("createdAt:", createdAt);
+        // console.log("createdAt:", createdAt);
         if (createdAt) {
             const formattedDate = formatDateTime(createdAt);
-            console.log("formattedDate:", formattedDate);
+            // console.log("formattedDate:", formattedDate);
             element.textContent = formattedDate;
         }
     });
@@ -135,15 +135,15 @@ var socket = new WebSocket(
   "ws://" + window.location.host + "/ws/notifications/",
 );
 
-// on socket open
-socket.onopen = function (e) {
-  console.log("Socket successfully connected.");
-};
+// // on socket open
+// socket.onopen = function (e) {
+//   console.log("Socket successfully connected.");
+// };
 
-// on socket close
-socket.onclose = function (e) {
-  console.log("Socket closed unexpectedly");
-};
+// // on socket close
+// socket.onclose = function (e) {
+//   console.log("Socket closed unexpectedly");
+// };
 
 // on receiving a message from the WebSocket server
 socket.onmessage = function (e) {
