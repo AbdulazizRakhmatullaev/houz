@@ -6,7 +6,7 @@
             <div class="notsender">
                 <a href="{% url 'user_profile' notification.sender.username %}">
                     {% if notification.sender.profile.avatar.url != null %}
-                    <img src="{{notification.sender.profile.avatar.url}}" alt="" class="pp">
+                    <img src="{{notification.sender.profile.avatar.url}}" alt="" class="pp" />
                     {% else %}
                     <div class="pp"
                         style="background: linear-gradient({{notification.sender.profile.avatar_default}});">
@@ -21,11 +21,9 @@
                 <div class="notsendername">
                     {{notification.sender.profile.name}}
                 </div>
-                {% if notification.room.host == notification.reciever %}
                 <div class="notmsg">
-                    <div class="notmsg_ttl">
-                        {{notification.message|safe}}
-                    </div>
+                    <div class="notmsg_ttl">{{notification.message|safe}}</div>
+                    {% if notification.room.host == notification.reciever %}
                     <div class="notroominfo">
                         <div class="not-room-col">
                             Check in: {{notification.check_in|date:"M d"}}
@@ -34,28 +32,27 @@
                             Check out: {{notification.check_out|date:"M d"}}
                         </div>
                     </div>
+                    {% endif %}
                 </div>
+                {% if notification.room.host == notification.reciever %}
                 {% if not notification.confirmed %}
                 <form action="{% url 'confirm_room' notification.id %}" method="POST" class="bookform">
                     {% csrf_token %}
-                    <button type="submit" name="action" value="confirm" class="btn-2">Confirm</button>
-                    <button type="submit" name="action" value="cancel" class="btn-trspt">Cancel</button>
+                    <button type="submit" name="action" value="confirm" class="btn-2">
+                        Confirm
+                    </button>
+                    <button type="submit" name="action" value="cancel" class="btn-trspt">
+                        Cancel
+                    </button>
                 </form>
                 {% endif %}
-                <div class="notdt">
+                {% endif %}
+                <div class="notdt_col">
                     <div class="conf">
                         {% if notification.confirmed %} (confirmed by you) {% endif %}
                     </div>
-                    <div>
-                        {{ notification.get_date }}
-                    </div>
+                    <div class="notdt" data-created-at="{{ notification.created_at|date:"Y-m-d H:i:s" }}">{{notification.get_date}}</div>
                 </div>
-                {% else %}
-                <div class="notmsg">
-                    {{ notification.message|safe }}
-                </div>
-                <div class="notdt">{{ notification.get_date }}</div>
-                {% endif %}
             </div>
         </div>
     </div>

@@ -44,7 +44,6 @@ def create_notification(
     avatar_url,
     avatar_default,
     room_host,
-    notification_id=0,
     room_id=0,
     room=None,
     check_in=None,
@@ -73,8 +72,8 @@ def create_notification(
         .first()  # Get the first value from the queryset
     )
 
-    # # Convert created_at to string if it exists
-    # created_at_str = str(created_at) if created_at else None
+    # Convert created_at to string if it exists
+    created_at_str = created_at.isoformat() if created_at else None
 
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
@@ -87,18 +86,16 @@ def create_notification(
             "message": message,
             "check_in": check_in_str,
             "check_out": check_out_str,
-            "notification_id": notification_id,
             "profile_name": profile_name,
             "avatar_url": avatar_url,
             "avatar_default": avatar_default,
             "room_host": room_host,
-            "created_at": created_at,
+            "created_at": created_at_str,
         },
     )
 
 
 def book_room(request, room_id):
-    # noty_id = Notifications.objects.get(id+1)
     room = Room.objects.get(pk=room_id)
     if request.method == "POST":
         check_in_str = request.POST.get("check_in")
@@ -198,7 +195,6 @@ def confirm_room(request, noty_id):
                     sender=notification.reciever,
                     reciever=notification.sender,
                     message=not_message,
-                    notification_id=notification.id,
                     profile_name=notification.reciever.profile.name,
                     avatar_url=(
                         notification.reciever.profile.avatar.url
@@ -221,7 +217,6 @@ def confirm_room(request, noty_id):
                     sender=notification.reciever,
                     reciever=notification.sender,
                     message=not_message,
-                    notification_id=notification.id,
                     profile_name=notification.reciever.profile.name,
                     avatar_url=(
                         notification.reciever.profile.avatar.url
@@ -251,7 +246,6 @@ def confirm_room(request, noty_id):
                 sender=request.user,
                 reciever=notification.sender,
                 message=not_message,
-                notification_id=notification.id,
                 profile_name=notification.reciever.profile.name,
                 avatar_url=(
                     notification.reciever.profile.avatar.url

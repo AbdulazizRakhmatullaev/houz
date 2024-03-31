@@ -15,7 +15,6 @@ from uzrent.routing import websocket_urlpatterns
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'business.settings')
 
-# 👇 2. Update the application var
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AllowedHostsOriginValidator(
