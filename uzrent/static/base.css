@@ -1,3 +1,8 @@
+body,
+html {
+    height: 100%;
+}
+
 body {
     margin: 0;
     font-family:
@@ -26,13 +31,19 @@ a {
 
 #main {
     margin: 0 auto;
+    min-height: 100% !important;
+    height: auto;
     max-width: 1180px;
-    min-height: 100vh;
-    padding: 44px 20px;
+    padding: 44px 22px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .main-content {
+    min-height: 100% !important;
+    height: auto;
     padding: 15px 0;
 }
 
@@ -83,6 +94,7 @@ a {
     height: 19rem;
     white-space: normal;
     border: 1px solid #e8e8ed;
+    box-sizing: border-box;
     /* box-shadow: 2px 4px 12px rgba(0, 0, 0, .08);
     transition: all .3s cubic-bezier(0, 0, .5, 1); */
 }
@@ -110,6 +122,7 @@ a {
     height: 100%;
     width: 100%;
     object-fit: cover;
+    vertical-align: middle;
 }
 
 .rating {
@@ -688,7 +701,7 @@ a {
 }
 
 .small-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
 }
 
@@ -1077,7 +1090,7 @@ a {
     border: none;
 }
 
-input:focus ~ .floating-label {
+input:focus~.floating-label {
     bottom: 40px;
     left: 5px;
     font-size: 12px;
@@ -1086,7 +1099,7 @@ input:focus ~ .floating-label {
     color: #1a73e8;
 }
 
-input:not(:focus):valid ~ .floating-label {
+input:not(:focus):valid~.floating-label {
     bottom: 40px;
     left: 5px;
     font-size: 12px;
@@ -1137,9 +1150,6 @@ input:not(:focus):valid ~ .floating-label {
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
-}
-
-.p-col {
 }
 
 .left-pp-col {
@@ -1301,6 +1311,12 @@ input:not(:focus):valid ~ .floating-label {
     background: #e8e8ed;
 }
 
+.nav-icn svg {
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+}
+
 .notification-count {
     position: absolute;
     right: -4px;
@@ -1433,4 +1449,108 @@ input:not(:focus):valid ~ .floating-label {
 
 .btn-trspt:hover {
     background: #f0f7ff;
+}
+
+.ctrtxt {
+    font-size: 14px;
+    min-height: 60px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookgrd {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    row-gap: 24px;
+    column-gap: 24px;
+}
+
+.booking {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #e8e8ed;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.bookdel {
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 30px;
+    width: 30px;
+    font-size: 20px;
+    padding: 4px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    background: none;
+    border: 1px solid #e8e8ed;
+    border-radius: 50%;
+}
+
+.bookdel:hover {
+    background: #e8e8ed;
+}
+
+.bookeduser {
+    border-radius: 12px;
+    width: 100%;
+    white-space: normal;
+    display: flex;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.bookedroom {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 13rem;
+    white-space: normal;
+    box-sizing: border-box;
+}
+
+.b-names-col {
+    margin-left: 10px;
+}
+
+.b-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.b-usname {
+    font-size: 14px;
+    color: rgb(83, 100, 113);
+}
+
+.checkio {
+    display: flex;
+    align-items: start;
+    gap: 13px;
+    padding: 15px;
+    padding-top: 0;
+}
+
+.checkio svg {
+    height: 22px;
+    width: 22px;
+    vertical-align: middle;
+}
+
+.checkinf {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }

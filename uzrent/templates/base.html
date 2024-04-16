@@ -1,260 +1,270 @@
 {% load static %} {% load notifications %}
 <!doctype html>
 <html lang="en" style="overflow: auto scroll">
-    <head>
-        <title>Uzrent / {% block title %}{% endblock %}</title>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link
-            rel="icon"
-            type="image/x-icon"
-            href="../../media/important/uzrent.png"
-        />
+<head>
+    <title>Uzrent / {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="stylesheet" href="{% static 'base.css' %}" />
-    </head>
+    <link rel="icon" type="image/x-icon" href="../../media/important/uzrent.png" />
 
-    <body>
-        {% if messages %} {% for message in messages %}
-        <div id="toast-position">
-            <div class="toast">
-                <p>{{ message }}</p>
-            </div>
+    <link rel="stylesheet" href="{% static 'base.css' %}" />
+</head>
+
+<body>
+    {% if messages %} {% for message in messages %}
+    <div id="toast-position">
+        <div class="toast">
+            <p>{{ message }}</p>
         </div>
-        {% endfor %} {% endif %}
-        <div id="signinModal" class="modal">
-            <div class="modal-content">
-                <div class="container">
-                    <div class="modal-title">
-                        Sign in
-                        <span onclick="closeSigninModal()" class="close"
-                            >&times;</span
-                        >
-                    </div>
-                    {% include 'temps/signin_temp.html' %}
+    </div>
+    {% endfor %} {% endif %}
+    <div id="signinModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="modal-title">
+                    Sign in
+                    <span onclick="closeSigninModal()" class="close">&times;</span>
                 </div>
+                {% include 'temps/signin_temp.html' %}
             </div>
         </div>
-        <div id="signupModal" class="modal">
-            <div class="modal-content">
-                <div class="container">
-                    <div class="modal-title">
-                        Sign up
-                        <span onclick="closeSignupModal()" class="close"
-                            >&times;</span
-                        >
-                    </div>
-                    {% include 'temps/signup_temp.html' %}
+    </div>
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="modal-title">
+                    Sign up
+                    <span onclick="closeSignupModal()" class="close">&times;</span>
                 </div>
+                {% include 'temps/signup_temp.html' %}
             </div>
         </div>
-        <nav id="navbar">
-            <div id="row">
-                <ul class="row-content">
-                    <li class="row-con-itm">
-                        <a href="{% url 'home' %}">
-                            Uzrent
-                            <!-- <img class="logo-img" src="../../media/important/UR.png" alt=""> -->
+    </div>
+    <nav id="navbar">
+        <div id="row">
+            <ul class="row-content">
+                <li class="row-con-itm">
+                    <a href="{% url 'home' %}">
+                        Uzrent
+                    </a>
+                </li>
+                <li class="row-con-itm">
+                    <form action="{% url 'search' %}" class="search-form">
+                        {% csrf_token %}
+                        <input type="text" name="search" class="search-inp" placeholder="Search" autocomplete="off" />
+                    </form>
+                </li>
+                {% if user.is_authenticated %}
+                <ul class="row-content" style="width: 110px;">
+
+                    <li class="navbooking">
+                        <a href="{% url 'booking' %}" class="nav-icn">
+                            <svg fill="currentColor" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                                <g fill="currentColor">
+                                    <path
+                                        d="m18.9071 10.2929c.3905.3905.3905 1.0237 0 1.4142l-5.6 5.6c-.3876.3876-1.015.3909-1.4067.0075l-2.59997-2.5455c-.39464-.3864-.40135-1.0195-.01499-1.4141.38636-.3947 1.01946-.4014 1.41416-.015l1.8929 1.8532 4.9004-4.9003c.3905-.39053 1.0237-.39053 1.4142 0z" />
+                                    <path clip-rule="evenodd"
+                                        d="m10 2.5c0-.55228-.44771-1-1-1-.55228 0-1 .44772-1 1v.6419c-.45313.07718-.87233.20047-1.26995.40307-.94081.47936-1.70571 1.24427-2.18508 2.18508-.30179.59229-.4276 1.23248-.48715 1.96133-.05784.70788-.05783 1.58203-.05782 2.66582v7.2856c-.00001 1.0838-.00002 1.958.05782 2.6658.05955.7289.18536 1.3691.48715 1.9614.47937.9408 1.24427 1.7057 2.18508 2.185.59229.3018 1.23248.4276 1.96133.4872.70785.0578 1.58192.0578 2.66572.0578h5.2857c1.0838 0 1.958 0 2.6658-.0578.7289-.0596 1.3691-.1854 1.9614-.4872.9408-.4793 1.7057-1.2442 2.185-2.185.3018-.5923.4276-1.2325.4872-1.9614.0578-.7078.0578-1.5819.0578-2.6657v-7.2857c0-1.08376 0-1.95797-.0578-2.66582-.0596-.72885-.1854-1.36904-.4872-1.96133-.4793-.94081-1.2442-1.70572-2.185-2.18508-.3977-.2026-.8169-.32589-1.27-.40307v-.6419c0-.55228-.4477-1-1-1s-1 .44772-1 1v.50549c-.4115-.0055-.8625-.00549-1.3572-.00549h-1.6428v-.5c0-.55228-.4477-1-1-1s-1 .44772-1 1v.5h-1.6428c-.4947 0-.9457-.00001-1.3572.00549zm8 2.5057c-.4015-.00553-.8622-.0057-1.4-.0057h-1.6v.5c0 .55228-.4477 1-1 1s-1-.44772-1-1v-.5h-1.6c-.5378 0-.9985.00017-1.4.0057v.4943c0 .55228-.44771 1-1 1-.55228 0-1-.44772-1-1v-.31225c-.1409.03983-.25801.08626-.36197.13923-.56449.28762-1.02343.74656-1.31105 1.31105-.13419.26335-.22636.61104-.2758 1.21621-.0504.61684-.05118 1.40916-.05118 2.54576v7.2c0 1.1366.00078 1.9289.05118 2.5458.04944.6051.14161.9528.2758 1.2162.28762.5645.74656 1.0234 1.31105 1.311.26335.1342.61104.2264 1.21621.2758.61684.0504 1.40916.0512 2.54576.0512h5.2c1.1366 0 1.9289-.0008 2.5458-.0512.6051-.0494.9528-.1416 1.2162-.2758.5645-.2876 1.0234-.7465 1.311-1.311.1342-.2634.2264-.6111.2758-1.2162.0504-.6169.0512-1.4092.0512-2.5458v-7.2c0-1.13661-.0008-1.92892-.0512-2.54576-.0494-.60517-.1416-.95286-.2758-1.21621-.2876-.56449-.7465-1.02343-1.311-1.31105-.104-.05297-.2211-.0994-.362-.13923v.31225c0 .55228-.4477 1-1 1s-1-.44772-1-1z"
+                                        fill-rule="evenodd" />
+                                </g>
+                            </svg>
                         </a>
                     </li>
-                    <li class="row-con-itm">
-                        <form action="{% url 'search' %}" class="search-form">
-                            {% csrf_token %}
-                            <input
-                                type="text"
-                                name="search"
-                                class="search-inp"
-                                placeholder="Search"
-                                autocomplete="off"
-                            />
-                        </form>
+                    <li class="inbox">
+                        <div id="inboxDrBtn" class="nav-icn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M12.004 2.1c4.015 0 6.896 3.278 6.896 7.532v1.6c0 .228.193.531.72 1.075l.27.275c1.082 1.097 1.51 1.729 1.51 2.745 0 .445-.052.791-.268 1.206-.456.878-1.423 1.367-2.869 1.367l-1.912.001c-.629 2.332-2.13 3.6-4.351 3.6-2.245 0-3.754-1.295-4.371-3.675l.019.074H5.737c-1.488 0-2.466-.502-2.902-1.41-.191-.398-.235-.72-.235-1.163 0-1.016.428-1.648 1.51-2.745l.27-.275c.527-.544.72-.847.72-1.076v-1.6C5.1 5.38 7.988 2.1 12.004 2.1Zm2.462 15.802H9.534C9.99 19.148 10.776 19.7 12 19.7c1.224 0 2.01-.552 2.466-1.798ZM12.004 3.9C9.036 3.9 6.9 6.327 6.9 9.632v1.6c0 .852-.39 1.463-1.228 2.328-.073.075-.142.146-.281.286-.747.758-.991 1.118-.991 1.481 0 .192.014.292.057.382.107.224.433.391 1.28.391h12.526c.82 0 1.153-.169 1.272-.397.05-.095.065-.197.065-.376 0-.363-.244-.723-.99-1.48-.14-.141-.209-.212-.282-.287-.839-.865-1.228-1.476-1.228-2.329v-1.6c0-3.307-2.13-5.731-5.096-5.731Z" />
+                            </svg>
+                        </div>
+                        <div id="inboxDropdown">
+                            {% notifications request %}
+                        </div>
                     </li>
-                    {% if user.is_authenticated %}
-                    <ul class="row-content" style="width: 70px">
-                        <li class="inbox">
-                            <div id="inboxDrBtn" class="nav-icn">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        d="M12.004 2.1c4.015 0 6.896 3.278 6.896 7.532v1.6c0 .228.193.531.72 1.075l.27.275c1.082 1.097 1.51 1.729 1.51 2.745 0 .445-.052.791-.268 1.206-.456.878-1.423 1.367-2.869 1.367l-1.912.001c-.629 2.332-2.13 3.6-4.351 3.6-2.245 0-3.754-1.295-4.371-3.675l.019.074H5.737c-1.488 0-2.466-.502-2.902-1.41-.191-.398-.235-.72-.235-1.163 0-1.016.428-1.648 1.51-2.745l.27-.275c.527-.544.72-.847.72-1.076v-1.6C5.1 5.38 7.988 2.1 12.004 2.1Zm2.462 15.802H9.534C9.99 19.148 10.776 19.7 12 19.7c1.224 0 2.01-.552 2.466-1.798ZM12.004 3.9C9.036 3.9 6.9 6.327 6.9 9.632v1.6c0 .852-.39 1.463-1.228 2.328-.073.075-.142.146-.281.286-.747.758-.991 1.118-.991 1.481 0 .192.014.292.057.382.107.224.433.391 1.28.391h12.526c.82 0 1.153-.169 1.272-.397.05-.095.065-.197.065-.376 0-.363-.244-.723-.99-1.48-.14-.141-.209-.212-.282-.287-.839-.865-1.228-1.476-1.228-2.329v-1.6c0-3.307-2.13-5.731-5.096-5.731Z"
-                                    />
-                                </svg>
-                            </div>
-                            <div id="inboxDropdown">
-                                {% notifications request %}
-                            </div>
-                        </li>
-                        <li class="row-con-itm">
-                            <a
-                                href="{% url 'user_profile' request.user.username %}"
-                            >
-                                {% if request.user.profile.avatar.url != null %}
-                                <img
-                                    src="{{request.user.profile.avatar.url}}"
-                                    alt=""
-                                    class="pp"
-                                />
-                                {% else %}
-                                <div
-                                    class="pp"
-                                    style="background: linear-gradient({{request.user.profile.avatar_default}});"
-                                >
-                                    <div class="grcn">
-                                        {{request.user.profile.name|slice:"0:1"}}
-                                    </div>
+                    <li class="row-con-itm">
+                        <a href="{% url 'user_profile' request.user.username %}">
+                            {% if request.user.profile.avatar.url != null %}
+                            <img src="{{request.user.profile.avatar.url}}" alt="" class="pp" />
+                            {% else %}
+                            <div class="pp"
+                                style="background: linear-gradient({{request.user.profile.avatar_default}});">
+                                <div class="grcn">
+                                    {{request.user.profile.name|slice:"0:1"}}
                                 </div>
-                                {% endif %}
-                            </a>
-                        </li>
-                    </ul>
-                    {% else %}
-                    <li class="row-con-itm">
-                        <div onclick="openSigninModal()">Sign in</div>
+                            </div>
+                            {% endif %}
+                        </a>
                     </li>
-                    {% endif %}
                 </ul>
-            </div>
-        </nav>
-        <main id="main">
-            <div class="main-content">
-                <ul id="notify"></ul>
-                {% block content %} {% endblock %}
-            </div>
-        </main>
-        <footer id="footer">
-            <div id="footer-row">
-                <!-- <div class="by">Developed by Rakmatullaev.</div>
+                {% else %}
+                <li class="row-con-itm">
+                    <div onclick="openSigninModal()">Sign in</div>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <main id="main">
+        <div class="main-content">
+            {% block content %} {% endblock %}
+        </div>
+    </main>
+    <footer id="footer">
+        <div id="footer-row">
+            <!-- <div class="by">Developed by Rakmatullaev.</div>
             {% block footer }
             {% endblock } -->
+            <div class="foot-txt">
+                Please
+                <a class="underline" style="color: #06c" href="mailto:mirfayzness@gmail.com">contact me</a>, to help to
+                improve my website.
+            </div>
+            <div class="hr"></div>
+            <div class="footer-flex">
                 <div class="foot-txt">
-                    Please
-                    <a
-                        class="underline"
-                        style="color: #06c"
-                        href="mailto:mirfayzness@gmail.com"
-                        >contact us</a
-                    >, to help us improve our website.
+                    Copyright ©2024 Uzrent. All rights reserved.
                 </div>
-                <div class="hr"></div>
-                <div class="footer-flex">
-                    <div class="foot-txt">
-                        Copyright © 2024 Uzrent. All rights reserved.
-                    </div>
-                    <div class="foot-txt">
-                        <a href="https://en.wikipedia.org/wiki/Uzbekistan">
-                            Uzbekistan
-                        </a>
-                    </div>
-                </div>
-                <div class="foot-itms">
-                    <div class="foot-txt">Developed by Rakhmatullaev</div>
+                <div class="foot-txt">
+                    <a href="https://en.wikipedia.org/wiki/Uzbekistan" class="underline">
+                        Uzbekistan
+                    </a>
                 </div>
             </div>
-        </footer>
+            <div class="foot-itms">
+                <div class="foot-txt">Developed by Rakhmatullaev</div>
+            </div>
+        </div>
+    </footer>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="{% static 'websocket.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'websocket.js' %}"></script>
 
-        <!--  -->
-        <script>
-            // Assuming you're using the default User model
-            const currentUser = "{{ request.user.username }}";
-        </script>
-        <script>
-            const signin_password = document.getElementById("signin-password");
-            const toggleSigninPassword = document.getElementById(
-                "toggle-signin-password",
-            );
-
-            toggleSigninPassword.addEventListener("click", toggleClicked);
-            function toggleClicked() {
-                if (this.checked) {
-                    signin_password.type = "text";
-                } else {
-                    signin_password.type = "password";
-                }
-            }
-        </script>
-        <script>
-            const $dropdownMenu = $("[id=inboxDropdown]");
-
-            const onDocumentMouseUp = (e) => {
-                if (
-                    !$dropdownMenu.is(e.target) &&
-                    $dropdownMenu.has(e.target).length === 0
-                ) {
-                    $dropdownMenu.removeClass("active");
-                    $(document).off("mouseup", onDocumentMouseUp);
-                }
-            };
-
-            $("#inboxDrBtn").on("click", () => {
-                $dropdownMenu.toggleClass("active");
-                if ($dropdownMenu.hasClass("active")) {
-                    $(document).on("mouseup", onDocumentMouseUp);
-                }
+    <!--  -->
+    <!-- <script>
+        $(document).ready(function () {
+            $('#homepg').click(function () {
+                // Get the URL to redirect to from data attribute
+                var redirectUrl = "/";
+                // Change the URL without reloading the page
+                window.history.pushState({}, '', redirectUrl);
+                // Fetch and replace content dynamically
+                $.get(redirectUrl, function (data) {
+                    $('body').html(data);
+                });
             });
-        </script>
-        <script>
-            const password = document.getElementById("signup-password");
-            const password2 = document.getElementById("confirm");
-            const togglePassword = document.getElementById(
-                "toggle-signup-password",
-            );
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.roomUrl').click(function () {
+                // Get the URL to redirect to from data attribute
+                var redirectUrl = $(this).data('url');
+                // Change the URL without reloading the page
+                window.history.pushState({}, '', redirectUrl);
+                // Fetch and replace content dynamically
+                $.get(redirectUrl, function (data) {
+                    $('body').html(data);
+                });
+            });
+        });
+    </script> -->
+    <script>
+        // Assuming you're using the default User model
+        const currentUser = "{{ request.user.username }}";
+    </script>
+    <script>
+        const signin_password = document.getElementById("signin-password");
+        const toggleSigninPassword = document.getElementById(
+            "toggle-signin-password",
+        );
 
-            togglePassword.addEventListener("click", toggleClicked);
-            function toggleClicked() {
-                if (this.checked) {
-                    password.type = "text";
-                    password2.type = "text";
-                } else {
-                    password.type = "password";
-                    password2.type = "password";
-                }
+        toggleSigninPassword.addEventListener("click", toggleClicked);
+        function toggleClicked() {
+            if (this.checked) {
+                signin_password.type = "text";
+            } else {
+                signin_password.type = "password";
             }
-        </script>
-        <script>
-            const signinModal = document.getElementById("signinModal");
-            const signupModal = document.getElementById("signupModal");
-            function openSigninModal() {
-                signinModal.classList.add("show");
+        }
+    </script>
+    <script>
+        const $dropdownMenu = $("[id=inboxDropdown]");
+
+        const onDocumentMouseUp = (e) => {
+            if (
+                !$dropdownMenu.is(e.target) &&
+                $dropdownMenu.has(e.target).length === 0
+            ) {
+                $dropdownMenu.removeClass("active");
+                $(document).off("mouseup", onDocumentMouseUp);
+            }
+        };
+
+        $("#inboxDrBtn").on("click", () => {
+            $dropdownMenu.toggleClass("active");
+            if ($dropdownMenu.hasClass("active")) {
+                $(document).on("mouseup", onDocumentMouseUp);
+            }
+        });
+    </script>
+    <script>
+        const password = document.getElementById("signup-password");
+        const password2 = document.getElementById("confirm");
+        const togglePassword = document.getElementById(
+            "toggle-signup-password",
+        );
+
+        togglePassword.addEventListener("click", toggleClicked);
+        function toggleClicked() {
+            if (this.checked) {
+                password.type = "text";
+                password2.type = "text";
+            } else {
+                password.type = "password";
+                password2.type = "password";
+            }
+        }
+    </script>
+    <script>
+        const signinModal = document.getElementById("signinModal");
+        const signupModal = document.getElementById("signupModal");
+        function openSigninModal() {
+            signinModal.classList.add("show");
+            signupModal.classList.remove("show");
+        }
+        function closeSigninModal() {
+            signinModal.classList.remove("show");
+        }
+        // signup
+        function openSignupModal() {
+            signinModal.classList.remove("show");
+            signupModal.classList.add("show");
+        }
+        function closeSignupModal() {
+            signupModal.classList.remove("show");
+        }
+        window.onclick = function (event) {
+            if (event.target == signinModal) {
+                signinModal.classList.remove("show");
+            } else if (event.target == signupModal) {
                 signupModal.classList.remove("show");
             }
-            function closeSigninModal() {
-                signinModal.classList.remove("show");
-            }
-            // signup
-            function openSignupModal() {
-                signinModal.classList.remove("show");
-                signupModal.classList.add("show");
-            }
-            function closeSignupModal() {
-                signupModal.classList.remove("show");
-            }
-            window.onclick = function (event) {
-                if (event.target == signinModal) {
-                    signinModal.classList.remove("show");
-                } else if (event.target == signupModal) {
-                    signupModal.classList.remove("show");
-                }
-            };
-        </script>
-        <script>
-            $(document).ready(function () {
-                $("#toast-position").toggleClass("active");
+        };
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#toast-position").toggleClass("active");
 
-                setTimeout(function () {
-                    $("#toast-position").toggleClass("timeout");
-                    $("#toast-position").fadeOut("fast");
-                }, 3000);
-            });
-        </script>
-        {% block scripts %} {% endblock %}
-    </body>
+            setTimeout(function () {
+                $("#toast-position").toggleClass("timeout");
+                $("#toast-position").fadeOut("fast");
+            }, 3000);
+        });
+    </script>
+    {% block scripts %} {% endblock %}
+</body>
+
 </html>

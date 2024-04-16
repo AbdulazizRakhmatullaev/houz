@@ -49,12 +49,14 @@
                 {% endif %}
                 <div class="notdt_col">
                     <div class="conf">
-                        {% if notification.confirmed %} (confirmed by you) {% endif %}
+                        {% if notification.confirmed %} (confirmed) {% endif %}
                     </div>
                     <div class="notdt" data-created-at="{{ notification.created_at|date:"Y-m-d H:i:s" }}">{{notification.get_date}}</div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- % empty %}
+    <div class="ctrtxt">No notifications for now</div> -->
     {% endfor %}
 </div>

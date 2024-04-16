@@ -278,9 +278,11 @@ class Room(models.Model):
 
 
 class Booking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     check_in = models.DateField("Check in")
     check_out = models.DateField("Check out")
+    created_at = models.DateField(default=timezone.now)
 
 
 class Bookmark(models.Model):

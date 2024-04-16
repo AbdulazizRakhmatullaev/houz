@@ -95,6 +95,22 @@ def create_notification(
     )
 
 
+def booking(request):
+    bookings = Booking.objects.filter(room__host=request.user).order_by("-created_at")
+    return render(request, "basic/booking.html", {"bookings": bookings})
+
+
+def booking_delete(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    if request.method == "POST":
+        if request.user == booking.room.host:
+            booking.delete()
+            booking.save()
+
+            return redirect("booking")
+    return redirect("home")
+
+
 def book_room(request, room_id):
     room = Room.objects.get(pk=room_id)
     if request.method == "POST":
@@ -117,12 +133,15 @@ def book_room(request, room_id):
                 if check_in < check_out and check_in != check_out:
                     # check if this user already notified the owner, so he can't spam him
                     if not Booking.objects.filter(
-                        room=room, check_in=check_in, check_out=check_out
+                        user=request.user,
+                        room=room,
+                        check_in=check_in,
+                        check_out=check_out,
                     ).exists():
                         if not Notifications.objects.filter(
                             sender=request.user, room=room
                         ).exists():
-                            not_message = f'Hi, I would like to book your <a href="/rooms/{room.id}" class="underline" style="color: #06c;">room</a>'
+                            not_message = f'Hi, I would like to book your <a class="roomUrl" href="/rooms/{room.id}" class="underline" style="color: #06c;">room</a>'
 
                             # websocker notification
                             create_notification(
@@ -188,7 +207,10 @@ def confirm_room(request, noty_id):
                 not_message = f"Thank you for booking our room, we will be waiting for you on {noty_check_in}"
 
                 Booking.objects.create(
-                    room=room, check_in=noty_check_in, check_out=noty_check_out
+                    user=notification.sender,
+                    room=room,
+                    check_in=noty_check_in,
+                    check_out=noty_check_out,
                 )
                 # websocket notification
                 create_notification(
@@ -209,6 +231,8 @@ def confirm_room(request, noty_id):
                 # Confirm the notification
                 notification.confirmed = True
                 notification.save()
+
+                return redirect("booking")
             else:
                 not_message = f"We are really sorry, but unfortunately room was booked with the same dates by other people"
 
