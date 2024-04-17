@@ -1,12 +1,12 @@
 from django import template
-from uzrent.models import Notifications
+from uzrent.models import Notification
 
 register = template.Library()
 
 
 @register.inclusion_tag("temps/notifications.html")
 def notifications(request):
-    notifications = Notifications.objects.filter(reciever=request.user).order_by(
+    notifications = Notification.objects.filter(reciever=request.user).order_by(
         "-created_at"
     )
     return {

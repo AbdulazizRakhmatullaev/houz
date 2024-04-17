@@ -4,7 +4,7 @@ from .models import (
     Rating,
     RatingLike,
     Bookmark,
-    Notifications,
+    Notification,
     Booking,
 )
 from django.db.models import Q, Max
@@ -50,7 +50,7 @@ def create_notification(
     check_out=None,
 ):
     if type == "host":
-        Notifications.objects.create(
+        Notification.objects.create(
             sender=sender,
             reciever=reciever,
             room=room,
@@ -59,14 +59,14 @@ def create_notification(
             check_out=check_out,
         )
     elif type == "user":
-        Notifications.objects.create(sender=sender, reciever=reciever, message=message)
+        Notification.objects.create(sender=sender, reciever=reciever, message=message)
 
     check_in_str = str(check_in) if check_in else None
     check_out_str = str(check_out) if check_out else None
 
     # Fetch the created_at value from the database and convert it to a string
     created_at = (
-        Notifications.objects.filter(reciever=reciever)
+        Notification.objects.filter(reciever=reciever)
         .order_by("-created_at")
         .values_list("created_at", flat=True)  # Get only the values from the queryset
         .first()  # Get the first value from the queryset
@@ -95,17 +95,58 @@ def create_notification(
     )
 
 
+def noty_delete(request, noty_id):
+    noty = get_object_or_404(Notification, pk=noty_id)
+    if request.method == "POST":
+        noty.delete()
+
+    return redirect("home")
+
+
 def booking(request):
     bookings = Booking.objects.filter(room__host=request.user).order_by("-created_at")
     return render(request, "basic/booking.html", {"bookings": bookings})
 
 
 def booking_delete(request, booking_id):
-    booking = get_object_or_404(Booking, pk=booking_id)
+    booking = Booking.objects.get(pk=booking_id)
     if request.method == "POST":
         if request.user == booking.room.host:
+
+            tolerance_window = timedelta(seconds=5)
+            start_time = booking.created_at - tolerance_window
+            end_time = booking.created_at + tolerance_window
+
+            noty = Notification.objects.filter(
+                reciever=request.user,
+                created_at__gte=start_time,
+                created_at__lte=end_time,
+            )
+
+            noty.delete()
+
+            # notify about cancellation
+            not_msg = f'Sorry, but the booking for <a class="roomUrl" href="/rooms/{booking.room.id}" class="underline" style="color: #06c;">this</a> room has been cancelled by the host'
+            create_notification(
+                sender=request.user,
+                reciever=booking.user,
+                message=not_msg,
+                profile_name=request.user.profile.name,
+                avatar_url=(
+                    request.user.profile.avatar.url
+                    if request.user.profile.avatar
+                    else None
+                ),
+                avatar_default=request.user.profile.avatar_default,
+                room_host=request.user.username,
+                type="user",
+            )
+            messages.success(
+                request,
+                "User has been notified about your cancellation",
+            )
+
             booking.delete()
-            booking.save()
 
             return redirect("booking")
     return redirect("home")
@@ -138,7 +179,7 @@ def book_room(request, room_id):
                         check_in=check_in,
                         check_out=check_out,
                     ).exists():
-                        if not Notifications.objects.filter(
+                        if not Notification.objects.filter(
                             sender=request.user, room=room
                         ).exists():
                             not_message = f'Hi, I would like to book your <a class="roomUrl" href="/rooms/{room.id}" class="underline" style="color: #06c;">room</a>'
@@ -191,7 +232,7 @@ def book_room(request, room_id):
 
 
 def confirm_room(request, noty_id):
-    notification = Notifications.objects.get(id=noty_id)
+    notification = Notification.objects.get(id=noty_id)
     room = Room.objects.get(pk=notification.room.id)
 
     # Check if the current user is the host of the room
@@ -259,7 +300,7 @@ def confirm_room(request, noty_id):
                 notification.delete()
         elif action == "cancel":
             not_message = f"Unfortunately the host declined your booked room"
-            # UserNotifications.objects.create(
+            # UserNotification.objects.create(
             #     sender=request.user,
             #     reciever=notification.sender,
             #     message=not_message,

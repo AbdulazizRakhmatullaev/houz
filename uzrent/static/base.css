@@ -191,8 +191,8 @@ a {
 }
 
 .grcn {
-    height: 100%;
-    width: 100%;
+    height: 28px;
+    width: 28px;
     color: #000;
     font-size: 15px;
     text-transform: capitalize;
@@ -1219,6 +1219,7 @@ input:not(:focus):valid~.floating-label {
 }
 
 #notcol {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -1259,6 +1260,26 @@ input:not(:focus):valid~.floating-label {
     justify-content: space-between;
     align-items: end;
     margin-bottom: 10px;
+}
+
+.notydel {
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 24px;
+    width: 24px;
+    font-size: 15px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+}
+
+.notydel:hover {
+    background: #e8e8ed;
 }
 
 .notsen-msg {
@@ -1481,9 +1502,9 @@ input:not(:focus):valid~.floating-label {
 
 .bookdel {
     cursor: pointer;
-    position: absolute;
+    /* position: absolute;
     top: 15px;
-    right: 15px;
+    right: 15px; */
     height: 30px;
     width: 30px;
     font-size: 20px;
@@ -1491,9 +1512,10 @@ input:not(:focus):valid~.floating-label {
     box-sizing: border-box;
     display: grid;
     place-items: center;
-    background: none;
+    background: #ffffff;
     border: 1px solid #e8e8ed;
     border-radius: 50%;
+    margin-left: 5px;
 }
 
 .bookdel:hover {
@@ -1507,6 +1529,12 @@ input:not(:focus):valid~.floating-label {
     display: flex;
     padding: 15px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bkdusercol {
+    display: flex;
 }
 
 .bookedroom {
@@ -1515,7 +1543,7 @@ input:not(:focus):valid~.floating-label {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    height: 13rem;
+    height: 9rem;
     white-space: normal;
     box-sizing: border-box;
 }
@@ -1530,14 +1558,14 @@ input:not(:focus):valid~.floating-label {
 }
 
 .b-usname {
-    font-size: 14px;
     color: rgb(83, 100, 113);
+    font-size: 14px;
 }
 
 .checkio {
     display: flex;
     align-items: start;
-    gap: 13px;
+    gap: 16px;
     padding: 15px;
     padding-top: 0;
 }

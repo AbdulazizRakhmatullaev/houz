@@ -5,7 +5,7 @@ from django.contrib.auth.models import User  # Import the User model
 from django.utils.timezone import localtime, make_aware
 from datetime import datetime
 
-from uzrent.models import Notifications
+from uzrent.models import Notification
 
 
 
@@ -34,7 +34,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         # Fetch sender and reciever asynchronously
         sender = await sync_to_async(User.objects.get)(id=sender_id)
         reciever = await sync_to_async(User.objects.get)(id=reciever_id)
-        latest_noty = await sync_to_async(Notifications.objects.latest)('id')
+        latest_noty = await sync_to_async(Notification.objects.latest)('id')
 
         # Send the notification data to the client
         await self.send(

@@ -34,7 +34,8 @@ urlpatterns = [
     path("search/", views.search, name="search"),
     path("bookmarks", views.bookmarks, name="bookmarks"),
     path("booking/", views.booking, name="booking"),
-    path("bookings/<int:pk>/delete", views.booking_delete, name="booking_delete"),
+    path("bookings/<int:booking_id>/delete", views.booking_delete, name="booking_delete"),
+    path("notifications/<int:noty_id>/delete", views.noty_delete, name="noty_delete"),
     path("room/confirm/<int:noty_id>", views.confirm_room, name="confirm_room"),
     path("@<str:username>", views.user_profile, name="user_profile"),
 ]

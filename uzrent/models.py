@@ -108,7 +108,7 @@ class Profile(models.Model):
     bio = models.CharField("Bio", max_length=255, blank=True)
     email = models.EmailField("Email", max_length=255)
     phone_number = models.CharField("Phone", max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField("Created at", default=timezone.now)
+    created_at = models.DateTimeField("Created at", default=datetime.now)
 
     class Meta:
         verbose_name = "Profile"
@@ -282,13 +282,17 @@ class Booking(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     check_in = models.DateField("Check in")
     check_out = models.DateField("Check out")
-    created_at = models.DateField(default=timezone.now)
+    created_at = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        datetime = self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        return f"id: {self.id}, on {datetime}"
 
 
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Room, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(default=datetime.now)
 
 
 class Rating(models.Model):
@@ -296,7 +300,7 @@ class Rating(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="Room")
     review_text = models.TextField("Review text")
     rating = RangedIntegerField(default=1, min_value=1, max_value=5)
-    date = models.DateTimeField("Date", default=timezone.now)
+    date = models.DateTimeField("Date", default=datetime.now)
     edited = models.BooleanField("Edited", default=False)
 
     class Meta:
@@ -348,10 +352,10 @@ class Rating(models.Model):
 class RatingLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(default=datetime.now)
 
 
-class Notifications(models.Model):
+class Notification(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
     reciever = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="reciever"

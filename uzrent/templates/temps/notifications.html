@@ -48,15 +48,22 @@
                 {% endif %}
                 {% endif %}
                 <div class="notdt_col">
-                    <div class="conf">
-                        {% if notification.confirmed %} (confirmed) {% endif %}
-                    </div>
-                    <div class="notdt" data-created-at="{{ notification.created_at|date:"Y-m-d H:i:s" }}">{{notification.get_date}}</div>
+                    {% if notification.confirmed %}
+                    <a href="{% url 'booking' %}" class="underline" style="color: #06c;">
+                        (confirmed)
+                    </a>
+                    {% endif %}
+                    <div class="notdt" data-created-at="{{ notification.created_at|date:" Y-m-d H:i:s" }}">
+                        {{notification.get_date}}</div>
                 </div>
             </div>
         </div>
+        <!-- Form for deleting this specific notification -->
+        <form id="delete_notification_{{ notification.id }}" action="{% url 'noty_delete' notification.id %}"
+            method="POST">
+            {% csrf_token %}
+            <button class="notydel" type="submit">&times;</button>
+        </form>
     </div>
-    <!-- % empty %}
-    <div class="ctrtxt">No notifications for now</div> -->
     {% endfor %}
 </div>
