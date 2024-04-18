@@ -507,7 +507,7 @@ def room_create(request):
 
             post.save()
             return redirect("home")
-        return render(request, "basic/home.html")
+        return redirect("home")
     return redirect("signin")
 
 

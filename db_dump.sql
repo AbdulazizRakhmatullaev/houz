@@ -1365,6 +1365,7 @@ COPY public.uzrent_amenity (id, name) FROM stdin;
 --
 
 COPY public.uzrent_booking (id, check_in, check_out, room_id, created_at, user_id) FROM stdin;
+66	2024-03-02	2024-03-26	3	2024-04-18 14:44:46.673623+05	4
 \.
 
 
@@ -1391,7 +1392,9 @@ COPY public.uzrent_houserule (id, rule) FROM stdin;
 
 COPY public.uzrent_notification (id, message, check_in, check_out, confirmed, created_at, reciever_id, room_id, sender_id) FROM stdin;
 325	Hi, I would like to book your <a class="roomUrl" href="/rooms/2" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	f	2024-04-18 00:58:52.398676+05	1	2	4
-326	Hi, I would like to book your <a class="roomUrl" href="/rooms/3" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	f	2024-04-18 00:59:06.048872+05	1	3	4
+327	Thank you for booking our room, we will be waiting for you on 2024-03-02	\N	\N	f	2024-04-18 14:44:46.68548+05	4	\N	1
+326	Hi, I would like to book your <a class="roomUrl" href="/rooms/3" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	t	2024-04-18 00:59:06.048872+05	1	3	4
+328	Hi, I would like to book your <a class="roomUrl" href="/rooms/1" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	f	2024-04-18 14:45:00.794565+05	1	1	4
 321	Sorry, but the booking for <a class="roomUrl" href="/rooms/2" class="underline" style="color: #06c;">this</a> room has been cancelled by the host	\N	\N	f	2024-04-18 00:57:56.770923+05	4	\N	1
 323	Thank you for booking our room, we will be waiting for you on 2024-03-02	\N	\N	f	2024-04-18 00:58:07.889608+05	4	\N	1
 324	Sorry, but the booking for <a class="roomUrl" href="/rooms/2" class="underline" style="color: #06c;">this</a> room has been cancelled by the host	\N	\N	f	2024-04-18 00:58:16.005155+05	4	\N	1
@@ -1565,7 +1568,7 @@ SELECT pg_catalog.setval('public.uzrent_amenity_id_seq', 2, true);
 -- Name: uzrent_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_booking_id_seq', 65, true);
+SELECT pg_catalog.setval('public.uzrent_booking_id_seq', 66, true);
 
 
 --
@@ -1579,7 +1582,7 @@ SELECT pg_catalog.setval('public.uzrent_houserule_id_seq', 1, true);
 -- Name: uzrent_notifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_notifications_id_seq', 326, true);
+SELECT pg_catalog.setval('public.uzrent_notifications_id_seq', 328, true);
 
 
 --

@@ -12,7 +12,7 @@ urlpatterns = [
     path("settings/profile/avatar", views.avatarEdit, name="avatarEdit"),
     path("settings/profile/avatar/delete", views.avatarDelete, name="ppDelete"),
     # roomING
-    path("room/create", views.room_create, name="post_create"),
+    path("room/create", views.room_create, name="room_create"),
     path("room/<str:id>/delete", views.room_delete, name="post_delete"),
     path("room/<str:id>/edit", views.room_edit, name="post_edit"),
     path("rooms/<str:room_id>", views.room_detail, name="room_detail_url"),
