@@ -7,7 +7,7 @@ Connect to the temp database:
 
 - You need to create a new empty database where you want to import the dump.
 
-- Then, they can use the psql command to import the dump into the newly created database. The command looks like this:
+- Then, you can use the psql command to import the dump into the newly created database. The command looks like this:
 - - psql -U abdu -d uzrent -f db_dump.sql
 
 then run this code on your terminal
