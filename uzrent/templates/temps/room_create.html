@@ -1,0 +1,25 @@
+<div class="hr"></div>
+<div class="rmce">
+    <div class="usercol">
+        {% if request.user.profile.avatar.url != null %}
+        <img src="{{request.user.profile.avatar.url}}" alt="" class="pp">
+        {% else %}
+        <div class="pp" style="background: linear-gradient({{request.user.profile.avatar_default}});">
+            <div class="grcn">
+                {{request.user.profile.name|slice:"0:1"}}
+            </div>
+        </div>
+        {% endif %}
+        <div class="b-names-col">
+            <div class="b-name">{{request.user.profile.name}}</div>
+            <div class="b-usname">@{{request.user.username}}</div>
+        </div>
+    </div>
+    <div class="cecol">
+        <input type="text" name="brief_name" placeholder="Your brief title of the room">
+        <input type="text">
+        <input type="text">
+        <input type="text">
+        <input type="text">
+    </div>
+</div>

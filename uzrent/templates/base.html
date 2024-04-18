@@ -16,16 +16,27 @@
     {% if messages %} {% for message in messages %}
     <div id="toast-position">
         <div class="toast">
-            <p>{{ message }}</p>
+            <p>{{ message }}</p>    
         </div>
     </div>
     {% endfor %} {% endif %}
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="modal-title">
+                    Add a room
+                    <span onclick="closeRoomModal()" class="close modalclose">&times;</span>
+                </div>
+                {% include 'temps/room_create.html' %}
+            </div>
+        </div>
+    </div>
     <div id="signinModal" class="modal">
         <div class="modal-content">
             <div class="container">
                 <div class="modal-title">
                     Sign in
-                    <span onclick="closeSigninModal()" class="close">&times;</span>
+                    <span onclick="closeSigninModal()" class="close modalclose">&times;</span>
                 </div>
                 {% include 'temps/signin_temp.html' %}
             </div>
@@ -36,7 +47,7 @@
             <div class="container">
                 <div class="modal-title">
                     Sign up
-                    <span onclick="closeSignupModal()" class="close">&times;</span>
+                    <span onclick="closeSignupModal()" class="close modalclose">&times;</span>
                 </div>
                 {% include 'temps/signup_temp.html' %}
             </div>
@@ -59,7 +70,7 @@
                 {% if user.is_authenticated %}
                 <ul class="row-content" style="width: 140px;">
                     <li class="createroom">
-                        <a href="{% url 'room_create' %}" class="nav-icn">
+                        <div class="nav-icn" onclick="openRoomModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
                                 viewBox="0 0 28 28">
                                 <path fill-rule="evenodd"
@@ -71,7 +82,7 @@
                                     d="M3.196 17.344C3 17.905 3 18.604 3 20c0 1.396 0 2.095.196 2.656a3.5 3.5 0 0 0 2.148 2.148C5.905 25 6.604 25 8 25c1.396 0 2.095 0 2.656-.196a3.5 3.5 0 0 0 2.148-2.148C13 22.095 13 21.396 13 20c0-1.396 0-2.095-.196-2.656a3.5 3.5 0 0 0-2.148-2.148C10.095 15 9.396 15 8 15c-1.396 0-2.095 0-2.656.196a3.5 3.5 0 0 0-2.148 2.148Zm2.809 5.572c.16.056.431.084 1.995.084s1.836-.028 1.995-.084c.431-.15.77-.49.92-.92.057-.16.085-.432.085-1.996s-.028-1.836-.084-1.995a1.5 1.5 0 0 0-.92-.92C9.835 17.027 9.563 17 8 17s-1.836.028-1.995.084a1.5 1.5 0 0 0-.92.92C5.027 18.165 5 18.437 5 20s.028 1.836.084 1.995c.15.431.49.77.92.92ZM15 8c0-1.396 0-2.095.196-2.656a3.5 3.5 0 0 1 2.148-2.148C17.905 3 18.604 3 20 3c1.396 0 2.095 0 2.656.196a3.5 3.5 0 0 1 2.148 2.148C25 5.905 25 6.604 25 8c0 1.396 0 2.095-.196 2.656a3.5 3.5 0 0 1-2.148 2.148C22.095 13 21.396 13 20 13c-1.396 0-2.095 0-2.656-.196a3.5 3.5 0 0 1-2.148-2.148C15 10.095 15 9.396 15 8Zm5 3c-1.564 0-1.836-.028-1.995-.084a1.5 1.5 0 0 1-.92-.92C17.027 9.835 17 9.563 17 8s.028-1.836.084-1.995c.15-.431.49-.77.92-.92C18.165 5.027 18.437 5 20 5s1.836.028 1.995.084c.431.15.77.49.92.92.057.16.085.432.085 1.996s-.028 1.836-.084 1.995a1.5 1.5 0 0 1-.92.92c-.16.057-.432.085-1.996.085Z"
                                     clip-rule="evenodd" />
                             </svg>
-                        </a>
+                        </div>
                     </li>
                     <li class="navbooking">
                         <a href="{% url 'booking' %}" class="nav-icn">
@@ -250,6 +261,16 @@
     <script>
         const signinModal = document.getElementById("signinModal");
         const signupModal = document.getElementById("signupModal");
+        const roomModal = document.getElementById("roomModal");
+
+        // room
+        function openRoomModal() {
+            roomModal.classList.add("show");
+        }
+        function closeRoomModal() {
+            roomModal.classList.remove("show");
+        }
+        // signin
         function openSigninModal() {
             signinModal.classList.add("show");
             signupModal.classList.remove("show");

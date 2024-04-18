@@ -903,8 +903,8 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
 3	pbkdf2_sha256$720000$l07DMvyPY98H9Bb1CMu2tz$YQO141hUTfJAuG4evnes4AKJodrfb+CmGRFtx32xBxo=	2024-03-04 01:12:55.975894+05	f	Abdulaziz	Abdulaziz Rakhmatullaev		abbrakh@gmail.com	f	t	2024-03-04 01:06:19.952954+05
 5	pbkdf2_sha256$720000$hggTeM3bpLLnq8myJSgSgF$UV72aZkDv8l7Kdlj75j5FE9bAscvJ1bz82yWs9UrAgI=	2024-03-27 00:19:04.47068+05	f	damnboi	damn boi		damn@gmail.com	f	t	2024-03-26 03:15:13.913925+05
-1	pbkdf2_sha256$720000$8ttpd43FjVYKBXn4ZNVzGY$h3TFXoWxz3AIQSUMYTn5B0aaIds1vzKGNny1MALSoM0=	2024-04-14 04:04:59.103917+05	t	admin				t	t	2024-03-03 03:18:45.84969+05
 4	pbkdf2_sha256$720000$zyHbzWpNsP18BTOO4BJovs$pormyvL8mMgEjIdTwrmQ/YSylBf0GM53L6EaYwe79Ck=	2024-04-16 01:02:10.532747+05	f	lethalboi	Abdulaziz Rakhmatullaev		lethalboi@gmail.com	f	t	2024-03-19 05:40:57.874385+05
+1	pbkdf2_sha256$720000$8ttpd43FjVYKBXn4ZNVzGY$h3TFXoWxz3AIQSUMYTn5B0aaIds1vzKGNny1MALSoM0=	2024-04-18 23:51:35.979081+05	t	admin				t	t	2024-03-03 03:18:45.84969+05
 \.
 
 
@@ -1347,6 +1347,8 @@ c4hre52yof0p9ne5x004bm13zjq5sc3t	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apA
 51ihen0r28xx7ysl631vsrd3no04dh95	.eJxVjDsOwjAQRO_iGlm7-E9Jzxms9drBAeRIcVIh7k4ipYAp572Zt4i0LjWuvcxxzOIitDj9don4WdoO8oPafZI8tWUek9wVedAub1Mur-vh_h1U6nVbG8tnBYAUgjKMaYvzdqDBE1PWGhA0QVaOdXEGPJPGEnJJgFYFj-LzBeFFN7g:1rqX2x:hEujmbIX2o05kOAIx-UoOWC7dWlcaVFkehHlyq-lqCQ	2024-04-13 16:38:51.464623+05
 jtto6x0kkjl1s5lckgppnv7l61tjfvht	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rvmQd:J8NbmzSR8igCc_Xd_BhoAo2vZApaKRmvjWw1-spleiA	2024-04-28 04:04:59.109195+05
 ysqpntqe0q4y4nc83ww0d0pn9mszlojp	.eJxVjDsOwjAQRO_iGlm7-E9Jzxms9drBAeRIcVIh7k4ipYAp572Zt4i0LjWuvcxxzOIitDj9don4WdoO8oPafZI8tWUek9wVedAub1Mur-vh_h1U6nVbG8tnBYAUgjKMaYvzdqDBE1PWGhA0QVaOdXEGPJPGEnJJgFYFj-LzBeFFN7g:1rwSWo:aIabgzgdNGvyC_jMUf4XRRV_2NQm3IbJ9uZjL7KYiOA	2024-04-30 01:02:10.545534+05
+rb5d9lfvvzp2uelogpz6fo3w1v0gplnt	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rxTAH:REzGuIfM3FqNYANPX1t62tNratlOXBj52NhkmBmoBUo	2024-05-02 19:55:05.350476+05
+0akg6msrkfbhifjhl6158jxvikovym34	.eJxVjMsOwiAQRf-FtSE8OjC4dO83kKEMUjUlKe3K-O_apAvd3nPOfYlI21rj1nmJUxZnocXpd0s0PnjeQb7TfGtybPO6TEnuijxol9eW-Xk53L-DSr1-a0gWwLuknULQYAanRgbLHgEHT6yKz8FmZNKoEG0xGFzwzhlDjFjE-wOotjZ-:1rxWr9:p-pk6_BnEqNZ7g380GO4NLLfekbjtC4a8Gaeg9rG7Sc	2024-05-02 23:51:35.982285+05
 \.
 
 
@@ -1365,7 +1367,6 @@ COPY public.uzrent_amenity (id, name) FROM stdin;
 --
 
 COPY public.uzrent_booking (id, check_in, check_out, room_id, created_at, user_id) FROM stdin;
-66	2024-03-02	2024-03-26	3	2024-04-18 14:44:46.673623+05	4
 \.
 
 
@@ -1391,10 +1392,11 @@ COPY public.uzrent_houserule (id, rule) FROM stdin;
 --
 
 COPY public.uzrent_notification (id, message, check_in, check_out, confirmed, created_at, reciever_id, room_id, sender_id) FROM stdin;
-325	Hi, I would like to book your <a class="roomUrl" href="/rooms/2" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	f	2024-04-18 00:58:52.398676+05	1	2	4
 327	Thank you for booking our room, we will be waiting for you on 2024-03-02	\N	\N	f	2024-04-18 14:44:46.68548+05	4	\N	1
-326	Hi, I would like to book your <a class="roomUrl" href="/rooms/3" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	t	2024-04-18 00:59:06.048872+05	1	3	4
-328	Hi, I would like to book your <a class="roomUrl" href="/rooms/1" class="underline" style="color: #06c;">room</a>	2024-03-02	2024-03-26	f	2024-04-18 14:45:00.794565+05	1	1	4
+329	Unfortunately the host declined your booked room	\N	\N	f	2024-04-18 19:55:16.761915+05	4	\N	1
+330	Thank you for booking our room, we will be waiting for you on 2024-03-02	\N	\N	f	2024-04-18 19:55:19.096965+05	4	\N	1
+331	Sorry, but the booking for <a class="roomUrl" href="/rooms/3" class="underline" style="color: #06c;">this</a> room has been cancelled by the host	\N	\N	f	2024-04-18 19:55:21.308182+05	4	\N	1
+332	Sorry, but the booking for <a class="roomUrl" href="/rooms/2" class="underline" style="color: #06c;">this</a> room has been cancelled by the host	\N	\N	f	2024-04-18 19:55:24.345799+05	4	\N	1
 321	Sorry, but the booking for <a class="roomUrl" href="/rooms/2" class="underline" style="color: #06c;">this</a> room has been cancelled by the host	\N	\N	f	2024-04-18 00:57:56.770923+05	4	\N	1
 323	Thank you for booking our room, we will be waiting for you on 2024-03-02	\N	\N	f	2024-04-18 00:58:07.889608+05	4	\N	1
 324	Sorry, but the booking for <a class="roomUrl" href="/rooms/2" class="underline" style="color: #06c;">this</a> room has been cancelled by the host	\N	\N	f	2024-04-18 00:58:16.005155+05	4	\N	1
@@ -1568,7 +1570,7 @@ SELECT pg_catalog.setval('public.uzrent_amenity_id_seq', 2, true);
 -- Name: uzrent_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_booking_id_seq', 66, true);
+SELECT pg_catalog.setval('public.uzrent_booking_id_seq', 67, true);
 
 
 --
@@ -1582,7 +1584,7 @@ SELECT pg_catalog.setval('public.uzrent_houserule_id_seq', 1, true);
 -- Name: uzrent_notifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abdu
 --
 
-SELECT pg_catalog.setval('public.uzrent_notifications_id_seq', 328, true);
+SELECT pg_catalog.setval('public.uzrent_notifications_id_seq', 332, true);
 
 
 --

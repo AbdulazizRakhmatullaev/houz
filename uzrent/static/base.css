@@ -167,6 +167,10 @@ a {
     list-style: none;
 }
 
+.row-content li {
+    cursor: pointer;
+}
+
 .row-con-itm {
     cursor: pointer;
     color: currentColor;
@@ -237,8 +241,8 @@ a {
 }
 
 .usgrcn {
-    height: 100%;
-    width: 100%;
+    height: 60px;
+    width: 60px;
     color: #000;
     font-size: 30px;
     text-transform: capitalize;
@@ -826,8 +830,8 @@ a {
 .modal-content {
     background-color: white;
     border-radius: 18px;
-    width: 100%;
-    max-width: 400px;
+    width: auto;
+    max-width: 730px;
     position: relative;
     margin: 1rem;
 }
@@ -843,7 +847,7 @@ a {
 }
 
 .container {
-    padding: 20px;
+    padding: 10px 15px;
     display: flex;
     flex-direction: column;
 }
@@ -1262,6 +1266,26 @@ input:not(:focus):valid~.floating-label {
     margin-bottom: 10px;
 }
 
+.modalclose {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    height: 24px;
+    width: 24px;
+    font-size: 15px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+}
+
+.modalclose:hover {
+    background: #e8e8ed;
+}
+
 .notydel {
     cursor: pointer;
     position: absolute;
@@ -1581,4 +1605,36 @@ input:not(:focus):valid~.floating-label {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+}
+
+.rmce {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    width: 700px;
+    box-sizing: border-box;
+}
+
+.usercol {
+    width: 30%;
+    display: flex;
+}
+
+.cecol {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.cecol input {
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.signup-col,
+.signin-col {
+    width: 360px;
 }

@@ -11,7 +11,7 @@
     <div class="booking">
         <a href="{% url 'user_profile' booking.user.username %}" class="bookeduser">
             <div class="bkdusercol">
-                {% if user.profile.avatar.url != null %}
+                {% if booking.user.profile.avatar.url != null %}
                 <img src="{{booking.user.profile.avatar.url}}" alt="" class="pp">
                 {% else %}
                 <div class="pp" style="background: linear-gradient({{booking.user.profile.avatar_default}});">
