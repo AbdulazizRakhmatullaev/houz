@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/youtube-sans');
+
 body,
 html {
     height: 100%;
@@ -274,9 +276,21 @@ a {
     color: #1d1d1f;
 }
 
-.logo-img {
-    width: 55px;
+.logo {
+    font-family: 'YouTube Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 14px;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.logo img {
+    height: 28px;
+    width: 28px;
     vertical-align: middle;
+    object-fit: cover;
 }
 
 #flex {
@@ -354,7 +368,7 @@ a {
 }
 
 .hr {
-    background: rgba(239, 243, 244, 1);
+    background: #e8e8ed;
     height: 1px;
     width: 100%;
     margin: 10px 0;
@@ -1156,10 +1170,6 @@ input:not(:focus):valid~.floating-label {
     box-sizing: border-box;
 }
 
-.left-pp-col {
-    width: 400px;
-}
-
 .p-main {
     width: 100%;
     display: flex;
@@ -1637,4 +1647,86 @@ input:not(:focus):valid~.floating-label {
 .signup-col,
 .signin-col {
     width: 360px;
+}
+
+.p-col {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-p-col {
+    width: 30%;
+}
+
+.right-p-col {
+    width: 69%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-roomscol {
+    width: 100%;
+}
+
+.p-rooms {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+}
+
+.p-rooms::-webkit-scrollbar {
+    display: none;
+}
+
+.p-room {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 12px;
+    min-width: 262px;
+    height: 19rem;
+    white-space: normal;
+    border: 1px solid #e8e8ed;
+    box-sizing: border-box;
+}
+
+.p-info-title {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.revleft {
+    width: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.rmdel {
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 24px;
+    width: 24px;
+    font-size: 15px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+}
+
+.rmdel:hover {
+    background: #e8e8ed;
 }

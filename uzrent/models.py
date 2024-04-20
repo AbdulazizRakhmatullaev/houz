@@ -186,7 +186,6 @@ class Room(models.Model):
     )
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
-    # location = models.PointField(geography=True, spatial_index=True)
     location = PlainLocationField(based_fields=["city"], zoom=7)
     date = models.DateTimeField("Date", default=datetime.now)
 

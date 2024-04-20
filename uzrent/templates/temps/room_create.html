@@ -16,10 +16,48 @@
         </div>
     </div>
     <div class="cecol">
-        <input type="text" name="brief_name" placeholder="Your brief title of the room">
-        <input type="text">
-        <input type="text">
-        <input type="text">
-        <input type="text">
+        <form action="{% url 'room_create' %}" method="POST">
+            {% csrf_token %}
+            <label for="brief_name">Brief Name:</label><br>
+            <input type="text" id="brief_name" name="brief_name"><br>
+
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description"></textarea><br>
+
+            <label for="city">City:</label><br>
+            <select name="city" id="city">
+                {% for value, label in Region_Choices %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="price">Price:</label><br>
+            <input type="number" id="price" name="price"><br>
+
+            <label for="address">Address:</label><br>
+            <input type="text" id="address" name="address"><br>
+
+            <label for="guests">Guests:</label><br>
+            <input type="number" id="guests" name="guests"><br>
+
+            <label for="beds">Beds:</label><br>
+            <input type="number" id="beds" name="beds"><br>
+
+            <label for="bedrooms">Bedrooms:</label><br>
+            <input type="number" id="bedrooms" name="bedrooms"><br>
+
+            <label for="baths">Baths:</label><br>
+            <input type="number" id="baths" name="baths"><br>
+
+            <label for="check_in">Check In:</label><br>
+            <input type="date" id="check_in" name="check_in"><br>
+
+            <label for="check_out">Check Out:</label><br>
+            <input type="date" id="check_out" name="check_out"><br>
+
+            <!-- Add other fields as needed -->
+
+            <button type="submit">Create Room</button>
+        </form>
     </div>
 </div>

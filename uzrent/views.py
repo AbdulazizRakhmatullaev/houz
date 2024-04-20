@@ -331,7 +331,11 @@ def confirm_room(request, noty_id):
 
 def user_profile(request, username):
     user = get_object_or_404(User, username__exact=username)
-    return render(request, "basic/user.html", {"user": user})
+    rooms = user.room_set.all().order_by("-date")
+    reviews = Rating.objects.filter(room__in=rooms).order_by("-date")
+    return render(
+        request, "basic/user.html", {"user": user, "rooms": rooms, "reviews": reviews}
+    )
 
 
 def signup(request):
@@ -494,29 +498,67 @@ def avatarDelete(request):
 def room_create(request):
     if request.user.is_authenticated:
         if request.method == "POST":
-            user = request.user
-            text = request.POST["text"]
-            images = request.FILES.getlist("images")
+            host = request.user
+            brief_name = request.POST.get("brief_name")
+            description = request.POST.get("description")
+            city = request.POST.get("city")
+            price = request.POST.get("price")
+            address = request.POST.get("address")
 
-            for image in images:
-                post = Room.objects.create(
-                    user=user,
-                    text=text,
-                    image=image,
-                )
+            guests = request.POST.get("guests")
+            beds = request.POST.get("beds")
+            bedrooms = request.POST.get("bedrooms")
+            baths = request.POST.get("baths")
 
-            post.save()
-            return redirect("home")
+            check_in = request.POST.get("check_in")
+            check_out = request.POST.get("check_out")
+
+            room_type_id = request.POST.get("room_type")
+            amenities = request.POST.getlist("amenities")
+            house_rules = request.POST.getlist("house_rules")
+            latitude = request.POST.get("latitude")
+            longitude = request.POST.get("longitude")
+
+            # Convert check_in and check_out to datetime objects
+            check_in = datetime.strptime(check_in, "%Y-%m-%d")
+            check_out = datetime.strptime(check_out, "%Y-%m-%d")
+
+            # Create Room instance
+            room = Room.objects.create(
+                host=host,
+                brief_name=brief_name,
+                description=description,
+                city=city,
+                price=price,
+                address=address,
+                guests=guests,
+                beds=beds,
+                bedrooms=bedrooms,
+                baths=baths,
+                check_in=check_in,
+                check_out=check_out,
+                room_type_id=room_type_id,
+                location=(latitude, longitude),
+            )
+
+            # Add amenities
+            room.amenities.add(*amenities)
+
+            # Add house rules
+            room.house_rules.add(*house_rules)
+
+            # Redirect to room detail view
+            return redirect("room_detail_url", room_id=room.pk)
         return redirect("home")
     return redirect("signin")
 
 
 def room_delete(request, id):
     room = Room.objects.get(id__exact=id)
-    if request.user.id == room.user.id:
+    if request.user == room.host:
         if request.method == "POST":
             room.delete()
-            return redirect("home")
+            return redirect("user_profile", request.user)
     return redirect("home")
 
 
