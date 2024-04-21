@@ -80,6 +80,23 @@ def avatarColorDefault():
     return random.choice(combines)
 
 
+ROOM_CITY_CHOICES = (
+    ("TASHKENT", "Tashkent"),
+    ("ANDIJAN", "Andijan"),
+    ("BUKHARA", "Bukhara"),
+    ("FERGANA", "Fergana"),
+    ("JIZZAKH", "Jizzakh"),
+    ("NAMANGAN", "Namangan"),
+    ("NAVOIY", "Navoiy"),
+    ("KARSHI", "Karshi"),
+    ("SAMARKAND", "Samarkand"),
+    ("GULISTON", "Guliston"),
+    ("TERMEZ", "Termez"),
+    ("NURAFSHON", "Nurafshon"),
+    ("URGENCH", "Urgench"),
+    ("NUKUS", "Nukus"),
+)
+
 Region_Choices = (
     ("TASHKENT", "Tashkent"),
     ("ANDIJAN", "Andijan"),
@@ -168,7 +185,7 @@ class Photo(models.Model):
 
 class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
-    brief_name = models.CharField(max_length=150, null=True)
+    title = models.CharField(max_length=150, null=True)
     description = models.TextField("Description")
     city = models.CharField(
         max_length=200, null=True, choices=Region_Choices, default="Tashkent"

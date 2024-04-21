@@ -499,7 +499,7 @@ def room_create(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             host = request.user
-            brief_name = request.POST.get("brief_name")
+            title = request.POST.get("title")
             description = request.POST.get("description")
             city = request.POST.get("city")
             price = request.POST.get("price")
@@ -526,7 +526,7 @@ def room_create(request):
             # Create Room instance
             room = Room.objects.create(
                 host=host,
-                brief_name=brief_name,
+                title=title,
                 description=description,
                 city=city,
                 price=price,

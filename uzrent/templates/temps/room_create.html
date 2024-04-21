@@ -1,63 +1,42 @@
 <div class="hr"></div>
 <div class="rmce">
-    <div class="usercol">
-        {% if request.user.profile.avatar.url != null %}
-        <img src="{{request.user.profile.avatar.url}}" alt="" class="pp">
-        {% else %}
-        <div class="pp" style="background: linear-gradient({{request.user.profile.avatar_default}});">
-            <div class="grcn">
-                {{request.user.profile.name|slice:"0:1"}}
-            </div>
-        </div>
-        {% endif %}
-        <div class="b-names-col">
-            <div class="b-name">{{request.user.profile.name}}</div>
-            <div class="b-usname">@{{request.user.username}}</div>
+    {% if request.user.profile.avatar.url != null %}
+    <img src="{{request.user.profile.avatar.url}}" alt="" class="pp">
+    {% else %}
+    <div class="pp" style="background: linear-gradient({{request.user.profile.avatar_default}});">
+        <div class="grcn">
+            {{request.user.profile.name|slice:"0:1"}}
         </div>
     </div>
-    <div class="cecol">
-        <form action="{% url 'room_create' %}" method="POST">
-            {% csrf_token %}
-            <label for="brief_name">Brief Name:</label><br>
-            <input type="text" id="brief_name" name="brief_name"><br>
+    {% endif %}
+    <form action="{% url 'room_create' %}" method="POST" class="cecol">
+        {% csrf_token %}
 
-            <label for="description">Description:</label><br>
-            <textarea id="description" name="description"></textarea><br>
+        <input type="text" id="title" name="title" placeholder="Room's title">
+        <textarea id="description" name="description" class="descarea" placeholder="Description"></textarea>
 
-            <label for="city">City:</label><br>
-            <select name="city" id="city">
-                {% for value, label in Region_Choices %}
-                <option value="{{ value }}">{{ label }}</option>
+        <div class="rcrflex">
+            <select id="city" name="city">
+                {% for choice in ROOM_CITY_CHOICES %}
+                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                 {% endfor %}
-            </select><br>
+            </select>
+            <input type="number" id="price" name="price" placeholder="Price">
+        </div>
 
-            <label for="price">Price:</label><br>
-            <input type="number" id="price" name="price"><br>
+        <div class="rcrflex">
+            <input type="number" id="guests" name="guests" placeholder="Guests">
+            <input type="number" id="beds" name="beds" placeholder="Beds">
+            <input type="number" id="bedrooms" name="bedrooms" placeholder="Bedrooms">
+            <input type="number" id="baths" name="baths" placeholder="Baths">
+        </div>
 
-            <label for="address">Address:</label><br>
-            <input type="text" id="address" name="address"><br>
+        <label for="check_in">Check In:</label>
+        <input type="date" id="check_in" name="check_in">
 
-            <label for="guests">Guests:</label><br>
-            <input type="number" id="guests" name="guests"><br>
+        <label for="check_out">Check Out:</label>
+        <input type="date" id="check_out" name="check_out">
 
-            <label for="beds">Beds:</label><br>
-            <input type="number" id="beds" name="beds"><br>
-
-            <label for="bedrooms">Bedrooms:</label><br>
-            <input type="number" id="bedrooms" name="bedrooms"><br>
-
-            <label for="baths">Baths:</label><br>
-            <input type="number" id="baths" name="baths"><br>
-
-            <label for="check_in">Check In:</label><br>
-            <input type="date" id="check_in" name="check_in"><br>
-
-            <label for="check_out">Check Out:</label><br>
-            <input type="date" id="check_out" name="check_out"><br>
-
-            <!-- Add other fields as needed -->
-
-            <button type="submit">Create Room</button>
-        </form>
-    </div>
+        <button type="submit">Create Room</button>
+    </form>
 </div>
