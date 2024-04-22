@@ -1038,6 +1038,12 @@ a {
     position: relative;
 }
 
+.btnsubend {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+
 .btn-primary {
     font-size: 14px;
     line-height: 1.17648;
@@ -1059,6 +1065,7 @@ a {
     border: 1px solid transparent;
     border-radius: 40px;
     min-width: 98px;
+    max-width: 150px;
     height: 38px;
     padding: 0 15px;
     outline: none;

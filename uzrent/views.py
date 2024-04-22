@@ -575,22 +575,25 @@ def room_edit(request, id):
     if request.method == "POST":
         room.title = request.POST.get("title", room.title)
         room.description = request.POST.get("description", room.description)
-        room.city = request.POST.get("city", room.city)
         room.price = request.POST.get("price", room.price)
+        
+        room.city = request.POST.get("city", room.city)
         room.address = request.POST.get("address", room.address)
+        
         room.guests = request.POST.get("guests", room.guests)
         room.beds = request.POST.get("beds", room.beds)
         room.bedrooms = request.POST.get("bedrooms", room.bedrooms)
         room.baths = request.POST.get("baths", room.baths)
+
         room.check_in = request.POST.get("check_in", room.check_in)
         room.check_out = request.POST.get("check_out", room.check_out)
-        room.room_type_id = request.POST.get("room_type", room.room_type_id)
+        # room.room_type_id = request.POST.get("room_type", room.room_type_id)
         room.location = f'{request.POST.get("latitudeEdit", room.fst_loc)},{request.POST.get("longitudeEdit", room.sec_loc)}'
 
         room.save()
 
         return redirect("user_profile", request.user)
-    return render(request, "temps/room_edit.html", {"room": room})
+    return render(request, "basic/room_edit.html", {"room": room})
 
 
 def room_detail(request, room_id):

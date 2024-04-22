@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Create new room{% endblock %}
+
+{% block content %}
+<div class="brief-name">Create new room</div>
+<div class="hr"></div>
+<div class="rmce">
+    <div class="rmleft">
+        {% if request.user.profile.avatar.url != null %}
+        <img src="{{request.user.profile.avatar.url}}" alt="" class="pp">
+        {% else %}
+        <div class="pp" style="background: linear-gradient({{request.user.profile.avatar_default}});">
+            <div class="grcn">
+                {{request.user.profile.name|slice:"0:1"}}
+            </div>
+        </div>
+        {% endif %}
+        <div class="b-names-col">
+            <div class="b-name">{{request.user.profile.name}}</div>
+            <div class="b-usname">@{{request.user.username}}</div>
+        </div>
+    </div>
+    <form action="{% url 'room_edit' room.id %}" method="POST" class="cecol" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" id="latitude" name="latitude" value="{{room.fst_loc}}">
+        <input type="text" id="longitude" name="longitude" value="{{room.sec_loc}}">
+
+        <div class="rcrflex">
+            <input type="text" id="title" name="title" placeholder="Room's title" value="{{room.title}}">
+
+            <input type="number" id="price" name="price" placeholder="Price" value="{{room.price}}">
+        </div>
+        <textarea id="description" name="description" class="descarea"
+            placeholder="Description">{{room.description}}</textarea>
+        <input type="text" id="address" name="address" placeholder="Address" value="{{room.address}}">
+
+        <div class="rcrflex">
+            <div class="leftrcr">
+                <select class="room-cy" id="city" name="city">
+                    <option value="{{ room.city }}">{{ room.city }}</option>
+                </select>
+                <input class="hmin" type="number" id="guests" name="guests" placeholder="Guests"
+                    value="{{room.guests}}">
+                <input class="hmin" type="number" id="beds" name="beds" placeholder="Beds" value="{{room.beds}}">
+                <input class="hmin" type="number" id="bedrooms" name="bedrooms" placeholder="Bedrooms"
+                    value="{{room.bedrooms}}">
+                <input class="hmin" type="number" id="baths" name="baths" placeholder="Baths" value="{{room.baths}}">
+            </div>
+            <div class="rightrcr">
+                <div id="map" style="width: 100%; height: 180px; border-radius: 12px;"></div>
+            </div>
+        </div>
+
+        <input type="file" id="roomimginp" name="image" accept="image/jpg, image/jpeg, image/png">
+        <div id="image-preview-container"></div>
+
+        <div class="rcrflex">
+            <input type="date" name="check_in" value="{{room.check_in|date:'Y-m-d'}}">
+            <input type="date" name="check_out" value="{{room.check_out|date:'Y-m-d'}}">
+        </div>
+        <div class="btnsubend">
+            <button type="submit" class="btn-primary">Edit room</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
