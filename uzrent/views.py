@@ -6,6 +6,8 @@ from .models import (
     Bookmark,
     Notification,
     Booking,
+    Image,
+    Region_Choices,
 )
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
@@ -161,7 +163,7 @@ def book_room(request, room_id):
         if not check_in_str or not check_out_str:
             # Handle case where check_in or check_out is not provided
             messages.error(request, "Please provide both check-in and check-out dates.")
-            return render(request, "basic/post.html", {"room": room})
+            return render(request, "basic/room.html", {"room": room})
 
         check_in = datetime.strptime(check_in_str, "%Y-%m-%d").date()
         check_out = datetime.strptime(check_out_str, "%Y-%m-%d").date()
@@ -228,7 +230,7 @@ def book_room(request, room_id):
                 )
         else:
             messages.info(request, "You can't book your own room")
-    return render(request, "basic/post.html", {"room": room})
+    return render(request, "basic/room.html", {"room": room})
 
 
 def confirm_room(request, noty_id):
@@ -496,11 +498,14 @@ def avatarDelete(request):
 
 
 def room_create(request):
+    regions = Region_Choices
     if request.user.is_authenticated:
         if request.method == "POST":
             host = request.user
+
             title = request.POST.get("title")
             description = request.POST.get("description")
+
             city = request.POST.get("city")
             price = request.POST.get("price")
             address = request.POST.get("address")
@@ -516,8 +521,10 @@ def room_create(request):
             room_type_id = request.POST.get("room_type")
             amenities = request.POST.getlist("amenities")
             house_rules = request.POST.getlist("house_rules")
+
             latitude = request.POST.get("latitude")
             longitude = request.POST.get("longitude")
+            location = f"{latitude},{longitude}"
 
             # Convert check_in and check_out to datetime objects
             check_in = datetime.strptime(check_in, "%Y-%m-%d")
@@ -535,21 +542,22 @@ def room_create(request):
                 beds=beds,
                 bedrooms=bedrooms,
                 baths=baths,
+                location=location,
                 check_in=check_in,
                 check_out=check_out,
                 room_type_id=room_type_id,
-                location=(latitude, longitude),
             )
 
-            # Add amenities
-            room.amenities.add(*amenities)
+            for file in request.FILES.getlist("image"):
+                img = Image.objects.create(file=file)
+                room.images.add(img)
 
-            # Add house rules
+            room.amenities.add(*amenities)
             room.house_rules.add(*house_rules)
 
             # Redirect to room detail view
             return redirect("room_detail_url", room_id=room.pk)
-        return redirect("home")
+        return render(request, "basic/room_create.html", {"regions": regions})
     return redirect("signin")
 
 
@@ -563,20 +571,26 @@ def room_delete(request, id):
 
 
 def room_edit(request, id):
-    room = Room.objects.get(id__exact=id)
-    current = request.POST.get("current")
-    if request.user.id == room.user.id:
-        if request.method == "POST":
-            text = request.POST.get("text")
-            if request.POST.get("text") != room.text:
-                room.text = text
-                room.edited = True
-                room.save()
-                messages.info(request, "Your post has been edited")
-            else:
-                return HttpResponseRedirect(current)
-        return HttpResponseRedirect(current)
-    return HttpResponseRedirect(current)
+    room = Room.objects.get(pk=id)
+    if request.method == "POST":
+        room.title = request.POST.get("title", room.title)
+        room.description = request.POST.get("description", room.description)
+        room.city = request.POST.get("city", room.city)
+        room.price = request.POST.get("price", room.price)
+        room.address = request.POST.get("address", room.address)
+        room.guests = request.POST.get("guests", room.guests)
+        room.beds = request.POST.get("beds", room.beds)
+        room.bedrooms = request.POST.get("bedrooms", room.bedrooms)
+        room.baths = request.POST.get("baths", room.baths)
+        room.check_in = request.POST.get("check_in", room.check_in)
+        room.check_out = request.POST.get("check_out", room.check_out)
+        room.room_type_id = request.POST.get("room_type", room.room_type_id)
+        room.location = f'{request.POST.get("latitudeEdit", room.fst_loc)},{request.POST.get("longitudeEdit", room.sec_loc)}'
+
+        room.save()
+
+        return redirect("user_profile", request.user)
+    return render(request, "temps/room_edit.html", {"room": room})
 
 
 def room_detail(request, room_id):
@@ -590,7 +604,7 @@ def room_detail(request, room_id):
     num_o_days = (room.check_out - room.check_in).days
     return render(
         request,
-        "basic/post.html",
+        "basic/room.html",
         {
             "room": room,
             "booked_dates": booked_dates,

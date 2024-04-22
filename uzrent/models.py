@@ -80,23 +80,6 @@ def avatarColorDefault():
     return random.choice(combines)
 
 
-ROOM_CITY_CHOICES = (
-    ("TASHKENT", "Tashkent"),
-    ("ANDIJAN", "Andijan"),
-    ("BUKHARA", "Bukhara"),
-    ("FERGANA", "Fergana"),
-    ("JIZZAKH", "Jizzakh"),
-    ("NAMANGAN", "Namangan"),
-    ("NAVOIY", "Navoiy"),
-    ("KARSHI", "Karshi"),
-    ("SAMARKAND", "Samarkand"),
-    ("GULISTON", "Guliston"),
-    ("TERMEZ", "Termez"),
-    ("NURAFSHON", "Nurafshon"),
-    ("URGENCH", "Urgench"),
-    ("NUKUS", "Nukus"),
-)
-
 Region_Choices = (
     ("TASHKENT", "Tashkent"),
     ("ANDIJAN", "Andijan"),
@@ -171,22 +154,23 @@ class HouseRule(models.Model):
         return self.rule
 
 
-class Photo(models.Model):
-    file = models.ImageField(upload_to="room_photos")
-    room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
+class Image(models.Model):
+    file = models.FileField(upload_to="room/images")
+    # room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Photo"
-        verbose_name_plural = "Photos"
+        verbose_name = "Image"
+        verbose_name_plural = "Images"
 
     def __str__(self):
-        return "Photo of the object: " + str(self.room)
+        return self.file.name
 
 
 class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     title = models.CharField(max_length=150, null=True)
     description = models.TextField("Description")
+    images = models.ManyToManyField("Image", blank=True)
     city = models.CharField(
         max_length=200, null=True, choices=Region_Choices, default="Tashkent"
     )
@@ -263,14 +247,14 @@ class Room(models.Model):
 
     def first_photo(self):
         try:
-            (photo,) = self.photos.all()[:1]
-            return photo.file.url
+            image = self.images.first()
+            return image.file.url
         except Exception:
             return None
 
     def all_photos(self):
-        photos = self.photos.all()
-        return photos
+        images = self.images.all()
+        return images
 
     def fst_loc(self):
         txt = [i for i in self.location.split(",")]
@@ -287,7 +271,7 @@ class Room(models.Model):
             + "@"
             + self.host.username
             + " | "
-            + (self.city + " ")
+            + ("Tashkent" + " ")
             + " | "
             + str(self.date.strftime("%Y-%m-%d"))
         )

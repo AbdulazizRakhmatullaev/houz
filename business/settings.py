@@ -82,27 +82,27 @@ WSGI_APPLICATION = "business.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # -- for postgresql
-# DB_NAME = "uzrent"
-# DB_USER = "abdu"
-# DB_PASSWORD = "1528"
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": DB_NAME,
-#         "USER": DB_USER,
-#         "PASSWORD": DB_PASSWORD,
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#     }
-# }
-
-# -- for sqlite
+DB_NAME = "uzrent"
+DB_USER = "abdu"
+DB_PASSWORD = "1528"
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
+
+# -- for sqlite
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # Password validation
@@ -163,3 +163,5 @@ LOCATION_FIELD = {
 }
 
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+# GDAL_LIBRARY_PATH = "/opt/homebrew/bin/gdalinfo"
+# GEOS_LIBRARY_PATH = '/opt/homebrew/Cellar/geos/3.12.1/lib/libgeos_c.dylib'

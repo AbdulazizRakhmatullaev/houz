@@ -13,7 +13,7 @@ class saveAs(admin.ModelAdmin):
 admin.site.register(Profile, Profile_list)
 admin.site.register(Rating)
 admin.site.register(Room, saveAs)
-admin.site.register(Photo)
+admin.site.register(Image)
 admin.site.register(Amenity)
 admin.site.register(HouseRule)
 admin.site.register(RoomType)

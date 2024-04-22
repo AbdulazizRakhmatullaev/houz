@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="room-title">
+    <div class="brief-left-info">
+        <div class="detailed-ci-cy">
+            {{ room.get_city_display }}, Uzbekistan
+        </div>
+        <div class="brief-name">
+            {{ room.title }}
+        </div>
+        <div class="howmany">
+            {{room.how_many|safe}}
+        </div>
+    </div>
+    <div class="brief-right-info">
+        {% if room.average_rating >= 4.0 %}
+        <div class="brief-info-col-itm">
+            <div class="briefmsg">
+                Most people recommend this place!
+            </div>
+        </div>
+        {% endif %}
+        <a href="#room-reviews-content" class="brief-info-col-itm">
+            {{room.average_rating}} ({{room.rating_set.count}})
+            <div class="r-stars">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                    <path fill="currentColor"
+                        d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                    <path fill="currentColor"
+                        d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                    <path fill="currentColor"
+                        d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                    <path fill="currentColor"
+                        d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+                    <path fill="currentColor"
+                        d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                </svg>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="fl-spbn">
+    <div class="left-info-column">
+        <!-- Your HTML template -->
+        <div id="myCarousel" class="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                {% for photo in room.all_photos %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{photo.file.url}}" alt="" class="each-image">
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Left and right controls -->
+            {% if room.all_photos|length > 1 %}
+            <span class="carousel-control-prev" role="button" onclick="prevSlide()">
+                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="m15.8839 18.1161c.4881.4882.4881 1.2796 0 1.7678-.4882.4881-1.2796.4881-1.7678 0l-6.99998-7c-.48816-.4882-.48816-1.2796 0-1.7678l6.99998-6.99998c.4882-.48816 1.2796-.48816 1.7678 0 .4881.48815.4881 1.27961 0 1.76776l-6.11613 6.11612z"
+                        fill="currentColor" />
+                </svg>
+            </span>
+            <span class="carousel-control-next" role="button" onclick="nextSlide()">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="m14.2322 12-6.11608-6.11612c-.48816-.48815-.48816-1.27961 0-1.76776.48815-.48816 1.27961-.48816 1.76776 0l7.00002 6.99998c.4881.4882.4881 1.2796 0 1.7678l-7.00002 7c-.48815.4881-1.27961.4881-1.76776 0-.48816-.4882-.48816-1.2796 0-1.7678z"
+                        fill="currentColor" />
+                </svg>
+            </span>
+            {% endif %}
+        </div>
+        <div class="host-info">
+            <a href="{% url 'user_profile' room.host.username %}">
+                {% if room.host.profile.avatar.url != null %}
+                <img src="{{room.host.profile.avatar.url}}" alt="" class="detpp">
+                {% else %}
+                <div class="detpp" style="background: linear-gradient({{room.host.profile.avatar_default}});">
+                    <div class="detgrcn">
+                        {{room.host.profile.name|slice:"0:1"}}
+                    </div>
+                </div>
+                {% endif %}
+            </a>
+            <div class="n-d">
+                <a href="{% url 'user_profile' room.host.username %}" class="host-name">
+                    {{room.host.profile.name}}
+                </a>
+                <div class="host-date">
+                    Joinded {{room.host.profile.created_at|date:"N Y"}}
+                </div>
+            </div>
+        </div>
+        <div class="info-title">Description</div>
+        <div class="desc info-col">
+            {{room.description}}
+        </div>
+        <div class="info-title">Amenities</div>
+        <div class="amenities-col info-col">
+            {% for amenity in room.amenities.all %}
+            <div class="amenity">
+                {{amenity}}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="info-title">Reviews</div>
+        <div id="room-reviews-content">
+            {% for review in reviews %}
+            <div class="review">
+                <a href="{% url 'user_profile' review.user.username %}">
+                    {% if review.user.profile.avatar.url != null %}
+                    <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+                    {% else %}
+                    <div class="pp" style="background: linear-gradient({{review.user.profile.avatar_default}});">
+                        <div class="grcn">
+                            {{review.user.profile.name|slice:"0:1"}}
+                        </div>
+                    </div>
+                    {% endif %}
+                </a>
+                <div class="n-d">
+                    <div class="n-stayed">
+                        <a href="{% url 'user_profile' review.user.username %}"
+                            class="reviewer-name">{{review.user.profile.name}}</a>
+                        <div class="spr">•</div>
+                        <div class="review-date">{{review.get_date}}</div>
+                    </div>
+                    <!--  -->
+                    <div class="r-stars">
+                        {{review.user_ratings|safe}}
+                    </div>
+                    <div class="review-text">{{review.review_text}}</div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="infotxt">No reviews yet...</div>
+            {% endfor %}
+        </div>
+        <div class="info-title">Where it's located</div>
+        <iframe class="room-location"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11324.341457033126!2d{{room.sec_loc}}!3d{{room.fst_loc}}64999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2s!4v1709273944040!5m2!1sen!2s"
+            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="right-info-column">
+        <div class="sticky-right-col">
+            <div class="price-info">
+                <span class="room-price">From {{room.get_price}} soums/night</span>
+            </div>
+            <form action="{% url 'book_room' room.id %}" method="post">
+                {% csrf_token %}
+                <div class="check-inNout">
+                    <div class="check-io">
+                        <span class="small-title">Check-in</span>
+                        <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}'
+                            min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
+                    </div>
+                    <div class="check-io">
+                        <span class="small-title">Check-out</span>
+                        <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}'
+                            min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
+                    </div>
+                </div>
+                <div class="payment">
+                    <button class="btn" id="message-btn">Reserve it</button>
+                </div>
+            </form>
+            <div class="payment">
+                <div class="pricing-col">
+                    <div class="left-text">{{room.get_price}} soums x{{room.num_o_days}} nights</span></div>
+                    <div class="right-text">{{room.count_nights_price}} soums</div>
+                </div>
+                <div class="pricing-col">
+                    <div class="left-text">Uzrent fee</span></div>
+                    <div class="right-text">{{room.fee}} soums</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var bookedDates = {{ booked_dates|safe }};
+        var checkInInput = document.querySelector('input[name="check_in"]');
+        var checkOutInput = document.querySelector('input[name="check_out"]');
+
+        function isDateBooked(dateString) {
+            for (var i = 0; i < bookedDates.length; i++) {
+                var startDate = new Date(bookedDates[i][0]);
+                var endDate = new Date(bookedDates[i][1]);
+                var currentDate = new Date(dateString);
+                if (currentDate >= startDate && currentDate <= endDate) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Disable booked dates in the check-in input
+        checkInInput.addEventListener('input', function() {
+            var selectedDate = checkInInput.value;
+            if (isDateBooked(selectedDate)) {
+                checkInInput.setCustomValidity('This date is already booked.');
+            } else {
+                checkInInput.setCustomValidity('');
+            }
+        });
+
+        // Disable booked dates in the check-out input
+        checkOutInput.addEventListener('input', function() {
+            var selectedDate = checkOutInput.value;
+            if (isDateBooked(selectedDate)) {
+                checkOutInput.setCustomValidity('This date is already booked.');
+            } else {
+                checkOutInput.setCustomValidity('');
+            }
+        });
+    });
+</script>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-item');
+    const totalSlides = slides.length;
+    const prevArrow = document.querySelector('.carousel-control-prev');
+    const nextArrow = document.querySelector('.carousel-control-next');
+
+    function showSlide(index) {
+        slides[currentSlide].classList.remove('active');
+        slides[index].classList.add('active');
+        currentSlide = index;
+        updateCarouselPosition();
+        updateArrowVisibility();
+    }
+
+    function prevSlide() {
+        let index = (currentSlide - 1 + totalSlides) % totalSlides;
+        showSlide(index);
+    }
+
+    function nextSlide() {
+        let index = (currentSlide + 1) % totalSlides;
+        showSlide(index);
+    }
+
+    function updateCarouselPosition() {
+        const position = -currentSlide * 100;
+        document.querySelector('.carousel-inner').style.transform = `translateX(${position}%)`;
+    }
+
+    function updateArrowVisibility() {
+        if (currentSlide === 0) {
+            prevArrow.style.display = 'none'; // Hide previous arrow when on the first slide
+        } else {
+            prevArrow.style.display = 'grid'; // Show previous arrow otherwise
+        }
+        if (currentSlide === totalSlides - 1) {
+            nextArrow.style.display = 'none'; // Hide next arrow when on the last slide
+        } else {
+            nextArrow.style.display = 'grid'; // Show next arrow otherwise
+        }
+    }
+
+    // Call updateArrowVisibility() once the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+        updateArrowVisibility();
+    });
+</script>
+{% endblock %}

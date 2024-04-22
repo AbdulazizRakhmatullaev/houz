@@ -22,7 +22,7 @@
                     {{room.average_rating}}
                 </div>
             </div>
-            <div class="in-out">{{room.get_dates}}</div>
+            <div class="in-out">{{room.check_in|date:"M d"}} - {{room.check_out|date:"M d"}}</div>
             <div class="r-price">{{room.get_price}} soums night</div>
         </div>
         <div class="room-img">

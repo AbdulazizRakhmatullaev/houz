@@ -79,8 +79,8 @@ a {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    row-gap: 24px;
-    column-gap: 24px;
+    row-gap: 26px;
+    column-gap: 14px;
 }
 
 .room {
@@ -91,7 +91,7 @@ a {
     position: relative;
     overflow: hidden;
     background-color: #fff;
-    border-radius: 12px;
+    border-radius: 23px;
     width: 100%;
     height: 19rem;
     white-space: normal;
@@ -622,6 +622,8 @@ a {
 }
 
 .spr {
+    display: flex;
+    align-items: center;
     line-height: 18px;
     margin: 0 4px;
     font-size: 12px;
@@ -1531,30 +1533,8 @@ input:not(:focus):valid~.floating-label {
     flex-direction: column;
     background-color: #fff;
     border: 1px solid #e8e8ed;
-    border-radius: 12px;
+    border-radius: 23px;
     overflow: hidden;
-}
-
-.bookdel {
-    cursor: pointer;
-    /* position: absolute;
-    top: 15px;
-    right: 15px; */
-    height: 30px;
-    width: 30px;
-    font-size: 20px;
-    padding: 4px;
-    box-sizing: border-box;
-    display: grid;
-    place-items: center;
-    background: #ffffff;
-    border: 1px solid #e8e8ed;
-    border-radius: 50%;
-    margin-left: 5px;
-}
-
-.bookdel:hover {
-    background: #e8e8ed;
 }
 
 .bookeduser {
@@ -1570,6 +1550,7 @@ input:not(:focus):valid~.floating-label {
 
 .bkdusercol {
     display: flex;
+    gap: 5px;
 }
 
 .bookedroom {
@@ -1581,10 +1562,6 @@ input:not(:focus):valid~.floating-label {
     height: 9rem;
     white-space: normal;
     box-sizing: border-box;
-}
-
-.b-names-col {
-    margin-left: 10px;
 }
 
 .b-name {
@@ -1600,7 +1577,7 @@ input:not(:focus):valid~.floating-label {
 .checkio {
     display: flex;
     align-items: start;
-    gap: 16px;
+    gap: 11px;
     padding: 15px;
     padding-top: 0;
 }
@@ -1622,15 +1599,48 @@ input:not(:focus):valid~.floating-label {
     display: flex;
     justify-content: space-between;
     gap: 5px;
-    width: 500px;
+    width: 100%;
     box-sizing: border-box;
 }
 
-.cecol {
+.rmedit {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    width: 550px;
+    box-sizing: border-box;
+}
+
+.editcol {
     width: calc(100% - 28px);
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.cecol {
+    width: calc(100% - 230px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cecol input {
+    width: 100%;
+    height: 30px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #e8e8ed;
+    padding: 4px 7px;
+}
+
+.editcol input {
+    width: 100%;
+    height: 30px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #e8e8ed;
+    padding: 4px 7px;
 }
 
 .signup-col,
@@ -1664,7 +1674,7 @@ input:not(:focus):valid~.floating-label {
     overflow-y: hidden;
     display: flex;
     flex-wrap: nowrap;
-    gap: 24px;
+    gap: 14px;
 }
 
 .p-rooms::-webkit-scrollbar {
@@ -1679,12 +1689,15 @@ input:not(:focus):valid~.floating-label {
     position: relative;
     overflow: hidden;
     background-color: #fff;
-    border-radius: 12px;
-    min-width: 262px;
+    border-radius: 23px;
+    min-width: 245px;
+    max-width: 245px;
     height: 19rem;
     white-space: normal;
     border: 1px solid #e8e8ed;
     box-sizing: border-box;
+    /* box-shadow: 2px 4px 12px rgba(0, 0, 0, .08);
+    transition: all .3s cubic-bezier(0, 0, .5, 1); */
 }
 
 .p-info-title {
@@ -1700,38 +1713,40 @@ input:not(:focus):valid~.floating-label {
     gap: 10px;
 }
 
-.rmdel {
-    cursor: pointer;
+.roomtools {
     position: absolute;
     top: 15px;
     right: 15px;
-    height: 24px;
-    width: 24px;
-    font-size: 15px;
+    display: flex;
+    gap: 5px;
+}
+
+.objdel svg {
+    height: 15px;
+    width: 15px;
+    vertical-align: middle;
+}
+
+.objdel {
+    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    font-size: 20px;
     box-sizing: border-box;
     display: grid;
     place-items: center;
     background: #ffffff;
-    border: none;
+    border: 1px solid #e8e8ed;
     border-radius: 50%;
 }
 
-.rmdel:hover {
+.objdel:hover {
     background: #e8e8ed;
-}
-
-.cecol input {
-    width: 100%;
-    height: 30px;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid #e8e8ed;
-    padding: 4px 7px;
 }
 
 .descarea {
     width: 100%;
-    height: 50px;
+    height: 90px;
     resize: none;
     border-radius: 6px;
     border: 1px solid #e8e8ed;
@@ -1740,7 +1755,84 @@ input:not(:focus):valid~.floating-label {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.room-cy {
+    width: 100%;
+    height: 30px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #e8e8ed;
+    padding: 4px 3px;
+    color: grey;
+}
+
+#image-preview-container {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+    gap: 7px
+}
+
+#image-preview-container::-webkit-scrollbar {
+    display: none;
+}
+
+.image-container {
+    position: relative;
+    min-width: 240px;
+    max-width: 240px;
+    height: 130px;
+    display: flex;
+    gap: 5px;
+}
+
+.cancelimg {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    padding: 4px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(0, 0, 0, .5);
+    font-size: 18px;
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    vertical-align: middle;
+    object-fit: cover;
+    border: 1px solid #e8e8ed;
+}
+
 .rcrflex {
     display: flex;
     gap: 5px;
+}
+
+.leftrcr {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    justify-content: space-between;
+}
+
+.rightrcr {
+    width: calc(100% - 100px);
+}
+
+.rmleft {
+    display: flex;
+    gap: 5px;
+    width: 230px;
 }

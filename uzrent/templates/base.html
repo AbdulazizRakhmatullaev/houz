@@ -10,27 +10,18 @@
     <link rel="icon" type="image/x-icon" href="../../media/important/uzrent.png" />
 
     <link rel="stylesheet" href="{% static 'base.css' %}" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
 </head>
 
 <body>
     {% if messages %} {% for message in messages %}
     <div id="toast-position">
         <div class="toast">
-            <p>{{ message }}</p>    
+            <p>{{ message }}</p>
         </div>
     </div>
     {% endfor %} {% endif %}
-    <div id="roomModal" class="modal">
-        <div class="modal-content">
-            <div class="container">
-                <div class="modal-title">
-                    Add a room
-                    <span onclick="closeRoomModal()" class="close modalclose">&times;</span>
-                </div>
-                {% include 'temps/room_create.html' %}
-            </div>
-        </div>
-    </div>
     <div id="signinModal" class="modal">
         <div class="modal-content">
             <div class="container">
@@ -71,7 +62,7 @@
                 {% if user.is_authenticated %}
                 <ul class="row-content" style="width: 140px;">
                     <li class="createroom">
-                        <div class="nav-icn" onclick="openRoomModal()">
+                        <div class="nav-icn" onclick="location.href='/room/create';">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
                                 viewBox="0 0 28 28">
                                 <path fill-rule="evenodd"
@@ -170,9 +161,168 @@
 
     <!--  -->
     <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+
+        var initialLatitude = parseFloat(document.getElementById('latitudeEdit').value);
+        var initialLongitude = parseFloat(document.getElementById('longitudeEdit').value);
+
+        var map2 = new mapboxgl.Map({
+            container: 'map2',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
+            zoom: 13
+        });
+
+        // Add zoom and unzoom controls
+        map2.addControl(new mapboxgl.NavigationControl());
+
+        // Add geolocate control to the map2
+        var geolocate = new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        });
+
+        map2.addControl(geolocate);
+
+        // Create marker
+        var marker = new mapboxgl.Marker({
+            draggable: true
+        }).setLngLat([initialLongitude, initialLatitude]).addTo(map2);
+
+        // Update marker's position when the user's location changes
+        geolocate.on('geolocate', function (event) {
+            var lngLat = [event.coords.longitude, event.coords.latitude];
+            marker.setLngLat(lngLat);
+            document.getElementById('latitudeEdit').value = lngLat[1];
+            document.getElementById('longitudeEdit').value = lngLat[0];
+        });
+
+        // Update input fields when marker is dragged
+        marker.on('dragend', function () {
+            var lngLat = marker.getLngLat();
+            document.getElementById('latitudeEdit').value = lngLat.lat;
+            document.getElementById('longitudeEdit').value = lngLat.lng;
+        });
+
+        // Update marker's position when the user double-clicks on the map2
+        map2.on('dblclick', function (event) {
+            marker.setLngLat(event.lngLat);
+            document.getElementById('latitudeEdit').value = event.lngLat.lat;
+            document.getElementById('longitudeEdit').value = event.lngLat.lng;
+        });
+    </script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [69.2775, 41.3103], // Tashkent, Uzbekistan
+            zoom: 12
+        });
+
+        // Add zoom and unzoom controls
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Add geolocate control to the map
+        var geolocate = new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        });
+
+        map.addControl(geolocate);
+
+        // Create marker
+        var marker = new mapboxgl.Marker({
+            draggable: true
+        }).setLngLat([69.2775, 41.3103]).addTo(map);
+
+        // Update marker's position when the user's location changes
+        geolocate.on('geolocate', function (event) {
+            var lngLat = [event.coords.longitude, event.coords.latitude];
+            marker.setLngLat(lngLat);
+            document.getElementById('latitude').value = lngLat[1];
+            document.getElementById('longitude').value = lngLat[0];
+        });
+
+        // Update input fields when marker is dragged
+        marker.on('dragend', function () {
+            var lngLat = marker.getLngLat();
+            document.getElementById('latitude').value = lngLat.lat;
+            document.getElementById('longitude').value = lngLat.lng;
+        });
+
+        // Update marker's position when the user double-clicks on the map
+        map.on('dblclick', function (event) {
+            marker.setLngLat(event.lngLat);
+            document.getElementById('latitude').value = event.lngLat.lat;
+            document.getElementById('longitude').value = event.lngLat.lng;
+        });
+    </script>
+    <script>
         function confirmReq() {
             return confirm('You sure?');
         }
+    </script>
+    <script>
+        // Get today's date
+        var today = new Date();
+
+        // Format the date as YYYY-MM-DD
+        var formattedDate = today.toISOString().substr(0, 10);
+
+        // Set the value of the input field to today's date
+        document.getElementById("check_in").value = formattedDate;
+        document.getElementById("check_out").value = formattedDate;
+    </script>
+    <script>
+        const selectedImages = [];
+
+        document.getElementById('roomimginp').addEventListener('change', function (event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('image-preview-container');
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const image = document.createElement('img');
+                    image.src = e.target.result;
+                    image.classList.add('preview-image');
+                    const deleteButton = document.createElement('div');
+                    deleteButton.innerHTML = '&times;';
+                    deleteButton.classList.add('cancelimg');
+                    deleteButton.addEventListener('click', function () {
+                        previewContainer.removeChild(container);
+                        const index = selectedImages.indexOf(image.src);
+                        if (index !== -1) {
+                            selectedImages.splice(index, 1);
+                        }
+                    });
+                    const container = document.createElement('div');
+                    container.classList.add('image-container');
+                    container.appendChild(image);
+                    container.appendChild(deleteButton);
+                    previewContainer.appendChild(container);
+                    selectedImages.push(image.src);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('add-image-button').addEventListener('click', function () {
+            document.getElementById('roomimginp').click();
+        });
+
+        document.getElementById('room-form').addEventListener('submit', function (event) {
+            const imageListInput = document.createElement('input');
+            imageListInput.type = 'hidden';
+            imageListInput.name = 'image_list';
+            imageListInput.value = JSON.stringify(selectedImages);
+            event.target.appendChild(imageListInput);
+        });
     </script>
     <!-- <script>
         $(document).ready(function () {
@@ -262,14 +412,22 @@
     <script>
         const signinModal = document.getElementById("signinModal");
         const signupModal = document.getElementById("signupModal");
-        const roomModal = document.getElementById("roomModal");
+        const roomCreateModal = document.getElementById("roomCreateModal");
+        const roomEditModal = document.getElementById("roomEditModal");
 
-        // room
-        function openRoomModal() {
-            roomModal.classList.add("show");
+        // Create room
+        function openRoomCreateModal() {
+            roomCreateModal.classList.add("show");
         }
-        function closeRoomModal() {
-            roomModal.classList.remove("show");
+        function closeRoomCreateModal() {
+            roomCreateModal.classList.remove("show");
+        }
+        // Edit room
+        function openRoomEditModal() {
+            roomEditModal.classList.add("show");
+        }
+        function closeRoomEditModal() {
+            roomEditModal.classList.remove("show");
         }
         // signin
         function openSigninModal() {
