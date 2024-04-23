@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="p-col">
+    <div class="left-pp-col">
+        <div class="p-main">
+            <div class="p-first">
+                {% if user.profile.avatar.url != null %}
+                <img src="{{user.profile.avatar.url}}" alt="" class="uspp">
+                {% else %}
+                <div class="uspp" style="background: linear-gradient({{user.profile.avatar_default}});">
+                    <div class="usgrcn">
+                        {{user.profile.name|slice:"0:1"}}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="p-names-col">
+                    <div class="p-name">{{user.profile.name}}</div>
+                    <div class="p-usname">@{{user.username}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-p-col">
+        <div class="user-roomscol">
+            <div class="p-info-title">Rooms</div>
+            <div class="hr"></div>
+            <div class="p-rooms">
+                {% for room in rooms %}
+                <div class="p-room">
+                    <div class="roomtools">
+                        <button class="objdel" onclick="location.href='@{{request.user.username}}/rooms/{{room.id}}/edit';">
+                            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="write_24">
+                                        <polygon id="Shape" points="0 0 24 0 24 24 0 24"></polygon>
+                                        <path
+                                            d="M14.1882588,6.27301517 L17.7278487,9.81260506 L9.10415743,18.4354891 C8.33089999,19.2086803 7.3795132,19.7800394 6.33365949,20.0993225 L3.43116121,20.9854108 C3.2548849,21.0392252 3.06835948,20.9399503 3.01454502,20.763674 C2.99515549,20.700161 2.99515549,20.6323075 3.01454502,20.5687946 L3.90054461,17.6665868 C4.21988422,16.620548 4.79138805,15.6690125 5.5647823,14.8956845 L14.1882588,6.27301517 Z M15.2489686,5.21240463 L17.017722,3.44381677 C17.6035158,2.85807317 18.5532282,2.85809351 19.1389969,3.4438622 L20.5573573,4.86204088 C21.1431438,5.44782732 21.1431438,6.39757479 20.5573573,6.98336123 C20.5573422,6.98337637 20.5573271,6.98339152 20.5573119,6.98340666 L18.7885585,8.75199452 L15.2489686,5.21240463 Z"
+                                            id="Mask" fill="currentColor"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </button>
+                        <form action="{% url 'room_delete' room.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="objdel" type="submit" onclick="return confirmReq()">&times;</button>
+                        </form>
+                    </div>
+                    <a href="{% url 'room_detail_url' room.id %}">
+                        <div class="room-info">
+                            <div class="ci-cy">
+                                {{ room.get_city_display }}
+                            </div>
+                            <div class="in-out">{{room.check_in|date:"M d"}} - {{room.check_out|date:"M d"}}</div>
+                            <div class="fl-spbn">
+                                <div class="r-price">{{room.get_price}} soums night</div>
+                                <div class="rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                        viewBox="0 0 16 16">
+                                        <path fill="currentColor"
+                                            d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
+                                    </svg>
+                                    {{room.average_rating}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-img">
+                            {% if room.first_photo != Null %}
+                            <img src="{{room.first_photo}}" alt="">
+                            {% else %}
+                            no image
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="user-revscol">
+            <div class="p-info-title">Reviews</div>
+            <div class="hr"></div>
+            <div id="room-reviews-content">
+                {% for review in reviews %}
+                <div class="review">
+                    <div class="revleft">
+                        <a href="{% url 'user_profile' review.user.username %}">
+                            {% if review.user.profile.avatar.url != null %}
+                            <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+                            {% else %}
+                            <div class="pp"
+                                style="background: linear-gradient({{review.user.profile.avatar_default}});">
+                                <div class="grcn">
+                                    {{review.user.profile.name|slice:"0:1"}}
+                                </div>
+                            </div>
+                            {% endif %}
+                            <a href="{% url 'room_detail_url' review.room.id %}" class="nav-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                                    viewBox="0 0 28 28">
+                                    <path
+                                        d="m24 11.15-8.9-8.5c-.6-.6-1.6-.6-2.3 0l-8.9 8.5c-.6.6-.9 1.4-.9 2.2v8.6c0 1.4 1.1 2.5 2.5 2.5h6c.6 0 1-.4 1-1v-7h3v7c0 .6.4 1 1 1h6c1.4 0 2.5-1.1 2.5-2.5v-8.6c0-.8-.4-1.6-1-2.2Zm-1 10.8c0 .3-.2.5-.5.5h-5v-7c0-.6-.4-1-1-1h-5c-.6 0-1 .4-1 1v7h-5c-.3 0-.5-.2-.5-.5v-8.6c0-.3.1-.5.3-.7l8.7-8.3 8.7 8.3c.2.2.3.5.3.7v8.6Z" />
+                                </svg>
+                            </a>
+                        </a>
+                    </div>
+                    <div class="n-d">
+                        <div class="n-stayed">
+                            <a href="{% url 'user_profile' review.user.username %}"
+                                class="reviewer-name">{{review.user.profile.name}}</a>
+                            <div class="spr">•</div>
+                            <div class="review-date">{{review.get_date}}</div>
+                        </div>
+                        <!--  -->
+                        <div class="r-stars">
+                            {{review.user_ratings|safe}}
+                        </div>
+                        <div class="review-text">{{review.review_text}}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="infotxt">No reviews yet...</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

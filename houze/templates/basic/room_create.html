@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Create new room{% endblock %}
+
+{% block content %}
+<div class="brief-name">Create new room</div>
+<div class="hr"></div>
+<form action="{% url 'room_create' %}" method="POST" class="cecol" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" id="latitude" name="latitude" value="41.3103">
+    <input type="hidden" id="longitude" name="longitude" value="69.2775">
+
+    <div class="rmleft">
+        <div id="map" style="width: 100%; height: 250px; border-radius: 12px;"></div>
+        <div id="image-preview-container"></div>
+    </div>
+    <div class="rmright">
+        <div class="rcrflex">
+            <div class="lbld">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Title">
+            </div>
+            <div class="lbld">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" placeholder="Price">
+            </div>
+        </div>
+        <div class="lbld">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" class="descarea" placeholder="Description"></textarea>
+        </div>
+
+        <div class="rcrflex">
+            <div class="lbld">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" placeholder="Address">
+            </div>
+            <div class="lbld">
+                <label for="city">City</label>
+                <select class="room-cy" id="city" name="city">
+                    <option hidden>Select city</option>
+                    {% for code, name in regions %}
+                    <option value="{{ code }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="rcrflex">
+            <div class="lbld">
+                <label for="guests">Guests</label>
+                <input class="hmin" type="number" id="guests" name="guests" placeholder="Guests">
+            </div>
+            <div class="lbld">
+                <label for="beds">Beds</label>
+                <input class="hmin" type="number" id="beds" name="beds" placeholder="Beds">
+            </div>
+            <div class="lbld">
+                <label for="bedrooms">Bedrooms</label>
+                <input class="hmin" type="number" id="bedrooms" name="bedrooms" placeholder="Bedrooms">
+            </div>
+            <div class="lbld">
+                <label for="baths">Baths</label>
+                <input class="hmin" type="number" id="baths" name="baths" placeholder="Baths">
+            </div>
+        </div>
+
+        <input type="file" id="roomimginp" name="image" accept="image/jpg, image/jpeg, image/png">
+
+        <div class="rcrflex">
+            <input type="date" name="check_in">
+            <input type="date" name="check_out">
+        </div>
+        <div class=" btnsubend">
+            <button type="submit" class="btn-primary">Create room</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

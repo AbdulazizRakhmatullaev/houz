@@ -22,7 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin-get-access-1528/", admin.site.urls),
-    path("", include("uzrent.urls")),
+    path("", include("houze.urls")),
 ]
 
 if settings.DEBUG:
