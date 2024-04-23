@@ -187,7 +187,7 @@ class Room(models.Model):
     )
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
-    location = PlainLocationField(based_fields=["city"], zoom=7)
+    location = PlainLocationField(based_fields=["city"], zoom=7, max_length=255)
     date = models.DateTimeField("Date", default=datetime.now)
 
     class Meta:

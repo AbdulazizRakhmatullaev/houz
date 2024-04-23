@@ -13,9 +13,8 @@ urlpatterns = [
     path("settings/profile/avatar/delete", views.avatarDelete, name="ppDelete"),
     # roomING
     path("room/create", views.room_create, name="room_create"),
-    path("rooms/<int:id>/edit", views.room_edit, name="room_edit"),
+    path("@<str:username>/rooms/<int:id>/edit", views.room_edit, name="room_edit"),
     path("room/<int:id>/delete", views.room_delete, name="room_delete"),
-    path("room/<str:id>/edit", views.room_edit, name="post_edit"),
     path("rooms/<str:room_id>", views.room_detail, name="room_detail_url"),
     path("rooms/<str:room_id>/book", views.book_room, name="book_room"),
     # ratingING

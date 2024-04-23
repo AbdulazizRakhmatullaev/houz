@@ -213,56 +213,6 @@
             document.getElementById('longitude').value = event.lngLat.lng;
         });
     </script>
-    <!-- <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
-
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [69.2775, 41.3103], // Tashkent, Uzbekistan
-            zoom: 12
-        });
-
-        // Add zoom and unzoom controls
-        map.addControl(new mapboxgl.NavigationControl());
-
-        // Add geolocate control to the map
-        var geolocate = new mapboxgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        });
-
-        map.addControl(geolocate);
-
-        // Create marker
-        var marker = new mapboxgl.Marker({
-            draggable: true
-        }).setLngLat([69.2775, 41.3103]).addTo(map);
-
-        // Update marker's position when the user's location changes
-        geolocate.on('geolocate', function (event) {
-            var lngLat = [event.coords.longitude, event.coords.latitude];
-            marker.setLngLat(lngLat);
-            document.getElementById('latitude').value = lngLat[1];
-            document.getElementById('longitude').value = lngLat[0];
-        });
-
-        // Update input fields when marker is dragged
-        marker.on('dragend', function () {
-            var lngLat = marker.getLngLat();
-            document.getElementById('latitude').value = lngLat.lat;
-            document.getElementById('longitude').value = lngLat.lng;
-        });
-
-        // Update marker's position when the user double-clicks on the map
-        map.on('dblclick', function (event) {
-            marker.setLngLat(event.lngLat);
-            document.getElementById('latitude').value = event.lngLat.lat;
-            document.getElementById('longitude').value = event.lngLat.lng;
-        });
-    </script> -->
     <script>
         function confirmReq() {
             return confirm('You sure?');
@@ -412,23 +362,7 @@
     <script>
         const signinModal = document.getElementById("signinModal");
         const signupModal = document.getElementById("signupModal");
-        const roomCreateModal = document.getElementById("roomCreateModal");
-        const roomEditModal = document.getElementById("roomEditModal");
 
-        // Create room
-        function openRoomCreateModal() {
-            roomCreateModal.classList.add("show");
-        }
-        function closeRoomCreateModal() {
-            roomCreateModal.classList.remove("show");
-        }
-        // Edit room
-        function openRoomEditModal() {
-            roomEditModal.classList.add("show");
-        }
-        function closeRoomEditModal() {
-            roomEditModal.classList.remove("show");
-        }
         // signin
         function openSigninModal() {
             signinModal.classList.add("show");

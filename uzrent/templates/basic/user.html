@@ -29,9 +29,9 @@
             <div class="hr"></div>
             <div class="p-rooms">
                 {% for room in rooms %}
-                <div href="{% url 'room_detail_url' room.id %}" class="p-room">
+                <div class="p-room">
                     <div class="roomtools">
-                        <button class="objdel" onclick="location.href='/rooms/{{room.id}}/edit';">
+                        <button class="objdel" onclick="location.href='@{{request.user.username}}/rooms/{{room.id}}/edit';">
                             <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
