@@ -27,6 +27,10 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.template.loader import render_to_string
 
+import os
+from django.conf import settings
+
+
 # webscoket
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -544,8 +548,12 @@ def room_create(request):
                 room_type_id=room_type_id,
             )
 
-            for file in request.FILES.getlist("image"):
-                img = Image.objects.create(file=file)
+            # Parse selected images
+            selected_images = json.loads(request.POST.get("selected_images", "[]"))
+
+            for img in selected_images:
+                # image_path = os.path.join("room/images/", img)
+                img = Image.objects.create(file=img)
                 room.images.add(img)
 
             room.amenities.add(*amenities)

@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="brief-name">Edit your room</div>
-<div class="hr"></div>
 <form action="{% url 'room_edit' request.user.username room.id %}" method="POST" class="cecol"
     enctype="multipart/form-data">
     {% csrf_token %}

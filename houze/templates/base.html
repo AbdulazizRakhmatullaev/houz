@@ -258,6 +258,58 @@
         document.getElementById("check_out").value = formattedDate;
     </script>
     <script>
+        let selectedImages = [];
+
+        function addImages(input) {
+            const files = input.files;
+            const previewContainer = document.getElementById('image-preview-container');
+
+            // Add selected files to the array and create image previews
+            for (let i = 0; i < files.length; i++) {
+                const image = document.createElement('img');
+                image.src = URL.createObjectURL(files[i]);
+
+                const cancelButton = document.createElement('div');
+                cancelButton.innerHTML = '&times';
+                cancelButton.classList.add('cancelimg');
+
+                // Store file object associated with the cancel button
+                cancelButton.dataset.fileIndex = selectedImages.length;
+
+                cancelButton.onclick = function () {
+                    // Remove the corresponding image from the array and the preview
+                    const fileIndex = parseInt(this.dataset.fileIndex);
+                    if (!isNaN(fileIndex) && fileIndex >= 0 && fileIndex < selectedImages.length) {
+                        selectedImages.splice(fileIndex, 1);
+                        previewContainer.removeChild(image.parentNode);
+                        updateSelectedImagesInput(); // Call the updateSelectedImagesInput function
+                    }
+                };
+
+                const imagePreview = document.createElement('div');
+                imagePreview.classList.add('image-container');
+                imagePreview.appendChild(image);
+                imagePreview.appendChild(cancelButton);
+
+                previewContainer.appendChild(imagePreview);
+                selectedImages.push(files[i]);
+            }
+
+            updateSelectedImagesInput(); // Call the updateSelectedImagesInput function after adding images
+        }
+
+        function updateSelectedImagesInput() {
+            const selectedImagesInput = document.getElementById('selected-images');
+            const fullPaths = selectedImages.map(image => {
+                // Construct full file path based on your project's directory structure
+                return '/media/room/images/' + image.name; // Adjust the directory path as needed
+            });
+            selectedImagesInput.value = JSON.stringify(fullPaths);
+        }
+
+        console.log(selectedImages)
+    </script>
+    <!-- <script>
         const selectedImages = [];
 
         document.getElementById('roomimginp').addEventListener('change', function (event) {
@@ -301,7 +353,7 @@
             imageListInput.value = JSON.stringify(selectedImages);
             event.target.appendChild(imageListInput);
         });
-    </script>
+    </script> -->
     <!-- <script>
         $(document).ready(function () {
             $('#homepg').click(function () {

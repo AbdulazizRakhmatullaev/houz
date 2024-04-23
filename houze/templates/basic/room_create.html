@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="brief-name">Create new room</div>
-<div class="hr"></div>
 <form action="{% url 'room_create' %}" method="POST" class="cecol" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" id="latitude" name="latitude" value="41.3103">
@@ -38,7 +37,7 @@
             <div class="lbld">
                 <label for="city">City</label>
                 <select class="room-cy" id="city" name="city">
-                    <option hidden>Select city</option>
+                    <option hidden style="color: grey;">Select city</option>
                     {% for code, name in regions %}
                     <option value="{{ code }}">{{ name }}</option>
                     {% endfor %}
@@ -64,14 +63,16 @@
             </div>
         </div>
 
-        <input type="file" id="roomimginp" name="image" accept="image/jpg, image/jpeg, image/png">
+        <input type="file" id="roomimginp" multiple onchange="addImages(this)" name="image"
+            accept="image/jpg, image/jpeg, image/png">
+        <input type="hidden" id="selected-images" name="selected_images" value="">
 
         <div class="rcrflex">
             <input type="date" name="check_in">
             <input type="date" name="check_out">
         </div>
         <div class=" btnsubend">
-            <button type="submit" class="btn-primary">Create</button>
+            <button type="submit" class="btn-primary" onclick="uploadImages()">Create</button>
         </div>
     </div>
 </form>
