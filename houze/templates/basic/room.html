@@ -81,7 +81,8 @@
             </span>
             {% endif %}
         </div>
-        <div class="host-info">
+        <div class="info-title">Landlord</div>
+        <div class="host-info coll">
             <a href="{% url 'user_profile' room.host.username %}">
                 {% if room.host.profile.avatar.url != null %}
                 <img src="{{room.host.profile.avatar.url}}" alt="" class="detpp">
@@ -107,13 +108,31 @@
             {{room.description}}
         </div>
         <div class="info-title">Amenities</div>
-        <div class="amenities-col info-col">
+        <div class="amenities-col">
             {% for amenity in room.amenities.all %}
             <div class="amenity">
                 {{amenity}}
             </div>
             {% endfor %}
         </div>
+        <div class="info-title">House rules</div>
+        <div class="hrule-col">
+            {% for rule in room.house_rules.all %}
+            <div class="hrule">
+                {{rule}}
+            </div>
+            {% endfor %}
+        </div>
+        <div>
+            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
+            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
+        </div>
+        <div class="info-title">Address</div>
+        <div class="coll">
+            {{room.address}}
+        </div>
+        <div class="info-title">Where it's located</div>
+        <div id="roomMap" class="room-location"></div>
         <div class="info-title">Reviews</div>
         <div id="room-reviews-content">
             {% for review in reviews %}
@@ -147,15 +166,6 @@
             <div class="infotxt">No reviews yet...</div>
             {% endfor %}
         </div>
-        <div class="info-title">Where it's located</div>
-        <div>
-            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
-            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
-        </div>
-        <div id="map" class="room-location"></div>
-        <!-- <iframe class="room-location"
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11324.341457033126!2d{{room.sec_loc}}!3d{{room.fst_loc}}64999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2s!4v1709273944040!5m2!1sen!2s"
-            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
     </div>
     <div class="right-info-column">
         <div class="sticky-right-col">

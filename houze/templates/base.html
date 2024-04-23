@@ -173,6 +173,27 @@
         var initialLatitude = parseFloat(document.getElementById('latitude').value);
         var initialLongitude = parseFloat(document.getElementById('longitude').value);
 
+        var roomMap = new mapboxgl.Map({
+            container: 'roomMap',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
+            zoom: 13
+        });
+
+        // Add zoom and unzoom controls
+        roomMap.addControl(new mapboxgl.NavigationControl());
+
+        // Create marker
+        var marker = new mapboxgl.Marker({
+            draggable: false
+        }).setLngLat([initialLongitude, initialLatitude]).addTo(roomMap);
+    </script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+
+        var initialLatitude = parseFloat(document.getElementById('latitude').value);
+        var initialLongitude = parseFloat(document.getElementById('longitude').value);
+
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',

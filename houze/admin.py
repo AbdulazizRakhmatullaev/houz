@@ -11,7 +11,7 @@ class saveAs(admin.ModelAdmin):
 
 
 admin.site.register(Profile, Profile_list)
-admin.site.register(Rating)
+admin.site.register(Rating, saveAs)
 admin.site.register(Room, saveAs)
 admin.site.register(Image)
 admin.site.register(Amenity)
