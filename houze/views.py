@@ -548,19 +548,19 @@ def room_create(request):
                 room_type_id=room_type_id,
             )
 
-            # Parse selected images
-            selected_images = json.loads(request.POST.get("selected_images", "[]"))
-
-            for img in selected_images:
-                # image_path = os.path.join("room/images/", img)
-                img = Image.objects.create(file=img)
+            for file in request.FILES.getlist("images"):
+                img = Image.objects.create(file=file)
                 room.images.add(img)
 
             room.amenities.add(*amenities)
             room.house_rules.add(*house_rules)
 
-            # Redirect to room detail view
-            return redirect("room_detail_url", room_id=room.pk)
+
+            # Return the room ID in a JSON response
+            room_id = room.pk
+            return JsonResponse({'room_id': room_id})
+
+            # return redirect("room_detail_url", room_id=room.pk)
         return render(request, "basic/room_create.html", {"regions": regions})
     return redirect("signin")
 

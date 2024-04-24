@@ -276,20 +276,17 @@ a {
 }
 
 .logo {
-    font-family: "Belanosima", sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     display: flex;
     align-items: center;
-    font-size: 21px;
+    font-size: 22px;
     line-height: 1;
     font-weight: 500;
-    /* text-transform: uppercase; */
-    font-style: normal;
-    /* letter-spacing: 1.5px; */
 }
 
 .logo img {
     height: 28px;
-    width: 28px;
+    width: 60px;
     vertical-align: middle;
     object-fit: cover;
 }
@@ -301,6 +298,7 @@ a {
 .fl-spbn {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .each-image {
@@ -1786,7 +1784,7 @@ input:not(:focus):valid~.floating-label {
     height: 30px;
     box-sizing: border-box;
     border-radius: 6px;
-    border: 1px solid #e8e8ed;
+    border: 1px solid #e0e0e0;
     padding: 4px 3px;
     /* color: grey; */
 }
@@ -1869,7 +1867,7 @@ input:not(:focus):valid~.floating-label {
     height: 30px;
     box-sizing: border-box;
     border-radius: 6px;
-    border: 1px solid #e8e8ed;
+    border: 1px solid #e0e0e0;
     background: #fff;
     padding: 4px 7px;
 }

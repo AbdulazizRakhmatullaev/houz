@@ -7,18 +7,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" type="image/x-icon" href="../../media/important/houze.png" />
+    <link rel="icon" type="image/x-icon" href="../../media/important/houze_grey.png" />
 
     <link rel="stylesheet" href="{% static 'base.css' %}" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
-
-    <!-- font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Jersey+25&family=Poiret+One&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
@@ -56,8 +49,7 @@
             <ul class="row-content">
                 <li class="row-con-itm">
                     <a href="{% url 'home' %}" class="logo">
-                        <!-- <img src="../../media/important/Houzehouse.png" alt=""> -->
-                        Houze
+                        <img src="../../media/important/houze.png" alt="">
                     </a>
                 </li>
                 <li class="row-con-itm">
@@ -165,29 +157,125 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="{% static 'websocket.js' %}"></script>
-
     <!--  -->
+
+    {% block scripts %} {% endblock %}
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+        let selectedImages = [];
 
-        var initialLatitude = parseFloat(document.getElementById('latitude').value);
-        var initialLongitude = parseFloat(document.getElementById('longitude').value);
+        function addImage(input) {
+            const files = input.files;
+            const previewContainer = document.getElementById('image-preview-container');
 
-        var roomMap = new mapboxgl.Map({
-            container: 'roomMap',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
-            zoom: 13
-        });
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
 
-        // Add zoom and unzoom controls
-        roomMap.addControl(new mapboxgl.NavigationControl());
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container');
 
-        // Create marker
-        var marker = new mapboxgl.Marker({
-            draggable: false
-        }).setLngLat([initialLongitude, initialLatitude]).addTo(roomMap);
+                const image = document.createElement('img');
+                image.classList.add('preview-image');
+                image.src = URL.createObjectURL(file);
+
+                const cancelButton = document.createElement('div');
+                cancelButton.innerHTML = '&times';
+                cancelButton.classList.add('cancelimg');
+                cancelButton.onclick = function () {
+                    // Remove the corresponding image from the array and the preview
+                    const index = selectedImages.indexOf(file);
+                    if (index !== -1) {
+                        selectedImages.splice(index, 1);
+                    }
+                    previewContainer.removeChild(imageContainer);
+                };
+
+                imageContainer.appendChild(image);
+                imageContainer.appendChild(cancelButton);
+                previewContainer.appendChild(imageContainer);
+
+                selectedImages.push(file);
+            }
+
+            input.value = ''; // Clear the input value after selecting images
+        }
+
+        console.log(selectedImages)
+
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Create a FormData object to store form data and selected images
+            const formData = new FormData(document.getElementById('room-create-form'));
+            // Add selected images to FormData
+            selectedImages.forEach(image => {
+                formData.append('images', image);
+            });
+
+            // Use fetch API to submit form data to server
+            fetch("{% url 'room_create' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(response => {
+                // Handle response
+                if (response.ok) {
+                    // Redirect to the created room
+                    response.json().then(data => {
+                        const roomId = data.room_id;
+                        window.location.href = `/rooms/${roomId}`; // Adjust the URL as per your project's routing
+                    });
+                } else {
+                    // Handle error
+                }
+            }).catch(error => {
+                // Handle error
+            });
+        }
     </script>
+
+    <!-- <script>
+        let selectedImages = [];
+
+        function addImages(input) {
+            const files = input.files;
+            const previewContainer = document.getElementById('image-preview-container');
+
+            // Add selected files to the array and create image previews
+            for (let i = 0; i < files.length; i++) {
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container');
+
+                const image = document.createElement('img');
+                image.classList.add('preview-image');
+                image.src = URL.createObjectURL(files[i]);
+
+                const cancelButton = document.createElement('div');
+                cancelButton.innerHTML = '&times';
+                cancelButton.classList.add('cancelimg');
+                cancelButton.onclick = function () {
+                    // Remove the corresponding image from the array and the preview
+                    const index = selectedImages.indexOf(files[i]);
+                    if (index !== -1) {
+                        selectedImages.splice(index, 1);
+                    }
+                    previewContainer.removeChild(imageContainer);
+                };
+
+                imageContainer.appendChild(image);
+                imageContainer.appendChild(cancelButton);
+                previewContainer.appendChild(imageContainer);
+
+                selectedImages.push(files[i]);
+            }
+
+            // Optionally, clear the input after adding images
+        }
+
+        console.log(selectedImages);
+    </script> -->
+
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
 
@@ -257,118 +345,7 @@
         document.getElementById("check_in").value = formattedDate;
         document.getElementById("check_out").value = formattedDate;
     </script>
-    <script>
-        let selectedImages = [];
-
-        function addImages(input) {
-            const files = input.files;
-            const previewContainer = document.getElementById('image-preview-container');
-
-            // Add selected files to the array and create image previews
-            for (let i = 0; i < files.length; i++) {
-                const image = document.createElement('img');
-                image.src = URL.createObjectURL(files[i]);
-
-                const cancelButton = document.createElement('div');
-                cancelButton.innerHTML = '&times';
-                cancelButton.classList.add('cancelimg');
-
-                // Store file object associated with the cancel button
-                cancelButton.dataset.fileIndex = selectedImages.length;
-
-                cancelButton.onclick = function () {
-                    // Remove the corresponding image from the array and the preview
-                    const fileIndex = parseInt(this.dataset.fileIndex);
-                    if (!isNaN(fileIndex) && fileIndex >= 0 && fileIndex < selectedImages.length) {
-                        selectedImages.splice(fileIndex, 1);
-                        previewContainer.removeChild(image.parentNode);
-                        updateSelectedImagesInput(); // Call the updateSelectedImagesInput function
-                    }
-                };
-
-                const imagePreview = document.createElement('div');
-                imagePreview.classList.add('image-container');
-                imagePreview.appendChild(image);
-                imagePreview.appendChild(cancelButton);
-
-                previewContainer.appendChild(imagePreview);
-                selectedImages.push(files[i]);
-            }
-
-            updateSelectedImagesInput(); // Call the updateSelectedImagesInput function after adding images
-        }
-
-        function updateSelectedImagesInput() {
-            const selectedImagesInput = document.getElementById('selected-images');
-            const fullPaths = selectedImages.map(image => {
-                // Construct full file path based on your project's directory structure
-                return '/media/room/images/' + image.name; // Adjust the directory path as needed
-            });
-            selectedImagesInput.value = JSON.stringify(fullPaths);
-        }
-
-        console.log(selectedImages)
-    </script>
     <!-- <script>
-        const selectedImages = [];
-
-        document.getElementById('roomimginp').addEventListener('change', function (event) {
-            const files = event.target.files;
-            const previewContainer = document.getElementById('image-preview-container');
-            for (const file of files) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const image = document.createElement('img');
-                    image.src = e.target.result;
-                    image.classList.add('preview-image');
-                    const deleteButton = document.createElement('div');
-                    deleteButton.innerHTML = '&times;';
-                    deleteButton.classList.add('cancelimg');
-                    deleteButton.addEventListener('click', function () {
-                        previewContainer.removeChild(container);
-                        const index = selectedImages.indexOf(image.src);
-                        if (index !== -1) {
-                            selectedImages.splice(index, 1);
-                        }
-                    });
-                    const container = document.createElement('div');
-                    container.classList.add('image-container');
-                    container.appendChild(image);
-                    container.appendChild(deleteButton);
-                    previewContainer.appendChild(container);
-                    selectedImages.push(image.src);
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('add-image-button').addEventListener('click', function () {
-            document.getElementById('roomimginp').click();
-        });
-
-        document.getElementById('room-form').addEventListener('submit', function (event) {
-            const imageListInput = document.createElement('input');
-            imageListInput.type = 'hidden';
-            imageListInput.name = 'image_list';
-            imageListInput.value = JSON.stringify(selectedImages);
-            event.target.appendChild(imageListInput);
-        });
-    </script> -->
-    <!-- <script>
-        $(document).ready(function () {
-            $('#homepg').click(function () {
-                // Get the URL to redirect to from data attribute
-                var redirectUrl = "/";
-                // Change the URL without reloading the page
-                window.history.pushState({}, '', redirectUrl);
-                // Fetch and replace content dynamically
-                $.get(redirectUrl, function (data) {
-                    $('body').html(data);
-                });
-            });
-        });
-    </script>
-    <script>
         $(document).ready(function () {
             $('.roomUrl').click(function () {
                 // Get the URL to redirect to from data attribute
@@ -477,7 +454,6 @@
             }, 3000);
         });
     </script>
-    {% block scripts %} {% endblock %}
 </body>
 
 </html>
