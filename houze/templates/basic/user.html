@@ -21,6 +21,14 @@
                     <div class="p-usname">@{{user.username}}</div>
                 </div>
             </div>
+            <div class="p-sec">
+                <div class="avgR">{{user.profile.my_rating}}</div>
+            </div>
+            <div class="p-last">
+                <div class="btnsubend">
+                    <a href="{% url 'signout' %}" class="btn-white" onclick="return confirmReq()">Sign out</a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="right-p-col">
@@ -30,7 +38,8 @@
                 {% for room in rooms %}
                 <div class="p-room">
                     <div class="roomtools">
-                        <button class="objdel" onclick="location.href='@{{request.user.username}}/rooms/{{room.id}}/edit';">
+                        <button class="objdel"
+                            onclick="location.href='@{{request.user.username}}/rooms/{{room.id}}/edit';">
                             <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -75,6 +84,8 @@
                         </div>
                     </a>
                 </div>
+                {% empty %}
+                <div class="infotxt">No rooms were shared by you...</div>
                 {% endfor %}
             </div>
         </div>

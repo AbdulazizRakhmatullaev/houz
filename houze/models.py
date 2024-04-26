@@ -114,6 +114,15 @@ class Profile(models.Model):
         verbose_name = "Profile"
         verbose_name_plural = "Profiles"
 
+    def my_rating(self):
+        avg = Rating.objects.filter(user=self.user).aggregate(Avg("rating"))[
+            "rating__avg"
+        ]
+        if avg is not None:
+            return round(avg, 1)
+        else:
+            return 0.0
+
     def __str__(self):
         return self.user.username
 

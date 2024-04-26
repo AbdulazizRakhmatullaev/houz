@@ -1,13 +1,13 @@
 <div class="signin-col">
-    <form action="{% url 'signin' %}" method="POST">
+    <form action="{% url 'signin' %}" method="POST" class="signui">
         {% csrf_token %}
-        <div class="field">
-            <input type="text" class="inputText" name="username" required />
-            <div class="floating-label">Email or username</div>
+        <div class="lbld">
+            <label for="title">Email or username</label>
+            <input type="text" name="username" placeholder="Email or username" required />
         </div>
-        <div class="field">
-            <input type="password" class="inputText" name="password" id="signin-password" required />
-            <div class="floating-label">Password</div>
+        <div class="lbld">
+            <label for="title">Password</label>
+            <input type="password" name="password" id="signin-password" placeholder="Password" required />
         </div>
         <div id="flex-align">
             <input class="showPassword" type="checkbox" id="toggle-signin-password" />
@@ -15,7 +15,7 @@
                 Show password
             </div>
         </div>
-        <div class="fl-spbn" style="margin-top: 45px;">
+        <div class="fl-spbn" style="margin-top: 25px;">
             <div class="c-ripple" onclick="openSignupModal()">Create account</div>
             <button type="submit" class="btn-primary">
                 Sign in

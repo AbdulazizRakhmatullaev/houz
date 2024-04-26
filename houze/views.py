@@ -7,6 +7,8 @@ from .models import (
     Notification,
     Booking,
     Image,
+    HouseRule,
+    Amenity,
     Region_Choices,
 )
 from django.db.models import Q, Max
@@ -499,8 +501,6 @@ def avatarDelete(request):
 
 
 # ROOM POST VIEWS
-
-
 def room_create(request):
     regions = Region_Choices
     if request.user.is_authenticated:
@@ -523,8 +523,8 @@ def room_create(request):
             check_out = request.POST.get("check_out")
 
             room_type_id = request.POST.get("room_type")
-            amenities = request.POST.getlist("amenities")
-            house_rules = request.POST.getlist("house_rules")
+            amenities = (request.POST.get("amenities")).split(",")
+            house_rules = (request.POST.get("house_rules")).split(",")
 
             latitude = request.POST.get("latitude")
             longitude = request.POST.get("longitude")
@@ -552,13 +552,17 @@ def room_create(request):
                 img = Image.objects.create(file=file)
                 room.images.add(img)
 
-            room.amenities.add(*amenities)
-            room.house_rules.add(*house_rules)
-
+            for am in amenities:
+                amy = Amenity.objects.create(name=am)
+                room.amenities.add(amy)
+            
+            for hrn in house_rules:
+                hr = HouseRule.objects.create(rule=hrn)
+                room.house_rules.add(hr)
 
             # Return the room ID in a JSON response
             room_id = room.pk
-            return JsonResponse({'room_id': room_id})
+            return JsonResponse({"room_id": room_id})
 
             # return redirect("room_detail_url", room_id=room.pk)
         return render(request, "basic/room_create.html", {"regions": regions})

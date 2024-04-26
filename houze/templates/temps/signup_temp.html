@@ -1,25 +1,25 @@
 <div class="signup-col">
     <form action="{% url 'signup' %}" method="POST">
         {% csrf_token %}
-        <div class="field">
-            <input type="text" class="inputText" name="name" required />
-            <div class="floating-label">Full name</div>
+        <div class="lbld">
+            <label for="name">Full name</label>
+            <input type="text" name="name" placeholder="Full name" required />
         </div>
-        <div class="field">
-            <input type="text" class="inputText" name="username" required />
-            <div class="floating-label">Username</div>
+        <div class="lbld">
+            <label for="username">Username</label>
+            <input type="text" name="username" placeholder="Username" required />
         </div>
-        <div class="field">
-            <input type="text" class="inputText" name="email" required />
-            <div class="floating-label">Email</div>
+        <div class="lbld">
+            <label for="email">Email</label>
+            <input type="text" name="email" placeholder="Email" required />
         </div>
-        <div class="field">
-            <input type="password" class="inputText" name="password" id="signup-password" required />
-            <div class="floating-label">Password</div>
+        <div class="lbld">
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Password" required />
         </div>
-        <div class="field">
-            <input type="password" class="inputText" name="confirm" id="confirm" required />
-            <div class="floating-label">Confirm</div>
+        <div class="lbld">
+            <label for="confirm">Confirm password</label>
+            <input type="password" name="confirm" placeholder="Confirm password" required />
         </div>
         <div id="flex-align">
             <input class="showPassword" type="checkbox" id="toggle-signup-password" />
