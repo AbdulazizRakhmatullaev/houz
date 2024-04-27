@@ -18,11 +18,6 @@ urlpatterns = [
     path("rooms/<str:room_id>", views.room_detail, name="room_detail_url"),
     path("rooms/<str:room_id>/book", views.book_room, name="book_room"),
     # ratingING
-    path(
-        "post/<str:post_id>/rating/<str:rating_id>/like",
-        views.rating_like_unlike,
-        name="rating_like_unlike",
-    ),
     path("room/<str:id>/rating", views.rating_create, name="rating_create"),
     path(
         "room/<str:id>/rating/<int:pk>/delete",

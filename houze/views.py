@@ -2,13 +2,14 @@ from .models import (
     Room,
     Profile,
     Rating,
-    RatingLike,
     Bookmark,
     Notification,
     Booking,
     Image,
     HouseRule,
     Amenity,
+    RoomType,
+    Comment,
     Region_Choices,
 )
 from django.db.models import Q, Max
@@ -340,9 +341,19 @@ def confirm_room(request, noty_id):
 def user_profile(request, username):
     user = get_object_or_404(User, username__exact=username)
     rooms = user.room_set.all().order_by("-date")
+    comments = Comment.objects.filter(reciever=user).order_by("-created_at")
     reviews = Rating.objects.filter(room__in=rooms).order_by("-date")
+    rating_count = reviews.count()
     return render(
-        request, "basic/user.html", {"user": user, "rooms": rooms, "reviews": reviews}
+        request,
+        "basic/user.html",
+        {
+            "user": user,
+            "rooms": rooms,
+            "comments": comments,
+            "reviews": reviews,
+            "rating_count": rating_count,
+        },
     )
 
 
@@ -522,7 +533,7 @@ def room_create(request):
             check_in = request.POST.get("check_in")
             check_out = request.POST.get("check_out")
 
-            room_type_id = request.POST.get("room_type")
+            room_type = request.POST.get("room_type")
             amenities = (request.POST.get("amenities")).split(",")
             house_rules = (request.POST.get("house_rules")).split(",")
 
@@ -545,20 +556,36 @@ def room_create(request):
                 location=location,
                 check_in=check_in,
                 check_out=check_out,
-                room_type_id=room_type_id,
             )
+
+            existing_rt = RoomType.objects.filter(name=room_type).first()
+            if existing_rt:
+                room.room_type.add(existing_rt)
+            else:
+                rt = RoomType.objects.create(name=room_type)
+                room.room_type.add(rt)
 
             for file in request.FILES.getlist("images"):
                 img = Image.objects.create(file=file)
                 room.images.add(img)
 
             for am in amenities:
-                amy = Amenity.objects.create(name=am)
-                room.amenities.add(amy)
-            
-            for hrn in house_rules:
-                hr = HouseRule.objects.create(rule=hrn)
-                room.house_rules.add(hr)
+                # Check if amenity already exists
+                existing_amenity = Amenity.objects.filter(name=am).first()
+                if existing_amenity:
+                    room.amenities.add(existing_amenity)
+                else:
+                    new_amenity = Amenity.objects.create(name=am)
+                    room.amenities.add(new_amenity)
+
+            for hr in house_rules:
+                # Check if amenity already exists
+                existing_houserule = HouseRule.objects.filter(rule=hr).first()
+                if existing_houserule:
+                    room.house_rules.add(existing_houserule)
+                else:
+                    new_houserule = HouseRule.objects.create(rule=hr)
+                    room.house_rules.add(new_houserule)
 
             # Return the room ID in a JSON response
             room_id = room.pk
@@ -582,8 +609,16 @@ def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
     current_city = next(name for code, name in Region_Choices if code == room.city)
     regions = [(code, name) for code, name in Region_Choices if room.city != code]
+    amenities = room.amenities.all()
+    house_rules = room.house_rules.all()
 
-    context = {"room": room, "current_city": current_city, "regions": regions}
+    context = {
+        "room": room,
+        "current_city": current_city,
+        "regions": regions,
+        "amenities": amenities,
+        "house_rules": house_rules,
+    }
 
     if room.host.username == username:
         if request.method == "POST":
@@ -601,7 +636,16 @@ def room_edit(request, username, id):
 
             room.check_in = request.POST.get("check_in", room.check_in)
             room.check_out = request.POST.get("check_out", room.check_out)
-            # room.room_type_id = request.POST.get("room_type", room.room_type_id)
+
+            # for am in amens:
+            #     amy = Amenity.objects.create(name=am)
+            #     room.amenities.add(amy)
+
+            # for hr in house_rules:
+
+            #     room.house_rules.add(hr)
+
+            # room.room_type = request.POST.get("room_type", room.room_type)
             room.location = f'{request.POST.get("latitude", room.fst_loc)},{request.POST.get("longitude", room.sec_loc)}'
 
             room.save()
@@ -686,32 +730,6 @@ def rating_edit(request, id, pk):
                 return HttpResponseRedirect(currentPage)
         return HttpResponseRedirect(currentPage)
     return HttpResponseRedirect(currentPage)
-
-
-def rating_like_unlike(request, post_id, rating_id):
-    try:
-        post = get_object_or_404(Room, id=post_id)
-        rating = post.rating_set.get(id=rating_id)
-        user = request.user
-
-        rating_like, created = Rating.objects.get_or_create(user=user, rating=rating)
-
-        liked_ratings = Rating.objects.filter(ratinglike__user=user).values_list(
-            "id", flat=True
-        )
-
-        if created:
-            rating.likes_count += 1
-        else:
-            rating.likes_count -= 1
-            rating_like.delete()
-
-        rating.save()
-
-        return JsonResponse({"likes_count": rating.likes_count, "liked": not created})
-
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
 
 
 def savePost(request, id, slug):

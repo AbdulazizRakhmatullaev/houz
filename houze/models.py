@@ -191,9 +191,7 @@ class Room(models.Model):
     baths = models.IntegerField("Baths")
     check_in = models.DateField("Check in")
     check_out = models.DateField("Check out")
-    room_type = models.ForeignKey(
-        "RoomType", related_name="rooms", on_delete=models.SET_NULL, null=True
-    )
+    room_type = models.ManyToManyField(RoomType, related_name="rooms", blank=True)
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
     location = PlainLocationField(based_fields=["city"], zoom=7, max_length=255)
@@ -273,6 +271,17 @@ class Room(models.Model):
         txt = [i for i in self.location.split(",")]
         return txt[1]
 
+    def av_dates(self):
+        mi = self.check_in.strftime("%B")
+        mo = self.check_out.strftime("%B")
+        # days
+        di = self.check_in.strftime("%d")
+        do = self.check_out.strftime("%d")
+        if mi == mo:
+            return f"{mi} {di} – {do}"
+        else:
+            return f"{mi} {di} – {mo} {do}"
+
     def __str__(self):
         return (
             str(self.id)
@@ -317,11 +326,7 @@ class Rating(models.Model):
         verbose_name_plural = "Ratings"
 
     def user_ratings(self):
-        svg = """<svg xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="m5.7532 3.8663-.431.997c-.0302.0696-.0452.1044-.0686.1315a.2315.2315 0 0 1-.0747.057c-.0322.0154-.0697.0207-.1446.0314l-.6268.0887c-1.766.25-2.649.3751-3.0205.7887a1.5313 1.5313 0 0 0-.362 1.3233c.109.5455.805 1.104 2.197 2.221l.2366.1898c.0631.0507.0947.076.1152.108a.2318.2318 0 0 1 .0344.0934c.0052.0376-.0023.0774-.0173.157l-.0709.3745c-.3894 2.0586-.584 3.0878-.2774 3.5907a1.5262 1.5262 0 0 0 1.2391.731c.5878.0247 1.3921-.6449 3.0007-1.9843l.2762-.23c.0842-.0701.1263-.1052.1732-.1186a.2312.2312 0 0 1 .1268 0c.047.0134.089.0485.1732.1186l.2763.23c1.6085 1.3394 2.4128 2.009 3.0006 1.9843a1.5263 1.5263 0 0 0 1.2392-.731c.3066-.5029.1119-1.5321-.2775-3.5907l-.0708-.3745c-.0151-.0796-.0226-.1194-.0174-.157a.232.232 0 0 1 .0344-.0934c.0205-.032.0521-.0573.1152-.108l.2367-.1899c1.3919-1.117 2.0879-1.6754 2.197-2.2209a1.5313 1.5313 0 0 0-.3621-1.3233c-.3715-.4136-1.2545-.5386-3.0205-.7887l-.6267-.0887c-.075-.0107-.1124-.016-.1447-.0314a.231.231 0 0 1-.0746-.057c-.0235-.027-.0385-.0619-.0686-.1314l-.4311-.9971c-.7075-1.6365-1.0613-2.4548-1.5574-2.704a1.5248 1.5248 0 0 0-1.3691 0c-.4962.2492-.85 1.0675-1.5575 2.704Z" />
-                            </svg>"""
+        svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px;"><path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path></svg>"""
         if self.rating == 1:
             return svg
         elif self.rating == 2:
@@ -358,12 +363,6 @@ class Rating(models.Model):
         )
 
 
-class RatingLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=datetime.now)
-
-
 class Notification(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
     reciever = models.ForeignKey(
@@ -398,3 +397,31 @@ class Notification(models.Model):
     def __str__(self):
         datetime = self.created_at.strftime("%Y-%m-%d %H:%M:%S")
         return f"from ({self.sender}) to ({self.reciever}) on {datetime}"
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
+    reciever = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="comment_reciever"
+    )
+    text = models.TextField("Text")
+    created_at = models.DateTimeField("Date", default=datetime.now)
+    edited = models.BooleanField("Edited", default=False)
+
+    def get_date(self):
+        now = localtime()
+        time_diff = now - self.created_at
+
+        if time_diff.total_seconds() < 60:
+            return "now"
+        elif time_diff.total_seconds() < 3600:
+            return f"{int(time_diff.total_seconds() // 60)}m"
+        elif time_diff.days == 0:
+            return f"{int(time_diff.total_seconds() // 3600)}h"
+        elif time_diff.days == 1:
+            return "yesterday"
+        else:
+            return self.created_at.strftime("%b ") + str(self.created_at.day)
+
+    def __str__(self):
+        return f"{self.author} to {self.reciever} text: {self.text}"

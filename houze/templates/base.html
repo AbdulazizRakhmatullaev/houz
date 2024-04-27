@@ -53,10 +53,7 @@
                     </a>
                 </li>
                 <li class="row-con-itm">
-                    <form action="{% url 'search' %}" class="search-form">
-                        {% csrf_token %}
-                        <input type="text" name="search" class="search-inp" placeholder="Search" autocomplete="off" />
-                    </form>
+                    
                 </li>
                 {% if user.is_authenticated %}
                 <ul class="row-content" style="width: 140px;">
