@@ -4,41 +4,62 @@
 
 {% block content %}
 
-<form action="{% url 'search' %}" class="search-form">
-    {% csrf_token %}
-    <input type="text" name="search" class="search-inp" placeholder="Search" autocomplete="off" />
-</form>
+<!-- <select id="filter" onchange="updateRoomList()">
+    <option value="city" {% if flt == 'city' %}selected{% endif %}>Filter by City</option>
+    <option value="rating" {% if flt == 'rating' %}selected{% endif %}>Filter by Rating</option>
+</select> -->
+
+<!-- <div id="filter-options">
+    {% if flt == 'city' %}
+        <select id="city-filter">
+            <option value="">All Cities</option>
+            <option value="Tashkent">Tashkent</option>
+        </select>
+    {% elif flt == 'rating' %}
+        <select id="rating-order">
+            <option value="">Order by Rating</option>
+            <option value="highest">Highest to Lowest</option>
+            <option value="lowest">Lowest to Highest</option>
+        </select>
+    {% endif %}
+</div> -->
+
 <div class="hr"></div>
 
-<div class="room_posts">
-    {% for room in rooms %}
-    <a href="{% url 'room_detail_url' room.id %}" class="room">
-        <div class="room-img">
-            {% if room.first_photo != Null %}
-            <img src="{{room.first_photo}}" alt="">
-            {% else %}
-            no image
-            {% endif %}
-        </div>
-        <div class="room-info">
-            <div class="room-fl">
-                <div class="ci-cy">
-                    {{ room.get_city_display }}, Uzbekistan
-                </div>
-                <div class="rating">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;"><path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path></svg>
-                    {{room.average_rating}}
-                </div>
-            </div>
-            <div class="in-out">{{room.av_dates}}</div>
-            <div class="r-price"><b>UZS {{room.get_price}}</b>/night</div>
-        </div>
-    </a>
-    {% endfor %}
+<div id="room-posts">
+    {% include 'temps/room_list.html' %}
 </div>
 
 {% endblock %}
 
 {% block footer %}
 
+{% endblock %}
+
+{% block scripts %}
+<!-- <script>
+    function updateRoomList() {
+        var filter = document.getElementById('filter').value;
+        var filterValue;
+
+        if (filter === 'city') {
+            filterValue = document.getElementById('city-filter').value;
+        } else if (filter === 'rating') {
+            filterValue = document.getElementById('rating-order').value;
+        }
+
+        var url = window.location.pathname + '?filter=' + filter;
+        if (filterValue) {
+            url += '&' + filter + '=' + filterValue;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                $('#room-posts').html(response);
+            }
+        });
+    }
+</script> -->
 {% endblock %}

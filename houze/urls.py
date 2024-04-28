@@ -12,7 +12,7 @@ urlpatterns = [
     path("settings/profile/avatar", views.avatarEdit, name="avatarEdit"),
     path("settings/profile/avatar/delete", views.avatarDelete, name="ppDelete"),
     # roomING
-    path("room/create", views.room_create, name="room_create"),
+    path("become-a-host", views.room_create, name="room_create"),
     path("@<str:username>/rooms/<int:id>/edit", views.room_edit, name="room_edit"),
     path("room/<int:id>/delete", views.room_delete, name="room_delete"),
     path("rooms/<str:room_id>", views.room_detail, name="room_detail_url"),
@@ -28,9 +28,9 @@ urlpatterns = [
     # Other
     path("search/", views.search, name="search"),
     path("bookmarks", views.bookmarks, name="bookmarks"),
-    path("booking/", views.booking, name="booking"),
+    path("reservations/", views.reservation, name="reservation"),
     path(
-        "bookings/<int:booking_id>/delete", views.booking_delete, name="booking_delete"
+        "reservations/<int:reservation_id>/delete", views.reservation_delete, name="reservation_delete"
     ),
     path("notifications/<int:noty_id>/delete", views.noty_delete, name="noty_delete"),
     path("room/confirm/<int:noty_id>", views.confirm_room, name="confirm_room"),

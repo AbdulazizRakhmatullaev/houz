@@ -8,6 +8,9 @@ from django.db.models import Avg
 from django.core.validators import MaxValueValidator, MinValueValidator
 from location_field.models.plain import PlainLocationField
 from django.utils.timezone import localtime
+from .languages import LANGUAGES
+
+sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
 
 
 class RangedIntegerField(models.IntegerField):
@@ -98,6 +101,13 @@ Region_Choices = (
 )
 
 
+room_types = (
+    ("A ROOM", "A room"),
+    ("AN ENTIRE PLACE", "An entire place"),
+    ("A SHARED ROOM", "A shared room"),
+)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, max_length=10)
     avatar = models.ImageField("Avatar", blank=True, upload_to="users/avatars/%Y/%m/%d")
@@ -108,6 +118,10 @@ class Profile(models.Model):
     bio = models.CharField("Bio", max_length=255, blank=True)
     email = models.EmailField("Email", max_length=255)
     phone_number = models.CharField("Phone", max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=200, null=True, choices=Region_Choices)
+    languages = models.CharField(
+        "Languages", max_length=200, choices=sorted_languages, default="English"
+    )
     created_at = models.DateTimeField("Created at", default=datetime.now)
 
     class Meta:
@@ -123,24 +137,16 @@ class Profile(models.Model):
         else:
             return 0.0
 
+    def first_name(self):
+        full_name = (self.name).split(" ")
+        return full_name[0]
+
     def __str__(self):
         return self.user.username
 
 
-class RoomType(models.Model):
-
-    name = models.CharField("Room Type Name", max_length=255)
-
-    class Meta:
-        verbose_name = "Room Type"
-        verbose_name_plural = "Room Types"
-
-    def __str__(self):
-        return self.name
-
-
 class Amenity(models.Model):
-
+    icon = models.TextField("Icon svg format")
     name = models.CharField("Name", max_length=255)
 
     class Meta:
@@ -152,7 +158,6 @@ class Amenity(models.Model):
 
 
 class HouseRule(models.Model):
-
     rule = models.CharField("Rule", max_length=255)
 
     class Meta:
@@ -191,7 +196,11 @@ class Room(models.Model):
     baths = models.IntegerField("Baths")
     check_in = models.DateField("Check in")
     check_out = models.DateField("Check out")
-    room_type = models.ManyToManyField(RoomType, related_name="rooms", blank=True)
+    room_type = models.CharField(
+        "Room type",
+        max_length=255,
+        choices=room_types,
+    )
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
     location = PlainLocationField(based_fields=["city"], zoom=7, max_length=255)
@@ -295,7 +304,7 @@ class Room(models.Model):
         )
 
 
-class Booking(models.Model):
+class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     check_in = models.DateField("Check in")

@@ -92,90 +92,59 @@
             </span>
             {% endif %}
         </div>
-        <div class="info-title">Host</div>
-        <div class="host-info coll">
-            <a href="{% url 'user_profile' room.host.username %}">
-                {% if room.host.profile.avatar.url != null %}
-                <img src="{{room.host.profile.avatar.url}}" alt="" class="detpp">
-                {% else %}
-                <div class="detpp" style="background: linear-gradient({{room.host.profile.avatar_default}});">
-                    <div class="detgrcn">
-                        {{room.host.profile.name|slice:"0:1"}}
-                    </div>
-                </div>
-                {% endif %}
-            </a>
-            <div class="n-d">
-                <a href="{% url 'user_profile' room.host.username %}" class="host-name">
-                    {{room.host.profile.name}}
-                </a>
-                <div class="host-date">
-                    Joinded {{room.host.profile.created_at|date:"N Y"}}
-                </div>
-            </div>
-        </div>
-        <div class="info-title">Description</div>
-        <div class="desc info-col">
-            {{room.description}}
-        </div>
-        <div class="info-title">Amenities</div>
-        <div class="amenities-col">
-            {% for amenity in room.amenities.all %}
-            <div class="amenity">
-                {{amenity}}
-            </div>
-            {% endfor %}
-        </div>
-        <div class="info-title">House rules</div>
-        <div class="hrule-col">
-            {% for rule in room.house_rules.all %}
-            <div class="hrule">
-                {{rule}}
-            </div>
-            {% endfor %}
-        </div>
-        <div>
-            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
-            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
-        </div>
-        <div class="info-title">Address</div>
-        <div class="coll">
-            {{room.address}}
-        </div>
-        <div class="info-title">Where it's located</div>
-        <div id="roomMap" class="room-location"></div>
-        <div class="info-title">Reviews</div>
-        <div id="room-reviews-content">
-            {% for review in reviews %}
-            <div class="review">
-                <a href="{% url 'user_profile' review.user.username %}">
-                    {% if review.user.profile.avatar.url != null %}
-                    <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+        <div class="lbld">
+            <div class="info-title">Host</div>
+            <div class="host-info coll">
+                <a href="{% url 'user_profile' room.host.username %}">
+                    {% if room.host.profile.avatar.url != null %}
+                    <img src="{{room.host.profile.avatar.url}}" alt="" class="detpp">
                     {% else %}
-                    <div class="pp" style="background: linear-gradient({{review.user.profile.avatar_default}});">
-                        <div class="grcn">
-                            {{review.user.profile.name|slice:"0:1"}}
+                    <div class="detpp" style="background: linear-gradient({{room.host.profile.avatar_default}});">
+                        <div class="detgrcn">
+                            {{room.host.profile.name|slice:"0:1"}}
                         </div>
                     </div>
                     {% endif %}
                 </a>
                 <div class="n-d">
-                    <div class="n-stayed">
-                        <a href="{% url 'user_profile' review.user.username %}"
-                            class="reviewer-name">{{review.user.profile.name}}</a>
-                        <div class="spr">•</div>
-                        <div class="review-date">{{review.get_date}}</div>
+                    <a href="{% url 'user_profile' room.host.username %}" class="host-name">
+                        {{room.host.profile.name}}
+                    </a>
+                    <div class="host-date">
+                        Joinded {{room.host.profile.created_at|date:"N Y"}}
                     </div>
-                    <!--  -->
-                    <div class="r-stars">
-                        {{review.user_ratings|safe}}
-                    </div>
-                    <div class="review-text">{{review.review_text}}</div>
                 </div>
             </div>
-            {% empty %}
-            <div class="infotxt">No reviews yet...</div>
-            {% endfor %}
+        </div>
+        <div class="lbld">
+            <div class="info-title">Description</div>
+            <div class="desc info-col">
+                {{room.description}}
+            </div>
+        </div>
+        <div class="lbld">
+            <div class="info-title">Amenities</div>
+            <div class="amenities-col">
+                {% for amenity in room.amenities.all %}
+                <div class="amenity">
+                    {{amenity}}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="lbld">
+            <div class="info-title">House rules</div>
+            <div class="hrule-col">
+                {% for rule in room.house_rules.all %}
+                <div class="hrule">
+                    {{rule}}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
+            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
         </div>
     </div>
     <div class="right-info-column">
@@ -207,11 +176,55 @@
                     <div class="right-text">{{room.count_nights_price}} soums</div>
                 </div>
                 <div class="pricing-col">
-                    <div class="left-text">Uzrent fee</span></div>
+                    <div class="left-text">Houze fee</span></div>
                     <div class="right-text">{{room.fee}} soums</div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="botrm">
+    <div class="lbld">
+        <div class="info-title">Reviews</div>
+        <div id="room-reviews-content">
+            {% for review in reviews %}
+            <div class="review">
+                <a href="{% url 'user_profile' review.user.username %}">
+                    {% if review.user.profile.avatar.url != null %}
+                    <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+                    {% else %}
+                    <div class="pp" style="background: linear-gradient({{review.user.profile.avatar_default}});">
+                        <div class="grcn">
+                            {{review.user.profile.name|slice:"0:1"}}
+                        </div>
+                    </div>
+                    {% endif %}
+                </a>
+                <div class="n-d">
+                    <div class="n-stayed">
+                        <a href="{% url 'user_profile' review.user.username %}"
+                            class="reviewer-name">{{review.user.profile.name}}</a>
+                        <div class="spr">•</div>
+                        <div class="review-date">{{review.get_date}}</div>
+                    </div>
+                    <!--  -->
+                    <div class="r-stars">
+                        {{review.user_ratings|safe}}
+                    </div>
+                    <div class="review-text">{{review.review_text}}</div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="infotxt coll">No reviews yet...</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="lbld">
+        <div class="info-title">Where it's located</div>
+        <div class="coll">
+            {{room.address}}
+        </div>
+        <div id="roomMap" class="room-location"></div>
     </div>
 </div>
 

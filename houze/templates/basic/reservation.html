@@ -1,31 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %} Booking {% endblock %}
+{% block title %} Reservations {% endblock %}
 
 {% block content %}
 
-<div class="brief-name">Booking</div>
+<div class="brief-name">Reservation</div>
 <div class="hr"></div>
 <div class="bookgrd">
-    {% for booking in bookings %}
-    <div class="booking">
-        <a href="{% url 'user_profile' booking.user.username %}" class="bookeduser">
+    {% for reservation in reservations %}
+    <div class="reservation">
+        <a href="{% url 'user_profile' reservation.user.username %}" class="bookeduser">
             <div class="bkdusercol">
-                {% if booking.user.profile.avatar.url != null %}
-                <img src="{{booking.user.profile.avatar.url}}" alt="" class="pp">
+                {% if reservation.user.profile.avatar.url != null %}
+                <img src="{{reservation.user.profile.avatar.url}}" alt="" class="pp">
                 {% else %}
-                <div class="pp" style="background: linear-gradient({{booking.user.profile.avatar_default}});">
+                <div class="pp" style="background: linear-gradient({{reservation.user.profile.avatar_default}});">
                     <div class="grcn">
-                        {{booking.user.profile.name|slice:"0:1"}}
+                        {{reservation.user.profile.name|slice:"0:1"}}
                     </div>
                 </div>
                 {% endif %}
                 <div class="b-names-col">
-                    <div class="b-name">{{booking.user.profile.name}}</div>
-                    <div class="b-usname">@{{booking.user.username}}</div>
+                    <div class="b-name">{{reservation.user.profile.name}}</div>
+                    <div class="b-usname">@{{reservation.user.username}}</div>
                 </div>
             </div>
-            <form action="{% url 'booking_delete' booking.id %}" method="POST">
+            <form action="{% url 'reservation_delete' reservation.id %}" method="POST">
                 {% csrf_token %}
                 <button class="objdel" type="submit">&times;</button>
             </form>
@@ -38,7 +38,7 @@
             </svg>
             <div class="checkinf">
                 <span class="small-title">Check in</span>
-                <div class="checkdt">{{booking.check_in}}</div>
+                <div class="checkdt">{{reservation.check_in}}</div>
             </div>
         </div>
         <div class="checkio">
@@ -49,13 +49,13 @@
             </svg>
             <div class="checkinf">
                 <span class="small-title">Check out</span>
-                <div class="checkdt">{{booking.check_out}}</div>
+                <div class="checkdt">{{reservation.check_out}}</div>
             </div>
         </div>
-        <a href="{% url 'room_detail_url' booking.room.id %}" class="bookedroom">
+        <a href="{% url 'room_detail_url' reservation.room.id %}" class="bookedroom">
             <div class="room-img">
-                {% if booking.room.first_photo != Null %}
-                <img src="{{booking.room.first_photo}}" alt="">
+                {% if reservation.room.first_photo != Null %}
+                <img src="{{reservation.room.first_photo}}" alt="">
                 {% else %}
                 no image
                 {% endif %}
@@ -63,7 +63,7 @@
         </a>
     </div>
     {% empty %}
-    <div class="ctrtxt">No booked rooms for now</div>
+    <div class="ctrtxt">No reservations for now...</div>
     {% endfor %}
 </div>
 

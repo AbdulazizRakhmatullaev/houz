@@ -4,11 +4,10 @@ from .models import (
     Rating,
     Bookmark,
     Notification,
-    Booking,
+    Reservation,
     Image,
     HouseRule,
     Amenity,
-    RoomType,
     Comment,
     Region_Choices,
 )
@@ -32,6 +31,7 @@ from django.template.loader import render_to_string
 
 import os
 from django.conf import settings
+from django.db.models import Count
 
 
 # webscoket
@@ -39,8 +39,29 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 
+def is_ajax(request):
+    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+
+
 def home(request):
+    # flt = request.GET.get("filter", "city")  # Default to filtering by city
+    # filter_value = request.GET.get(flt)  # Get the value for the selected filter
     rooms = Room.objects.all()
+
+    # # Handle filtering based on flt value
+    # if flt == "city":
+    #     rooms = rooms.filter(city=filter_value)
+    # elif flt == "rating":
+    #     if filter_value == "highest":
+    #         rooms = rooms.order_by("-rating__rating")
+    #     elif filter_value == "lowest":
+    #         rooms = rooms.order_by("rating__rating")
+
+    # # Check if it's an AJAX request
+    # if is_ajax(request=request):
+    #     html = render_to_string("temps/room_list.html", {"rooms": rooms})
+    #     return JsonResponse({"html": html})
+
     return render(request, "basic/home.html", {"rooms": rooms})
 
 
@@ -112,19 +133,21 @@ def noty_delete(request, noty_id):
     return redirect("home")
 
 
-def booking(request):
-    bookings = Booking.objects.filter(room__host=request.user).order_by("-created_at")
-    return render(request, "basic/booking.html", {"bookings": bookings})
+def reservation(request):
+    reservations = Reservation.objects.filter(room__host=request.user).order_by(
+        "-created_at"
+    )
+    return render(request, "basic/reservation.html", {"reservations": reservations})
 
 
-def booking_delete(request, booking_id):
-    booking = Booking.objects.get(pk=booking_id)
+def reservation_delete(request, reservation_id):
+    reservation = Reservation.objects.get(pk=reservation_id)
     if request.method == "POST":
-        if request.user == booking.room.host:
+        if request.user == reservation.room.host:
 
             tolerance_window = timedelta(seconds=5)
-            start_time = booking.created_at - tolerance_window
-            end_time = booking.created_at + tolerance_window
+            start_time = reservation.created_at - tolerance_window
+            end_time = reservation.created_at + tolerance_window
 
             noty = Notification.objects.filter(
                 reciever=request.user,
@@ -135,10 +158,10 @@ def booking_delete(request, booking_id):
             noty.delete()
 
             # notify about cancellation
-            not_msg = f'Sorry, but the booking for <a class="roomUrl" href="/rooms/{booking.room.id}" class="underline" style="color: #06c;">this</a> room has been cancelled by the host'
+            not_msg = f'Sorry, but the your <a class="roomUrl" href="/rooms/{reservation.room.id}" class="underline" style="color: #06c;">reservation</a> has been cancelled by the host'
             create_notification(
                 sender=request.user,
-                reciever=booking.user,
+                reciever=reservation.user,
                 message=not_msg,
                 profile_name=request.user.profile.name,
                 avatar_url=(
@@ -155,9 +178,9 @@ def booking_delete(request, booking_id):
                 "User has been notified about your cancellation",
             )
 
-            booking.delete()
+            reservation.delete()
 
-            return redirect("booking")
+            return redirect("reservations")
     return redirect("home")
 
 
@@ -182,7 +205,7 @@ def book_room(request, room_id):
             ):
                 if check_in < check_out and check_in != check_out:
                     # check if this user already notified the owner, so he can't spam him
-                    if not Booking.objects.filter(
+                    if not Reservation.objects.filter(
                         user=request.user,
                         room=room,
                         check_in=check_in,
@@ -251,12 +274,12 @@ def confirm_room(request, noty_id):
             noty_check_in = notification.check_in
             noty_check_out = notification.check_out
 
-            if not Booking.objects.filter(
+            if not Reservation.objects.filter(
                 room=room, check_in=noty_check_in, check_out=noty_check_out
             ).exists():
-                not_message = f"Thank you for booking our room, we will be waiting for you on {noty_check_in}"
+                not_message = f"Thank you for reservation, we will be waiting for you on {noty_check_in}"
 
-                Booking.objects.create(
+                Reservation.objects.create(
                     user=notification.sender,
                     room=room,
                     check_in=noty_check_in,
@@ -282,7 +305,7 @@ def confirm_room(request, noty_id):
                 notification.confirmed = True
                 notification.save()
 
-                return redirect("booking")
+                return redirect("reservations")
             else:
                 not_message = f"We are really sorry, but unfortunately room was booked with the same dates by other people"
 
@@ -657,10 +680,10 @@ def room_edit(request, username, id):
 
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
-    bookings = Booking.objects.filter(room=room)
-    booked_dates = [
-        (booking.check_in.isoformat(), booking.check_out.isoformat())
-        for booking in bookings
+    reservations = Reservation.objects.filter(room=room)
+    reserved_dates = [
+        (reservations.check_in.isoformat(), reservations.check_out.isoformat())
+        for reservation in reservations
     ]
     reviews = room.rating_set.order_by("-date")
     num_o_days = (room.check_out - room.check_in).days
@@ -669,7 +692,7 @@ def room_detail(request, room_id):
         "basic/room.html",
         {
             "room": room,
-            "booked_dates": booked_dates,
+            "reserved_dates": reserved_dates,
             "reviews": reviews,
             "num_o_days": num_o_days,
         },
