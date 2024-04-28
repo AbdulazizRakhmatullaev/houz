@@ -12,8 +12,7 @@
             {{ room.title }}
         </div>
         <div class="howmany">
-            {{room.how_many|safe}} <span class="spr">•</span>
-            {{room.room_type_set.all}}
+            {{room.how_many|safe}}
         </div>
     </div>
     <div class="brief-right-info">
@@ -61,7 +60,7 @@
         </a>
     </div>
 </div>
-<div class="fl-spbn">
+<div class="roomfl">
     <div class="left-info-column">
         <!-- Your HTML template -->
         <div id="myCarousel" class="carousel">
@@ -93,8 +92,16 @@
             {% endif %}
         </div>
         <div class="lbld">
-            <div class="info-title">Host</div>
-            <div class="host-info coll">
+            <div class="lbl0">Description</div>
+            <div class="desc">
+                {{room.get_desc|slice:":1500"}}...
+            </div>
+        </div>
+    </div>
+    <div class="right-info-column">
+        <div class="lbld">
+            <div class="lbl0">Host</div>
+            <div class="host-info collb">
                 <a href="{% url 'user_profile' room.host.username %}">
                     {% if room.host.profile.avatar.url != null %}
                     <img src="{{room.host.profile.avatar.url}}" alt="" class="detpp">
@@ -116,41 +123,10 @@
                 </div>
             </div>
         </div>
-        <div class="lbld">
-            <div class="info-title">Description</div>
-            <div class="desc info-col">
-                {{room.description}}
-            </div>
-        </div>
-        <div class="lbld">
-            <div class="info-title">Amenities</div>
-            <div class="amenities-col">
-                {% for amenity in room.amenities.all %}
-                <div class="amenity">
-                    {{amenity}}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="lbld">
-            <div class="info-title">House rules</div>
-            <div class="hrule-col">
-                {% for rule in room.house_rules.all %}
-                <div class="hrule">
-                    {{rule}}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div>
-            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
-            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
-        </div>
-    </div>
-    <div class="right-info-column">
         <div class="sticky-right-col">
             <div class="price-info">
                 <span class="room-price">From UZS {{room.get_price}} night</span>
+                <div class="hr"></div>
             </div>
             <form action="{% url 'book_room' room.id %}" method="post">
                 {% csrf_token %}
@@ -185,7 +161,27 @@
 </div>
 <div class="botrm">
     <div class="lbld">
-        <div class="info-title">Reviews</div>
+        <div class="botmaint">Amenities</div>
+        <div class="amenities-col">
+            {% for amenity in room.amenities.all %}
+            <div class="amenity">
+                {{amenity}}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="lbld">
+        <div class="botmaint">House rules</div>
+        <div class="hrule-col">
+            {% for rule in room.house_rules.all %}
+            <div class="hrule">
+                {{rule}}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="lbld">
+        <div class="botmaint">Reviews</div>
         <div id="room-reviews-content">
             {% for review in reviews %}
             <div class="review">
@@ -220,10 +216,12 @@
         </div>
     </div>
     <div class="lbld">
-        <div class="info-title">Where it's located</div>
-        <div class="coll">
+        <div class="botmaint">Where it's located</div>
+        <div class="collsp">
             {{room.address}}
         </div>
+        <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
+        <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
         <div id="roomMap" class="room-location"></div>
     </div>
 </div>

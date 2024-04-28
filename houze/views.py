@@ -581,13 +581,6 @@ def room_create(request):
                 check_out=check_out,
             )
 
-            existing_rt = RoomType.objects.filter(name=room_type).first()
-            if existing_rt:
-                room.room_type.add(existing_rt)
-            else:
-                rt = RoomType.objects.create(name=room_type)
-                room.room_type.add(rt)
-
             for file in request.FILES.getlist("images"):
                 img = Image.objects.create(file=file)
                 room.images.add(img)
@@ -780,3 +773,7 @@ def share(request):
     if request.method == "POST":
         messages.success(request, "Link successfuly copied")
     return render(request, "basic/home.html")
+
+
+def tou(request):
+    return render(request, "other/tou.html")

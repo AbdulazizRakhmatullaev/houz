@@ -113,10 +113,14 @@
     {% if request.path == "/" %}
     <div id="secnav">
         <div id="row">
-            <form action="{% url 'search' %}" class="search-form">
-                {% csrf_token %}
-                <input type="text" name="search" class="search-inp" placeholder="Search" autocomplete="off" />
-            </form>
+            <ul class="row-content">
+                <li class="row-con-itm">
+                    <form action="{% url 'search' %}" class="search-form">
+                        {% csrf_token %}
+                        <input type="text" name="search" class="search-inp" placeholder="Search" autocomplete="off" />
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -141,10 +145,18 @@
                 <div class="foot-txt">
                     Copyright ©2024 Houze. All rights reserved.
                 </div>
-                <div class="foot-txt">
-                    <a href="https://en.wikipedia.org/wiki/Uzbekistan" class="underline">
-                        Uzbekistan
-                    </a>
+                <div class="footer-flex">
+                    <div class="foot-txt">
+                        <a href="{% url 'tou' %}" class="underline">
+                            Provisions
+                        </a>
+                    </div>
+                    <div class="spr">|</div>
+                    <div class="foot-txt">
+                        <a href="https://en.wikipedia.org/wiki/Uzbekistan" class="underline">
+                            Uzbekistan
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="foot-itms">

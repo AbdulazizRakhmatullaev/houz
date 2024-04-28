@@ -12,7 +12,7 @@ body {
     line-height: 1.4285914286;
     -webkit-font-smoothing: antialiased;
     font-synthesis: none;
-    background: #f5f5f7;
+    background: #fff;
     font-size: 14px;
     color: #1d1d1f;
 }
@@ -50,7 +50,7 @@ a {
 }
 
 #row {
-    margin: 0 auto;
+    margin: auto;
     height: 44px;
     max-width: 1024px;
     padding: 0 22px;
@@ -77,21 +77,13 @@ a {
     justify-content: start;
     position: relative;
     overflow: hidden;
-    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.16);
     border-radius: 18px;
     width: 100%;
     height: auto;
     max-height: 400px;
     white-space: normal;
     box-sizing: border-box;
-    box-shadow: 2px 4px 12px rgba(0, 0, 0, .08);
-    transition: all .3s cubic-bezier(0, 0, .5, 1);
-}
-
-
-.room:hover {
-    box-shadow: 2px 4px 16px rgba(0, 0, 0, .16);
-    transform: scale3d(1.01, 1.01, 1.01);
 }
 
 .room-info {
@@ -263,9 +255,9 @@ b {
     width: 100%;
     z-index: 10;
     height: 44px;
-    background: rgba(251, 251, 253, 0.8);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid rgba(0,0,0,0.16);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.16);
 }
 
 .search-inp {
@@ -276,7 +268,7 @@ b {
     font-size: 14px;
     padding: 5px 12px;
     border-radius: 9px;
-    background: #fff;
+    background: #f5f5f7;
     color: #1d1d1f;
 }
 
@@ -321,52 +313,41 @@ b {
 
 .each-image {
     width: 100%;
-    height: 380px;
+    height: 448px;
     object-fit: cover;
     border-radius: 18px;
-    background: #fff;
+    background: #f5f5f7;
 }
 
 .room-title {
     display: flex;
     justify-content: space-between;
-    align-items: self-start;
+    align-items: flex-start;
+    padding: 52px 0 22px;
 }
 
 .brief-name {
-    font-size: 25px;
+    font-size: 40px;
     line-height: 1.4;
     font-weight: 600;
     letter-spacing: -0.003em;
-    font-family:
-        SF Pro Display,
-        SF Pro Icons,
-        AOS Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+    line-height: 1.0834933333;
+
     color: #1d1d1f;
+    max-width: 540px;
+    padding-bottom: 8px;
 }
 
 .detailed-ci-cy {
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.47059;
-    font-weight: 400;
-    letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        AOS Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+    font-weight: 600;
+    letter-spacing: -.022em;
+    line-height: 1.1764805882;
     margin-top: 3px;
     box-sizing: border-box;
     white-space: nowrap;
-    display: block;
-    color: #bf4800;
+    color: #b64400;
 }
 
 .howmany {
@@ -374,47 +355,50 @@ b {
     line-height: 1.42859;
     font-weight: 400;
     letter-spacing: -0.016em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        AOS Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+
     color: #1d1d1f;
 }
 
 .hr {
-    background: rgba(0,0,0,0.16);
+    background: rgba(0, 0, 0, 0.16);
     height: 1px;
     width: 100%;
     margin: 10px 0;
 }
 
+.roomfl {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
 .left-info-column {
-    width: 680px;
+    width: calc(100% - 23rem);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     margin-top: 15px;
     gap: 15px;
+    padding-inline-end: 3.5294117647rem;
 }
 
 .right-info-column {
-    width: 400px;
+    width: 23rem;
     margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
 .sticky-right-col {
     position: sticky;
-    top: 20px;
+    top: 15px;
     display: flex;
     flex-direction: column;
     border-radius: 18px;
-    padding: 15px;
     box-sizing: border-box;
-    background: #fff;
 }
 
 .brief-info-col-itm {
@@ -422,26 +406,17 @@ b {
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
-    border-style: solid;
     width: 100%;
-    padding: 5px 15px;
+    padding: 10px 15px;
     cursor: pointer;
     text-align: center;
     white-space: nowrap;
-    border: 1px solid transparent;
     border-radius: 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
-    background: #fff;
+    justify-content: space-between;
+    background: #f5f5f7;
 }
 
 .briefmsg {
@@ -449,13 +424,7 @@ b {
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+
 }
 
 .info-col-name {
@@ -525,6 +494,9 @@ b {
 
 .desc {
     font-size: 14px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    min-height: 50px;
 }
 
 .amenities-col {
@@ -541,7 +513,7 @@ b {
     padding: 10px 15px;
     box-sizing: border-box;
     min-width: 30px;
-    background: #fff;
+    background: #f5f5f7;
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -562,7 +534,7 @@ b {
     padding: 10px 15px;
     box-sizing: border-box;
     min-width: 30px;
-    background: #fff;
+    background: #f5f5f7;
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -576,12 +548,10 @@ b {
     padding: 0 15px;
 }
 
-.info-col {
-    background: #fff;
-    padding: 15px;
-    box-sizing: border-box;
-    border-radius: 18px;
-    min-height: 50px;
+.lbl0 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
 #footer {
@@ -679,10 +649,10 @@ b {
 .spr {
     display: flex;
     align-items: center;
-    line-height: 18px;
+    /* line-height: 18px; */
     margin: 0 4px;
     font-size: 12px;
-    color: rgb(83, 100, 113);
+    color: #1d1d1f;
 }
 
 .tspr {
@@ -739,18 +709,10 @@ b {
 }
 
 .room-price {
-    font-size: 19px;
+    font-size: 21px;
     line-height: 1.14286;
     font-weight: 600;
     letter-spacing: 0.007em;
-    font-family:
-        SF Pro Display,
-        SF Pro Icons,
-        AOS Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
     margin-bottom: 14px;
 }
 
@@ -766,7 +728,7 @@ b {
 .check-io {
     height: 60px;
     width: 170px;
-    border: 1px solid #e8e8ed;
+    border: 1px solid rgba(0, 0, 0, 0.16);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -784,20 +746,13 @@ b {
 }
 
 .btn {
-    font-size: 17px;
+    font-size: 14px;
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
     border-style: solid;
     width: 100%;
-    padding: 17px 30px;
+    padding: 10px 30px;
     cursor: pointer;
     display: inline-block;
     text-align: center;
@@ -805,7 +760,7 @@ b {
     background: #0071e3;
     color: #fff;
     border: 1px solid transparent;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .btn:hover {
@@ -1089,13 +1044,7 @@ b {
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+
     border-style: solid;
     cursor: pointer;
     display: grid;
@@ -1137,13 +1086,7 @@ b {
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+
     transition: 0.2s;
 }
 
@@ -1157,13 +1100,7 @@ b {
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+
     border-style: solid;
     cursor: pointer;
     display: grid;
@@ -1231,7 +1168,7 @@ b {
 .p-first {
     display: flex;
     align-items: start;
-    background: #fff;
+    background: #f5f5f7;
     padding: 15px;
     box-sizing: border-box;
     border-radius: 18px;
@@ -1410,7 +1347,7 @@ b {
 }
 
 .nav-host:hover {
-    background: #dadada;
+    background: #f5f5f7;
 }
 
 .nav-icn {
@@ -1424,7 +1361,7 @@ b {
 }
 
 .nav-icn:hover {
-    background: #dadada;
+    background: #f5f5f7;
 }
 
 .nav-icn svg {
@@ -1462,6 +1399,7 @@ b {
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
+    gap: 5px;
 }
 
 .foot-itms {
@@ -1514,13 +1452,7 @@ b {
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+
     border-style: solid;
     min-width: 95px;
     padding: 8px 23px;
@@ -1543,13 +1475,7 @@ b {
     line-height: 1.17648;
     font-weight: 400;
     letter-spacing: -0.022em;
-    font-family:
-        SF Pro Text,
-        SF Pro Icons,
-        Helvetica Neue,
-        Helvetica,
-        Arial,
-        sans-serif;
+
     border-style: solid;
     min-width: 95px;
     padding: 8px 23px;
@@ -1589,7 +1515,7 @@ b {
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: #f5f5f7;
     border: 1px solid #e8e8ed;
     border-radius: 23px;
     overflow: hidden;
@@ -1711,7 +1637,7 @@ b {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 24px;
 }
 
 .p-rooms {
@@ -1731,22 +1657,18 @@ b {
 }
 
 .p-room {
-    position: absolute;
-    text-decoration: none;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.16);;
+    max-height: 400px;
+    white-space: normal;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
     overflow: hidden;
-    background-color: #fff;
     border-radius: 18px;
     min-width: 270px;
     max-width: 270px;
-    height: 19rem;
-    white-space: normal;
     box-sizing: border-box;
-    /* box-shadow: 2px 4px 12px rgba(0, 0, 0, .08);
-    transition: all .3s cubic-bezier(0, 0, .5, 1); */
 }
 
 /* .p-room:hover {
@@ -1935,7 +1857,7 @@ b {
 }
 
 .coll {
-    background: #fff;
+    background: #f5f5f7;
     padding: 15px;
     box-sizing: border-box;
     border-radius: 18px;
@@ -1943,7 +1865,23 @@ b {
 }
 
 .coll0 {
-    background: #fff;
+    background: #f5f5f7;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 18px;
+    min-height: 50px;
+}
+
+.collsp {
+    background: #f5f5f7;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 1;
+    min-height: 50px;
+}
+
+.collb {
+    border: 1px solid rgba(0, 0, 0, 0.16);
     padding: 15px;
     box-sizing: border-box;
     border-radius: 18px;
@@ -2030,8 +1968,28 @@ b {
 }
 
 .botrm {
+    margin: 0 auto;
+    width: 1024px;
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: 15px;
+}
+
+.botmaint {
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.1;
+    padding: 64px 0 41px;
+    text-align: center;
+}
+
+
+.botmidt {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.1;
+    padding-bottom: 20px;
 }

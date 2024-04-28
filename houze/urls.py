@@ -34,5 +34,6 @@ urlpatterns = [
     ),
     path("notifications/<int:noty_id>/delete", views.noty_delete, name="noty_delete"),
     path("room/confirm/<int:noty_id>", views.confirm_room, name="confirm_room"),
+    path("terms-of-use", views.tou, name="tou"),
     path("@<str:username>", views.user_profile, name="user_profile"),
 ]

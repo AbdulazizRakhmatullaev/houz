@@ -9,6 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from location_field.models.plain import PlainLocationField
 from django.utils.timezone import localtime
 from .languages import LANGUAGES
+from django.utils.safestring import mark_safe
 
 sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
 
@@ -146,7 +147,7 @@ class Profile(models.Model):
 
 
 class Amenity(models.Model):
-    icon = models.TextField("Icon svg format")
+    icon = models.TextField("Icon svg format", blank=True)
     name = models.CharField("Name", max_length=255)
 
     class Meta:
@@ -210,6 +211,11 @@ class Room(models.Model):
         verbose_name = "Room"
         verbose_name_plural = "Rooms"
         ordering = ["-date"]
+
+    def get_desc(self):
+        lines = self.description.split("\n")
+        rendered_lines = [line if line.strip() else "<br><br>" for line in lines]
+        return mark_safe("\n".join(rendered_lines))
 
     def get_dates(self):
         now = localtime()
