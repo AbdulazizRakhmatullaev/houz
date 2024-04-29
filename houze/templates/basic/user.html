@@ -6,7 +6,7 @@
 <div class="p-col">
     <div class="left-pp-col">
         <div class="p-main">
-            <div class="p-first">
+            <div class="p-first collb">
                 {% if user.profile.avatar.url != null %}
                 <img src="{{user.profile.avatar.url}}" alt="" class="uspp">
                 {% else %}
@@ -23,7 +23,7 @@
             </div>
             <div class="p-sec">
                 <div class="flex">
-                    <div class="avgR coll0" title="Profile rating">
+                    <div class="avgR collb" title="Profile rating">
                         <div class="title">
                             {{user.profile.my_rating}}
                         </div>
@@ -60,11 +60,11 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="avgR coll0">
+                    <div class="avgR collb">
                         <div class="title">{{rating_count}}</div>
                         <div class="info">Reviews</div>
                     </div>
-                    <div class="avgR coll0">
+                    <div class="avgR collb">
                         <div class="title">{{user.profile.created_at|date:"M d"}}</div>
                         <div class="info">Joined</div>
                     </div>
@@ -84,7 +84,7 @@
             {% if user.profile.bio %}
             <div class="lbld">
                 <div class="botmidt">About {{user.profile.first_name}}</div>
-                <div class="prbio coll0">
+                <div class="prbio collb">
                     {{user.profile.bio}}
                 </div>
             </div>

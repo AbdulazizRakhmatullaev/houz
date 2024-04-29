@@ -623,7 +623,7 @@ def room_delete(request, id):
 
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
-    current_city = next(name for code, name in Region_Choices if code == room.city)
+    current_city = next((name for code, name in Region_Choices if code == room.city), "Unknown City")
     regions = [(code, name) for code, name in Region_Choices if room.city != code]
     amenities = room.amenities.all()
     house_rules = room.house_rules.all()
@@ -652,14 +652,6 @@ def room_edit(request, username, id):
 
             room.check_in = request.POST.get("check_in", room.check_in)
             room.check_out = request.POST.get("check_out", room.check_out)
-
-            # for am in amens:
-            #     amy = Amenity.objects.create(name=am)
-            #     room.amenities.add(amy)
-
-            # for hr in house_rules:
-
-            #     room.house_rules.add(hr)
 
             # room.room_type = request.POST.get("room_type", room.room_type)
             room.location = f'{request.POST.get("latitude", room.fst_loc)},{request.POST.get("longitude", room.sec_loc)}'
