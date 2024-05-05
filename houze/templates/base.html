@@ -170,7 +170,7 @@
     <script src="{% static 'autoNumeric.js' %}"></script>
     <!--  -->
 
-    {% block scripts %} {% endblock %}  
+    {% block scripts %} {% endblock %}
     <script>
         $(document).ready(function () {
             $('#guests_minus').click(function () {
@@ -277,12 +277,102 @@
             }
 
             input.value = ''; // Clear the input value after selecting images
+            const imgErrorText = document.getElementById('img-error');
+            imgErrorText.textContent = '';
         }
-
-        console.log(selectedImages)
 
         function submitForm(event) {
             event.preventDefault(); // Prevent the default form submission
+
+            const imgError = document.getElementById('img-error');
+            const title = document.getElementById('title');
+            const price = document.getElementById('price');
+            const description = document.getElementById('description');
+            const address = document.getElementById('address');
+            const city = document.getElementById('city');
+            const roomType = document.getElementById('room_type');
+            const amenities = document.getElementById('amenities');
+            const houseRules = document.getElementById('house_rules');
+            const checkIn = document.getElementById('check_in');
+            const checkOut = document.getElementById('check_out');
+
+            // Clear previous error messages
+            imgError.textContent = '';
+            title.parentNode.querySelector('.errTxt').textContent = '';
+            price.parentNode.querySelector('.errTxt').textContent = '';
+            description.parentNode.querySelector('.errTxt').textContent = '';
+            address.parentNode.querySelector('.errTxt').textContent = '';
+            city.parentNode.querySelector('.errTxt').textContent = '';
+            roomType.parentNode.querySelector('.errTxt').textContent = '';
+            amenities.parentNode.querySelector('.errTxt').textContent = '';
+            houseRules.parentNode.querySelector('.errTxt').textContent = '';
+            checkIn.parentNode.querySelector('.errTxt').textContent = '';
+            checkOut.parentNode.querySelector('.errTxt').textContent = '';
+
+            if (selectedImages.length <= 4) {
+                // Display error message for images
+                imgError.textContent = 'Please select at least 5 images.';
+                return;
+            }
+
+            // Validate other fields
+            if (title.value.trim() === '') {
+                title.parentNode.querySelector('.errTxt').textContent = 'Title is required.';
+                return;
+            }
+
+            if (price.value.trim() === '') {
+                price.parentNode.querySelector('.errTxt').textContent = 'Price is required.';
+                return;
+            }
+
+            if (description.value.trim() === '') {
+                description.parentNode.querySelector('.errTxt').textContent = 'Description is required.';
+                return;
+            }
+
+            if (address.value.trim() === '') {
+                address.parentNode.querySelector('.errTxt').textContent = 'Address is required.';
+                return;
+            }
+
+            if (city.value.trim() === 'Select city') {
+                city.parentNode.querySelector('.errTxt').textContent = 'City is required.';
+                return;
+            }
+
+            if (roomType.value.trim() === 'Select room type') {
+                roomType.parentNode.querySelector('.errTxt').textContent = 'Room type is required.';
+                return;
+            }
+
+            if (amenities.value.trim() === '') {
+                amenities.parentNode.querySelector('.errTxt').textContent = 'Amenities are required';
+                return;
+            }
+
+            if (houseRules.value.trim() === '') {
+                houseRules.parentNode.querySelector('.errTxt').textContent = 'House rules are required.';
+                return;
+            }
+
+            // Convert check-in and check-out values to Date objects
+            const checkInDate = new Date(checkIn.value);
+            const checkOutDate = new Date(checkOut.value);
+
+            // Check if check-out date is after check-in date
+            if (checkOutDate <= checkInDate) {
+                checkOut.parentNode.querySelector('.errTxt').textContent = 'Check-out date must be after check-in date.';
+                return;
+            }
+
+            // Check if there's at least one day gap between check-in and check-out
+            const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+            if ((checkOutDate.getTime() - checkInDate.getTime()) < oneDay) {
+                checkOut.parentNode.querySelector('.errTxt').textContent = 'There should be at least one day gap between check-in and check-out.';
+                return;
+            }
+
 
             // Create a FormData object to store form data and selected images
             const formData = new FormData(document.getElementById('room-create-form'));
