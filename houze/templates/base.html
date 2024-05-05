@@ -269,6 +269,7 @@
         function addImage(input) {
             const files = input.files;
             const previewContainer = document.getElementById('image-preview-container');
+            const imgInpInfo = document.getElementById('img-preview-info');
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
@@ -279,6 +280,7 @@
                 const image = document.createElement('img');
                 image.classList.add('preview-image');
                 image.src = URL.createObjectURL(file);
+                image.file = file;
 
                 const cancelButton = document.createElement('div');
                 cancelButton.innerHTML = '&times';
@@ -290,6 +292,9 @@
                         selectedImages.splice(index, 1);
                     }
                     previewContainer.removeChild(imageContainer);
+                    if (selectedImages.length === 0) {
+                        imgInpInfo.textContent = '';
+                    }
                 };
 
                 imageContainer.appendChild(image);
@@ -300,6 +305,7 @@
             }
 
             input.value = ''; // Clear the input value after selecting images
+            imgInpInfo.textContent = 'Drag images to sort them out';
             const imgErrorText = document.getElementById('img-error');
             imgErrorText.textContent = '';
 
@@ -340,9 +346,10 @@
             checkOut.parentNode.querySelector('.errTxt').textContent = '';
 
             const imageFiles = [];
-            document.querySelectorAll('#image-preview-container .image-container').forEach(img => {
+            document.querySelectorAll('#image-preview-container .image-container img').forEach(img => {
                 imageFiles.push(img.file);
             });
+            console.log(imageFiles);
 
             // Validate fields
             if (imageFiles.length <= 4) {
