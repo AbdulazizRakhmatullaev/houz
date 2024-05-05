@@ -26,10 +26,20 @@
                     {% if notification.room.host == notification.reciever %}
                     <div class="notroominfo">
                         <div class="not-room-col">
-                            Check in: {{notification.check_in|date:"M d"}}
+                            <div class="fs">
+                                Check-in
+                            </div>
+                            <div class="sc">
+                                {{notification.check_in|date:"M d"}}
+                            </div>
                         </div>
                         <div class="not-room-col">
-                            Check out: {{notification.check_out|date:"M d"}}
+                            <div class="fs">
+                                Checkout
+                            </div>
+                            <div class="sc">
+                                {{notification.check_out|date:"M d"}}
+                            </div>
                         </div>
                     </div>
                     {% endif %}
@@ -49,7 +59,7 @@
                 {% endif %}
                 <div class="notdt_col">
                     {% if notification.confirmed %}
-                    <a href="{% url 'booking' %}" class="underline" style="color: #06c;">
+                    <a href="{% url 'reservation' %}" class="underline" style="color: #06c;">
                         (confirmed)
                     </a>
                     {% endif %}

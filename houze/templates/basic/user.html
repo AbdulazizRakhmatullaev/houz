@@ -17,8 +17,25 @@
                 </div>
                 {% endif %}
                 <div class="p-names-col">
-                    <div class="p-name">{{user.profile.name}}</div>
-                    <div class="p-usname">@{{user.username}}</div>
+                    <div class="nminfo">
+                        <div class="p-name">{{user.profile.name}}</div>
+                        <div class="p-usname">@{{user.username}}</div>
+                    </div>
+                    {% if request.user.is_authenticated %}
+                    {% if user.profile.badge %}
+                    <div class="p-badge" title="User badge">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+                            viewBox="0 0 28 28">
+                            <path fill-rule="evenodd"
+                                d="M14 14.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Zm0-2a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM19 27a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm2.936-7.49-1.673-.164-.736-1.738c-.23-.544-.822-.544-1.052 0l-.737 1.738-1.673.165c-.584.057-.762.637-.31 1.02l1.309 1.114-.486 1.814c-.16.596.337.955.832.598l1.59-1.15 1.592 1.15c.496.359.992-.002.832-.598l-.486-1.814 1.31-1.113c.449-.383.27-.964-.312-1.021Z"
+                                clip-rule="evenodd" />
+                            <path
+                                d="M11.982 16.569a1 1 0 0 1-.795 1.17c-2.272.433-3.272 1.361-3.729 2.05a2.902 2.902 0 0 0-.408.917 2.016 2.016 0 0 0-.05.306v.488a.5.5 0 0 0 .5.5h3a1 1 0 1 1 0 2h-3A2.5 2.5 0 0 1 5 21.5V21h1c-1 0-1-.002-1-.002v-.032a2.115 2.115 0 0 1 .015-.215c.014-.13.04-.306.091-.515a4.9 4.9 0 0 1 .686-1.553c.793-1.195 2.293-2.389 5.02-2.909a1 1 0 0 1 1.17.795Z" />
+                        </svg>
+                        {{user.profile.badge}}
+                    </div>
+                    {% endif %}
+                    {% endif %}
                 </div>
             </div>
             <div class="p-sec">
@@ -129,19 +146,14 @@
                 <div class="p-rooms">
                     {% for room in rooms %}
                     <div class="p-room">
+                        {% if is_own_profile %}
                         <div class="roomtools">
-                            <button class="objdel"
-                                onclick="location.href='@{{request.user.username}}/rooms/{{room.id}}/edit';">
+                            <button class="objdel" onclick="location.href='@{{user.username}}/rooms/{{room.id}}/edit';">
                                 <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                     xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g id="write_24">
-                                            <polygon id="Shape" points="0 0 24 0 24 24 0 24"></polygon>
-                                            <path
-                                                d="M14.1882588,6.27301517 L17.7278487,9.81260506 L9.10415743,18.4354891 C8.33089999,19.2086803 7.3795132,19.7800394 6.33365949,20.0993225 L3.43116121,20.9854108 C3.2548849,21.0392252 3.06835948,20.9399503 3.01454502,20.763674 C2.99515549,20.700161 2.99515549,20.6323075 3.01454502,20.5687946 L3.90054461,17.6665868 C4.21988422,16.620548 4.79138805,15.6690125 5.5647823,14.8956845 L14.1882588,6.27301517 Z M15.2489686,5.21240463 L17.017722,3.44381677 C17.6035158,2.85807317 18.5532282,2.85809351 19.1389969,3.4438622 L20.5573573,4.86204088 C21.1431438,5.44782732 21.1431438,6.39757479 20.5573573,6.98336123 C20.5573422,6.98337637 20.5573271,6.98339152 20.5573119,6.98340666 L18.7885585,8.75199452 L15.2489686,5.21240463 Z"
-                                                id="Mask" fill="currentColor"></path>
-                                        </g>
-                                    </g>
+                                    <path
+                                        d="M14.1882588,6.27301517 L17.7278487,9.81260506 L9.10415743,18.4354891 C8.33089999,19.2086803 7.3795132,19.7800394 6.33365949,20.0993225 L3.43116121,20.9854108 C3.2548849,21.0392252 3.06835948,20.9399503 3.01454502,20.763674 C2.99515549,20.700161 2.99515549,20.6323075 3.01454502,20.5687946 L3.90054461,17.6665868 C4.21988422,16.620548 4.79138805,15.6690125 5.5647823,14.8956845 L14.1882588,6.27301517 Z M15.2489686,5.21240463 L17.017722,3.44381677 C17.6035158,2.85807317 18.5532282,2.85809351 19.1389969,3.4438622 L20.5573573,4.86204088 C21.1431438,5.44782732 21.1431438,6.39757479 20.5573573,6.98336123 C20.5573422,6.98337637 20.5573271,6.98339152 20.5573119,6.98340666 L18.7885585,8.75199452 L15.2489686,5.21240463 Z"
+                                        id="Mask"></path>
                                 </svg>
                             </button>
                             <form action="{% url 'room_delete' room.id %}" method="POST">
@@ -149,6 +161,7 @@
                                 <button class="objdel" type="submit" onclick="return confirmReq()">&times;</button>
                             </form>
                         </div>
+                        {% endif %}
                         <a href="{% url 'room_detail_url' room.id %}">
                             <div class="room-img">
                                 {% if room.first_photo != Null %}
@@ -163,8 +176,9 @@
                                         {{ room.get_city_display }}, Uzbekistan
                                     </div>
                                     <div class="rating">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                                            focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"
+                                            role="presentation" focusable="false"
+                                            style="display: block; height: 12px; width: 12px; fill: currentcolor;">
                                             <path fill-rule="evenodd"
                                                 d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
                                             </path>
@@ -173,7 +187,7 @@
                                     </div>
                                 </div>
                                 <div class="in-out">{{room.av_dates}}</div>
-                                <div class="r-price">From UZS {{room.get_price}}/night</div>
+                                <div class="r-price">UZS {{room.get_price}}/night</div>
                             </div>
                         </a>
                     </div>

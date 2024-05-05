@@ -25,33 +25,33 @@
         {% endif %}
         <a href="#room-reviews-content" class="brief-info-col-itm">
             {{room.average_rating}} ({{room.rating_set.count}})
-            <div class="r-stars">
+            <div class="p-stars">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                    focusable="false">
                     <path fill-rule="evenodd"
                         d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
                     </path>
                 </svg>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                    focusable="false">
                     <path fill-rule="evenodd"
                         d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
                     </path>
                 </svg>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                    focusable="false">
                     <path fill-rule="evenodd"
                         d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
                     </path>
                 </svg>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                    focusable="false">
                     <path fill-rule="evenodd"
                         d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
                     </path>
                 </svg>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                    focusable="false">
                     <path fill-rule="evenodd"
                         d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
                     </path>
@@ -76,32 +76,24 @@
             <!-- Left and right controls -->
             {% if room.all_photos|length > 1 %}
             <span class="carousel-control-prev" role="button" onclick="prevSlide()">
-                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
                     <path
-                        d="m15.8839 18.1161c.4881.4882.4881 1.2796 0 1.7678-.4882.4881-1.2796.4881-1.7678 0l-6.99998-7c-.48816-.4882-.48816-1.2796 0-1.7678l6.99998-6.99998c.4882-.48816 1.2796-.48816 1.7678 0 .4881.48815.4881 1.27961 0 1.76776l-6.11613 6.11612z"
-                        fill="currentColor" />
+                        d="M21.559,12.062 L15.618,17.984 L21.5221,23.944 C22.105,24.533 22.1021,25.482 21.5131,26.065 C21.2211,26.355 20.8391,26.4999987 20.4571,26.4999987 C20.0711,26.4999987 19.6851,26.352 19.3921,26.056 L12.4351,19.034 C11.8531,18.446 11.8551,17.4999987 12.4411,16.916 L19.4411,9.938 C20.0261,9.353 20.9781,9.354 21.5621,9.941 C22.1471,10.528 22.1451,11.478 21.5591,12.062 L21.559,12.062 Z">
+                    </path>
                 </svg>
             </span>
             <span class="carousel-control-next" role="button" onclick="nextSlide()">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
                     <path
-                        d="m14.2322 12-6.11608-6.11612c-.48816-.48815-.48816-1.27961 0-1.76776.48815-.48816 1.27961-.48816 1.76776 0l7.00002 6.99998c.4881.4882.4881 1.2796 0 1.7678l-7.00002 7c-.48815.4881-1.27961.4881-1.76776 0-.48816-.4882-.48816-1.2796 0-1.7678z"
-                        fill="currentColor" />
+                        d="M23.5587,16.916 C24.1447,17.4999987 24.1467,18.446 23.5647,19.034 L16.6077,26.056 C16.3147,26.352 15.9287,26.4999987 15.5427,26.4999987 C15.1607,26.4999987 14.7787,26.355 14.4867,26.065 C13.8977,25.482 13.8947,24.533 14.4777,23.944 L20.3818,17.984 L14.4408,12.062 C13.8548,11.478 13.8528,10.5279 14.4378,9.941 C15.0218,9.354 15.9738,9.353 16.5588,9.938 L23.5588,16.916 L23.5587,16.916 Z">
+                    </path>
                 </svg>
             </span>
             {% endif %}
         </div>
         <div class="lbld">
-            <div class="lbl0">Description</div>
-            <div class="desc">
-                {{room.get_desc|slice:":1500"}}...
-            </div>
-        </div>
-    </div>
-    <div class="right-info-column">
-        <div class="lbld">
             <div class="lbl0">Host</div>
-            <div class="host-info collb">
+            <div class="host-info">
                 <a href="{% url 'user_profile' room.host.username %}">
                     {% if room.host.profile.avatar.url != null %}
                     <img src="{{room.host.profile.avatar.url}}" alt="" class="detpp">
@@ -123,29 +115,131 @@
                 </div>
             </div>
         </div>
+        <div class="lbld">
+            <div class="lbl0">Description</div>
+            <div class="desc">
+                {{room.get_desc|slice:":1500"}}...
+            </div>
+        </div>
+        <div class="lbld">
+            <div class="lbl0">Amenities</div>
+            <div class="amenities-col">
+                {% for amenity in room.amenities.all %}
+                <div class="amenity">
+                    {{amenity}}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="lbld">
+            <div class="lbl0">House rules</div>
+            <div class="hrule-col">
+                {% for rule in room.house_rules.all %}
+                <div class="hrule">
+                    {{rule}}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="lbld">
+            <div class="lbl0">Reviews</div>
+            <div class="revsta">
+                <div class="revsta-t">{{room.average_rating}}</div>
+                <div class="rstars">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                        focusable="false">
+                        <path fill-rule="evenodd"
+                            d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                        </path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                        focusable="false">
+                        <path fill-rule="evenodd"
+                            d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                        </path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                        focusable="false">
+                        <path fill-rule="evenodd"
+                            d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                        </path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                        focusable="false">
+                        <path fill-rule="evenodd"
+                            d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                        </path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                        focusable="false">
+                        <path fill-rule="evenodd"
+                            d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div id="room-reviews-content">
+                {% for review in reviews %}
+                <div class="review">
+                    <a href="{% url 'user_profile' review.user.username %}">
+                        {% if review.user.profile.avatar.url != null %}
+                        <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+                        {% else %}
+                        <div class="pp" style="background: linear-gradient({{review.user.profile.avatar_default}});">
+                            <div class="grcn">
+                                {{review.user.profile.name|slice:"0:1"}}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </a>
+                    <div class="n-d">
+                        <div class="n-stayed">
+                            <a href="{% url 'user_profile' review.user.username %}"
+                                class="reviewer-name">{{review.user.profile.name}}</a>
+                            <div class="spr">•</div>
+                            <div class="review-date">{{review.get_date}}</div>
+                        </div>
+                        <!--  -->
+                        <div class="r-stars">
+                            {{review.user_ratings|safe}}
+                        </div>
+                        <div class="review-text">{{review.review_text}}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="infotxt coll">No reviews yet...</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="lbld">
+            <div class="lbl0">Where it's located</div>
+            <div class="collbsh">
+                {{room.address}}, {{room.get_city_display}}, Uzbekistan
+            </div>
+            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
+            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
+            <div id="roomMap" class="room-location"></div>
+        </div>
+    </div>
+    <form action="{% url 'book_room' room.id %}" method="post" class="right-info-column">
+        {% csrf_token %}
+        <div class="check-io">
+            <span class="small-title">Check-in</span>
+            <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}'
+                min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
+        </div>
+        <div class="check-io">
+            <span class="small-title">Checkout</span>
+            <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}'
+                min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
+        </div>
         <div class="sticky-right-col">
             <div class="price-info">
-                <span class="room-price">From UZS {{room.get_price}} night</span>
-                <div class="hr"></div>
+                <span class="room-price">UZS {{room.get_price}} night</span>
             </div>
-            <form action="{% url 'book_room' room.id %}" method="post">
-                {% csrf_token %}
-                <div class="check-inNout">
-                    <div class="check-io">
-                        <span class="small-title">Check-in</span>
-                        <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}'
-                            min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
-                    </div>
-                    <div class="check-io">
-                        <span class="small-title">Check-out</span>
-                        <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}'
-                            min='{{room.check_in|date:"Y-m-d"}}' max='{{room.check_out|date:"Y-m-d"}}'>
-                    </div>
-                </div>
-                <div class="payment">
-                    <button class="btn" id="message-btn">Reserve it</button>
-                </div>
-            </form>
+            <div class="payment">
+                <button class="btn" id="message-btn">Reserve</button>
+            </div>
             <div class="payment">
                 <div class="pricing-col">
                     <div class="left-text">{{room.get_price}} soums x{{room.num_o_days}} nights</span></div>
@@ -157,31 +251,46 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
-<div class="botrm">
-    <div class="lbld">
-        <div class="botmaint">Amenities</div>
-        <div class="amenities-col">
-            {% for amenity in room.amenities.all %}
-            <div class="amenity">
-                {{amenity}}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="lbld">
-        <div class="botmaint">House rules</div>
-        <div class="hrule-col">
-            {% for rule in room.house_rules.all %}
-            <div class="hrule">
-                {{rule}}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+<!-- <div class="botrm">
     <div class="lbld">
         <div class="botmaint">Reviews</div>
+        <div class="revsta">
+            <div class="revsta-t">{{room.average_rating}}</div>
+            <div class="rstars">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                    focusable="false">
+                    <path fill-rule="evenodd"
+                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                    </path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                    focusable="false">
+                    <path fill-rule="evenodd"
+                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                    </path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                    focusable="false">
+                    <path fill-rule="evenodd"
+                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                    </path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                    focusable="false">
+                    <path fill-rule="evenodd"
+                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                    </path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                    focusable="false">
+                    <path fill-rule="evenodd"
+                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                    </path>
+                </svg>
+            </div>
+        </div>
         <div id="room-reviews-content">
             {% for review in reviews %}
             <div class="review">
@@ -203,7 +312,6 @@
                         <div class="spr">•</div>
                         <div class="review-date">{{review.get_date}}</div>
                     </div>
-                    <!--  -->
                     <div class="r-stars">
                         {{review.user_ratings|safe}}
                     </div>
@@ -217,14 +325,14 @@
     </div>
     <div class="lbld">
         <div class="botmaint">Where it's located</div>
-        <div class="collsp">
-            {{room.address}}
+        <div class="collbsh">
+            {{room.address}}, {{room.get_city_display}}, Uzbekistan
         </div>
         <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
         <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
         <div id="roomMap" class="room-location"></div>
     </div>
-</div>
+</div> -->
 
 {% endblock %}
 
@@ -232,67 +340,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
-
-    var initialLatitude = parseFloat(document.getElementById('latitude').value);
-    var initialLongitude = parseFloat(document.getElementById('longitude').value);
-
-    var roomMap = new mapboxgl.Map({
-        container: 'roomMap',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
-        zoom: 13
-    });
-
-    // Add zoom and unzoom controls
-    roomMap.addControl(new mapboxgl.NavigationControl());
-
-    // Create marker
-    var marker = new mapboxgl.Marker({
-        draggable: false
-    }).setLngLat([initialLongitude, initialLatitude]).addTo(roomMap);
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var bookedDates = {{ booked_dates| safe
-    }};
-    var checkInInput = document.querySelector('input[name="check_in"]');
-    var checkOutInput = document.querySelector('input[name="check_out"]');
-
-    function isDateBooked(dateString) {
-        for (var i = 0; i < bookedDates.length; i++) {
-            var startDate = new Date(bookedDates[i][0]);
-            var endDate = new Date(bookedDates[i][1]);
-            var currentDate = new Date(dateString);
-            if (currentDate >= startDate && currentDate <= endDate) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Disable booked dates in the check-in input
-    checkInInput.addEventListener('input', function () {
-        var selectedDate = checkInInput.value;
-        if (isDateBooked(selectedDate)) {
-            checkInInput.setCustomValidity('This date is already booked.');
-        } else {
-            checkInInput.setCustomValidity('');
-        }
-    });
-
-    // Disable booked dates in the check-out input
-    checkOutInput.addEventListener('input', function () {
-        var selectedDate = checkOutInput.value;
-        if (isDateBooked(selectedDate)) {
-            checkOutInput.setCustomValidity('This date is already booked.');
-        } else {
-            checkOutInput.setCustomValidity('');
-        }
-    });
-    });
-</script>
 
 <script>
     let currentSlide = 0;

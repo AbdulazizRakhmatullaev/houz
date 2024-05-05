@@ -55,7 +55,7 @@
                 <li class="row-con-itm">
 
                 </li>
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                 <ul class="row-content">
                     <li class="createroom">
                         <div class="nav-host" onclick="location.href='/become-a-host';">
@@ -111,7 +111,7 @@
         </div>
     </nav>
     {% if request.path == "/" %}
-    <div id="secnav">
+    <!-- <div id="secnav">
         <div id="row">
             <ul class="row-content">
                 <li class="row-con-itm">
@@ -122,7 +122,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </div> -->
 
     {% endif %}
     <main id="main">
@@ -148,7 +148,7 @@
                 <div class="footer-flex">
                     <div class="foot-txt">
                         <a href="{% url 'tou' %}" class="underline">
-                            Provisions
+                            Terms of Use
                         </a>
                     </div>
                     <div class="spr">|</div>
@@ -167,9 +167,79 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="{% static 'websocket.js' %}"></script>
+    <script src="{% static 'autoNumeric.js' %}"></script>
     <!--  -->
 
-    {% block scripts %} {% endblock %}
+    {% block scripts %} {% endblock %}  
+    <script>
+        $(document).ready(function () {
+            $('#guests_minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#guests_plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
+        // beds
+        $(document).ready(function () {
+            $('#beds_minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#beds_plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
+        // bedrooms
+        $(document).ready(function () {
+            $('#bedrooms_minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#bedrooms_plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
+        // baths
+        $(document).ready(function () {
+            $('#baths_minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#baths_plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
+    </script>
     <script>
         let selectedImages = [];
 
@@ -244,7 +314,6 @@
             });
         }
     </script>
-
     <!-- <script>
         let selectedImages = [];
 
@@ -285,7 +354,6 @@
 
         console.log(selectedImages);
     </script> -->
-
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
 

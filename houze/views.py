@@ -10,6 +10,7 @@ from .models import (
     Amenity,
     Comment,
     Region_Choices,
+    RoomTypes,
 )
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
@@ -31,6 +32,7 @@ from django.template.loader import render_to_string
 
 import os
 from django.conf import settings
+import string
 from django.db.models import Count
 
 
@@ -180,7 +182,7 @@ def reservation_delete(request, reservation_id):
 
             reservation.delete()
 
-            return redirect("reservations")
+            return redirect("reservation")
     return redirect("home")
 
 
@@ -305,7 +307,7 @@ def confirm_room(request, noty_id):
                 notification.confirmed = True
                 notification.save()
 
-                return redirect("reservations")
+                return redirect("reservation")
             else:
                 not_message = f"We are really sorry, but unfortunately room was booked with the same dates by other people"
 
@@ -363,6 +365,7 @@ def confirm_room(request, noty_id):
 
 def user_profile(request, username):
     user = get_object_or_404(User, username__exact=username)
+    is_own_profile = user == request.user
     rooms = user.room_set.all().order_by("-date")
     comments = Comment.objects.filter(reciever=user).order_by("-created_at")
     reviews = Rating.objects.filter(room__in=rooms).order_by("-date")
@@ -372,6 +375,7 @@ def user_profile(request, username):
         "basic/user.html",
         {
             "user": user,
+            "is_own_profile": is_own_profile,
             "rooms": rooms,
             "comments": comments,
             "reviews": reviews,
@@ -537,6 +541,7 @@ def avatarDelete(request):
 # ROOM POST VIEWS
 def room_create(request):
     regions = Region_Choices
+    room_types = RoomTypes
     if request.user.is_authenticated:
         if request.method == "POST":
             host = request.user
@@ -557,8 +562,16 @@ def room_create(request):
             check_out = request.POST.get("check_out")
 
             room_type = request.POST.get("room_type")
-            amenities = (request.POST.get("amenities")).split(",")
-            house_rules = (request.POST.get("house_rules")).split(",")
+            amenities = [
+                am
+                for am in (request.POST.get("amenities")).split(",")
+                if am.strip() != ""
+            ]
+            house_rules = [
+                hr
+                for hr in (request.POST.get("house_rules")).split(",")
+                if hr.strip() != ""
+            ]
 
             latitude = request.POST.get("latitude")
             longitude = request.POST.get("longitude")
@@ -579,6 +592,7 @@ def room_create(request):
                 location=location,
                 check_in=check_in,
                 check_out=check_out,
+                room_type=room_type,
             )
 
             for file in request.FILES.getlist("images"):
@@ -591,7 +605,7 @@ def room_create(request):
                 if existing_amenity:
                     room.amenities.add(existing_amenity)
                 else:
-                    new_amenity = Amenity.objects.create(name=am)
+                    new_amenity = Amenity.objects.create(name=string.capwords(am))
                     room.amenities.add(new_amenity)
 
             for hr in house_rules:
@@ -600,7 +614,7 @@ def room_create(request):
                 if existing_houserule:
                     room.house_rules.add(existing_houserule)
                 else:
-                    new_houserule = HouseRule.objects.create(rule=hr)
+                    new_houserule = HouseRule.objects.create(rule=string.capwords(hr))
                     room.house_rules.add(new_houserule)
 
             # Return the room ID in a JSON response
@@ -608,7 +622,11 @@ def room_create(request):
             return JsonResponse({"room_id": room_id})
 
             # return redirect("room_detail_url", room_id=room.pk)
-        return render(request, "basic/room_create.html", {"regions": regions})
+        return render(
+            request,
+            "basic/room_create.html",
+            {"regions": regions, "room_types": room_types},
+        )
     return redirect("signin")
 
 
@@ -623,8 +641,17 @@ def room_delete(request, id):
 
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
-    current_city = next((name for code, name in Region_Choices if code == room.city), "Unknown City")
+
     regions = [(code, name) for code, name in Region_Choices if room.city != code]
+    current_city = next(
+        (name for code, name in Region_Choices if code == room.city), "Unknown City"
+    )
+
+    room_types = [(code, name) for code, name in RoomTypes if room.room_type != code]
+    cur_rmtype = next(
+        (name for code, name in RoomTypes if code == room.room_type), "Unknown"
+    )
+
     amenities = room.amenities.all()
     house_rules = room.house_rules.all()
 
@@ -634,6 +661,8 @@ def room_edit(request, username, id):
         "regions": regions,
         "amenities": amenities,
         "house_rules": house_rules,
+        "cur_rmtype": cur_rmtype,
+        "room_types": room_types,
     }
 
     if room.host.username == username:
@@ -643,12 +672,42 @@ def room_edit(request, username, id):
             room.price = request.POST.get("price", room.price)
 
             room.city = request.POST.get("city", room.city)
+            room.room_type = request.POST.get("room_type", room.room_type)
             room.address = request.POST.get("address", room.address)
 
             room.guests = request.POST.get("guests", room.guests)
             room.beds = request.POST.get("beds", room.beds)
             room.bedrooms = request.POST.get("bedrooms", room.bedrooms)
             room.baths = request.POST.get("baths", room.baths)
+
+            edit_amenities = [
+                am
+                for am in (request.POST.get("amenities")).split(",")
+                if am.strip() != ""
+            ]
+            edit_house_rules = [
+                hr
+                for hr in (request.POST.get("house_rules")).split(",")
+                if hr.strip() != ""
+            ]
+
+            for am in edit_amenities:
+                # Check if amenity already exists
+                existing_amenity = Amenity.objects.filter(name=am).first()
+                if existing_amenity:
+                    room.amenities.add(existing_amenity)
+                else:
+                    new_amenity = Amenity.objects.create(name=string.capwords(am))
+                    room.amenities.add(new_amenity)
+
+            for hr in edit_house_rules:
+                # Check if amenity already exists
+                existing_houserule = HouseRule.objects.filter(rule=hr).first()
+                if existing_houserule:
+                    room.house_rules.add(existing_houserule)
+                else:
+                    new_houserule = HouseRule.objects.create(rule=string.capwords(hr))
+                    room.house_rules.add(new_houserule)
 
             room.check_in = request.POST.get("check_in", room.check_in)
             room.check_out = request.POST.get("check_out", room.check_out)
@@ -666,10 +725,6 @@ def room_edit(request, username, id):
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     reservations = Reservation.objects.filter(room=room)
-    reserved_dates = [
-        (reservations.check_in.isoformat(), reservations.check_out.isoformat())
-        for reservation in reservations
-    ]
     reviews = room.rating_set.order_by("-date")
     num_o_days = (room.check_out - room.check_in).days
     return render(
@@ -677,7 +732,6 @@ def room_detail(request, room_id):
         "basic/room.html",
         {
             "room": room,
-            "reserved_dates": reserved_dates,
             "reviews": reviews,
             "num_o_days": num_o_days,
         },

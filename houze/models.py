@@ -102,7 +102,7 @@ Region_Choices = (
 )
 
 
-room_types = (
+RoomTypes = (
     ("A ROOM", "A room"),
     ("AN ENTIRE PLACE", "An entire place"),
     ("A SHARED ROOM", "A shared room"),
@@ -141,6 +141,21 @@ class Profile(models.Model):
     def first_name(self):
         full_name = (self.name).split(" ")
         return full_name[0]
+
+    def badge(self):
+        rt = Rating.objects.filter(user=self.user).aggregate(Avg("rating"))[
+            "rating__avg"
+        ]
+        if rt is None:
+            return None
+        elif rt == 5:
+            return "Superb host"
+        elif rt >= 4 and rt <= 5:
+            return "Awesome host"
+        elif rt >= 3 and rt <= 4:
+            return "Truthworthy host"
+        else:
+            return None
 
     def __str__(self):
         return self.user.username
@@ -200,7 +215,7 @@ class Room(models.Model):
     room_type = models.CharField(
         "Room type",
         max_length=255,
-        choices=room_types,
+        choices=RoomTypes,
     )
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
