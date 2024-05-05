@@ -515,6 +515,7 @@ b {
 .desc {
     font-size: 14px;
     box-sizing: border-box;
+    word-wrap: break-word;
 }
 
 .amenities-col {

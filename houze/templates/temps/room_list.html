@@ -26,4 +26,6 @@
         <div class="r-price">UZS {{room.get_price}}/night</div>
     </div>
 </a>
+{% empty %}
+<div class="infotxt coll0">No rooms yet...</div>
 {% endfor %}

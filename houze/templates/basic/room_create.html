@@ -65,13 +65,13 @@
         <div class="rcrflex">
             <div class="lbld">
                 <div class="lbltxt">Title</div>
-                <input type="text" id="title" name="title" placeholder="Title">
+                <input type="text" id="title" name="title" placeholder="e.g. Best cabin near Labi Hawuz">
                 <div id="title-error" class="errTxt"></div>
             </div>
             <div class="lbld">
                 <div class="lbltxt">Price</div>
-                <input type="text" id="price" name="price" placeholder="Price" data-a-sign="" data-a-dec=","
-                    data-a-sep=".">
+                <input type="text" id="price" name="price" placeholder="e.g. 10 will be 10,000" data-a-sign=""
+                    data-a-dec="," data-a-sep=".">
                 <div id="price-error" class="errTxt"></div>
             </div>
         </div>
@@ -115,14 +115,15 @@
             <div class="lbld">
                 <div class="lbltxt">Amenities</div>
                 <input type="text" id="amenities" name="amenities" placeholder="e.g. Wi-Fi, Kitchen, AC, Washroom">
-                <div id="amenities-error" class="errTxt"></div>
                 <div class="inpInfo">Enter a comma after each amenity</div>
+                <div id="amenities-error" class="errTxt"></div>
             </div>
             <div class="lbld">
                 <div class="lbltxt">House rules</div>
-                <input type="text" id="house_rules" name="house_rules" placeholder="e.g. No parties or events, No smoking">
-                <div id="hr-error" class="errTxt"></div>
+                <input type="text" id="house_rules" name="house_rules"
+                    placeholder="e.g. No parties or events, No smoking">
                 <div class="inpInfo">Enter a comma after each rule</div>
+                <div id="hr-error" class="errTxt"></div>
             </div>
         </div>
 
@@ -146,9 +147,26 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+    integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+    crossorigin="anonymous"></script>
 <script>
     jQuery(function ($) {
         $('#price').autoNumeric('init');
     });
+</script>
+<script>
+    // Get today's date
+    var today = new Date();
+
+    // Format the date as YYYY-MM-DD
+    var formattedDate = today.toISOString().substr(0, 10);
+
+    // Set the value of the input field to today's date
+    document.getElementById("check_in").value = formattedDate;
+    document.getElementById("check_in").min = formattedDate;
+
+    document.getElementById("check_out").value = formattedDate;
+    document.getElementById("check_out").min = formattedDate;
 </script>
 {% endblock %}

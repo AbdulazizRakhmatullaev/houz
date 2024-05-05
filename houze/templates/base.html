@@ -166,8 +166,11 @@
     </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="{% static 'websocket.js' %}"></script>
-    <script src="{% static 'autoNumeric.js' %}"></script>
     <!--  -->
 
     {% block scripts %} {% endblock %}
@@ -243,6 +246,26 @@
     <script>
         let selectedImages = [];
 
+        // Function to make image preview container sortable
+        function makeSortable() {
+            $("#image-preview-container").sortable({
+                placeholder: "sortable-placeholder", // Define the class for the placeholder
+                stop: function (event, ui) {
+                    updateSelectedImagesArray();
+                }
+            });
+            $("#image-preview-container").disableSelection(); // Prevent text selection while dragging
+        }
+
+        // Function to update selectedImages array based on the new order
+        function updateSelectedImagesArray() {
+            selectedImages = [];
+            $("#image-preview-container .image-container img").each(function () {
+                selectedImages.push(this.file);
+            });
+        }
+
+
         function addImage(input) {
             const files = input.files;
             const previewContainer = document.getElementById('image-preview-container');
@@ -279,7 +302,14 @@
             input.value = ''; // Clear the input value after selecting images
             const imgErrorText = document.getElementById('img-error');
             imgErrorText.textContent = '';
+
+            // Call makeSortable to make the image preview container sortable
+            makeSortable();
+
+            // Call updateSelectedImagesArray to update selectedImages array
+            updateSelectedImagesArray();
         }
+
 
         function submitForm(event) {
             event.preventDefault(); // Prevent the default form submission
@@ -309,15 +339,24 @@
             checkIn.parentNode.querySelector('.errTxt').textContent = '';
             checkOut.parentNode.querySelector('.errTxt').textContent = '';
 
-            if (selectedImages.length <= 4) {
+            const imageFiles = [];
+            document.querySelectorAll('#image-preview-container .image-container').forEach(img => {
+                imageFiles.push(img.file);
+            });
+
+            // Validate fields
+            if (imageFiles.length <= 4) {
                 // Display error message for images
                 imgError.textContent = 'Please select at least 5 images.';
                 return;
             }
 
-            // Validate other fields
             if (title.value.trim() === '') {
                 title.parentNode.querySelector('.errTxt').textContent = 'Title is required.';
+                return;
+            }
+            if (title.value.length < 20) {
+                title.parentNode.querySelector('.errTxt').textContent = 'Title should be at least 20 characters';
                 return;
             }
 
@@ -328,6 +367,10 @@
 
             if (description.value.trim() === '') {
                 description.parentNode.querySelector('.errTxt').textContent = 'Description is required.';
+                return;
+            }
+            if (description.value.length < 150) {
+                description.parentNode.querySelector('.errTxt').textContent = 'Description should be at least 150 characters';
                 return;
             }
 
@@ -373,11 +416,13 @@
                 return;
             }
 
-
             // Create a FormData object to store form data and selected images
             const formData = new FormData(document.getElementById('room-create-form'));
             // Add selected images to FormData
-            selectedImages.forEach(image => {
+            // selectedImages.forEach(image => {
+            //     formData.append('images', image);
+            // });
+            imageFiles.forEach(image => {
                 formData.append('images', image);
             });
 
@@ -501,17 +546,6 @@
         function confirmReq() {
             return confirm('You sure?');
         }
-    </script>
-    <script>
-        // Get today's date
-        var today = new Date();
-
-        // Format the date as YYYY-MM-DD
-        var formattedDate = today.toISOString().substr(0, 10);
-
-        // Set the value of the input field to today's date
-        document.getElementById("check_in").value = formattedDate;
-        document.getElementById("check_out").value = formattedDate;
     </script>
     <!-- <script>
         $(document).ready(function () {
