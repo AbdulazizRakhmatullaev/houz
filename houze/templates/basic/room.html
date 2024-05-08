@@ -222,7 +222,7 @@
         </div>
         <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
         <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
-        <div id="roomMap" class="room-location"></div>
+        <div id="map" class="room-location"></div>
     </div>
 </div>
 <form action="{% url 'book_room' room.id %}" method="post" class="right-info-column">
