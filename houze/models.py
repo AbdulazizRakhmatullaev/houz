@@ -10,6 +10,7 @@ from location_field.models.plain import PlainLocationField
 from django.utils.timezone import localtime
 from .languages import LANGUAGES
 from django.utils.safestring import mark_safe
+from django.utils.html import escape
 
 sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
 
@@ -229,7 +230,7 @@ class Room(models.Model):
 
     def get_desc(self):
         lines = self.description.split("\n")
-        rendered_lines = [line if line.strip() else "<br><br>" for line in lines]
+        rendered_lines = [escape(line) if line.strip() else "<br><br>" for line in lines]
         return mark_safe("\n".join(rendered_lines))
 
     def get_dates(self):

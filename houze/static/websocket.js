@@ -92,20 +92,20 @@ function formatDateTime(created_at) {
 }
 
 
-// Function to update the displayed date every minute
-function updateDateTime() {
-    console.log("Updating datetime...");
-    const notificationDates = document.querySelectorAll(".notdt");
-    notificationDates.forEach(function (element) {
-        const createdAt = element.dataset.createdAt;
-        console.log("createdAt:", createdAt);
-        if (createdAt) {
-            const formattedDate = formatDateTime(createdAt);
-            console.log("formattedDate:", formattedDate);
-            element.textContent = formattedDate;
-        }
-    });
-}
+// // Function to update the displayed date every minute
+// function updateDateTime() {
+//     console.log("Updating datetime...");
+//     const notificationDates = document.querySelectorAll(".notdt");
+//     notificationDates.forEach(function (element) {
+//         const createdAt = element.dataset.createdAt;
+//         console.log("createdAt:", createdAt);
+//         if (createdAt) {
+//             const formattedDate = formatDateTime(createdAt);
+//             console.log("formattedDate:", formattedDate);
+//             element.textContent = formattedDate;
+//         }
+//     });
+// }
 
 function updateDateTime() {
     // console.log("Updating datetime...");

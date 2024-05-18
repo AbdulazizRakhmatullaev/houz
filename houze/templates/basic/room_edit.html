@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="brief-name">Edit your room</div>
-<form action="{% url 'room_edit' request.user.username room.id %}" method="POST" class="cecol"
-    enctype="multipart/form-data">
+<form id="room-edit-form" action="{% url 'room_edit' request.user.username room.id %}" method="POST" class="cecol"
+    enctype="multipart/form-data" onsubmit="submitForm(event)">
     {% csrf_token %}
     <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
     <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
@@ -14,7 +14,7 @@
         <div class="rcrflex">
             <div class="rcrflexcol">
                 <div class="lbld">
-                    <label for="guests">Guests</label>
+                    <div class="lbltxt">Guests</div>
                     <div class="rcrflex">
                         <span id="guests_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="guests" name="guests" min="1"
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <label for="beds">Beds</label>
+                    <div class="lbltxt">Beds</div>
                     <div class="rcrflex">
                         <span id="beds_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="beds" name="beds" min="1"
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <label for="bedrooms">Bedrooms</label>
+                    <div class="lbltxt">Bedrooms</div>
                     <div class="rcrflex">
                         <span id="bedrooms_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <label for="baths">Baths</label>
+                    <div class="lbltxt">Baths</div>
                     <div class="rcrflex">
                         <span id="baths_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="baths" name="baths" min="1"
@@ -51,82 +51,108 @@
                 </div>
             </div>
             <div class="lbld" style="margin-left: 10px;">
-                <label for="guests">Map</label>
+                <div class="lbltxt">Map</div>
                 <div id="map" style="width: 100%; height: 250px; border-radius: 12px;"></div>
             </div>
         </div>
         <div class="lbld">
-            <label for="guests">Images</label>
+            <div class="lbltxt">Images</div>
+            <input type="button" value="Browse..." onclick="document.getElementById('roomimginp').click();" />
+            <div id="img-error" class="errTxt"></div>
             <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
-                onchange="addImages(this)" multiple>
+                onchange="addImage(this)" multiple style="display: none;">
         </div>
-        <div id="image-preview-container"></div>
+        <div id="image-preview-container">
+            {% for img in room.all_photos %}
+            <div class="image-container ui-sortable-handle">
+                <img class="preview-image" src="{{img.file.url}}">
+                <div class="image-delete-form">
+                    <button class="cancelimg" onclick="deleteIMG('{% url 'img_delete' img.id %}')">×</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="img-preview-info" class="inpInfo"></div>
     </div>
     <div class="rmright">
         <div class="rcrflex">
             <div class="lbld">
-                <label for="title">Title</label>
+                <div class="lbltxt">Title</div>
                 <input type="text" id="title" name="title" placeholder="Title" value="{{room.title}}">
+                <div class="errTxt"></div>
             </div>
             <div class="lbld">
-                <label for="price">Price</label>
+                <div class="lbltxt">Price</div>
                 <input type="number" id="price" name="price" placeholder="Price" value="{{room.price}}">
+                <div class="errTxt"></div>
             </div>
         </div>
         <div class="lbld">
-            <label for="description">Description</label>
+            <div class="lbltxt">Description</div>
             <textarea id="description" name="description" class="descarea"
                 placeholder="Description">{{room.description}}</textarea>
+            <div class="errTxt"></div>
         </div>
 
         <div class="rcrflex">
             <div class="lbld">
-                <label for="address">Address</label>
+                <div class="lbltxt">Address</div>
                 <input type="text" id="address" name="address" placeholder="Address" value="{{room.address}}">
+                <div class="errTxt"></div>
             </div>
             <div class="rcrflex">
                 <div class="lbld">
-                    <label for="city">City</label>
+                    <div class="lbltxt">City</div>
                     <select class="room-cy" id="city" name="city">
                         <option value="{{ current_city }}">{{ current_city }}</option>
                         {% for code, name in regions %}
                         <option value="{{ code }}">{{ name }}</option>
                         {% endfor %}
                     </select>
+                    <div class="errTxt"></div>
                 </div>
                 <div class="lbld">
-                    <label for="room_type">Room type</label>
+                    <div class="lbltxt">Room type</div>
                     <select class="room-cy" id="room_type" name="room_type">
                         <option value="{{ cur_rmtype }}">{{ cur_rmtype }}</option>
                         {% for code, name in room_types %}
                         <option value="{{ code }}">{{ name }}</option>
                         {% endfor %}
                     </select>
+                    <div class="errTxt"></div>
                 </div>
             </div>
         </div>
 
         <div class="rcrflex">
             <div class="lbld">
-                <label for="amenities">Amenities</label>
+                <div class="lbltxt">Amenities</div>
                 <input type="text" id="amenities" name="amenities" placeholder="Amenities"
                     value="{% for amenity in amenities %}{{amenity.name}}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                <div class="inpInfo">Enter a comma after each amenity</div>
+                <div class="errTxt"></div>
             </div>
             <div class="lbld">
-                <label for="house_rules">House rules</label>
+                <div class="lbltxt">House rules</div>
                 <input type="text" id="house_rules" name="house_rules" placeholder="House rules"
                     value="{% for house_rule in house_rules %}{{house_rule.rule}}{% if not forloop.last %},{% endif %}{% endfor %}">
+                <div class="inpInfo">Enter a comma after each rule</div>
+                <div class="errTxt"></div>
             </div>
         </div>
 
         <div class="rcrflex">
             <div class="lbld">
-                <label for="guests">Check in</label>
-                <input type="date" name="check_in" value="{{room.check_in|date:'Y-m-d'}}" class="check_in">
+                <div class="lbltxt">Check in</div>
+                <input type="date" id="edcheck_in" name="check_in" value="{{room.check_in|date:'Y-m-d'}}" class="check_in">
+                <div class="errTxt"></div>
+
             </div>
             <div class="lbld">
-                <label for="guests">Check out</label>
-                <input type="date" name="check_out" value="{{room.check_out|date:'Y-m-d'}}" class="check_out">
+                <div class="lbltxt">Check out</div>
+                <input type="date" id="edcheck_out" name="check_out" value="{{room.check_out|date:'Y-m-d'}}" class="check_out">
+                <div class="errTxt"></div>
+
             </div>
         </div>
         <div class="btnsubend">
@@ -134,4 +160,252 @@
         </div>
     </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let selectedImages = [{% for img in room.all_photos %} '{{img.file.url}}', {% endfor %}];
+
+    // Function to make image preview container sortable
+    function makeSortable() {
+        $("#image-preview-container").sortable({
+            placeholder: "sortable-placeholder", // Define the class for the placeholder
+            stop: function (event, ui) {
+                updateSelectedImagesArray();
+            }
+        });
+        $("#image-preview-container").disableSelection(); // Prevent text selection while dragging
+    }
+
+    // Function to update selectedImages array based on the new order
+    function updateSelectedImagesArray() {
+        selectedImages = [];
+        $("#image-preview-container .image-container img").each(function () {
+            selectedImages.push(this.file);
+        });
+    }
+
+
+    function addImage(input) {
+        const files = input.files;
+        const previewContainer = document.getElementById('image-preview-container');
+        const imgInpInfo = document.getElementById('img-preview-info');
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container');
+
+            const image = document.createElement('img');
+            image.classList.add('preview-image');
+            image.src = URL.createObjectURL(file);
+            image.file = file;
+
+            const cancelButton = document.createElement('div');
+            cancelButton.innerHTML = '&times';
+            cancelButton.classList.add('cancelimg');
+            cancelButton.onclick = function () {
+                // Remove the corresponding image from the array and the preview
+                const index = selectedImages.indexOf(file);
+                if (index !== -1) {
+                    selectedImages.splice(index, 1);
+                }
+                previewContainer.removeChild(imageContainer);
+                if (selectedImages.length === 0) {
+                    imgInpInfo.textContent = '';
+                }
+            };
+
+            imageContainer.appendChild(image);
+            imageContainer.appendChild(cancelButton);
+            previewContainer.insertBefore(imageContainer, previewContainer.firstChild);
+
+            selectedImages.push(file);
+        }
+
+        input.value = ''; // Clear the input value after selecting images
+        imgInpInfo.textContent = 'Drag images to sort them out';
+        const imgErrorText = document.getElementById('img-error');
+        imgErrorText.textContent = '';
+
+        // Call makeSortable to make the image preview container sortable
+        makeSortable();
+
+        // Call updateSelectedImagesArray to update selectedImages array
+        updateSelectedImagesArray();
+    }
+
+
+
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const imgError = document.getElementById('img-error');
+        const title = document.getElementById('title');
+        const price = document.getElementById('price');
+        const description = document.getElementById('description');
+        const address = document.getElementById('address');
+        const city = document.getElementById('city');
+        const roomType = document.getElementById('room_type');
+        const amenities = document.getElementById('amenities');
+        const houseRules = document.getElementById('house_rules');
+        const checkIn = document.getElementById('edcheck_in');
+        const checkOut = document.getElementById('edcheck_out');
+
+        // Clear previous error messages
+        imgError.textContent = '';
+        title.parentNode.querySelector('.errTxt').textContent = '';
+        price.parentNode.querySelector('.errTxt').textContent = '';
+        description.parentNode.querySelector('.errTxt').textContent = '';
+        address.parentNode.querySelector('.errTxt').textContent = '';
+        city.parentNode.querySelector('.errTxt').textContent = '';
+        roomType.parentNode.querySelector('.errTxt').textContent = '';
+        amenities.parentNode.querySelector('.errTxt').textContent = '';
+        houseRules.parentNode.querySelector('.errTxt').textContent = '';
+        checkIn.parentNode.querySelector('.errTxt').textContent = '';
+        checkOut.parentNode.querySelector('.errTxt').textContent = '';
+
+        const imageFiles = [];
+        document.querySelectorAll('#image-preview-container .image-container img').forEach(img => {
+            imageFiles.push(img.file);
+        });
+        console.log(imageFiles);
+
+        // Validate fields
+        if (imageFiles.length <= 4) {
+            // Display error message for images
+            imgError.textContent = 'Please select at least 5 images.';
+            return;
+        }
+
+        if (title.value.trim() === '') {
+            title.parentNode.querySelector('.errTxt').textContent = 'Title is required.';
+            return;
+        }
+        if (title.value.length < 20) {
+            title.parentNode.querySelector('.errTxt').textContent = 'Title should be at least 20 characters';
+            return;
+        }
+
+        if (price.value.trim() === '') {
+            price.parentNode.querySelector('.errTxt').textContent = 'Price is required.';
+            return;
+        }
+
+        if (description.value.trim() === '') {
+            description.parentNode.querySelector('.errTxt').textContent = 'Description is required.';
+            return;
+        }
+        if (description.value.length < 150) {
+            description.parentNode.querySelector('.errTxt').textContent = 'Description should be at least 150 characters';
+            return;
+        }
+
+        if (address.value.trim() === '') {
+            address.parentNode.querySelector('.errTxt').textContent = 'Address is required.';
+            return;
+        }
+
+        if (city.value.trim() === 'Select city') {
+            city.parentNode.querySelector('.errTxt').textContent = 'City is required.';
+            return;
+        }
+
+        if (roomType.value.trim() === 'Select room type') {
+            roomType.parentNode.querySelector('.errTxt').textContent = 'Room type is required.';
+            return;
+        }
+
+        if (amenities.value.trim() === '') {
+            amenities.parentNode.querySelector('.errTxt').textContent = 'Amenities are required';
+            return;
+        }
+
+        if (houseRules.value.trim() === '') {
+            houseRules.parentNode.querySelector('.errTxt').textContent = 'House rules are required.';
+            return;
+        }
+
+        // Convert check-in and check-out values to Date objects
+        const checkInDate = new Date(checkIn.value);
+        const checkOutDate = new Date(checkOut.value);
+
+        // Check if check-out date is after check-in date
+        if (checkOutDate <= checkInDate) {
+            checkOut.parentNode.querySelector('.errTxt').textContent = 'Check-out date must be after check-in date.';
+            return;
+        }
+
+        // Check if there's at least one day gap between check-in and check-out
+        const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+        if ((checkOutDate.getTime() - checkInDate.getTime()) < oneDay) {
+            checkOut.parentNode.querySelector('.errTxt').textContent = 'There should be at least one day gap between check-in and check-out.';
+            return;
+        }
+
+        // Create a FormData object to store form data and selected images
+        const formData = new FormData(document.getElementById('room-edit-form'));
+        // Add selected images to FormData
+        // selectedImages.forEach(image => {
+        //     formData.append('images', image);
+        // });
+        imageFiles.forEach(image => {
+            formData.append('images', image);
+        });
+
+        console.log(title.value)
+
+        // Use fetch API to submit form data to server
+        fetch("{% url 'room_edit' request.user.username room.id %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(response => {
+            // Handle response
+            if (response.ok) {
+                // Redirect to the created room
+                response.json().then(data => {
+                    const roomId = data.room_id;
+                    window.location.href = `/rooms/${roomId}`; // Adjust the URL as per your project's routing
+                });
+            } else {
+                // Handle error response
+            }
+        }).catch(error => {
+            // Handle error
+        });
+    }
+</script>
+
+<!-- <script>
+    function deleteIMG(deleteUrl) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const formData = new FormData();
+
+        fetch(deleteUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(response => {
+            // Handle response
+            if (response.ok) {
+                // Redirect to the created room
+                response.json().then(data => {
+                    window.location.href = `/{{request.user}}`; // Adjust the URL as per your project's routing
+                });
+            } else {
+                // Handle error response
+            }
+        }).catch(error => {
+            // Handle error
+        });
+    }
+</script> -->
+
 {% endblock %}

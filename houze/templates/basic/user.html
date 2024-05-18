@@ -100,14 +100,14 @@
         <div class="user-roomscol">
             {% if user.profile.bio %}
             <div class="lbld">
-                <div class="botmidt">About {{user.profile.first_name}}</div>
+                <div class="lbl0">About {{user.profile.first_name}}</div>
                 <div class="prbio collb">
                     {{user.profile.bio}}
                 </div>
             </div>
             {% endif %}
             <div class="lbld">
-                <div class="botmidt">{{user.profile.first_name}}'s comments</div>
+                <div class="lbl0">{{user.profile.first_name}}'s comments</div>
                 <div id="room-reviews-content">
                     {% for comment in comments %}
                     <div class="review">
@@ -142,7 +142,7 @@
                 </div>
             </div>
             <div class="lbld">
-                <div class="botmidt">{{user.profile.first_name}}'s listings</div>
+                <div class="lbl0">{{user.profile.first_name}}'s listings</div>
                 <div class="p-rooms">
                     {% for room in rooms %}
                     <div class="p-room">
@@ -197,7 +197,7 @@
                 </div>
             </div>
             <div class="lbld">
-                <div class="botmidt">{{user.profile.first_name}}'s reviews</div>
+                <div class="lbl0">{{user.profile.first_name}}'s reviews</div>
                 <div id="room-reviews-content">
                     {% for review in reviews %}
                     <div class="revren">

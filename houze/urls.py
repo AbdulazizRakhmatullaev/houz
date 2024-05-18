@@ -8,15 +8,16 @@ urlpatterns = [
     path("signin", views.signin, name="signin"),
     path("signout", views.signout, name="signout"),
     # SETTINGS
-    path("settings/profile", views.editProfile, name="editProfile"),
-    path("settings/profile/avatar", views.avatarEdit, name="avatarEdit"),
-    path("settings/profile/avatar/delete", views.avatarDelete, name="ppDelete"),
+    # path("settings/profile", views.editProfile, name="editProfile"),
+    # path("settings/profile/avatar", views.avatarEdit, name="avatarEdit"),
+    # path("settings/profile/avatar/delete", views.avatarDelete, name="ppDelete"),
     # roomING
     path("become-a-host", views.room_create, name="room_create"),
     path("@<str:username>/rooms/<int:id>/edit", views.room_edit, name="room_edit"),
     path("room/<int:id>/delete", views.room_delete, name="room_delete"),
     path("rooms/<str:room_id>", views.room_detail, name="room_detail_url"),
     path("rooms/<str:room_id>/book", views.book_room, name="book_room"),
+    path("room/image/<int:img_id>/delete", views.img_delete, name="img_delete"),
     # ratingING
     path("room/<str:id>/rating", views.rating_create, name="rating_create"),
     path(

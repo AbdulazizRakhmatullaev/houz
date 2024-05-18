@@ -26,13 +26,11 @@ from django.http import JsonResponse
 from datetime import datetime, timedelta
 from django.core.serializers import serialize
 from django.forms.models import model_to_dict
-import json
+import json, os , string
 from django.core.serializers.json import DjangoJSONEncoder
 from django.template.loader import render_to_string
 
-import os
 from django.conf import settings
-import string
 from django.db.models import Count
 
 
@@ -601,7 +599,7 @@ def room_create(request):
 
             for am in amenities:
                 # Check if amenity already exists
-                existing_amenity = Amenity.objects.filter(name=am).first()
+                existing_amenity = Amenity.objects.filter(name=string.capwords(am)).first()
                 if existing_amenity:
                     room.amenities.add(existing_amenity)
                 else:
@@ -610,7 +608,7 @@ def room_create(request):
 
             for hr in house_rules:
                 # Check if amenity already exists
-                existing_houserule = HouseRule.objects.filter(rule=hr).first()
+                existing_houserule = HouseRule.objects.filter(rule=string.capwords(hr)).first()
                 if existing_houserule:
                     room.house_rules.add(existing_houserule)
                 else:
@@ -642,15 +640,13 @@ def room_delete(request, id):
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
 
-    regions = [(code, name) for code, name in Region_Choices if room.city != code]
-    current_city = next(
-        (name for code, name in Region_Choices if code == room.city), "Unknown City"
-    )
+    current_city = (room.city).title
+    cur_rmtype = (room.room_type).lower
 
-    room_types = [(code, name) for code, name in RoomTypes if room.room_type != code]
-    cur_rmtype = next(
-        (name for code, name in RoomTypes if code == room.room_type), "Unknown"
-    )
+    # Remove the current city and room type from the list of options
+    regions = [(code, name) for code, name in Region_Choices if code != room.city]
+    room_types = [(code, name) for code, name in RoomTypes if code != room.room_type]
+
 
     amenities = room.amenities.all()
     house_rules = room.house_rules.all()
@@ -680,6 +676,10 @@ def room_edit(request, username, id):
             room.bedrooms = request.POST.get("bedrooms", room.bedrooms)
             room.baths = request.POST.get("baths", room.baths)
 
+            for file in request.FILES.getlist("images"):
+                img = Image.objects.create(file=file)
+                room.images.add(img)
+
             edit_amenities = [
                 am
                 for am in (request.POST.get("amenities")).split(",")
@@ -693,7 +693,7 @@ def room_edit(request, username, id):
 
             for am in edit_amenities:
                 # Check if amenity already exists
-                existing_amenity = Amenity.objects.filter(name=am).first()
+                existing_amenity = Amenity.objects.filter(name=string.capwords(am)).first()
                 if existing_amenity:
                     room.amenities.add(existing_amenity)
                 else:
@@ -702,7 +702,7 @@ def room_edit(request, username, id):
 
             for hr in edit_house_rules:
                 # Check if amenity already exists
-                existing_houserule = HouseRule.objects.filter(rule=hr).first()
+                existing_houserule = HouseRule.objects.filter(rule=string.capwords(hr)).first()
                 if existing_houserule:
                     room.house_rules.add(existing_houserule)
                 else:
@@ -720,6 +720,14 @@ def room_edit(request, username, id):
             return redirect("user_profile", request.user)
         return render(request, "basic/room_edit.html", context)
     return redirect("home")
+
+
+def img_delete(request, img_id):
+    img = get_object_or_404(Image, id=img_id)
+    if request.method == 'POST':
+        img.delete()
+    else:
+        return redirect("user_profile", request.user)
 
 
 def room_detail(request, room_id):
