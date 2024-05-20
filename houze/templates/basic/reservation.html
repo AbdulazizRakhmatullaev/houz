@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
-{% block title %} Reservations {% endblock %}
+{% load i18n %}
+
+{% block title %} {% trans "Reservations" %} {% endblock %}
 
 {% block content %}
 
-<div class="brief-name">Reservation</div>
+<div class="brief-name">{% trans "Reservations" %}</div>
 <div class="bookgrd">
   {% for reservation in reservation %}
   <div class="reservation">
@@ -50,7 +52,7 @@
         />
       </svg>
       <div class="checkinf">
-        <span class="small-title">Check in</span>
+        <span class="small-title">{% trans "Check in" %}</span>
         <div class="checkdt">{{reservation.check_in}}</div>
       </div>
     </div>
@@ -69,7 +71,7 @@
         />
       </svg>
       <div class="checkinf">
-        <span class="small-title">Check out</span>
+        <span class="small-title">{% trans "Checkout" %}</span>
         <div class="checkdt">{{reservation.check_out}}</div>
       </div>
     </div>
@@ -85,7 +87,11 @@
     </a>
   </div>
   {% empty %}
-  <div class="ctrtxt">No reservations for now...</div>
+  <div class="infotxt coll0"></div>
+  <div class="infotxt coll0"></div>
+  <div class="noitm_ctr">{% trans "No reservations for now..." %}</div>
+  <div class="infotxt coll0"></div>
+  <div class="infotxt coll0"></div>
   {% endfor %}
 </div>
 

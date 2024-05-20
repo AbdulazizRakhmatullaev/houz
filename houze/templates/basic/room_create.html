@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}Create new room{% endblock %}
 
 {% block content %}
-<div class="brief-name">Create a new room</div>
+<div class="brief-name">{% trans "Create a new room" %}</div>
 <form id="room-create-form" action="{% url 'room_create' %}" method="POST" class="cecol" enctype="multipart/form-data"
     onsubmit="submitForm(event)">
     {% csrf_token %}
@@ -14,7 +15,7 @@
         <div class="rcrflex">
             <div class="rcrflexcol">
                 <div class="lbld">
-                    <div class="lbltxt">Guests</div>
+                    <div class="lbltxt">{% trans "Guests" %}</div>
                     <div class="rcrflex">
                         <span id="guests_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="guests" name="guests" min="1" value="1" />
@@ -22,7 +23,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Bedrooms</div>
+                    <div class="lbltxt">{% trans "Bedrooms" %}</div>
                     <div class="rcrflex">
                         <span id="bedrooms_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
@@ -31,7 +32,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Beds</div>
+                    <div class="lbltxt">{% trans "Beds" %}</div>
                     <div class="rcrflex">
                         <span id="beds_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="beds" name="beds" min="1" value="1" />
@@ -39,7 +40,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Baths</div>
+                    <div class="lbltxt">{% trans "Baths" %}</div>
                     <div class="rcrflex">
                         <span id="baths_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="baths" name="baths" min="1" value="1" />
@@ -48,13 +49,13 @@
                 </div>
             </div>
             <div class="lbld" style="margin-left: 10px;">
-                <div class="lbltxt">Map</div>
+                <div class="lbltxt">{% trans "Map" %}</div>
                 <div id="map" style="width: 100%; height: 250px; border-radius: 12px;"></div>
             </div>
         </div>
         <div class="lbld">
-            <div class="lbltxt">Images</div>
-            <input type="button" value="Browse..." onclick="document.getElementById('roomimginp').click();" />
+            <div class="lbltxt">{% trans "Images" %}</div>
+            <input type="button" value="{% trans 'Browse...' %}" onclick="document.getElementById('roomimginp').click();" />
             <div id="img-error" class="errTxt"></div>
             <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
                 onchange="addImage(this)" multiple style="display: none;">
@@ -65,34 +66,34 @@
     <div class="rmright">
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Title</div>
-                <input type="text" id="title" name="title" placeholder="e.g. Best cabin near Labi Hawuz">
+                <div class="lbltxt">{% trans "Title" %}</div>
+                <input type="text" id="title" name="title" placeholder='{% trans "e.g. Best cabin near Labi Hawuz" %}'>
                 <div id="title-error" class="errTxt"></div>
             </div>
             <div class="lbld">
-                <div class="lbltxt">Price</div>
-                <input type="text" id="price" name="price" placeholder="e.g. 10 will be 10,000" data-a-sign=""
+                <div class="lbltxt">{% trans "Price" %}</div>
+                <input type="text" id="price" name="price" placeholder="{% trans 'e.g. 10 will be 10,000' %}" data-a-sign=""
                     data-a-dec="," data-a-sep=".">
                 <div id="price-error" class="errTxt"></div>
             </div>
         </div>
         <div class="lbld">
-            <div class="lbltxt">Description</div>
-            <textarea id="description" name="description" class="descarea" placeholder="Description"></textarea>
+            <div class="lbltxt">{% trans "Description" %}</div>
+            <textarea id="description" name="description" class="descarea" placeholder="{% trans 'Description' %}"></textarea>
             <div id="description-error" class="errTxt"></div>
         </div>
 
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Address</div>
-                <input type="text" id="address" name="address" placeholder="Address">
+                <div class="lbltxt">{% trans "Address" %}</div>
+                <input type="text" id="address" name="address" placeholder="{% trans 'Address' %}">
                 <div id="address-error" class="errTxt"></div>
             </div>
             <div class="rcrflex">
                 <div class="lbld">
-                    <div class="lbltxt">City</div>
+                    <div class="lbltxt">{% trans "City" %}</div>
                     <select class="room-cy" id="city" name="city">
-                        <option hidden value="null">Select city</option>
+                        <option hidden value="null">{% trans "Select city" %}</option>
                         {% for code, name in regions %}
                         <option value="{{ code }}">{{ name }}</option>
                         {% endfor %}
@@ -100,9 +101,9 @@
                     <div id="city-error" class="errTxt"></div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Room type</div>
+                    <div class="lbltxt">{% trans "Room type" %}</div>
                     <select class="room-cy" id="room_type" name="room_type">
-                        <option hidden value="null">Select a room type</option>
+                        <option hidden value="null">{% trans "Select a room type" %}</option>
                         {% for code, name in room_types %}
                         <option class="otherOption" value="{{ code }}">{{ name }}</option>
                         {% endfor %}
@@ -114,34 +115,34 @@
 
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Amenities</div>
-                <input type="text" id="amenities" name="amenities" placeholder="e.g. Wi-Fi, Kitchen, AC, Washroom">
-                <div class="inpInfo">Enter a comma after each amenity</div>
+                <div class="lbltxt">{% trans "Amenities" %}</div>
+                <input type="text" id="amenities" name="amenities" placeholder="{% trans 'e.g. Wi-Fi, Kitchen, AC, Washroom' %}">
+                <div class="inpInfo">{% trans "Enter a comma after each amenity" %}</div>
                 <div id="amenities-error" class="errTxt"></div>
             </div>
             <div class="lbld">
-                <div class="lbltxt">House rules</div>
+                <div class="lbltxt">{% trans "House rules" %}</div>
                 <input type="text" id="house_rules" name="house_rules"
-                    placeholder="e.g. No parties or events, No smoking">
-                <div class="inpInfo">Enter a comma after each rule</div>
+                    placeholder="{% trans 'e.g. No parties or events, No smoking' %}">
+                <div class="inpInfo">{% trans "Enter a comma after each rule" %}</div>
                 <div id="hr-error" class="errTxt"></div>
             </div>
         </div>
 
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Check in</div>
+                <div class="lbltxt">{% trans "Check in" %}</div>
                 <input type="date" name="check_in" id="check_in" class="check_in">
                 <div id="check_in-error" class="errTxt"></div>
             </div>
             <div class="lbld">
-                <div class="lbltxt">Check out</div>
+                <div class="lbltxt">{% trans "Check out" %}</div>
                 <input type="date" name="check_out" id="check_out" class="check_out">
                 <div id="check_out-error" class="errTxt"></div>
             </div>
         </div>
         <div class=" btnsubend">
-            <button type="submit" class="btn-primary">Create</button>
+            <button type="submit" class="btn-primary">{% trans "Create" %}</button>
         </div>
     </div>
 </form>

@@ -22,6 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('rosetta/', include('rosetta.urls')),
     path("", include("houze.urls")),
 ]
 

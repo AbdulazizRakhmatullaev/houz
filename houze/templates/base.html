@@ -1,14 +1,17 @@
 {% load static %}
 {% load notifications %}
+{% load i18n %}
+
+
 <!doctype html>
-<html lang="en" style="overflow: auto scroll">
+<html lang="{{ LANGUAGE_CODE }}" style="overflow: auto scroll">
 
 <head>
     <title>Houze / {% block title %}{% endblock %}</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" type="image/x-icon" href="{% static 'media/important/houze_h.png' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/houze_h.png' %}" />
 
     <link rel="stylesheet" href="{% static 'base.css' %}" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
@@ -50,7 +53,7 @@
             <ul class="row-content">
                 <li class="row-con-itm">
                     <a href="{% url 'home' %}" class="logo">
-                        <img src="../../media/important/houze_h.png" alt="">
+                        <img src="{% static 'icons/houze_h.png' %}" alt="">
                     </a>
                 </li>
                 <li class="row-con-itm">
@@ -58,9 +61,21 @@
                 </li>
                 {% if request.user.is_authenticated %}
                 <ul class="row-content">
+                    <li class="row-con-itm">
+                        <form action="{% url 'set_language' %}" method="get">
+                            <select name="language" onchange="this.form.submit()" class="lngsel">
+                                <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>{% trans "ENG" %} 🇺🇸</option>
+                                <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>{% trans "RUS" %} 🇷🇺</option>
+                                <option value="uz" {% if LANGUAGE_CODE == 'uz' %}selected{% endif %}>{% trans "UZB" %} 🇺🇿</option>
+                            </select>
+                        </form>
+                    </li>
                     <li class="createroom">
                         <div class="nav-host" onclick="location.href='/become-a-host';">
-                            Houze your place
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path fill="currentColor" fill-rule="evenodd" d="M12 7a.9.9 0 0 1 .9.9v3.2h3.2a.9.9 0 0 1 .9.9.9.9 0 0 1-.9.9h-3.2v3.2a.9.9 0 0 1-.9.9.9.9 0 0 1-.9-.9v-3.2H7.9A.9.9 0 0 1 7 12a.9.9 0 0 1 .9-.9h3.2V7.9A.9.9 0 0 1 12 7Z" clip-rule="evenodd"/>
+                                <path fill="currentColor" fill-rule="evenodd" d="M12 3.9c-4.4735 0-8.1 3.6265-8.1 8.1s3.6265 8.1 8.1 8.1 8.1-3.6265 8.1-8.1-3.6265-8.1-8.1-8.1ZM2.1 12c0-5.4676 4.4324-9.9 9.9-9.9s9.9 4.4324 9.9 9.9-4.4324 9.9-9.9 9.9-9.9-4.4324-9.9-9.9Z" clip-rule="evenodd"/>
+                            </svg>
                         </div>
                     </li>
                     <li class="navresers">
@@ -176,7 +191,8 @@
     <script src="{% static 'websocket.js' %}"></script>
     <!--  -->
 
-    {% block scripts %} {% endblock %}
+    {% block scripts %}
+    {% endblock %}
     <script>
         $(document).ready(function () {
             $('#guests_minus').click(function () {
@@ -246,46 +262,6 @@
             });
         });
     </script>
-    <!-- <script>
-        let selectedImages = [];
-
-        function addImages(input) {
-            const files = input.files;
-            const previewContainer = document.getElementById('image-preview-container');
-
-            // Add selected files to the array and create image previews
-            for (let i = 0; i < files.length; i++) {
-                const imageContainer = document.createElement('div');
-                imageContainer.classList.add('image-container');
-
-                const image = document.createElement('img');
-                image.classList.add('preview-image');
-                image.src = URL.createObjectURL(files[i]);
-
-                const cancelButton = document.createElement('div');
-                cancelButton.innerHTML = '&times';
-                cancelButton.classList.add('cancelimg');
-                cancelButton.onclick = function () {
-                    // Remove the corresponding image from the array and the preview
-                    const index = selectedImages.indexOf(files[i]);
-                    if (index !== -1) {
-                        selectedImages.splice(index, 1);
-                    }
-                    previewContainer.removeChild(imageContainer);
-                };
-
-                imageContainer.appendChild(image);
-                imageContainer.appendChild(cancelButton);
-                previewContainer.appendChild(imageContainer);
-
-                selectedImages.push(files[i]);
-            }
-
-            // Optionally, clear the input after adding images
-        }
-
-        console.log(selectedImages);
-    </script> -->
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
 

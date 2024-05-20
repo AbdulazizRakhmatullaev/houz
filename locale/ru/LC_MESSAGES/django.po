@@ -1,0 +1,343 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-20 17:33+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: business/settings.py:174
+msgid "English"
+msgstr "Английский"
+
+#: business/settings.py:175
+msgid "Russian"
+msgstr "Русский"
+
+#: business/settings.py:176
+msgid "Uzbek"
+msgstr "Узбек"
+
+#: houze/models.py:90
+msgid "TASHKENT"
+msgstr "ТАШКЕНТ"
+
+#: houze/models.py:90
+msgid "Tashkent"
+msgstr "Ташкент"
+
+#: houze/models.py:91
+msgid "ANDIJAN"
+msgstr "Андиджан"
+
+#: houze/models.py:91
+msgid "Andijan"
+msgstr "Андиджан"
+
+#: houze/models.py:92
+msgid "BUKHARA"
+msgstr "Бухара"
+
+#: houze/models.py:92
+msgid "Bukhara"
+msgstr "Бухара"
+
+#: houze/models.py:93
+msgid "FERGANA"
+msgstr "Фергана"
+
+#: houze/models.py:93
+msgid "Fergana"
+msgstr "Фергана"
+
+#: houze/models.py:94
+msgid "JIZZAKH"
+msgstr "Джизак"
+
+#: houze/models.py:94
+msgid "Jizzakh"
+msgstr "Джизак"
+
+#: houze/models.py:95
+msgid "NAMANGAN"
+msgstr "Наманган"
+
+#: houze/models.py:95
+msgid "Namangan"
+msgstr "Наманган"
+
+#: houze/models.py:96
+msgid "NAVOIY"
+msgstr "Навуи"
+
+#: houze/models.py:96
+msgid "Navoiy"
+msgstr "Навуи"
+
+#: houze/models.py:97
+msgid "KARSHI"
+msgstr "Карши"
+
+#: houze/models.py:97
+msgid "Karshi"
+msgstr "Карши"
+
+#: houze/models.py:98
+msgid "SAMARKAND"
+msgstr "Самарканд"
+
+#: houze/models.py:98
+msgid "Samarkand"
+msgstr "Самарканд"
+
+#: houze/models.py:99
+msgid "GULISTON"
+msgstr "Гулистон"
+
+#: houze/models.py:99
+msgid "Guliston"
+msgstr "Гулистон"
+
+#: houze/models.py:100
+msgid "TERMEZ"
+msgstr "Термин"
+
+#: houze/models.py:100
+msgid "Termez"
+msgstr "Термин"
+
+#: houze/models.py:101
+msgid "NURAFSHON"
+msgstr "Нуруфшон"
+
+#: houze/models.py:101
+msgid "Nurafshon"
+msgstr "Нуруфшон"
+
+#: houze/models.py:102
+msgid "URGENCH"
+msgstr "Ургенч"
+
+#: houze/models.py:102
+msgid "Urgench"
+msgstr "Ургенч"
+
+#: houze/models.py:103
+msgid "NUKUS"
+msgstr "Нукус"
+
+#: houze/models.py:103
+msgid "Nukus"
+msgstr "Нукус"
+
+#: houze/models.py:108
+msgid "A ROOM"
+msgstr "КОМНАТА"
+
+#: houze/models.py:108
+msgid "A room"
+msgstr "Комната"
+
+#: houze/models.py:109
+msgid "AN ENTIRE PLACE"
+msgstr "Целое место"
+
+#: houze/models.py:109
+msgid "An entire place"
+msgstr "Целое место"
+
+#: houze/models.py:110
+msgid "A SHARED ROOM"
+msgstr "Общая комната"
+
+#: houze/models.py:110
+msgid "A shared room"
+msgstr "Общая комната"
+
+#: houze/templates/base.html:67
+msgid "ENG"
+msgstr "Англ"
+
+#: houze/templates/base.html:68
+msgid "RUS"
+msgstr "Рус"
+
+#: houze/templates/base.html:69
+msgid "UZB"
+msgstr "Uzb"
+
+#: houze/templates/basic/reservation.html:4
+#: houze/templates/basic/reservation.html:8
+msgid "Reservations"
+msgstr "Бронирование"
+
+#: houze/templates/basic/reservation.html:55
+#: houze/templates/basic/room_create.html:134
+#: houze/templates/temps/notifications.html:32
+msgid "Check in"
+msgstr "Регистрироваться"
+
+#: houze/templates/basic/reservation.html:74
+#: houze/templates/temps/notifications.html:40
+msgid "Checkout"
+msgstr "Проверить"
+
+#: houze/templates/basic/reservation.html:92
+msgid "No reservations for now..."
+msgstr "На данный момент нет оговорки ..."
+
+#: houze/templates/basic/room_create.html:7
+msgid "Create a new room"
+msgstr "Создать новую комнату"
+
+#: houze/templates/basic/room_create.html:18
+msgid "Guests"
+msgstr "Гости"
+
+#: houze/templates/basic/room_create.html:26
+msgid "Bedrooms"
+msgstr "Спальни"
+
+#: houze/templates/basic/room_create.html:35
+msgid "Beds"
+msgstr "Кровати"
+
+#: houze/templates/basic/room_create.html:43
+msgid "Baths"
+msgstr "Ванны"
+
+#: houze/templates/basic/room_create.html:52
+msgid "Map"
+msgstr "карта"
+
+#: houze/templates/basic/room_create.html:57
+msgid "Images"
+msgstr "Изображений"
+
+#: houze/templates/basic/room_create.html:58
+msgid "Browse..."
+msgstr "Просматривать..."
+
+#: houze/templates/basic/room_create.html:69
+msgid "Title"
+msgstr "Заголовок"
+
+#: houze/templates/basic/room_create.html:70
+msgid "e.g. Best cabin near Labi Hawuz"
+msgstr "напримерЛучшая каюта возле Лаби Хаууз"
+
+#: houze/templates/basic/room_create.html:74
+msgid "Price"
+msgstr "Цена"
+
+#: houze/templates/basic/room_create.html:75
+msgid "e.g. 10 will be 10,000"
+msgstr "например10 будет 10 000"
+
+#: houze/templates/basic/room_create.html:81
+#: houze/templates/basic/room_create.html:82
+msgid "Description"
+msgstr "Описание"
+
+#: houze/templates/basic/room_create.html:88
+#: houze/templates/basic/room_create.html:89
+msgid "Address"
+msgstr "Адрес"
+
+#: houze/templates/basic/room_create.html:94
+msgid "City"
+msgstr "Город"
+
+#: houze/templates/basic/room_create.html:96
+msgid "Select city"
+msgstr "Выберите город"
+
+#: houze/templates/basic/room_create.html:104
+msgid "Room type"
+msgstr "Тип номера"
+
+#: houze/templates/basic/room_create.html:106
+msgid "Select a room type"
+msgstr "Выберите тип комнаты"
+
+#: houze/templates/basic/room_create.html:118
+msgid "Amenities"
+msgstr "Удобства"
+
+#: houze/templates/basic/room_create.html:119
+msgid "e.g. Wi-Fi, Kitchen, AC, Washroom"
+msgstr "напримерWi-Fi, кухня, AC, уборная"
+
+#: houze/templates/basic/room_create.html:120
+msgid "Enter a comma after each amenity"
+msgstr "Введите запятую после каждого удобства"
+
+#: houze/templates/basic/room_create.html:124
+msgid "House rules"
+msgstr "Домашние правила"
+
+#: houze/templates/basic/room_create.html:126
+msgid "e.g. No parties or events, No smoking"
+msgstr "напримерНет вечеринок или событий, нет курить"
+
+#: houze/templates/basic/room_create.html:127
+msgid "Enter a comma after each rule"
+msgstr "Введите запятую после каждого правила"
+
+#: houze/templates/basic/room_create.html:139
+msgid "Check out"
+msgstr "Проверить"
+
+#: houze/templates/basic/room_create.html:145
+msgid "Create"
+msgstr "Создавать"
+
+#: houze/templates/temps/notifications.html:3
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: houze/templates/temps/notifications.html:54
+msgid "Confirm"
+msgstr "Подтверждать"
+
+#: houze/templates/temps/notifications.html:57
+msgid "Cancel"
+msgstr "Отмена"
+
+#: houze/templates/temps/notifications.html:65
+msgid "confirmed"
+msgstr "подтвержденный"
+
+#: houze/templates/temps/room_list.html:7
+msgid "Room Image"
+msgstr "Изображение комнаты"
+
+#: houze/templates/temps/room_list.html:9
+msgid "no image"
+msgstr "нет изображения"
+
+#: houze/templates/temps/room_list.html:15
+#, python-format
+msgid "%(city)s, Uzbekistan"
+msgstr "%(City) S, Uzbekistan"
+
+#: houze/templates/temps/room_list.html:29
+#, python-format
+msgid "UZS %(price)s/night"
+msgstr "Uzs %(цена) s/ночь"
+
+#: houze/templates/temps/room_list.html:36
+msgid "Rooms aren't available"
+msgstr "Номера недоступны"

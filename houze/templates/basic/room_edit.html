@@ -65,9 +65,9 @@
         <div id="image-preview-container">
             {% for img in room.all_photos %}
             <div class="image-container ui-sortable-handle">
-                <img class="preview-image" src="{{img.file.url}}">
+                <img class="preview-image" src="{{img.file.url}}" data-img-id="{{ img.id }}">
                 <div class="image-delete-form">
-                    <button class="cancelimg" onclick="deleteIMG('{% url 'img_delete' img.id %}')">×</button>
+                    <button class="cancelimg">&times;</button>
                 </div>
             </div>
             {% endfor %}
@@ -164,7 +164,7 @@
 
 {% block scripts %}
 <script>
-    let selectedImages = [{% for img in room.all_photos %} '{{img.file.url}}', {% endfor %}];
+    let selectedImages = [{% for img in room.all_photos %} '{{ img.file.url }}', {% endfor %}];
 
     // Function to make image preview container sortable
     function makeSortable() {
@@ -181,10 +181,9 @@
     function updateSelectedImagesArray() {
         selectedImages = [];
         $("#image-preview-container .image-container img").each(function () {
-            selectedImages.push(this.file);
+            selectedImages.push(this.dataset.src || this.file);
         });
     }
-
 
     function addImage(input) {
         const files = input.files;
@@ -200,7 +199,7 @@
             const image = document.createElement('img');
             image.classList.add('preview-image');
             image.src = URL.createObjectURL(file);
-            image.file = file;
+            image.file = file; // Custom property to store file
 
             const cancelButton = document.createElement('div');
             cancelButton.innerHTML = '&times';
@@ -236,8 +235,6 @@
         updateSelectedImagesArray();
     }
 
-
-
     function submitForm(event) {
         event.preventDefault(); // Prevent the default form submission
 
@@ -268,9 +265,12 @@
 
         const imageFiles = [];
         document.querySelectorAll('#image-preview-container .image-container img').forEach(img => {
-            imageFiles.push(img.file);
+            if (img.file) {
+                imageFiles.push(img.file);
+            } else {
+                imageFiles.push(img.src);
+            }
         });
-        console.log(imageFiles);
 
         // Validate fields
         if (imageFiles.length <= 4) {
@@ -351,10 +351,12 @@
         //     formData.append('images', image);
         // });
         imageFiles.forEach(image => {
-            formData.append('images', image);
+            if (image instanceof File) {
+                formData.append('images', image);
+            } else {
+                // Do nothing for URLs, they are not being re-uploaded
+            }
         });
-
-        console.log(title.value)
 
         // Use fetch API to submit form data to server
         fetch("{% url 'room_edit' request.user.username room.id %}", {
@@ -368,8 +370,8 @@
             if (response.ok) {
                 // Redirect to the created room
                 response.json().then(data => {
-                    const roomId = data.room_id;
-                    window.location.href = `/rooms/${roomId}`; // Adjust the URL as per your project's routing
+                    const username = data.username;
+                    window.location.href = `/@${username}`; // Adjust the URL as per your project's routing
                 });
             } else {
                 // Handle error response
@@ -381,31 +383,61 @@
 </script>
 
 <!-- <script>
-    function deleteIMG(deleteUrl) {
-        event.preventDefault(); // Prevent the default form submission
+    function deleteIMG(img_id, element) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-        const formData = new FormData();
-
-        fetch(deleteUrl, {
+        fetch(`/room/image/${img_id}/delete`, {
             method: 'POST',
-            body: formData,
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
             }
         }).then(response => {
-            // Handle response
             if (response.ok) {
-                // Redirect to the created room
-                response.json().then(data => {
-                    window.location.href = `/{{request.user}}`; // Adjust the URL as per your project's routing
-                });
+                // Remove the image container from the DOM
+                const imageContainer = element.closest('.image-container');
+                imageContainer.remove();
+                // Update selectedImages array
+                updateSelectedImagesArray();
             } else {
-                // Handle error response
+                console.error('Error deleting image:', response.status, response.statusText);
             }
         }).catch(error => {
-            // Handle error
+            console.error('Fetch error:', error);
         });
     }
+
+    function addDeleteEventListeners() {
+        document.querySelectorAll('.cancelimg').forEach(cancelButton => {
+            cancelButton.addEventListener('click', function () {
+                const imgElement = this.previousElementSibling; // Assuming img is before cancel button
+                const imgId = imgElement.getAttribute('data-img-id');
+                deleteIMG(imgId, this);
+            });
+        });
+    }
+
+    function makeSortable() {
+        $("#image-preview-container").sortable({
+            placeholder: "sortable-placeholder", // Define the class for the placeholder
+            stop: function (event, ui) {
+                updateSelectedImagesArray();
+            }
+        });
+        $("#image-preview-container").disableSelection(); // Prevent text selection while dragging
+    }
+
+    // Function to update selectedImages array based on the new order
+    function updateSelectedImagesArray() {
+        selectedImages = [];
+        $("#image-preview-container .image-container img").each(function () {
+            selectedImages.push(this.dataset.src || this.file);
+        });
+    }
+
+    // Call this function after adding images dynamically
+    addDeleteEventListeners();
 </script> -->
+
 
 {% endblock %}

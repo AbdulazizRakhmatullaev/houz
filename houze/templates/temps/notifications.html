@@ -1,4 +1,6 @@
-<div class="nottitle">Notifications</div>
+{% load i18n %}
+
+<div class="nottitle">{% trans "Notifications" %}</div>
 <div id="notcol">
     {% for notification in notifications %}
     <div class="notcon">
@@ -27,7 +29,7 @@
                     <div class="notroominfo">
                         <div class="not-room-col">
                             <div class="fs">
-                                Check-in
+                                {% trans "Check in" %}
                             </div>
                             <div class="sc">
                                 {{notification.check_in|date:"M d"}}
@@ -35,7 +37,7 @@
                         </div>
                         <div class="not-room-col">
                             <div class="fs">
-                                Checkout
+                                {% trans "Checkout" %}
                             </div>
                             <div class="sc">
                                 {{notification.check_out|date:"M d"}}
@@ -49,10 +51,10 @@
                 <form action="{% url 'confirm_room' notification.id %}" method="POST" class="bookform">
                     {% csrf_token %}
                     <button type="submit" name="action" value="confirm" class="btn-2">
-                        Confirm
+                        {% trans "Confirm" %}
                     </button>
                     <button type="submit" name="action" value="cancel" class="btn-trspt">
-                        Cancel
+                        {% trans "Cancel" %}
                     </button>
                 </form>
                 {% endif %}
@@ -60,7 +62,7 @@
                 <div class="notdt_col">
                     {% if notification.confirmed %}
                     <a href="{% url 'reservation' %}" class="underline" style="color: #06c;">
-                        (confirmed)
+                        ({% trans "confirmed" %})
                     </a>
                     {% endif %}
                     <div class="notdt" data-created-at="{{ notification.created_at|date:" Y-m-d H:i:s" }}">

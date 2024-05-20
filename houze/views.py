@@ -29,14 +29,12 @@ from django.forms.models import model_to_dict
 import json, os , string
 from django.core.serializers.json import DjangoJSONEncoder
 from django.template.loader import render_to_string
-
 from django.conf import settings
 from django.db.models import Count
-
-
-# webscoket
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import translation
 
 
 def is_ajax(request):
@@ -214,7 +212,7 @@ def book_room(request, room_id):
                         if not Notification.objects.filter(
                             sender=request.user, room=room
                         ).exists():
-                            not_message = f'Hi, I would like to book your <a class="roomUrl" href="/rooms/{room.id}" class="underline" style="color: #06c;">room</a>'
+                            not_message = '{% trans "Hi, I would like to book your" %} <a class="roomUrl" href="/rooms/' + str(room.id) + '" class="underline" style="color: #06c;">room</a>'
 
                             # websocker notification
                             create_notification(
@@ -616,8 +614,7 @@ def room_create(request):
                     room.house_rules.add(new_houserule)
 
             # Return the room ID in a JSON response
-            room_id = room.pk
-            return JsonResponse({"room_id": room_id})
+            return JsonResponse({"room_id": room.pk})
 
             # return redirect("room_detail_url", room_id=room.pk)
         return render(
@@ -646,7 +643,6 @@ def room_edit(request, username, id):
     # Remove the current city and room type from the list of options
     regions = [(code, name) for code, name in Region_Choices if code != room.city]
     room_types = [(code, name) for code, name in RoomTypes if code != room.room_type]
-
 
     amenities = room.amenities.all()
     house_rules = room.house_rules.all()
@@ -717,17 +713,20 @@ def room_edit(request, username, id):
 
             room.save()
 
-            return redirect("user_profile", request.user)
+            return JsonResponse({"username": request.user.username})
+
         return render(request, "basic/room_edit.html", context)
     return redirect("home")
 
 
+@csrf_exempt
 def img_delete(request, img_id):
-    img = get_object_or_404(Image, id=img_id)
     if request.method == 'POST':
+        img = get_object_or_404(Image, id=img_id)
         img.delete()
+        return JsonResponse({'success': True})
     else:
-        return redirect("user_profile", request.user)
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
 def room_detail(request, room_id):
@@ -831,3 +830,13 @@ def share(request):
 
 def tou(request):
     return render(request, "other/tou.html")
+
+def set_language(request):
+    user_language = request.GET.get('language')
+    if user_language:
+        translation.activate(user_language)
+        response = redirect(request.META.get('HTTP_REFERER', '/'))
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+        return response
+    else:
+        return redirect('/')

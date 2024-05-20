@@ -11,6 +11,7 @@ from django.utils.timezone import localtime
 from .languages import LANGUAGES
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
+from django.utils.translation import gettext_lazy as _
 
 sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
 
@@ -86,27 +87,27 @@ def avatarColorDefault():
 
 
 Region_Choices = (
-    ("TASHKENT", "Tashkent"),
-    ("ANDIJAN", "Andijan"),
-    ("BUKHARA", "Bukhara"),
-    ("FERGANA", "Fergana"),
-    ("JIZZAKH", "Jizzakh"),
-    ("NAMANGAN", "Namangan"),
-    ("NAVOIY", "Navoiy"),
-    ("KARSHI", "Karshi"),
-    ("SAMARKAND", "Samarkand"),
-    ("GULISTON", "Guliston"),
-    ("TERMEZ", "Termez"),
-    ("NURAFSHON", "Nurafshon"),
-    ("URGENCH", "Urgench"),
-    ("NUKUS", "Nukus"),
+    (_("TASHKENT"), _("Tashkent")),
+    (_("ANDIJAN"), _("Andijan")),
+    (_("BUKHARA"), _("Bukhara")),
+    (_("FERGANA"), _("Fergana")),
+    (_("JIZZAKH"), _("Jizzakh")),
+    (_("NAMANGAN"), _("Namangan")),
+    (_("NAVOIY"), _("Navoiy")),
+    (_("KARSHI"), _("Karshi")),
+    (_("SAMARKAND"), _("Samarkand")),
+    (_("GULISTON"), _("Guliston")),
+    (_("TERMEZ"), _("Termez")),
+    (_("NURAFSHON"), _("Nurafshon")),
+    (_("URGENCH"), _("Urgench")),
+    (_("NUKUS"), _("Nukus")),
 )
 
 
 RoomTypes = (
-    ("A ROOM", "A room"),
-    ("AN ENTIRE PLACE", "An entire place"),
-    ("A SHARED ROOM", "A shared room"),
+    (_("A ROOM"), _("A room")),
+    (_("AN ENTIRE PLACE"), _("An entire place")),
+    (_("A SHARED ROOM"), _("A shared room")),
 )
 
 
