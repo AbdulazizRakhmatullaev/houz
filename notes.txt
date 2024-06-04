@@ -1,0 +1,2 @@
+deleting images in room editing
+djhtm

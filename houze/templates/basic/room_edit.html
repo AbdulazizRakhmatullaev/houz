@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Edit your room{% endblock %}
+{% block title %}{% trans "Edit your room" %}{% endblock %}
 
 {% block content %}
 <div class="brief-name">Edit your room</div>
@@ -14,7 +15,7 @@
         <div class="rcrflex">
             <div class="rcrflexcol">
                 <div class="lbld">
-                    <div class="lbltxt">Guests</div>
+                    <div class="lbltxt">{% trans 'Guests' %}</div>
                     <div class="rcrflex">
                         <span id="guests_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="guests" name="guests" min="1"
@@ -23,7 +24,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Beds</div>
+                    <div class="lbltxt">{% trans 'Beds' %}</div>
                     <div class="rcrflex">
                         <span id="beds_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="beds" name="beds" min="1"
@@ -32,7 +33,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Bedrooms</div>
+                    <div class="lbltxt">{% trans 'Bedrooms' %}</div>
                     <div class="rcrflex">
                         <span id="bedrooms_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
@@ -41,7 +42,7 @@
                     </div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Baths</div>
+                    <div class="lbltxt">{% trans 'Baths' %}</div>
                     <div class="rcrflex">
                         <span id="baths_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="baths" name="baths" min="1"
@@ -51,21 +52,22 @@
                 </div>
             </div>
             <div class="lbld" style="margin-left: 10px;">
-                <div class="lbltxt">Map</div>
-                <div id="map" style="width: 100%; height: 250px; border-radius: 12px;"></div>
+                <div class="lbltxt">{% trans 'Map' %}</div>
+                <div id="map" class="mapcr"></div>
             </div>
         </div>
         <div class="lbld">
-            <div class="lbltxt">Images</div>
-            <input type="button" value="Browse..." onclick="document.getElementById('roomimginp').click();" />
+            <div class="lbltxt">{% trans 'Images' %}</div>
+            <input type="button" value="{% trans 'Browse...' %}"
+                onclick="document.getElementById('roomimginp').click();" />
             <div id="img-error" class="errTxt"></div>
             <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
                 onchange="addImage(this)" multiple style="display: none;">
         </div>
-        <div id="image-preview-container">
+        <div id="image-preview-container" class="h85">
             {% for img in room.all_photos %}
             <div class="image-container ui-sortable-handle">
-                <img class="preview-image" src="{{img.file.url}}" data-img-id="{{ img.id }}">
+                <img class="preview-image" src="{{img.file.url}}" data-img-id="{{ img.pk }}">
                 <div class="image-delete-form">
                     <button class="cancelimg">&times;</button>
                 </div>
@@ -77,32 +79,37 @@
     <div class="rmright">
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Title</div>
-                <input type="text" id="title" name="title" placeholder="Title" value="{{room.title}}">
+                <div class="lbltxt">{% trans 'Title' %}</div>
+                <input type="text" id="title" name="title" placeholder='{% trans "e.g. Best cabin near Labi Hawuz" %}'
+                    value="{{room.title}}">
                 <div class="errTxt"></div>
             </div>
             <div class="lbld">
-                <div class="lbltxt">Price</div>
-                <input type="number" id="price" name="price" placeholder="Price" value="{{room.price}}">
-                <div class="errTxt"></div>
+                <div class="lbltxt">{% trans "Price" %}</div>
+                <label class="prlbl" data-domain="UZS">
+                    <input type="text" id="price" name="price" placeholder="{% trans 'min price: 10 000' %}"
+                        maxlength="10" value="{{room.get_price}}" />
+                    <label>
+                        <div id="price-error" class="errTxt"></div>
             </div>
         </div>
         <div class="lbld">
-            <div class="lbltxt">Description</div>
+            <div class="lbltxt">{% trans 'Description' %}</div>
             <textarea id="description" name="description" class="descarea"
-                placeholder="Description">{{room.description}}</textarea>
+                placeholder='{% trans "Tell people about the room and what is near it" %}'>{{room.description}}</textarea>
             <div class="errTxt"></div>
         </div>
 
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Address</div>
-                <input type="text" id="address" name="address" placeholder="Address" value="{{room.address}}">
+                <div class="lbltxt">{% trans 'Address' %}</div>
+                <input type="text" id="address" name="address" placeholder="{% trans 'Address' %}"
+                    value="{{room.address}}">
                 <div class="errTxt"></div>
             </div>
             <div class="rcrflex">
                 <div class="lbld">
-                    <div class="lbltxt">City</div>
+                    <div class="lbltxt">{% trans 'City' %}</div>
                     <select class="room-cy" id="city" name="city">
                         <option value="{{ current_city }}">{{ current_city }}</option>
                         {% for code, name in regions %}
@@ -112,7 +119,7 @@
                     <div class="errTxt"></div>
                 </div>
                 <div class="lbld">
-                    <div class="lbltxt">Room type</div>
+                    <div class="lbltxt">{% trans 'Room type' %}</div>
                     <select class="room-cy" id="room_type" name="room_type">
                         <option value="{{ cur_rmtype }}">{{ cur_rmtype }}</option>
                         {% for code, name in room_types %}
@@ -126,37 +133,38 @@
 
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Amenities</div>
-                <input type="text" id="amenities" name="amenities" placeholder="Amenities"
-                    value="{% for amenity in amenities %}{{amenity.name}}{% if not forloop.last %}, {% endif %}{% endfor %}">
-                <div class="inpInfo">Enter a comma after each amenity</div>
+                <div class="lbltxt">{% trans 'Amenities' %}</div>
+                <textarea class="txtar" name="amenities" id="amenities"
+                    placeholder="{% trans 'e.g. Wi-Fi, Kitchen, AC, Washroom' %}">{% for amenity in amenities %}{{amenity.name}}{% if not forloop.last %}, {% endif %}{% endfor %}</textarea>
+                <div class="inpInfo">{% trans 'Enter a comma after each amenity' %}</div>
                 <div class="errTxt"></div>
             </div>
             <div class="lbld">
-                <div class="lbltxt">House rules</div>
-                <input type="text" id="house_rules" name="house_rules" placeholder="House rules"
-                    value="{% for house_rule in house_rules %}{{house_rule.rule}}{% if not forloop.last %},{% endif %}{% endfor %}">
-                <div class="inpInfo">Enter a comma after each rule</div>
+                <div class="lbltxt">{% trans 'House rules' %}</div>
+                <textarea class="txtar" name="house_rules" id="house_rules"
+                    placeholder="{% trans 'e.g. No parties or events, No smoking' %}">{% for house_rule in house_rules %} {{house_rule.rule}}{% if not forloop.last %},{% endif %}{% endfor %}</textarea>
+                <div class="inpInfo">{% trans 'Enter a comma after each rule' %}</div>
                 <div class="errTxt"></div>
             </div>
         </div>
 
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">Check in</div>
-                <input type="date" id="edcheck_in" name="check_in" value="{{room.check_in|date:'Y-m-d'}}" class="check_in">
+                <div class="lbltxt">{% trans 'Check in' %}</div>
+                <input type="date" id="edcheck_in" name="check_in" value="{{room.check_in|date:'Y-m-d'}}"
+                    class="check_in">
                 <div class="errTxt"></div>
-
             </div>
             <div class="lbld">
-                <div class="lbltxt">Check out</div>
-                <input type="date" id="edcheck_out" name="check_out" value="{{room.check_out|date:'Y-m-d'}}" class="check_out">
+                <div class="lbltxt">{% trans 'Check out' %}</div>
+                <input type="date" id="edcheck_out" name="check_out" value="{{room.check_out|date:'Y-m-d'}}"
+                    class="check_out">
                 <div class="errTxt"></div>
 
             </div>
         </div>
         <div class="btnsubend">
-            <button type="submit" class="btn-primary">Edit</button>
+            <button type="submit" class="btn-primary">{% trans 'Edit' %}</button>
         </div>
     </div>
 </form>
@@ -164,7 +172,62 @@
 
 {% block scripts %}
 <script>
+    (function ($, undefined) {
+        "use strict";
+
+        // When ready.
+        $(function () {
+
+            var $input = $("#price");
+
+            $input.on("keyup", function (event) {
+
+
+                // When user select text in the document, also abort.
+                var selection = window.getSelection().toString();
+                if (selection !== '') {
+                    return;
+                }
+
+                // When the arrow keys are pressed, abort.
+                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
+                    return;
+                }
+
+                var $this = $(this);
+
+                // Get the value.
+                var input = $this.val();
+
+                var input = input.replace(/[\D\s\._\-]+/g, "");
+                input = input ? parseInt(input, 10) : 0;
+
+                $this.val(function () {
+                    return (input === 0) ? "" : input.toLocaleString("en-US");
+                });
+            });
+        });
+    })(jQuery);
+</script>
+
+<script>
     let selectedImages = [{% for img in room.all_photos %} '{{ img.file.url }}', {% endfor %}];
+
+    // Make image preview container sortable
+    $("#image-preview-container").sortable({
+        placeholder: "sortable-placeholder", // Define the class for the placeholder
+        stop: function (event, ui) {
+            updateSelectedImagesArray();
+        }
+    }).disableSelection(); // Prevent text selection while dragging
+
+    // Function to update selectedImages array based on the new order
+    function updateSelectedImagesArray() {
+        selectedImages = [];
+        $("#image-preview-container .image-container img").each(function () {
+            selectedImages.push(this.dataset.src || this.file);
+        });
+    }
 
     // Function to make image preview container sortable
     function makeSortable() {
@@ -224,7 +287,7 @@
         }
 
         input.value = ''; // Clear the input value after selecting images
-        imgInpInfo.textContent = 'Drag images to sort them out';
+        imgInpInfo.textContent = '{% trans "Drag images to sort them out" %}';
         const imgErrorText = document.getElementById('img-error');
         imgErrorText.textContent = '';
 
@@ -275,55 +338,82 @@
         // Validate fields
         if (imageFiles.length <= 4) {
             // Display error message for images
-            imgError.textContent = 'Please select at least 5 images.';
+            imgError.textContent = '{% trans "Please select at least 5 images" %}';
             return;
         }
 
         if (title.value.trim() === '') {
-            title.parentNode.querySelector('.errTxt').textContent = 'Title is required.';
+            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title is required" %}';
             return;
         }
-        if (title.value.length < 20) {
-            title.parentNode.querySelector('.errTxt').textContent = 'Title should be at least 20 characters';
+        var words = title.value.split(' ').filter(word => word.length > 0);
+
+        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.some(word => word.length < 2)) {
+            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be at least 4 words" %}';
             return;
         }
 
         if (price.value.trim() === '') {
-            price.parentNode.querySelector('.errTxt').textContent = 'Price is required.';
+            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price is required" %}';
+            return;
+        }
+        if (price.value.length < 6) {
+            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price should at least start from 10,000" %}';
             return;
         }
 
         if (description.value.trim() === '') {
-            description.parentNode.querySelector('.errTxt').textContent = 'Description is required.';
+            description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description is required" %}';
             return;
         }
         if (description.value.length < 150) {
-            description.parentNode.querySelector('.errTxt').textContent = 'Description should be at least 150 characters';
+            description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description should be at least 150 characters" %}';
             return;
         }
 
         if (address.value.trim() === '') {
-            address.parentNode.querySelector('.errTxt').textContent = 'Address is required.';
+            address.parentNode.querySelector('.errTxt').textContent = '{% trans "Address is required" %}';
             return;
         }
 
-        if (city.value.trim() === 'Select city') {
-            city.parentNode.querySelector('.errTxt').textContent = 'City is required.';
+        if (city.value.trim() === 'null') {
+            city.parentNode.querySelector('.errTxt').textContent = '{% trans "City is required" %}';
             return;
         }
 
-        if (roomType.value.trim() === 'Select room type') {
-            roomType.parentNode.querySelector('.errTxt').textContent = 'Room type is required.';
+        if (roomType.value.trim() === 'null') {
+            roomType.parentNode.querySelector('.errTxt').textContent = '{% trans "Room type is required" %}';
             return;
         }
 
         if (amenities.value.trim() === '') {
-            amenities.parentNode.querySelector('.errTxt').textContent = 'Amenities are required';
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Amenities are required" %}';
+            return;
+        }
+        var amenities_ = amenities.value.split(',').map(item => item.trim()).filter(item => item);
+
+        if (amenities_.length < 5) {
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 amenities" %}';
+            return;
+        }
+        if (amenities_.some(item => !/^[a-zA-Z\s]+$/.test(item) || item.length < 4)) {
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Each amenity should be a meaningful word or phrase" %}';
             return;
         }
 
         if (houseRules.value.trim() === '') {
-            houseRules.parentNode.querySelector('.errTxt').textContent = 'House rules are required.';
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "House rules are required" %}';
+            return;
+        }
+
+        var houseRules_ = houseRules.value.split(',').map(item => item.trim()).filter(item => item);
+
+        if (houseRules_.length < 5) {
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 rules" %}';
+            return;
+        }
+        if (houseRules_.some(item => !/^[a-zA-Z\s]+$/.test(item) || item.length < 4)) {
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Each rule should be a meaningful word or phrase" %}';
             return;
         }
 
@@ -333,23 +423,20 @@
 
         // Check if check-out date is after check-in date
         if (checkOutDate <= checkInDate) {
-            checkOut.parentNode.querySelector('.errTxt').textContent = 'Check-out date must be after check-in date.';
+            checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "Check-out date must be after check-in date" %}';
             return;
         }
 
         // Check if there's at least one day gap between check-in and check-out
         const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
         if ((checkOutDate.getTime() - checkInDate.getTime()) < oneDay) {
-            checkOut.parentNode.querySelector('.errTxt').textContent = 'There should be at least one day gap between check-in and check-out.';
+            checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "There should be at least one day gap between check-in and check-out" %}';
             return;
         }
 
         // Create a FormData object to store form data and selected images
         const formData = new FormData(document.getElementById('room-edit-form'));
-        // Add selected images to FormData
-        // selectedImages.forEach(image => {
-        //     formData.append('images', image);
-        // });
+
         imageFiles.forEach(image => {
             if (image instanceof File) {
                 formData.append('images', image);
@@ -357,6 +444,7 @@
                 // Do nothing for URLs, they are not being re-uploaded
             }
         });
+        formData.append('sorted_images', JSON.stringify(selectedImages));
 
         // Use fetch API to submit form data to server
         fetch("{% url 'room_edit' request.user.username room.id %}", {
@@ -381,63 +469,4 @@
         });
     }
 </script>
-
-<!-- <script>
-    function deleteIMG(img_id, element) {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        fetch(`/room/image/${img_id}/delete`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
-                // Remove the image container from the DOM
-                const imageContainer = element.closest('.image-container');
-                imageContainer.remove();
-                // Update selectedImages array
-                updateSelectedImagesArray();
-            } else {
-                console.error('Error deleting image:', response.status, response.statusText);
-            }
-        }).catch(error => {
-            console.error('Fetch error:', error);
-        });
-    }
-
-    function addDeleteEventListeners() {
-        document.querySelectorAll('.cancelimg').forEach(cancelButton => {
-            cancelButton.addEventListener('click', function () {
-                const imgElement = this.previousElementSibling; // Assuming img is before cancel button
-                const imgId = imgElement.getAttribute('data-img-id');
-                deleteIMG(imgId, this);
-            });
-        });
-    }
-
-    function makeSortable() {
-        $("#image-preview-container").sortable({
-            placeholder: "sortable-placeholder", // Define the class for the placeholder
-            stop: function (event, ui) {
-                updateSelectedImagesArray();
-            }
-        });
-        $("#image-preview-container").disableSelection(); // Prevent text selection while dragging
-    }
-
-    // Function to update selectedImages array based on the new order
-    function updateSelectedImagesArray() {
-        selectedImages = [];
-        $("#image-preview-container .image-container img").each(function () {
-            selectedImages.push(this.dataset.src || this.file);
-        });
-    }
-
-    // Call this function after adding images dynamically
-    addDeleteEventListeners();
-</script> -->
-
-
 {% endblock %}

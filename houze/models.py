@@ -188,7 +188,7 @@ class HouseRule(models.Model):
 
 class Image(models.Model):
     file = models.FileField(upload_to="room/images")
-    # room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
+    order = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = "Image"
@@ -231,7 +231,9 @@ class Room(models.Model):
 
     def get_desc(self):
         lines = self.description.split("\n")
-        rendered_lines = [escape(line) if line.strip() else "<br><br>" for line in lines]
+        rendered_lines = [
+            escape(line) if line.strip() else "<br><br>" for line in lines
+        ]
         return mark_safe("\n".join(rendered_lines))
 
     def get_dates(self):
@@ -249,20 +251,22 @@ class Room(models.Model):
         else:
             return self.date.strftime("%b ") + str(self.date.day)
 
-    def fee(self):
-        fee = 0.33 * self.price
-        return f"{fee:,.3f}"
-
     def num_o_days(self):
         return (self.check_out - self.check_in).days
 
     def get_price(self):
-        return f"{self.price:,.3f}"
+        return "{:,}".format(self.price)
 
     def count_nights_price(self):
         days = (self.check_out - self.check_in).days
         total_price = days * self.price
-        return f"{total_price:,.3f}"
+        return "{:,}".format(total_price)
+
+    def fee(self):
+        days = (self.check_out - self.check_in).days
+        total_price = days * self.price
+        fee = 0.33 * total_price
+        return "{:,.0f}".format(fee)
 
     def get_absolute_url(self):
         return reverse("room_detail_url", kwargs={"slug": self.slug, "id": self.id})

@@ -18,7 +18,8 @@
                     <div class="lbltxt">{% trans "Guests" %}</div>
                     <div class="rcrflex">
                         <span id="guests_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="guests" name="guests" min="1" value="1" />
+                        <input style="width: 33px;" type="text" min="1" id="guests" name="guests" min="1" maxlength="2"
+                            value="1" />
                         <span id="guests_plus" class="plus">+</span>
                     </div>
                 </div>
@@ -27,7 +28,7 @@
                     <div class="rcrflex">
                         <span id="bedrooms_minus" class="minus">-</span>
                         <input style="width: 33px;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
-                            value="1" />
+                            maxlength="2" value="1" />
                         <span id="bedrooms_plus" class="plus">+</span>
                     </div>
                 </div>
@@ -35,7 +36,8 @@
                     <div class="lbltxt">{% trans "Beds" %}</div>
                     <div class="rcrflex">
                         <span id="beds_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="beds" name="beds" min="1" value="1" />
+                        <input style="width: 33px;" type="text" min="1" id="beds" name="beds" min="1" maxlength="2"
+                            value="1" />
                         <span id="beds_plus" class="plus">+</span>
                     </div>
                 </div>
@@ -43,19 +45,21 @@
                     <div class="lbltxt">{% trans "Baths" %}</div>
                     <div class="rcrflex">
                         <span id="baths_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="baths" name="baths" min="1" value="1" />
+                        <input style="width: 33px;" type="text" min="1" id="baths" name="baths" min="1" max="99"
+                            value="1" />
                         <span id="baths_plus" class="plus">+</span>
                     </div>
                 </div>
             </div>
             <div class="lbld" style="margin-left: 10px;">
                 <div class="lbltxt">{% trans "Map" %}</div>
-                <div id="map" style="width: 100%; height: 250px; border-radius: 12px;"></div>
+                <div id="map" class="mapcr"></div>
             </div>
         </div>
         <div class="lbld">
             <div class="lbltxt">{% trans "Images" %}</div>
-            <input type="button" value="{% trans 'Browse...' %}" onclick="document.getElementById('roomimginp').click();" />
+            <input type="button" value="{% trans 'Browse...' %}"
+                onclick="document.getElementById('roomimginp').click();" />
             <div id="img-error" class="errTxt"></div>
             <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
                 onchange="addImage(this)" multiple style="display: none;">
@@ -72,14 +76,17 @@
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
-                <input type="text" id="price" name="price" placeholder="{% trans 'e.g. 10 will be 10,000' %}" data-a-sign=""
-                    data-a-dec="," data-a-sep=".">
-                <div id="price-error" class="errTxt"></div>
+                <label class="prlbl" data-domain="UZS">
+                    <input type="text" id="price" name="price" placeholder="{% trans 'min price: 10 000' %}"
+                        maxlength="10" />
+                    <label>
+                        <div id="price-error" class="errTxt"></div>
             </div>
         </div>
         <div class="lbld">
             <div class="lbltxt">{% trans "Description" %}</div>
-            <textarea id="description" name="description" class="descarea" placeholder="{% trans 'Description' %}"></textarea>
+            <textarea id="description" name="description" class="descarea"
+                placeholder='{% trans "Tell people about the room and what is near it" %}'></textarea>
             <div id="description-error" class="errTxt"></div>
         </div>
 
@@ -93,7 +100,7 @@
                 <div class="lbld">
                     <div class="lbltxt">{% trans "City" %}</div>
                     <select class="room-cy" id="city" name="city">
-                        <option hidden value="null">{% trans "Select city" %}</option>
+                        <option hidden value="null">{% trans "Select a city" %}</option>
                         {% for code, name in regions %}
                         <option value="{{ code }}">{{ name }}</option>
                         {% endfor %}
@@ -112,18 +119,22 @@
                 </div>
             </div>
         </div>
-
         <div class="rcrflex">
             <div class="lbld">
                 <div class="lbltxt">{% trans "Amenities" %}</div>
-                <input type="text" id="amenities" name="amenities" placeholder="{% trans 'e.g. Wi-Fi, Kitchen, AC, Washroom' %}">
+
+                <textarea class="txtar" name="amenities" id="amenities"
+                    placeholder="{% trans 'e.g. Wi-Fi, Kitchen, AC, Washroom' %}"></textarea>
+                <!-- <div class="txtar" id="amenArea" contenteditable="true"
+                    data-text="{% trans 'e.g. Wi-Fi, Kitchen, AC, Washroom' %}"></div> -->
+
                 <div class="inpInfo">{% trans "Enter a comma after each amenity" %}</div>
                 <div id="amenities-error" class="errTxt"></div>
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "House rules" %}</div>
-                <input type="text" id="house_rules" name="house_rules"
-                    placeholder="{% trans 'e.g. No parties or events, No smoking' %}">
+                <textarea class="txtar" name="house_rules" id="house_rules"
+                    placeholder="{% trans 'e.g. No parties or events, No smoking' %}"></textarea>
                 <div class="inpInfo">{% trans "Enter a comma after each rule" %}</div>
                 <div id="hr-error" class="errTxt"></div>
             </div>
@@ -149,35 +160,76 @@
 {% endblock %}
 
 {% block scripts %}
+
 <script>
-$(document).ready(function() {
-    // Script for City
-    $('#city').css('color','gray');
-    $('#city').change(function() {
-       var current = $(this).val();
-       if (current !== 'null') {
-           $(this).css('color','#1d1d1f');
-       } else {
-           $(this).css('color','gray');
-       }
+    (function ($, undefined) {
+        "use strict";
+
+        // When ready.
+        $(function () {
+
+            var $input = $("#price");
+
+            $input.on("keyup", function (event) {
+
+
+                // When user select text in the document, also abort.
+                var selection = window.getSelection().toString();
+                if (selection !== '') {
+                    return;
+                }
+
+                // When the arrow keys are pressed, abort.
+                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
+                    return;
+                }
+
+                var $this = $(this);
+
+                // Get the value.
+                var input = $this.val();
+
+                var input = input.replace(/[\D\s\._\-]+/g, "");
+                input = input ? parseInt(input, 10) : 0;
+
+                $this.val(function () {
+                    return (input === 0) ? "" : input.toLocaleString("en-US");
+                });
+            });
+        });
+    })(jQuery);
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Script for City
+        $('#city').css('color', 'gray');
+        $('#city').change(function () {
+            var current = $(this).val();
+            if (current !== 'null') {
+                $(this).css('color', '#1d1d1f');
+            } else {
+                $(this).css('color', 'gray');
+            }
+        });
     });
-});
 </script>
 <script>
-$(document).ready(function() {
-    $('#room_type').css('color','gray');
-    $('#room_type').change(function() {
-       var current = $(this).val();
-       if (current != 'null') {
-           $('#room_type').css('color','#1d1d1f');
-       } else {
-           $('#room_type').css('color','gray');
-       }
+    $(document).ready(function () {
+        $('#room_type').css('color', 'gray');
+        $('#room_type').change(function () {
+            var current = $(this).val();
+            if (current != 'null') {
+                $('#room_type').css('color', '#1d1d1f');
+            } else {
+                $('#room_type').css('color', 'gray');
+            }
+        });
     });
-});
 </script>
 <script>
     let selectedImages = [];
+    let img_cnt = 0;
 
     // Function to make image preview container sortable
     function makeSortable() {
@@ -198,10 +250,16 @@ $(document).ready(function() {
         });
     }
 
+    function updateImageCount() {
+        img_cnt = selectedImages.length;
+        document.getElementById('img-preview-info').textContent = `{% trans "You chose ${img_cnt} images. Drag to sort them out" %}`;
+    }
+
 
     function addImage(input) {
         const files = input.files;
         const previewContainer = document.getElementById('image-preview-container');
+        $("#image-preview-container").css('height', '85px')
         const imgInpInfo = document.getElementById('img-preview-info');
 
         for (let i = 0; i < files.length; i++) {
@@ -221,10 +279,13 @@ $(document).ready(function() {
             cancelButton.onclick = function () {
                 // Remove the corresponding image from the array and the preview
                 const index = selectedImages.indexOf(file);
+
                 if (index !== -1) {
                     selectedImages.splice(index, 1);
+                    updateImageCount();
                 }
                 previewContainer.removeChild(imageContainer);
+
                 if (selectedImages.length === 0) {
                     imgInpInfo.textContent = '';
                 }
@@ -238,7 +299,7 @@ $(document).ready(function() {
         }
 
         input.value = ''; // Clear the input value after selecting images
-        imgInpInfo.textContent = 'Drag images to sort them out';
+        updateImageCount();
         const imgErrorText = document.getElementById('img-error');
         imgErrorText.textContent = '';
 
@@ -248,7 +309,6 @@ $(document).ready(function() {
         // Call updateSelectedImagesArray to update selectedImages array
         updateSelectedImagesArray();
     }
-
 
     function submitForm(event) {
         event.preventDefault(); // Prevent the default form submission
@@ -282,60 +342,84 @@ $(document).ready(function() {
         document.querySelectorAll('#image-preview-container .image-container img').forEach(img => {
             imageFiles.push(img.file);
         });
-        console.log(imageFiles);
 
         // Validate fields
         if (imageFiles.length <= 4) {
             // Display error message for images
-            imgError.textContent = 'Please select at least 5 images.';
+            imgError.textContent = '{% trans "Please select at least 5 images" %}';
             return;
         }
 
         if (title.value.trim() === '') {
-            title.parentNode.querySelector('.errTxt').textContent = 'Title is required.';
+            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title is required" %}';
             return;
         }
-        if (title.value.length < 20) {
-            title.parentNode.querySelector('.errTxt').textContent = 'Title should be at least 20 characters';
+        if (!/\b\w+\b(?:.*?\b\w+\b){3}/.test(title.value.trim())) {
+            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be at least 4 words" %}';
             return;
         }
 
         if (price.value.trim() === '') {
-            price.parentNode.querySelector('.errTxt').textContent = 'Price is required.';
+            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price is required" %}';
+            return;
+        }
+        if (price.value.length < 6) {
+            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price should at least start from 10,000" %}';
             return;
         }
 
         if (description.value.trim() === '') {
-            description.parentNode.querySelector('.errTxt').textContent = 'Description is required.';
+            description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description is required" %}';
             return;
         }
         if (description.value.length < 150) {
-            description.parentNode.querySelector('.errTxt').textContent = 'Description should be at least 150 characters';
+            description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description should be at least 150 characters" %}';
             return;
         }
 
         if (address.value.trim() === '') {
-            address.parentNode.querySelector('.errTxt').textContent = 'Address is required.';
+            address.parentNode.querySelector('.errTxt').textContent = '{% trans "Address is required" %}';
             return;
         }
 
-        if (city.value.trim() === 'Select city') {
-            city.parentNode.querySelector('.errTxt').textContent = 'City is required.';
+        if (city.value.trim() === 'null') {
+            city.parentNode.querySelector('.errTxt').textContent = '{% trans "City is required" %}';
             return;
         }
 
-        if (roomType.value.trim() === 'Select room type') {
-            roomType.parentNode.querySelector('.errTxt').textContent = 'Room type is required.';
+        if (roomType.value.trim() === 'null') {
+            roomType.parentNode.querySelector('.errTxt').textContent = '{% trans "Room type is required" %}';
             return;
         }
 
         if (amenities.value.trim() === '') {
-            amenities.parentNode.querySelector('.errTxt').textContent = 'Amenities are required';
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Amenities are required" %}';
+            return;
+        }
+        var amenities_ = amenities.value.split(',').map(item => item.trim()).filter(item => item);
+
+        if (amenities_.length < 5) {
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 amenities" %}';
+            return;
+        }
+        if (amenities_.some(item => !/^[a-zA-Z\s]+$/.test(item) || item.length < 4)) {
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Each amenity should be a meaningful word or phrase" %}';
             return;
         }
 
         if (houseRules.value.trim() === '') {
-            houseRules.parentNode.querySelector('.errTxt').textContent = 'House rules are required.';
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "House rules are required" %}';
+            return;
+        }
+
+        var houseRules_ = houseRules.value.split(',').map(item => item.trim()).filter(item => item);
+
+        if (houseRules_.length < 5) {
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 rules" %}';
+            return;
+        }
+        if (houseRules_.some(item => !/^[a-zA-Z\s]+$/.test(item) || item.length < 4)) {
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Each rule should be a meaningful word or phrase" %}';
             return;
         }
 
@@ -345,23 +429,20 @@ $(document).ready(function() {
 
         // Check if check-out date is after check-in date
         if (checkOutDate <= checkInDate) {
-            checkOut.parentNode.querySelector('.errTxt').textContent = 'Check-out date must be after check-in date.';
+            checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "Check-out date must be after check-in date" %}';
             return;
         }
 
         // Check if there's at least one day gap between check-in and check-out
         const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
         if ((checkOutDate.getTime() - checkInDate.getTime()) < oneDay) {
-            checkOut.parentNode.querySelector('.errTxt').textContent = 'There should be at least one day gap between check-in and check-out.';
+            checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "There should be at least one day gap between check-in and check-out" %}';
             return;
         }
 
         // Create a FormData object to store form data and selected images
         const formData = new FormData(document.getElementById('room-create-form'));
-        // Add selected images to FormData
-        // selectedImages.forEach(image => {
-        //     formData.append('images', image);
-        // });
+
         imageFiles.forEach(image => {
             formData.append('images', image);
         });
@@ -400,7 +481,13 @@ $(document).ready(function() {
     document.getElementById("check_in").value = formattedDate;
     document.getElementById("check_in").min = formattedDate;
 
-    document.getElementById("check_out").value = formattedDate;
-    document.getElementById("check_out").min = formattedDate;
+    // Calculate the date for checkout (one day after check-in)
+    var checkoutDate = new Date(today);
+    checkoutDate.setDate(checkoutDate.getDate() + 1);
+    var formattedCheckoutDate = checkoutDate.toISOString().substr(0, 10);
+
+    // Set the value and minimum of the check-out field to the checkout date
+    document.getElementById("check_out").value = formattedCheckoutDate;
+    document.getElementById("check_out").min = formattedCheckoutDate;
 </script>
 {% endblock %}

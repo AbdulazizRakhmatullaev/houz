@@ -222,7 +222,7 @@
         </div>
         <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
         <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
-        <div id="map" class="room-location"></div>
+        <div id="room_map" class="room-location"></div>
     </div>
 </div>
 <form action="{% url 'book_room' room.id %}" method="post" class="right-info-column">
@@ -244,15 +244,14 @@
         <div class="payment">
             <button class="btn" id="message-btn">Reserve</button>
         </div>
-        <div class="payment">
-            <div class="pricing-col">
-                <div class="left-text">{{room.get_price}} soums x{{room.num_o_days}} nights</span></div>
-                <div class="right-text">{{room.count_nights_price}} soums</div>
-            </div>
-            <div class="pricing-col">
-                <div class="left-text">Houze fee</span></div>
-                <div class="right-text">{{room.fee}} soums</div>
-            </div>
+        <div class="pricing-col">
+            <div class="left-text">UZS <span id="nightly-price">{{room.get_price}}</span> x <span
+                    id="num-nights">{{room.num_o_days}}</span> nights</div>
+            <div class="right-text">UZS <span id="total-price">{{room.count_nights_price}}</span></div>
+        </div>
+        <div class="pricing-col">
+            <div class="left-text">Houze fee</div>
+            <div class="right-text">UZS <span id="houze-fee">{{room.fee}}</span></div>
         </div>
     </div>
 </form>
@@ -264,6 +263,62 @@
 {% endblock %}
 
 {% block scripts %}
+
+<script>
+    // Helper function to calculate date difference in days
+    function dateDiffInDays(date1, date2) {
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    }
+
+    // Update prices based on date input changes
+    function updatePrices() {
+        const checkInDate = new Date(document.querySelector('input[name="check_in"]').value);
+        const checkOutDate = new Date(document.querySelector('input[name="check_out"]').value);
+        const nightlyPrice = parseFloat(document.getElementById('nightly-price').textContent.replace(/,/g, ''));
+
+        if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+            const numNights = dateDiffInDays(checkInDate, checkOutDate);
+            const totalPrice = nightlyPrice * numNights;
+            const fee = 0.33 * totalPrice;
+
+            document.getElementById('num-nights').textContent = numNights;
+            document.getElementById('total-price').textContent = totalPrice.toLocaleString();
+            document.getElementById('houze-fee').textContent = fee.toLocaleString();
+        }
+    }
+
+    // Add event listeners to date inputs
+    document.querySelector('input[name="check_in"]').addEventListener('change', updatePrices);
+    document.querySelector('input[name="check_out"]').addEventListener('change', updatePrices);
+
+    // Initial call to update prices on page load
+    updatePrices();
+</script>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+
+    var initialLatitude = parseFloat(document.getElementById('latitude').value);
+    var initialLongitude = parseFloat(document.getElementById('longitude').value);
+
+    var room_map = new mapboxgl.Map({
+        container: 'room_map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
+        zoom: 13
+    });
+
+    // Add zoom and unzoom controls
+    room_map.addControl(new mapboxgl.NavigationControl());
+
+    // Create marker
+    var marker = new mapboxgl.Marker({
+        draggable: false
+    }).setLngLat([initialLongitude, initialLatitude]).addTo(room_map);
+
+</script>
 
 <script>
     let currentSlide = 0;

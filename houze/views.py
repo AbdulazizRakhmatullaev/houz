@@ -45,7 +45,6 @@ def home(request):
     # flt = request.GET.get("filter", "city")  # Default to filtering by city
     # filter_value = request.GET.get(flt)  # Get the value for the selected filter
     rooms = Room.objects.all()
-
     # # Handle filtering based on flt value
     # if flt == "city":
     #     rooms = rooms.filter(city=filter_value)
@@ -212,7 +211,7 @@ def book_room(request, room_id):
                         if not Notification.objects.filter(
                             sender=request.user, room=room
                         ).exists():
-                            not_message = '{% trans "Hi, I would like to book your" %} <a class="roomUrl" href="/rooms/' + str(room.id) + '" class="underline" style="color: #06c;">room</a>'
+                            not_message = f'Hi, I would like to book your <a class="roomUrl" href="/rooms/{str(room.id)}" class="underline" style="color: #06c;">room</a>'
 
                             # websocker notification
                             create_notification(
@@ -546,7 +545,10 @@ def room_create(request):
             description = request.POST.get("description")
 
             city = request.POST.get("city")
-            price = request.POST.get("price")
+            
+            price = request.POST.get("price").replace(",", "")
+            price = int(price)
+            
             address = request.POST.get("address")
 
             guests = request.POST.get("guests")
@@ -661,7 +663,7 @@ def room_edit(request, username, id):
         if request.method == "POST":
             room.title = request.POST.get("title", room.title)
             room.description = request.POST.get("description", room.description)
-            room.price = request.POST.get("price", room.price)
+            room.price = int((request.POST.get("price", room.price).replace(",", "")))
 
             room.city = request.POST.get("city", room.city)
             room.room_type = request.POST.get("room_type", room.room_type)
@@ -676,19 +678,12 @@ def room_edit(request, username, id):
                 img = Image.objects.create(file=file)
                 room.images.add(img)
 
-            edit_amenities = [
-                am
-                for am in (request.POST.get("amenities")).split(",")
-                if am.strip() != ""
+            # Clear existing amenities and add new ones
+            room.amenities.clear()
+            new_amenities = [
+                am.strip() for am in request.POST.get("amenities").split(",") if am.strip()
             ]
-            edit_house_rules = [
-                hr
-                for hr in (request.POST.get("house_rules")).split(",")
-                if hr.strip() != ""
-            ]
-
-            for am in edit_amenities:
-                # Check if amenity already exists
+            for am in new_amenities:
                 existing_amenity = Amenity.objects.filter(name=string.capwords(am)).first()
                 if existing_amenity:
                     room.amenities.add(existing_amenity)
@@ -696,8 +691,12 @@ def room_edit(request, username, id):
                     new_amenity = Amenity.objects.create(name=string.capwords(am))
                     room.amenities.add(new_amenity)
 
-            for hr in edit_house_rules:
-                # Check if amenity already exists
+            # Clear existing house rules and add new ones
+            room.house_rules.clear()
+            new_house_rules = [
+                hr.strip() for hr in request.POST.get("house_rules").split(",") if hr.strip()
+            ]
+            for hr in new_house_rules:
                 existing_houserule = HouseRule.objects.filter(rule=string.capwords(hr)).first()
                 if existing_houserule:
                     room.house_rules.add(existing_houserule)
@@ -840,3 +839,5 @@ def set_language(request):
         return response
     else:
         return redirect('/')
+        
+        
