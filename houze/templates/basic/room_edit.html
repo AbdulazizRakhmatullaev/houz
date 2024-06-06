@@ -111,7 +111,7 @@
                 <div class="lbld">
                     <div class="lbltxt">{% trans 'City' %}</div>
                     <select class="room-cy" id="city" name="city">
-                        <option value="{{ current_city }}">{{ current_city }}</option>
+                        <option value="{{ cur_city }}">{{ cur_city }}</option>
                         {% for code, name in regions %}
                         <option value="{{ code }}">{{ name }}</option>
                         {% endfor %}

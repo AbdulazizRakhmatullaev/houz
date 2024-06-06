@@ -237,26 +237,31 @@ def book_room(request, room_id):
                                 request,
                                 "Room's host has been notified, you will get host's response soon",
                             )
-                            return redirect("home")
+                            return redirect("room_detail_url", room_id)
                         else:
                             messages.info(
                                 request,
                                 "Please have some respect and patience, if host is not responding to notification, give him a call",
                             )
+                            return redirect("room_detail_url", room_id)
                     else:
                         messages.info(
                             request,
                             "You already booked the same room with the same dates",
                         )
+                        return redirect("room_detail_url", room_id)
                 else:
                     messages.info(request, "Chosen dates are incorrect")
+                    return redirect("room_detail_url", room_id)
             else:
                 # If dates are not within the available range, display error
                 messages.info(
                     request, "Selected dates are not within the available range."
                 )
+                return redirect("room_detail_url", room_id)
         else:
             messages.info(request, "You can't book your own room")
+            return redirect("room_detail_url", room_id)
     return render(request, "basic/room.html", {"room": room})
 
 
@@ -639,24 +644,28 @@ def room_delete(request, id):
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
 
-    current_city = (room.city).title
-    cur_rmtype = (room.room_type).lower
+    cur_city = room.city.capitalize()
+    cur_rmtype = room.room_type.capitalize()
 
     # Remove the current city and room type from the list of options
-    regions = [(code, name) for code, name in Region_Choices if code != room.city]
-    room_types = [(code, name) for code, name in RoomTypes if code != room.room_type]
+    regions = [
+        (code, name) for code, name in Region_Choices if code.lower() != cur_city.lower()
+    ]
+    room_types = [
+        (code, name) for code, name in RoomTypes if code.lower() != cur_rmtype.lower()
+    ]
 
     amenities = room.amenities.all()
     house_rules = room.house_rules.all()
 
     context = {
         "room": room,
-        "current_city": current_city,
+        "cur_city": cur_city,
+        "cur_rmtype": cur_rmtype,
         "regions": regions,
+        "room_types": room_types,
         "amenities": amenities,
         "house_rules": house_rules,
-        "cur_rmtype": cur_rmtype,
-        "room_types": room_types,
     }
 
     if room.host.username == username:
@@ -841,5 +850,3 @@ def set_language(request):
         return response
     else:
         return redirect('/')
-        
-        

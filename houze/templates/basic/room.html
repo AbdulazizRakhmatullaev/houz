@@ -246,13 +246,15 @@
     </div>
     <div class="sticky-right-col">
         <div class="price-info">
-            <span class="room-price">UZS {{room.get_price}} night</span>
+            UZS
+            <span id="total-price" class="room-price">{{room.tot_price}}</span>
         </div>
+        <div class="actualprice">UZS <span id="actual-price">{{room.get_price}}</span>/night</div>
         <div class="ahr"></div>
         <div class="pricing-col">
-            <div class="left-text">UZS <span id="actual-price">{{room.get_price}}</span> x <span
-                    id="num-nights">{{room.num_o_days}}</span> nights</div>
-            <div class="right-text">UZS <span id="total-price">{{room.count_nights_price}}</span></div>
+            <div class="left-text">UZS {{room.get_price}} x <span id="num-nights">{{room.num_o_days}}</span> nights
+            </div>
+            <div class="right-text">UZS <span id="bynight-price">{{room.count_nights_price}}</span></div>
         </div>
         <div class="pricing-col" style="margin-top: 13px;">
             <div class="left-text">Houze fee</div>
@@ -309,10 +311,12 @@
 
         if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
             const numNights = dateDiffInDays(checkInDate, checkOutDate);
-            const totalPrice = actualPrice * numNights;
-            const fee = 0.33 * totalPrice;
+            const bynightPrice = actualPrice * numNights;
+            const fee = 0.33 * bynightPrice;
+            const totalPrice = fee + bynightPrice;
 
             const numNightsElement = document.getElementById('num-nights');
+            const bynightElement = document.getElementById('bynight-price');
             const totalPriceElement = document.getElementById('total-price');
             const feeElement = document.getElementById('houze-fee');
 
@@ -329,8 +333,9 @@
                 window.requestAnimationFrame(step);
             }
 
-            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 700);
+            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 800);
             animateValue(totalPriceElement, parseFloat(totalPriceElement.textContent.replace(/,/g, '')), totalPrice, 500);
+            animateValue(bynightElement, parseFloat(bynightElement.textContent.replace(/,/g, '')), bynightPrice, 500);
             animateValue(feeElement, parseFloat(feeElement.textContent.replace(/,/g, '')), fee, 500);
         }
     }

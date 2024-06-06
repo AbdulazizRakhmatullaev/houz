@@ -732,16 +732,11 @@ b {
   height: 400px;
 }
 
-/* .price-info {
-  margin: 0 0 23px;
-} */
-
-.room-price {
-  font-size: 26px;
-  line-height: 1.14286;
+.price-info {
+  font-size: 32px;
   font-weight: 600;
-  letter-spacing: 0.007em;
-  margin-bottom: 14px;
+  letter-spacing: .004em;
+  line-height: 1.125;
 }
 
 .check-inNout {
@@ -879,13 +874,6 @@ b {
 
 .carousel-control-next {
   right: 20px;
-}
-
-.pricing-col {
-  font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .modal {
@@ -2281,7 +2269,7 @@ select {
 }
 
 .ahr {
-  margin: 17px 0;
+  margin: 30px 0;
   height: 1px;
   width: 100%;
   background: #d2d2d7;
@@ -2292,10 +2280,35 @@ select {
   font-weight: 600;
 }
 
+.pricing-col {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  letter-spacing: -.016em;
+  line-height: 1.4285914286;
+}
+
+.left-text {
+  font-weight: 600;
+}
+
 .right-text {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .price {
   transition: all 0.5s ease-in-out;
+}
+
+.actualprice {
+  margin-top: 5px;
+  font-size: 13px;
+  letter-spacing: -.016em;
+  line-height: 1.4285914286;
+}
+
+input[type="date"] {
+  outline: none;
 }
