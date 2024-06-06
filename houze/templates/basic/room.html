@@ -227,13 +227,20 @@
 </div>
 <form action="{% url 'book_room' room.id %}" method="post" class="right-info-column">
     {% csrf_token %}
-    <div class="check-io">
+    <div class="htxt">How many people are there</div>
+    <div class="check-io" style="margin-top: 13px;">
+        <span class="small-title">Guests</span>
+        <input type="guests" name="guests" value='1' min='1' max=''>
+    </div>
+    <div class="ahr"></div>
+    <div class="htxt">When you want to stay</div>
+    <div class="check-io" style="margin-top: 13px;">
         <span class="small-title">Check-in</span>
         <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
             max='{{room.check_out|date:"Y-m-d"}}'>
     </div>
     <div class="check-io">
-        <span class="small-title">Checkout</span>
+        <span class="small-title">Check-out</span>
         <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
             max='{{room.check_out|date:"Y-m-d"}}'>
     </div>
@@ -241,20 +248,28 @@
         <div class="price-info">
             <span class="room-price">UZS {{room.get_price}} night</span>
         </div>
-        <div class="payment">
-            <button class="btn" id="message-btn">Reserve</button>
-        </div>
+        <div class="ahr"></div>
         <div class="pricing-col">
-            <div class="left-text">UZS <span id="nightly-price">{{room.get_price}}</span> x <span
+            <div class="left-text">UZS <span id="actual-price">{{room.get_price}}</span> x <span
                     id="num-nights">{{room.num_o_days}}</span> nights</div>
             <div class="right-text">UZS <span id="total-price">{{room.count_nights_price}}</span></div>
         </div>
-        <div class="pricing-col">
+        <div class="pricing-col" style="margin-top: 13px;">
             <div class="left-text">Houze fee</div>
             <div class="right-text">UZS <span id="houze-fee">{{room.fee}}</span></div>
         </div>
+        <div class="payment">
+            <button class="btn" id="message-btn">Reserve</button>
+        </div>
     </div>
 </form>
+</div>
+
+<div class="roomrecs">
+    <div class="botmaint">There's always more to explore.</div>
+    <div id="room-posts">
+        {% include 'temps/room_list.html' %}
+    </div>
 </div>
 
 {% endblock %}
@@ -263,7 +278,6 @@
 {% endblock %}
 
 {% block scripts %}
-
 <script>
     // Helper function to calculate date difference in days
     function dateDiffInDays(date1, date2) {
@@ -271,22 +285,68 @@
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
     }
-
-    // Update prices based on date input changes
+    // Update prices and min/max attributes based on date input changes with animation
     function updatePrices() {
-        const checkInDate = new Date(document.querySelector('input[name="check_in"]').value);
-        const checkOutDate = new Date(document.querySelector('input[name="check_out"]').value);
-        const nightlyPrice = parseFloat(document.getElementById('nightly-price').textContent.replace(/,/g, ''));
+        const checkInInput = document.querySelector('input[name="check_in"]');
+        const checkOutInput = document.querySelector('input[name="check_out"]');
+        const checkInDate = new Date(checkInInput.value);
+        const checkOutDate = new Date(checkOutInput.value);
+        const actualPrice = parseFloat(document.getElementById('actual-price').textContent.replace(/,/g, ''));
+
+        if (checkInDate && !isNaN(checkInDate.getTime())) {
+            // Set check-out minimum date to the day after check-in
+            const nextDay = new Date(checkInDate);
+            nextDay.setDate(nextDay.getDate() + 1);
+            checkOutInput.min = formatDate(nextDay);
+        }
+
+        if (checkOutDate && !isNaN(checkOutDate.getTime())) {
+            // Set check-in maximum date to the day before check-out
+            const prevDay = new Date(checkOutDate);
+            prevDay.setDate(prevDay.getDate() - 1);
+            checkInInput.max = formatDate(prevDay);
+        }
 
         if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
             const numNights = dateDiffInDays(checkInDate, checkOutDate);
-            const totalPrice = nightlyPrice * numNights;
+            const totalPrice = actualPrice * numNights;
             const fee = 0.33 * totalPrice;
 
-            document.getElementById('num-nights').textContent = numNights;
-            document.getElementById('total-price').textContent = totalPrice.toLocaleString();
-            document.getElementById('houze-fee').textContent = fee.toLocaleString();
+            const numNightsElement = document.getElementById('num-nights');
+            const totalPriceElement = document.getElementById('total-price');
+            const feeElement = document.getElementById('houze-fee');
+
+            function animateValue(element, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    element.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 700);
+            animateValue(totalPriceElement, parseFloat(totalPriceElement.textContent.replace(/,/g, '')), totalPrice, 500);
+            animateValue(feeElement, parseFloat(feeElement.textContent.replace(/,/g, '')), fee, 500);
         }
+    }
+
+    // Helper function to format date as "YYYY-MM-DD"
+    function formatDate(date) {
+        const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        let day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        return `${year}-${month}-${day}`;
     }
 
     // Add event listeners to date inputs
@@ -296,7 +356,63 @@
     // Initial call to update prices on page load
     updatePrices();
 </script>
+<!-- <script>
+    // Helper function to calculate date difference in days
+    function dateDiffInDays(date1, date2) {
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    }
 
+    // Update prices with animation
+    function updatePrices() {
+        const checkInDate = new Date(document.querySelector('input[name="check_in"]').value);
+        const checkOutDate = new Date(document.querySelector('input[name="check_out"]').value);
+        const actualPrice = parseFloat(document.getElementById('actual-price').textContent.replace(/,/g, ''));
+
+        if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+            const numNights = dateDiffInDays(checkInDate, checkOutDate);
+            const totalPrice = actualPrice * numNights;
+            const fee = 0.33 * totalPrice;
+
+            animateValue(document.getElementById('num-nights'), numNights);
+            animateValue(document.getElementById('total-price'), totalPrice);
+            animateValue(document.getElementById('houze-fee'), Math.round(fee)); // Round the fee
+        }
+    }
+
+    // // Function to animate the value change
+    // function animateValue(element, newValue) {
+    //     const start = parseFloat(element.textContent.replace(/,/g, ''));
+    //     const end = newValue;
+    //     const duration = 500; // duration in ms
+    //     const range = end - start;
+    //     const increment = range / (duration / 10);
+    //     let current = start;
+    //     const stepTime = 10; // step time in ms
+
+    //     function step() {
+    //         if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+    //             element.textContent = end.toLocaleString(); // Ensure final value is set correctly
+    //         } else {
+    //             current += increment;
+    //             element.textContent = Math.round(current).toLocaleString(); // Round and update text content
+    //             // setTimeout(step, stepTime);
+    //         }
+    //     }
+
+    //     step(); // Start the animation
+    // }
+
+    // Add event listeners to date inputs
+    document.querySelector('input[name="check_in"]').addEventListener('change', updatePrices);
+    document.querySelector('input[name="check_out"]').addEventListener('change', updatePrices);
+
+    // Initial call to update prices on page load
+    document.addEventListener('DOMContentLoaded', (event) => {
+        updatePrices();
+    });
+</script> -->
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
 

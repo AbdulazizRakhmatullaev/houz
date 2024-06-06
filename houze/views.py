@@ -730,6 +730,7 @@ def img_delete(request, img_id):
 
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
+    rooms = Room.objects.exclude(id=room.id).all()
     reservations = Reservation.objects.filter(room=room)
     reviews = room.rating_set.order_by("-date")
     num_o_days = (room.check_out - room.check_in).days
@@ -738,6 +739,7 @@ def room_detail(request, room_id):
         "basic/room.html",
         {
             "room": room,
+            "rooms": rooms,
             "reviews": reviews,
             "num_o_days": num_o_days,
         },

@@ -265,8 +265,9 @@ class Room(models.Model):
     def fee(self):
         days = (self.check_out - self.check_in).days
         total_price = days * self.price
-        fee = 0.33 * total_price
-        return "{:,.0f}".format(fee)
+        fee = .33 * total_price
+        fee = int(fee)
+        return "{:,}".format(fee)
 
     def get_absolute_url(self):
         return reverse("room_detail_url", kwargs={"slug": self.slug, "id": self.id})

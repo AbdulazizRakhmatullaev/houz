@@ -142,7 +142,7 @@
             <div class="lbld">
                 <div class="lbltxt">{% trans 'House rules' %}</div>
                 <textarea class="txtar" name="house_rules" id="house_rules"
-                    placeholder="{% trans 'e.g. No parties or events, No smoking' %}">{% for house_rule in house_rules %} {{house_rule.rule}}{% if not forloop.last %},{% endif %}{% endfor %}</textarea>
+                    placeholder="{% trans 'e.g. No parties or events, No smoking' %}">{% for house_rule in house_rules %}{{house_rule.rule}}{% if not forloop.last %}, {% endif %}{% endfor %}</textarea>
                 <div class="inpInfo">{% trans 'Enter a comma after each rule' %}</div>
                 <div class="errTxt"></div>
             </div>
