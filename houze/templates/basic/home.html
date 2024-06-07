@@ -4,25 +4,10 @@
 
 {% block content %}
 
-<!-- <select id="filter" onchange="updateRoomList()">
-    <option value="city" {% if flt == 'city' %}selected{% endif %}>Filter by City</option>
-    <option value="rating" {% if flt == 'rating' %}selected{% endif %}>Filter by Rating</option>
-</select> -->
 
-<!-- <div id="filter-options">
-    {% if flt == 'city' %}
-        <select id="city-filter">
-            <option value="">All Cities</option>
-            <option value="Tashkent">Tashkent</option>
-        </select>
-    {% elif flt == 'rating' %}
-        <select id="rating-order">
-            <option value="">Order by Rating</option>
-            <option value="highest">Highest to Lowest</option>
-            <option value="lowest">Lowest to Highest</option>
-        </select>
-    {% endif %}
-</div> -->
+<div>
+
+</div>
 
 <div id="room-posts">
     {% include 'temps/room_list.html' %}
@@ -35,7 +20,7 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- <script>
+<script>
     function updateRoomList() {
         var filter = document.getElementById('filter').value;
         var filterValue;
@@ -59,5 +44,5 @@
             }
         });
     }
-</script> -->
+</script>
 {% endblock %}

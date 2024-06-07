@@ -490,4 +490,57 @@
     document.getElementById("check_out").value = formattedCheckoutDate;
     document.getElementById("check_out").min = formattedCheckoutDate;
 </script>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+
+    var initialLatitude = parseFloat(document.getElementById('latitude').value);
+    var initialLongitude = parseFloat(document.getElementById('longitude').value);
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
+        zoom: 13
+    });
+
+    // Add zoom and unzoom controls
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // Add geolocate control to the map2
+    var geolocate = new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
+    });
+
+    map.addControl(geolocate);
+
+    // Create marker
+    var marker = new mapboxgl.Marker({
+        draggable: true
+    }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
+
+    // Update marker's position when the user's location changes
+    geolocate.on('geolocate', function (event) {
+        var lngLat = [event.coords.longitude, event.coords.latitude];
+        marker.setLngLat(lngLat);
+        document.getElementById('latitude').value = lngLat[1];
+        document.getElementById('longitude').value = lngLat[0];
+    });
+
+    // Update input fields when marker is dragged
+    marker.on('dragend', function () {
+        var lngLat = marker.getLngLat();
+        document.getElementById('latitude').value = lngLat.lat;
+        document.getElementById('longitude').value = lngLat.lng;
+    });
+
+    // Update marker's position when the user double-clicks on the map2
+    map.on('dblclick', function (event) {
+        marker.setLngLat(event.lngLat);
+        document.getElementById('latitude').value = event.lngLat.lat;
+        document.getElementById('longitude').value = event.lngLat.lng;
+    });
+</script>
 {% endblock %}
