@@ -2275,6 +2275,13 @@ select {
   background: #d2d2d7;
 }
 
+.ahr15 {
+  margin: 15px 0;
+  height: 1px;
+  width: 100%;
+  background: #d2d2d7;
+}
+
 .htxt {
   font-size: 17px;
   font-weight: 600;
@@ -2311,4 +2318,22 @@ select {
 
 input[type="date"] {
   outline: none;
+}
+
+.dayfls {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.dfl {
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding: 8px 13px;
+  background: #f5f5f7;
+  border-radius: 10px;
+}
+
+.dfl:hover {
+  background: #f0f0f0;
 }

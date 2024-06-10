@@ -232,9 +232,25 @@
         <span class="small-title">Guests</span>
         <input type="guests" name="guests" value='1' min='1' max=''>
     </div>
-    <div class="ahr"></div>
+    <div class="ahr15"></div>
     <div class="htxt">When you want to stay</div>
-    <div class="check-io" style="margin-top: 13px;">
+    {% if room.num_o_days > 3 %}
+    <div class="dayfls" style="margin-top: 13px;">
+        {% if room.num_o_days >= 3 %}
+        <div class="dfl" data-days="3">3 nights</div>
+        {% endif %}
+        {% if room.num_o_days >= 7 %}
+        <div class="dfl" data-days="7">7 nights</div>
+        {% endif %}
+        {% if room.num_o_days >= 14 %}
+        <div class="dfl" data-days="14">14 nights</div>
+        {% endif %}
+        {% if room.num_o_days >= 30 %}
+        <div class="dfl" data-days="30">30 nights</div>
+        {% endif %}
+    {% endif %}
+    </div>
+    <div class="check-io" >
         <span class="small-title">Check-in</span>
         <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
             max='{{room.check_out|date:"Y-m-d"}}'>
@@ -287,6 +303,21 @@
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
     }
+
+    // Helper function to format date as "YYYY-MM-DD"
+    function formatDate(date) {
+        const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        let day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        return `${year}-${month}-${day}`;
+    }
+
     // Update prices and min/max attributes based on date input changes with animation
     function updatePrices() {
         const checkInInput = document.querySelector('input[name="check_in"]');
@@ -340,19 +371,29 @@
         }
     }
 
-    // Helper function to format date as "YYYY-MM-DD"
-    function formatDate(date) {
-        const year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        if (month < 10) {
-            month = '0' + month;
-        }
-        let day = date.getDate();
-        if (day < 10) {
-            day = '0' + day;
-        }
-        return `${year}-${month}-${day}`;
+    // Function to handle day filter click
+    function handleDayFilterClick(event) {
+        const days = parseInt(event.target.getAttribute('data-days'));
+        const checkInInput = document.querySelector('input[name="check_in"]');
+        const checkOutInput = document.querySelector('input[name="check_out"]');
+        const checkInDate = new Date(checkInInput.value);
+
+        // Calculate the new check-out date based on the selected day filter
+        const checkOutDate = new Date(checkInDate);
+        checkOutDate.setDate(checkOutDate.getDate() + days);
+
+        // Set the new dates for the check-in and check-out inputs
+        checkInInput.value = formatDate(checkInDate);
+        checkOutInput.value = formatDate(checkOutDate);
+
+        // Call updatePrices to update the prices accordingly
+        updatePrices();
     }
+
+    // Add event listeners to the day filter elements
+    document.querySelectorAll('.dfl').forEach(function(element) {
+        element.addEventListener('click', handleDayFilterClick);
+    });
 
     // Add event listeners to date inputs
     document.querySelector('input[name="check_in"]').addEventListener('change', updatePrices);
@@ -361,63 +402,6 @@
     // Initial call to update prices on page load
     updatePrices();
 </script>
-<!-- <script>
-    // Helper function to calculate date difference in days
-    function dateDiffInDays(date1, date2) {
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays;
-    }
-
-    // Update prices with animation
-    function updatePrices() {
-        const checkInDate = new Date(document.querySelector('input[name="check_in"]').value);
-        const checkOutDate = new Date(document.querySelector('input[name="check_out"]').value);
-        const actualPrice = parseFloat(document.getElementById('actual-price').textContent.replace(/,/g, ''));
-
-        if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
-            const numNights = dateDiffInDays(checkInDate, checkOutDate);
-            const totalPrice = actualPrice * numNights;
-            const fee = 0.33 * totalPrice;
-
-            animateValue(document.getElementById('num-nights'), numNights);
-            animateValue(document.getElementById('total-price'), totalPrice);
-            animateValue(document.getElementById('houze-fee'), Math.round(fee)); // Round the fee
-        }
-    }
-
-    // // Function to animate the value change
-    // function animateValue(element, newValue) {
-    //     const start = parseFloat(element.textContent.replace(/,/g, ''));
-    //     const end = newValue;
-    //     const duration = 500; // duration in ms
-    //     const range = end - start;
-    //     const increment = range / (duration / 10);
-    //     let current = start;
-    //     const stepTime = 10; // step time in ms
-
-    //     function step() {
-    //         if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-    //             element.textContent = end.toLocaleString(); // Ensure final value is set correctly
-    //         } else {
-    //             current += increment;
-    //             element.textContent = Math.round(current).toLocaleString(); // Round and update text content
-    //             // setTimeout(step, stepTime);
-    //         }
-    //     }
-
-    //     step(); // Start the animation
-    // }
-
-    // Add event listeners to date inputs
-    document.querySelector('input[name="check_in"]').addEventListener('change', updatePrices);
-    document.querySelector('input[name="check_out"]').addEventListener('change', updatePrices);
-
-    // Initial call to update prices on page load
-    document.addEventListener('DOMContentLoaded', (event) => {
-        updatePrices();
-    });
-</script> -->
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
 

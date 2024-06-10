@@ -172,6 +172,40 @@
 
 {% block scripts %}
 <script>
+    const checkInInput = document.querySelector('input[name="check_in"]');
+    const checkOutInput = document.querySelector('input[name="check_out"]');
+    const checkInDate = new Date(checkInInput.value);
+    const checkOutDate = new Date(checkOutInput.value);
+    
+    if (checkInDate && !isNaN(checkInDate.getTime())) {
+        // Set check-out minimum date to the day after check-in
+        const nextDay = new Date(checkInDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        checkOutInput.min = formatDate(nextDay);
+    }
+    
+    if (checkOutDate && !isNaN(checkOutDate.getTime())) {
+        // Set check-in maximum date to the day before check-out
+        const prevDay = new Date(checkOutDate);
+        prevDay.setDate(prevDay.getDate() - 1);
+        checkInInput.max = formatDate(prevDay);
+    }
+    
+    function formatDate(date) {
+        const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        let day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        return `${year}-${month}-${day}`;
+    }
+</script>
+
+<script>
     (function ($, undefined) {
         "use strict";
 
@@ -348,8 +382,8 @@
         }
         var words = title.value.split(' ').filter(word => word.length > 0);
 
-        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.some(word => word.length < 2)) {
-            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be at least 4 words" %}';
+        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 2)) {
+            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be between 4 and 6 words, and each word should be at least 2 characters long" %}';
             return;
         }
 
