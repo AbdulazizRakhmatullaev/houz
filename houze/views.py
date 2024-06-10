@@ -734,7 +734,7 @@ def img_delete(request, img_id):
         img.delete()
         return JsonResponse({'success': True})
     else:
-        return JsonResponse({'error': 'Invalid request method'}, status=400)
+        return redirect("user_detail", request.user)
 
 
 def room_detail(request, room_id):

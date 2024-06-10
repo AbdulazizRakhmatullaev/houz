@@ -5,6 +5,21 @@
 
 {% block content %}
 <div class="brief-name">Edit your room</div>
+
+<div id="edimage-preview-container">
+{% for img in room.all_photos %}
+<form action="{% url 'img_delete' img.id %}" method="POST">
+    {% csrf_token %}
+    <div class="edimage-container ui-sortable-handle">
+        <img class="edpreview-image" src="{{img.file.url}}">
+        <div class="image-delete-form">
+            <button type="submit" class="objdel" style="position: absolute; right: 7px; top: 7px;">&times;</button>
+        </div>
+    </div>
+</form>
+{% endfor %}
+</div>
+
 <form id="room-edit-form" action="{% url 'room_edit' request.user.username room.id %}" method="POST" class="cecol"
     enctype="multipart/form-data" onsubmit="submitForm(event)">
     {% csrf_token %}
@@ -64,16 +79,7 @@
             <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
                 onchange="addImage(this)" multiple style="display: none;">
         </div>
-        <div id="image-preview-container" class="h85">
-            {% for img in room.all_photos %}
-            <div class="image-container ui-sortable-handle">
-                <img class="preview-image" src="{{img.file.url}}" data-img-id="{{ img.pk }}">
-                <div class="image-delete-form">
-                    <button class="cancelimg">&times;</button>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+        <div id="image-preview-container" class="h85"></div>
         <div id="img-preview-info" class="inpInfo"></div>
     </div>
     <div class="rmright">
@@ -176,21 +182,21 @@
     const checkOutInput = document.querySelector('input[name="check_out"]');
     const checkInDate = new Date(checkInInput.value);
     const checkOutDate = new Date(checkOutInput.value);
-    
+
     if (checkInDate && !isNaN(checkInDate.getTime())) {
         // Set check-out minimum date to the day after check-in
         const nextDay = new Date(checkInDate);
         nextDay.setDate(nextDay.getDate() + 1);
         checkOutInput.min = formatDate(nextDay);
     }
-    
+
     if (checkOutDate && !isNaN(checkOutDate.getTime())) {
         // Set check-in maximum date to the day before check-out
         const prevDay = new Date(checkOutDate);
         prevDay.setDate(prevDay.getDate() - 1);
         checkInInput.max = formatDate(prevDay);
     }
-    
+
     function formatDate(date) {
         const year = date.getFullYear();
         let month = date.getMonth() + 1;

@@ -1903,15 +1903,15 @@ select {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   border: none;
   border-radius: 50%;
   padding: 4px;
   line-height: 1;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
-  font-size: 18px;
+  font-size: 21px;
 }
 
 .preview-image {
@@ -2336,4 +2336,31 @@ input[type="date"] {
 
 .dfl:hover {
   background: #f0f0f0;
+}
+
+#edimage-preview-container {
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  overflow-x: auto;
+  gap: 7px;
+}
+
+.edimage-container {
+  position: relative;
+  min-width: 190px;
+  max-width: 190px;
+  height: 110px;
+}
+.edpreview-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  vertical-align: middle;
+  object-fit: cover;
+  border: 1px solid #e8e8ed;
 }
