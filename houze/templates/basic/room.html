@@ -225,15 +225,14 @@
     <div class="htxt">How many guests are there</div>
     <button type="button" class="collapsible">
         <span class="small-title">Guests</span>
-        <div class="hmadults">1</div>
+        <div class="hmadults" id="g_amt">1</div>
     </button>
     <div class="colpscol">
         <div class="gstsform">
             <span class="small-title">Adults</span>
             <div class="gstfl">
                 <span id="guestM" class="minus">-</span>
-                <input type="text" min="1" id="guests" name="guests" min="1" max="99"
-                    value="{{room.guests}}" />
+                <input type="text" id="guests" min="0" max="99" value="1" />
                 <span id="guestP" class="plus">+</span>
             </div>
         </div>
@@ -241,8 +240,8 @@
             <span class="small-title">Children</span>
             <div class="gstfl">
                 <span id="childM" class="minus">-</span>
-                <input type="text" min="1" id="children" name="guests" min="1" max="99"
-                    value="{{room.guests}}" />
+                <input type="text" id="children" min="0" max="99"
+                    value="0" />
                 <span id="childP" class="plus">+</span>
             </div>
         </div>
@@ -250,8 +249,7 @@
             <span class="small-title">Infants</span>
             <div class="gstfl">
                 <span id="infantM" class="minus">-</span>
-                <input type="text" min="1" id="infants" name="guests" min="1" max="99"
-                    value="{{room.guests}}" />
+                <input type="text" id="infants" min="0" max="99" value="0" />
                 <span id="infantP" class="plus">+</span>
             </div>
         </div>
@@ -259,8 +257,7 @@
             <span class="small-title">Pets</span>
             <div class="gstfl">
                 <span id="petM" class="minus">-</span>
-                <input type="text" min="1" id="pets" name="guests" min="1" max="99"
-                    value="{{room.guests}}" />
+                <input type="text" id="pets" min="0" max="99" value="0" />
                 <span id="petP" class="plus">+</span>
             </div>
         </div>
@@ -348,73 +345,82 @@
 
 <script>
     $(document).ready(function () {
-        $('#guestP').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) + 1;
+        const maxGuests = {{room.guests}}; // Define the maximum number of guests
+
+        function updateTotalGuests() {
+            const adults = parseInt($('#guests').val());
+            const children = parseInt($('#children').val());
+            const infants = parseInt($('#infants').val());
+            const pets = parseInt($('#pets').val());
+            const totalGuests = adults + children + infants + pets;
+
+            $('#g_amt').text(totalGuests);
+
+            // Disable the plus buttons if total guests reach the max limit
+            if (totalGuests >= maxGuests) {
+                $('.plus').addClass('disabled');
+            } else {
+                $('.plus').removeClass('disabled');
+            }
+            
+            // Enable or disable the plus/minus buttons based on the count
+            updateButtonState();
+        }
+
+        function updateInputs($input, increment) {
+            let count = parseInt($input.val()) + increment;
             count = count > 99 ? 99 : count;
+            count = count < 0 ? 0 : count;
+
+            const totalGuests = parseInt($('#g_amt').text());
+
+            if (totalGuests + increment > maxGuests && increment > 0) {
+                return;
+            }
+
             $input.val(count);
             $input.change();
-            return false;
-        });
-        $('#guestM').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) - 1;
-            count = count < 1 ? 1 : count;
-            $input.val(count);
-            $input.change();
+
+            updateTotalGuests();
+        }
+
+        function updateButtonState() {
+            $('.gstfl').each(function() {
+                const $input = $(this).find('input');
+                const count = parseInt($input.val());
+                const totalGuests = parseInt($('#g_amt').text());
+
+                if (count <= 0) {
+                    $(this).find('.minus').addClass('disabled');
+                } else {
+                    $(this).find('.minus').removeClass('disabled');
+                }
+
+                if (totalGuests >= maxGuests) {
+                    $(this).find('.plus').addClass('disabled');
+                } else {
+                    $(this).find('.plus').removeClass('disabled');
+                }
+            });
+        }
+
+        $('.plus').click(function () {
+            if ($(this).hasClass('disabled')) return false;
+
+            const $input = $(this).parent().find('input');
+            updateInputs($input, 1);
             return false;
         });
 
-        $('#childP').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) + 1;
-            count = count > 99 ? 99 : count;
-            $input.val(count);
-            $input.change();
-            return false;
-        });
-        $('#childM').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) - 1;
-            count = count < 1 ? 1 : count;
-            $input.val(count);
-            $input.change();
+        $('.minus').click(function () {
+            if ($(this).hasClass('disabled')) return false;
+
+            const $input = $(this).parent().find('input');
+            updateInputs($input, -1);
             return false;
         });
 
-        $('#infantP').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) + 1;
-            count = count > 99 ? 99 : count;
-            $input.val(count);
-            $input.change();
-            return false;
-        });
-        $('#infantM').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) - 1;
-            count = count < 1 ? 1 : count;
-            $input.val(count);
-            $input.change();
-            return false;
-        });
-
-        $('#petP').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) + 1;
-            count = count > 99 ? 99 : count;
-            $input.val(count);
-            $input.change();
-            return false;
-        });
-        $('#petM').click(function () {
-            var $input = $(this).parent().find('input');
-            var count = parseInt($input.val()) - 1;
-            count = count < 1 ? 1 : count;
-            $input.val(count);
-            $input.change();
-            return false;
-        });
+        updateTotalGuests();
     });
 </script>
 
@@ -551,10 +557,14 @@
         var initialLatitude = parseFloat(document.getElementById('latitude').value);
         var initialLongitude = parseFloat(document.getElementById('longitude').value);
 
-        // Initialize the map
+        // Define custom styles for the map
+        
+
+        // Initialize the map with custom styles
         var room_map = new google.maps.Map(document.getElementById('room_map'), {
             center: { lat: initialLatitude, lng: initialLongitude },
             zoom: 13
+            // styles: mapStyles
         });
 
         // Create marker

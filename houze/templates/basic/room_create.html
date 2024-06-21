@@ -8,9 +8,6 @@
 <form id="room-create-form" action="{% url 'room_create' %}" method="POST" class="cecol" enctype="multipart/form-data"
     onsubmit="submitForm(event)">
     {% csrf_token %}
-    <input type="hidden" id="latitude" name="latitude" value="41.3103">
-    <input type="hidden" id="longitude" name="longitude" value="69.2775">
-
     <div class="rmleft">
         <div class="rcrflex">
             <div class="rcrflexcol">
@@ -53,6 +50,8 @@
             </div>
             <div class="lbld" style="margin-left: 10px;">
                 <div class="lbltxt">{% trans "Map" %}</div>
+                <input type="hidden" id="latitude" name="latitude" value="41.3103">
+                <input type="hidden" id="longitude" name="longitude" value="69.2775">
                 <div id="map" class="mapcr"></div>
             </div>
         </div>
@@ -543,6 +542,8 @@
           center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
           zoom: 13
       });
+      
+      map.doubleClickZoom.disable();
     
       // Add zoom and unzoom controls
       map.addControl(new mapboxgl.NavigationControl());
@@ -579,9 +580,9 @@
     
       // Update marker's position when the user double-clicks on the map2
       map.on('dblclick', function (event) {
-          marker.setLngLat(event.lngLat);
-          document.getElementById('latitude').value = event.lngLat.lat;
-          document.getElementById('longitude').value = event.lngLat.lng;
+        marker.setLngLat(event.lngLat);
+        document.getElementById('latitude').value = event.lngLat.lat;
+        document.getElementById('longitude').value = event.lngLat.lng;
       });
     }
     

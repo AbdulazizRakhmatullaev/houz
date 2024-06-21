@@ -2150,6 +2150,12 @@ select {
   background: #e6e6e8;
 }
 
+.minus.disabled, .plus.disabled{
+  cursor: not-allowed;
+  opacity: .4;
+}
+
+
 .revsta-t {
   font-size: 30px;
   font-weight: 600;
@@ -2438,10 +2444,6 @@ input[type='date']::-webkit-calendar-picker-indicator {
   vertical-align: middle;
 }
 
-.mapboxgl-map {
-  font-size: 14px;
-}
-
 #iStatus {
   display: none;
   width: 100%;
@@ -2472,4 +2474,43 @@ input[type='date']::-webkit-calendar-picker-indicator {
   display: grid;
   place-items: center;
   position: relative;
+}
+
+#goTop {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background: #d1d1d1;
+  color: white;
+  cursor: pointer;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  opacity: 0;
+  display: grid;
+  place-items: center;
+  transition: .4s;
+  visibility: hidden;
+}
+
+#goTop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+#goTop:hover {
+  background: #b0b0b0;
+}
+
+#goTop svg {
+  height: 30px;
+  width: 30px;
+  vertical-align: middle;
+}
+
+.gm-style button, .gm-style .gmnoprint, .gm-style .gm-svpc, .gm-style .gm-svpc .gm-fullscreen-control, .gm-style .gm-style-iw {
+    border-radius: 8px !important;
 }

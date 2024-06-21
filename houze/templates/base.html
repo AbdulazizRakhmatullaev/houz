@@ -16,9 +16,15 @@
     <link rel="stylesheet" href="{% static 'base.css' %}" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
+
 </head>
 
 <body>
+    <button onclick="goTopFunction()" id="goTop">
+        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m13 19c0 .5523-.4477 1-1 1s-1-.4477-1-1v-11.58579l-4.29289 4.29289c-.39053.3905-1.02369.3905-1.41422 0-.39052-.3905-.39052-1.0237 0-1.4142l6.00001-6.00001c.3905-.39052 1.0237-.39052 1.4142 0l6 6.00001c.3905.3905.3905 1.0237 0 1.4142s-1.0237.3905-1.4142 0l-4.2929-4.29289z" fill="currentColor"/>
+        </svg>
+    </button>
     {% if messages %} {% for message in messages %}
     <div id="toast-position">
         <div class="toast">
@@ -191,7 +197,7 @@
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <!-- bootstrap -->
-    
+
     <!-- Other -->
     <script src="{% static 'autoNumeric.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'websocket.js' %}"></script>
@@ -204,7 +210,7 @@
         function checkInternetStatus() {
             return window.navigator.onLine;
         }
-        
+
         function setConnStat(msg, bg, clr) {
             const iStatus = document.getElementById("iStatus");
             iStatus.style.display = "block";
@@ -212,7 +218,7 @@
             iStatus.style.background = bg;
             iStatus.style.color = clr;
         }
-        
+
         // Function to hide the online message after 3 seconds
         function hideMessageAfterTimeout() {
             setTimeout(() => {
@@ -223,15 +229,15 @@
                 }, 500);
             }, 3000);
         }
-        
+
         // Track the previous connection state
         let wasOffline = !checkInternetStatus();
-        
+
         // Initial check for online status
         if (wasOffline) {
             setConnStat("No internet connection", "#1d1d1f", "#fff");
         }
-        
+
         // Event listeners for online/offline status changes
         window.addEventListener('online', () => {
             if (wasOffline) {
@@ -240,11 +246,34 @@
             }
             wasOffline = false; // Update the status to online
         });
-        
+
         window.addEventListener('offline', () => {
             setConnStat("No internet connection", "#1d1d1f", "#fff");
             wasOffline = true; // Update the status to offline
         });
+    </script>
+    <script>
+        // Get the button
+        let topBtn = document.getElementById("goTop");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        // Call scrollFunction on page load to check initial scroll position
+        window.onload = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                topBtn.classList.add("show");
+            } else {
+                topBtn.classList.remove("show");
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document with smooth animation
+        function goTopFunction() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
     <script>
         $(document).ready(function () {
@@ -264,7 +293,7 @@
                 $input.change();
                 return false;
             });
-    
+
             $('#beds_minus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) - 1;
@@ -281,7 +310,7 @@
                 $input.change();
                 return false;
             });
-    
+
             $('#bedrooms_minus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) - 1;
@@ -298,7 +327,7 @@
                 $input.change();
                 return false;
             });
-    
+
             $('#baths_minus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) - 1;

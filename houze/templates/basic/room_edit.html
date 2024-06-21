@@ -33,9 +33,6 @@
 <form id="room-edit-form" action="{% url 'room_edit' request.user.username room.id %}" method="POST" class="cecol"
     enctype="multipart/form-data" onsubmit="submitForm(event)">
     {% csrf_token %}
-    <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
-    <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
-
     <div class="rmleft">
         <div class="rcrflex">
             <div class="lbld">
@@ -55,6 +52,8 @@
         </div>
         <div class="lbld">
             <div class="lbltxt">{% trans 'Map' %}</div>
+            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
+            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
             <div id="map" class="mapcr"></div>
         </div>
         <div class="rcrflexcol" style="flex-direction: row; gap: 10px;">
@@ -251,7 +250,7 @@
 <script>
     let selectedImages = [{% for img in room.all_photos %} '{{ img.file.url }}', {% endfor %}];
     let img_cnt = 0;
-    
+
     // Make image preview container sortable
     $("#edimage-preview-container").sortable({
         placeholder: "sortable-placeholder", // Define the class for the placeholder
@@ -267,7 +266,7 @@
             selectedImages.push(this.dataset.src || this.file);
         });
     }
-    
+
     // Function to make image preview container sortable
     function makeSortable() {
         $("#edimage-preview-container").sortable({
@@ -286,7 +285,7 @@
             selectedImages.push(this.dataset.src || this.file);
         });
     }
-    
+
     function updateImageCount() {
         img_cnt = selectedImages.length;
         document.getElementById('img-preview-info').textContent = `{% trans "You chose ${img_cnt} images. Drag to sort them out" %}`;
@@ -515,28 +514,32 @@
         });
     }
 </script>
+
 <script>
     // Function to check the internet connection status
     function checkOnlineStatus() {
       return window.navigator.onLine;
     }
-    
+
     function initializeMap() {
       mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
-  
+
       var initialLatitude = parseFloat(document.getElementById('latitude').value);
       var initialLongitude = parseFloat(document.getElementById('longitude').value);
-  
+
       var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/streets-v11',
           center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
           zoom: 13
       });
-  
+
+      // Disable double click zoom
+      map.doubleClickZoom.disable();
+
       // Add zoom and unzoom controls
       map.addControl(new mapboxgl.NavigationControl());
-  
+
       // Add geolocate control to the map2
       var geolocate = new mapboxgl.GeolocateControl({
           positionOptions: {
@@ -544,14 +547,14 @@
           },
           trackUserLocation: true
       });
-  
+
       map.addControl(geolocate);
-  
+
       // Create marker
       var marker = new mapboxgl.Marker({
           draggable: true
       }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
-  
+
       // Update marker's position when the user's location changes
       geolocate.on('geolocate', function (event) {
           var lngLat = [event.coords.longitude, event.coords.latitude];
@@ -559,14 +562,14 @@
           document.getElementById('latitude').value = lngLat[1];
           document.getElementById('longitude').value = lngLat[0];
       });
-  
+
       // Update input fields when marker is dragged
       marker.on('dragend', function () {
           var lngLat = marker.getLngLat();
           document.getElementById('latitude').value = lngLat.lat;
           document.getElementById('longitude').value = lngLat.lng;
       });
-  
+
       // Update marker's position when the user double-clicks on the map2
       map.on('dblclick', function (event) {
           marker.setLngLat(event.lngLat);
@@ -574,7 +577,7 @@
           document.getElementById('longitude').value = event.lngLat.lng;
       });
     }
-    
+
     function displayOfflineMessage() {
         const roomMapElement = document.getElementById("map");
         roomMapElement.textContent = "No internet connection. Unable to load the map";
