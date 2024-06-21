@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-04 23:38+0500\n"
+"POT-Creation-Date: 2024-06-15 23:31+0500\n"
 "PO-Revision-Date: 2024-05-20 18:41+0500\n"
 "Last-Translator: <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.10.0\n"
 
-#: business/settings.py:174
+#: business/settings.py:175
 msgid "English"
 msgstr "Английский"
 
-#: business/settings.py:175
+#: business/settings.py:176
 msgid "Russian"
 msgstr "Русский"
 
-#: business/settings.py:176
+#: business/settings.py:177
 msgid "Uzbek"
 msgstr "Узбек"
 
@@ -185,8 +185,8 @@ msgid "Reservations"
 msgstr "Бронирование"
 
 #: houze/templates/basic/reservation.html:55
-#: houze/templates/basic/room_create.html:140
-#: houze/templates/basic/room_edit.html:152
+#: houze/templates/basic/room_create.html:145
+#: houze/templates/basic/room_edit.html:157
 #: houze/templates/temps/notifications.html:32
 msgid "Check in"
 msgstr "Регистрироваться"
@@ -205,239 +205,239 @@ msgid "Create a new room"
 msgstr "Создать новую комнату"
 
 #: houze/templates/basic/room_create.html:18
-#: houze/templates/basic/room_edit.html:18
+#: houze/templates/basic/room_edit.html:62
 msgid "Guests"
 msgstr "Гости"
 
 #: houze/templates/basic/room_create.html:27
-#: houze/templates/basic/room_edit.html:36
+#: houze/templates/basic/room_edit.html:80
 msgid "Bedrooms"
 msgstr "Спальни"
 
 #: houze/templates/basic/room_create.html:36
-#: houze/templates/basic/room_edit.html:27
+#: houze/templates/basic/room_edit.html:71
 msgid "Beds"
 msgstr "Кровати"
 
 #: houze/templates/basic/room_create.html:45
-#: houze/templates/basic/room_edit.html:45
+#: houze/templates/basic/room_edit.html:89
 msgid "Baths"
 msgstr "Ванны"
 
 #: houze/templates/basic/room_create.html:55
-#: houze/templates/basic/room_edit.html:55
+#: houze/templates/basic/room_edit.html:57
 msgid "Map"
 msgstr "карта"
 
 #: houze/templates/basic/room_create.html:60
-#: houze/templates/basic/room_edit.html:60
+#: houze/templates/basic/room_edit.html:10
 msgid "Images"
 msgstr "Изображений"
 
 #: houze/templates/basic/room_create.html:61
-#: houze/templates/basic/room_edit.html:61
+#: houze/templates/basic/room_edit.html:11
 msgid "Browse..."
 msgstr "Просматривать..."
 
 #: houze/templates/basic/room_create.html:73
-#: houze/templates/basic/room_edit.html:82
-#: houze/templates/basic/room_edit.html:83
+#: houze/templates/basic/room_edit.html:42
 msgid "Title"
 msgstr "Заголовок"
 
 #: houze/templates/basic/room_create.html:74
+#: houze/templates/basic/room_edit.html:43
 msgid "e.g. Best cabin near Labi Hawuz"
 msgstr "напримерЛучшая каюта возле Лаби Хаууз"
 
 #: houze/templates/basic/room_create.html:78
-#: houze/templates/basic/room_edit.html:87
+#: houze/templates/basic/room_edit.html:48
 msgid "Price"
 msgstr "Цена"
 
 #: houze/templates/basic/room_create.html:80
-#: houze/templates/basic/room_edit.html:89
+#: houze/templates/basic/room_edit.html:50
 msgid "min price: 10 000"
 msgstr "Мин цена: 10 000"
 
 #: houze/templates/basic/room_create.html:87
-#: houze/templates/basic/room_edit.html:96
-#: houze/templates/basic/room_edit.html:98
+#: houze/templates/basic/room_edit.html:101
 msgid "Description"
 msgstr "Описание"
 
-#: houze/templates/basic/room_create.html:88
+#: houze/templates/basic/room_create.html:89
+#: houze/templates/basic/room_edit.html:103
 #, fuzzy
 #| msgid "Tell people about the room and what's near it"
 msgid "Tell people about the room and what is near it"
 msgstr "Расскажите людям о комнате и о том, что рядом с ней"
 
-#: houze/templates/basic/room_create.html:94
 #: houze/templates/basic/room_create.html:95
-#: houze/templates/basic/room_edit.html:104
-#: houze/templates/basic/room_edit.html:105
+#: houze/templates/basic/room_create.html:96
+#: houze/templates/basic/room_edit.html:109
+#: houze/templates/basic/room_edit.html:110
 msgid "Address"
 msgstr "Адрес"
 
-#: houze/templates/basic/room_create.html:100
-#: houze/templates/basic/room_edit.html:111
+#: houze/templates/basic/room_create.html:101
+#: houze/templates/basic/room_edit.html:116
 msgid "City"
 msgstr "Город"
 
-#: houze/templates/basic/room_create.html:102
+#: houze/templates/basic/room_create.html:103
 #, fuzzy
 #| msgid "Select city"
 msgid "Select a city"
 msgstr "Выберите город"
 
-#: houze/templates/basic/room_create.html:110
-#: houze/templates/basic/room_edit.html:121
+#: houze/templates/basic/room_create.html:111
+#: houze/templates/basic/room_edit.html:126
 msgid "Room type"
 msgstr "Тип номера"
 
-#: houze/templates/basic/room_create.html:112
+#: houze/templates/basic/room_create.html:113
 msgid "Select a room type"
 msgstr "Выберите тип комнаты"
 
-#: houze/templates/basic/room_create.html:123
-#: houze/templates/basic/room_edit.html:135
-#: houze/templates/basic/room_edit.html:136
+#: houze/templates/basic/room_create.html:124
+#: houze/templates/basic/room_edit.html:140
 msgid "Amenities"
 msgstr "Удобства"
 
-#: houze/templates/basic/room_create.html:125
+#: houze/templates/basic/room_create.html:127
+#: houze/templates/basic/room_create.html:129
+#: houze/templates/basic/room_edit.html:142
 msgid "e.g. Wi-Fi, Kitchen, AC, Washroom"
 msgstr "напримерWi-Fi, кухня, AC, уборная"
 
-#: houze/templates/basic/room_create.html:126
-#: houze/templates/basic/room_edit.html:138
+#: houze/templates/basic/room_create.html:131
+#: houze/templates/basic/room_edit.html:143
 msgid "Enter a comma after each amenity"
 msgstr "Введите запятую после каждого удобства"
 
-#: houze/templates/basic/room_create.html:130
-#: houze/templates/basic/room_edit.html:142
-#: houze/templates/basic/room_edit.html:143
+#: houze/templates/basic/room_create.html:135
+#: houze/templates/basic/room_edit.html:147
 msgid "House rules"
 msgstr "Домашние правила"
 
-#: houze/templates/basic/room_create.html:132
+#: houze/templates/basic/room_create.html:137
+#: houze/templates/basic/room_edit.html:149
 msgid "e.g. No parties or events, No smoking"
 msgstr "напримерНет вечеринок или событий, нет курить"
 
-#: houze/templates/basic/room_create.html:133
-#: houze/templates/basic/room_edit.html:145
+#: houze/templates/basic/room_create.html:138
+#: houze/templates/basic/room_edit.html:150
 msgid "Enter a comma after each rule"
 msgstr "Введите запятую после каждого правила"
 
-#: houze/templates/basic/room_create.html:145
-#: houze/templates/basic/room_edit.html:158
+#: houze/templates/basic/room_create.html:150
+#: houze/templates/basic/room_edit.html:163
 msgid "Check out"
 msgstr "Проверить"
 
-#: houze/templates/basic/room_create.html:151
+#: houze/templates/basic/room_create.html:156
 msgid "Create"
 msgstr "Создавать"
 
-#: houze/templates/basic/room_create.html:272
+#: houze/templates/basic/room_create.html:288
+#: houze/templates/basic/room_edit.html:292
 #, fuzzy, python-brace-format
 #| msgid "Drag images to sort them out"
 msgid "You chose ${img_cnt} images. Drag to sort them out"
 msgstr "Перетащите изображения, чтобы разобраться с ними"
 
-#: houze/templates/basic/room_create.html:366
-#: houze/templates/basic/room_edit.html:340
+#: houze/templates/basic/room_create.html:382
+#: houze/templates/basic/room_edit.html:387
 msgid "Please select at least 5 images"
 msgstr "Пожалуйста, выберите как минимум 5 изображений"
 
-#: houze/templates/basic/room_create.html:371
-#: houze/templates/basic/room_edit.html:345
+#: houze/templates/basic/room_create.html:387
+#: houze/templates/basic/room_edit.html:392
 msgid "Title is required"
 msgstr "Название требуется"
 
-#: houze/templates/basic/room_create.html:375
-#: houze/templates/basic/room_edit.html:351
-#, fuzzy
-#| msgid "Title should be at least 20 characters"
-msgid "Title should be at least 4 words"
-msgstr "Название должно быть не менее 20 символов"
+#: houze/templates/basic/room_create.html:393
+msgid "Title should be between 4 and 6 words with at least 2 chars long"
+msgstr ""
+"Название должно составлять от 4 до 6 слов с по крайней мере 2 Chars длиной"
 
-#: houze/templates/basic/room_create.html:380
-#: houze/templates/basic/room_edit.html:356
+#: houze/templates/basic/room_create.html:398
+#: houze/templates/basic/room_edit.html:403
 msgid "Price is required"
 msgstr "Цена требуется"
 
-#: houze/templates/basic/room_create.html:384
-#: houze/templates/basic/room_edit.html:360
+#: houze/templates/basic/room_create.html:402
+#: houze/templates/basic/room_edit.html:407
 msgid "Price should at least start from 10,000"
 msgstr "Цена должна быть как минимум с 10 000"
 
-#: houze/templates/basic/room_create.html:389
-#: houze/templates/basic/room_edit.html:365
+#: houze/templates/basic/room_create.html:407
+#: houze/templates/basic/room_edit.html:412
 #, fuzzy
 #| msgid "Description"
 msgid "Description is required"
 msgstr "Описание"
 
-#: houze/templates/basic/room_create.html:393
-#: houze/templates/basic/room_edit.html:369
+#: houze/templates/basic/room_create.html:411
+#: houze/templates/basic/room_edit.html:416
 msgid "Description should be at least 150 characters"
 msgstr "Описание должно быть не менее 150 символов"
 
-#: houze/templates/basic/room_create.html:398
-#: houze/templates/basic/room_edit.html:374
+#: houze/templates/basic/room_create.html:416
+#: houze/templates/basic/room_edit.html:421
 msgid "Address is required"
 msgstr "Адрес требуется"
 
-#: houze/templates/basic/room_create.html:403
-#: houze/templates/basic/room_edit.html:379
+#: houze/templates/basic/room_create.html:421
+#: houze/templates/basic/room_edit.html:426
 msgid "City is required"
 msgstr "Город требуется"
 
-#: houze/templates/basic/room_create.html:408
-#: houze/templates/basic/room_edit.html:384
+#: houze/templates/basic/room_create.html:426
+#: houze/templates/basic/room_edit.html:431
 #, fuzzy
 #| msgid "Room type"
 msgid "Room type is required"
 msgstr "Тип номера"
 
-#: houze/templates/basic/room_create.html:413
-#: houze/templates/basic/room_edit.html:389
+#: houze/templates/basic/room_create.html:431
+#: houze/templates/basic/room_edit.html:436
 msgid "Amenities are required"
 msgstr "Удобства требуются"
 
-#: houze/templates/basic/room_create.html:419
-#: houze/templates/basic/room_edit.html:395
+#: houze/templates/basic/room_create.html:437
+#: houze/templates/basic/room_edit.html:442
 msgid "Choose at least 5 amenities"
 msgstr "Выберите как минимум 5 удобств"
 
-#: houze/templates/basic/room_create.html:423
-#: houze/templates/basic/room_edit.html:399
+#: houze/templates/basic/room_create.html:441
+#: houze/templates/basic/room_edit.html:446
 msgid "Each amenity should be a meaningful word or phrase"
 msgstr "Каждое удобство должно быть значимым словом или фразой"
 
-#: houze/templates/basic/room_create.html:428
-#: houze/templates/basic/room_edit.html:404
+#: houze/templates/basic/room_create.html:446
+#: houze/templates/basic/room_edit.html:451
 #, fuzzy
 #| msgid "House rules"
 msgid "House rules are required"
 msgstr "Домашние правила"
 
-#: houze/templates/basic/room_create.html:435
-#: houze/templates/basic/room_edit.html:411
+#: houze/templates/basic/room_create.html:453
+#: houze/templates/basic/room_edit.html:458
 msgid "Choose at least 5 rules"
 msgstr "Выберите как минимум 5 правил"
 
-#: houze/templates/basic/room_create.html:439
-#: houze/templates/basic/room_edit.html:415
+#: houze/templates/basic/room_create.html:457
+#: houze/templates/basic/room_edit.html:462
 msgid "Each rule should be a meaningful word or phrase"
 msgstr "Каждое правило должно быть значимым словом или фразой"
 
-#: houze/templates/basic/room_create.html:449
-#: houze/templates/basic/room_edit.html:425
+#: houze/templates/basic/room_create.html:467
+#: houze/templates/basic/room_edit.html:472
 msgid "Check-out date must be after check-in date"
 msgstr "Дата выезда должна быть после даты регистрации"
 
-#: houze/templates/basic/room_create.html:456
-#: houze/templates/basic/room_edit.html:432
+#: houze/templates/basic/room_create.html:474
+#: houze/templates/basic/room_edit.html:479
 msgid "There should be at least one day gap between check-in and check-out"
 msgstr ""
 "Между регистрацией и выездным выходом должен быть как минимум один день "
@@ -447,13 +447,17 @@ msgstr ""
 msgid "Edit your room"
 msgstr "Измените свою комнату"
 
-#: houze/templates/basic/room_edit.html:166
+#: houze/templates/basic/room_edit.html:171
 msgid "Edit"
 msgstr "Редактировать"
 
-#: houze/templates/basic/room_edit.html:289
-msgid "Drag images to sort them out"
-msgstr "Перетащите изображения, чтобы разобраться с ними"
+#: houze/templates/basic/room_edit.html:398
+msgid ""
+"Title should be between 4 and 6 words, and each word should be at least 2 "
+"characters long"
+msgstr ""
+"Название должно быть от 4 до 6 слов, и каждое слово должно быть не менее 2 "
+"символов длиной"
 
 #: houze/templates/temps/notifications.html:3
 msgid "Notifications"
@@ -491,6 +495,13 @@ msgstr "ночь"
 #: houze/templates/temps/room_list.html:36
 msgid "Rooms aren't available"
 msgstr "Номера недоступны"
+
+#, fuzzy
+#~ msgid "Title should be at least 4 words"
+#~ msgstr "Название должно быть не менее 20 символов"
+
+#~ msgid "Drag images to sort them out"
+#~ msgstr "Перетащите изображения, чтобы разобраться с ними"
 
 #~ msgid "e.g. 10 will be 10,000"
 #~ msgstr "например10 будет 10 000"

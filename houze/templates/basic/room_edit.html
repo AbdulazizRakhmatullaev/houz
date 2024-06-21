@@ -6,6 +6,15 @@
 {% block content %}
 <div class="brief-name">Edit your room</div>
 
+<div class="lbld">
+    <div class="lbltxt">{% trans 'Images' %}</div>
+    <input type="button" value="{% trans 'Browse...' %}"
+        onclick="document.getElementById('roomimginp').click();" style="width: 300px;" />
+    <div id="img-error" class="errTxt"></div>
+    <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
+        onchange="addImage(this)" multiple style="display: none;">
+</div>
+
 <div id="edimage-preview-container">
 {% for img in room.all_photos %}
 <form action="{% url 'img_delete' img.id %}" method="POST">
@@ -19,6 +28,7 @@
 </form>
 {% endfor %}
 </div>
+<div id="img-preview-info" class="inpInfo"></div>
 
 <form id="room-edit-form" action="{% url 'room_edit' request.user.username room.id %}" method="POST" class="cecol"
     enctype="multipart/form-data" onsubmit="submitForm(event)">
@@ -27,62 +37,6 @@
     <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
 
     <div class="rmleft">
-        <div class="rcrflex">
-            <div class="rcrflexcol">
-                <div class="lbld">
-                    <div class="lbltxt">{% trans 'Guests' %}</div>
-                    <div class="rcrflex">
-                        <span id="guests_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="guests" name="guests" min="1"
-                            value="{{room.guests}}" />
-                        <span id="guests_plus" class="plus">+</span>
-                    </div>
-                </div>
-                <div class="lbld">
-                    <div class="lbltxt">{% trans 'Beds' %}</div>
-                    <div class="rcrflex">
-                        <span id="beds_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="beds" name="beds" min="1"
-                            value="{{room.beds}}" />
-                        <span id="beds_plus" class="plus">+</span>
-                    </div>
-                </div>
-                <div class="lbld">
-                    <div class="lbltxt">{% trans 'Bedrooms' %}</div>
-                    <div class="rcrflex">
-                        <span id="bedrooms_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
-                            value="{{room.bedrooms}}" />
-                        <span id="bedrooms_plus" class="plus">+</span>
-                    </div>
-                </div>
-                <div class="lbld">
-                    <div class="lbltxt">{% trans 'Baths' %}</div>
-                    <div class="rcrflex">
-                        <span id="baths_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="baths" name="baths" min="1"
-                            value="{{room.baths}}" />
-                        <span id="baths_plus" class="plus">+</span>
-                    </div>
-                </div>
-            </div>
-            <div class="lbld" style="margin-left: 10px;">
-                <div class="lbltxt">{% trans 'Map' %}</div>
-                <div id="map" class="mapcr"></div>
-            </div>
-        </div>
-        <div class="lbld">
-            <div class="lbltxt">{% trans 'Images' %}</div>
-            <input type="button" value="{% trans 'Browse...' %}"
-                onclick="document.getElementById('roomimginp').click();" />
-            <div id="img-error" class="errTxt"></div>
-            <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
-                onchange="addImage(this)" multiple style="display: none;">
-        </div>
-        <div id="image-preview-container" class="h85"></div>
-        <div id="img-preview-info" class="inpInfo"></div>
-    </div>
-    <div class="rmright">
         <div class="rcrflex">
             <div class="lbld">
                 <div class="lbltxt">{% trans 'Title' %}</div>
@@ -99,6 +53,50 @@
                         <div id="price-error" class="errTxt"></div>
             </div>
         </div>
+        <div class="lbld">
+            <div class="lbltxt">{% trans 'Map' %}</div>
+            <div id="map" class="mapcr"></div>
+        </div>
+        <div class="rcrflexcol" style="flex-direction: row; gap: 10px;">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Guests' %}</div>
+                <div class="rcrflex">
+                    <span id="guests_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="guests" name="guests" min="1"
+                        value="{{room.guests}}" />
+                    <span id="guests_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Beds' %}</div>
+                <div class="rcrflex">
+                    <span id="beds_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="beds" name="beds" min="1"
+                        value="{{room.beds}}" />
+                    <span id="beds_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Bedrooms' %}</div>
+                <div class="rcrflex">
+                    <span id="bedrooms_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
+                        value="{{room.bedrooms}}" />
+                    <span id="bedrooms_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Baths' %}</div>
+                <div class="rcrflex">
+                    <span id="baths_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="baths" name="baths" min="1"
+                        value="{{room.baths}}" />
+                    <span id="baths_plus" class="plus">+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rmright">
         <div class="lbld">
             <div class="lbltxt">{% trans 'Description' %}</div>
             <textarea id="description" name="description" class="descarea"
@@ -252,9 +250,10 @@
 
 <script>
     let selectedImages = [{% for img in room.all_photos %} '{{ img.file.url }}', {% endfor %}];
-
+    let img_cnt = 0;
+    
     // Make image preview container sortable
-    $("#image-preview-container").sortable({
+    $("#edimage-preview-container").sortable({
         placeholder: "sortable-placeholder", // Define the class for the placeholder
         stop: function (event, ui) {
             updateSelectedImagesArray();
@@ -264,54 +263,61 @@
     // Function to update selectedImages array based on the new order
     function updateSelectedImagesArray() {
         selectedImages = [];
-        $("#image-preview-container .image-container img").each(function () {
+        $("#edimage-preview-container .edimage-container img").each(function () {
             selectedImages.push(this.dataset.src || this.file);
         });
     }
-
+    
     // Function to make image preview container sortable
     function makeSortable() {
-        $("#image-preview-container").sortable({
+        $("#edimage-preview-container").sortable({
             placeholder: "sortable-placeholder", // Define the class for the placeholder
             stop: function (event, ui) {
                 updateSelectedImagesArray();
             }
         });
-        $("#image-preview-container").disableSelection(); // Prevent text selection while dragging
+        $("#edimage-preview-container").disableSelection(); // Prevent text selection while dragging
     }
 
     // Function to update selectedImages array based on the new order
     function updateSelectedImagesArray() {
         selectedImages = [];
-        $("#image-preview-container .image-container img").each(function () {
+        $("#edimage-preview-container .edimage-container img").each(function () {
             selectedImages.push(this.dataset.src || this.file);
         });
+    }
+    
+    function updateImageCount() {
+        img_cnt = selectedImages.length;
+        document.getElementById('img-preview-info').textContent = `{% trans "You chose ${img_cnt} images. Drag to sort them out" %}`;
     }
 
     function addImage(input) {
         const files = input.files;
-        const previewContainer = document.getElementById('image-preview-container');
+        const previewContainer = document.getElementById('edimage-preview-container');
         const imgInpInfo = document.getElementById('img-preview-info');
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
 
             const imageContainer = document.createElement('div');
-            imageContainer.classList.add('image-container');
+            imageContainer.classList.add('edimage-container');
 
             const image = document.createElement('img');
-            image.classList.add('preview-image');
+            image.classList.add('edpreview-image');
             image.src = URL.createObjectURL(file);
             image.file = file; // Custom property to store file
 
             const cancelButton = document.createElement('div');
             cancelButton.innerHTML = '&times';
-            cancelButton.classList.add('cancelimg');
+            cancelButton.classList.add('objdel');
+            cancelButton.style = "position: absolute; right: 7px; top: 7px;"
             cancelButton.onclick = function () {
                 // Remove the corresponding image from the array and the preview
                 const index = selectedImages.indexOf(file);
                 if (index !== -1) {
                     selectedImages.splice(index, 1);
+                    updateImageCount();
                 }
                 previewContainer.removeChild(imageContainer);
                 if (selectedImages.length === 0) {
@@ -327,7 +333,7 @@
         }
 
         input.value = ''; // Clear the input value after selecting images
-        imgInpInfo.textContent = '{% trans "Drag images to sort them out" %}';
+        updateImageCount();
         const imgErrorText = document.getElementById('img-error');
         imgErrorText.textContent = '';
 
@@ -367,7 +373,7 @@
         checkOut.parentNode.querySelector('.errTxt').textContent = '';
 
         const imageFiles = [];
-        document.querySelectorAll('#image-preview-container .image-container img').forEach(img => {
+        document.querySelectorAll('#edimage-preview-container .edimage-container img').forEach(img => {
             if (img.file) {
                 imageFiles.push(img.file);
             } else {
@@ -388,7 +394,7 @@
         }
         var words = title.value.split(' ').filter(word => word.length > 0);
 
-        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 2)) {
+        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 1)) {
             title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be between 4 and 6 words, and each word should be at least 2 characters long" %}';
             return;
         }
@@ -510,56 +516,84 @@
     }
 </script>
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+    // Function to check the internet connection status
+    function checkOnlineStatus() {
+      return window.navigator.onLine;
+    }
+    
+    function initializeMap() {
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+  
+      var initialLatitude = parseFloat(document.getElementById('latitude').value);
+      var initialLongitude = parseFloat(document.getElementById('longitude').value);
+  
+      var map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
+          zoom: 13
+      });
+  
+      // Add zoom and unzoom controls
+      map.addControl(new mapboxgl.NavigationControl());
+  
+      // Add geolocate control to the map2
+      var geolocate = new mapboxgl.GeolocateControl({
+          positionOptions: {
+              enableHighAccuracy: true
+          },
+          trackUserLocation: true
+      });
+  
+      map.addControl(geolocate);
+  
+      // Create marker
+      var marker = new mapboxgl.Marker({
+          draggable: true
+      }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
+  
+      // Update marker's position when the user's location changes
+      geolocate.on('geolocate', function (event) {
+          var lngLat = [event.coords.longitude, event.coords.latitude];
+          marker.setLngLat(lngLat);
+          document.getElementById('latitude').value = lngLat[1];
+          document.getElementById('longitude').value = lngLat[0];
+      });
+  
+      // Update input fields when marker is dragged
+      marker.on('dragend', function () {
+          var lngLat = marker.getLngLat();
+          document.getElementById('latitude').value = lngLat.lat;
+          document.getElementById('longitude').value = lngLat.lng;
+      });
+  
+      // Update marker's position when the user double-clicks on the map2
+      map.on('dblclick', function (event) {
+          marker.setLngLat(event.lngLat);
+          document.getElementById('latitude').value = event.lngLat.lat;
+          document.getElementById('longitude').value = event.lngLat.lng;
+      });
+    }
+    
+    function displayOfflineMessage() {
+        const roomMapElement = document.getElementById("map");
+        roomMapElement.textContent = "No internet connection. Unable to load the map";
+    }
 
-    var initialLatitude = parseFloat(document.getElementById('latitude').value);
-    var initialLongitude = parseFloat(document.getElementById('longitude').value);
+    // Initial check for online status
+    if (!checkOnlineStatus()) {
+        displayOfflineMessage();
+    } else {
+        initializeMap();
+    }
 
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
-        zoom: 13
+    // Event listeners for online/offline status changes
+    window.addEventListener('online', () => {
+        initializeMap(); // Re-initialize the map or other functionality as needed
     });
 
-    // Add zoom and unzoom controls
-    map.addControl(new mapboxgl.NavigationControl());
-
-    // Add geolocate control to the map2
-    var geolocate = new mapboxgl.GeolocateControl({
-        positionOptions: {
-            enableHighAccuracy: true
-        },
-        trackUserLocation: true
-    });
-
-    map.addControl(geolocate);
-
-    // Create marker
-    var marker = new mapboxgl.Marker({
-        draggable: true
-    }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
-
-    // Update marker's position when the user's location changes
-    geolocate.on('geolocate', function (event) {
-        var lngLat = [event.coords.longitude, event.coords.latitude];
-        marker.setLngLat(lngLat);
-        document.getElementById('latitude').value = lngLat[1];
-        document.getElementById('longitude').value = lngLat[0];
-    });
-
-    // Update input fields when marker is dragged
-    marker.on('dragend', function () {
-        var lngLat = marker.getLngLat();
-        document.getElementById('latitude').value = lngLat.lat;
-        document.getElementById('longitude').value = lngLat.lng;
-    });
-
-    // Update marker's position when the user double-clicks on the map2
-    map.on('dblclick', function (event) {
-        marker.setLngLat(event.lngLat);
-        document.getElementById('latitude').value = event.lngLat.lat;
-        document.getElementById('longitude').value = event.lngLat.lng;
+    window.addEventListener('offline', () => {
+        displayOfflineMessage();
     });
 </script>
 {% endblock %}

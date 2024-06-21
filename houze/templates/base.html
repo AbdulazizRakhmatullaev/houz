@@ -183,6 +183,7 @@
             </div>
         </div>
     </footer>
+    <div id="iStatus"></div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- jQuery -->
@@ -199,6 +200,53 @@
     {% block scripts %}
     {% endblock %}
     <script>
+        // Function to check the internet connection status
+        function checkInternetStatus() {
+            return window.navigator.onLine;
+        }
+        
+        function setConnStat(msg, bg, clr) {
+            const iStatus = document.getElementById("iStatus");
+            iStatus.style.display = "block";
+            iStatus.textContent = msg;
+            iStatus.style.background = bg;
+            iStatus.style.color = clr;
+        }
+        
+        // Function to hide the online message after 3 seconds
+        function hideMessageAfterTimeout() {
+            setTimeout(() => {
+                const iStatus = document.getElementById("iStatus");
+                iStatus.classList.add("timeout");
+                setTimeout(() => {
+                    iStatus.style.display = "none";
+                }, 500);
+            }, 3000);
+        }
+        
+        // Track the previous connection state
+        let wasOffline = !checkInternetStatus();
+        
+        // Initial check for online status
+        if (wasOffline) {
+            setConnStat("No internet connection", "#1d1d1f", "#fff");
+        }
+        
+        // Event listeners for online/offline status changes
+        window.addEventListener('online', () => {
+            if (wasOffline) {
+                setConnStat("You are back online", "#08c708", "#fff");
+                hideMessageAfterTimeout();
+            }
+            wasOffline = false; // Update the status to online
+        });
+        
+        window.addEventListener('offline', () => {
+            setConnStat("No internet connection", "#1d1d1f", "#fff");
+            wasOffline = true; // Update the status to offline
+        });
+    </script>
+    <script>
         $(document).ready(function () {
             $('#guests_minus').click(function () {
                 var $input = $(this).parent().find('input');
@@ -210,13 +258,13 @@
             });
             $('#guests_plus').click(function () {
                 var $input = $(this).parent().find('input');
-                $input.val(parseInt($input.val()) + 1);
+                var count = parseInt($input.val()) + 1;
+                count = count > 99 ? 99 : count;
+                $input.val(count);
                 $input.change();
                 return false;
             });
-        });
-        // beds
-        $(document).ready(function () {
+    
             $('#beds_minus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) - 1;
@@ -227,13 +275,13 @@
             });
             $('#beds_plus').click(function () {
                 var $input = $(this).parent().find('input');
-                $input.val(parseInt($input.val()) + 1);
+                var count = parseInt($input.val()) + 1;
+                count = count > 99 ? 99 : count;
+                $input.val(count);
                 $input.change();
                 return false;
             });
-        });
-        // bedrooms
-        $(document).ready(function () {
+    
             $('#bedrooms_minus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) - 1;
@@ -244,13 +292,13 @@
             });
             $('#bedrooms_plus').click(function () {
                 var $input = $(this).parent().find('input');
-                $input.val(parseInt($input.val()) + 1);
+                var count = parseInt($input.val()) + 1;
+                count = count > 99 ? 99 : count;
+                $input.val(count);
                 $input.change();
                 return false;
             });
-        });
-        // baths
-        $(document).ready(function () {
+    
             $('#baths_minus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) - 1;
@@ -261,7 +309,9 @@
             });
             $('#baths_plus').click(function () {
                 var $input = $(this).parent().find('input');
-                $input.val(parseInt($input.val()) + 1);
+                var count = parseInt($input.val()) + 1;
+                count = count > 99 ? 99 : count;
+                $input.val(count);
                 $input.change();
                 return false;
             });

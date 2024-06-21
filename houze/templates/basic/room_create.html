@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Create new room{% endblock %}
+{% block title %}Become a host{% endblock %}
 
 {% block content %}
 <div class="brief-name">{% trans "Create a new room" %}</div>
@@ -18,7 +18,7 @@
                     <div class="lbltxt">{% trans "Guests" %}</div>
                     <div class="rcrflex">
                         <span id="guests_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="guests" name="guests" min="1" maxlength="2"
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="guests" name="guests" min="1" maxlength="2"
                             value="1" />
                         <span id="guests_plus" class="plus">+</span>
                     </div>
@@ -27,7 +27,7 @@
                     <div class="lbltxt">{% trans "Bedrooms" %}</div>
                     <div class="rcrflex">
                         <span id="bedrooms_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
                             maxlength="2" value="1" />
                         <span id="bedrooms_plus" class="plus">+</span>
                     </div>
@@ -36,7 +36,7 @@
                     <div class="lbltxt">{% trans "Beds" %}</div>
                     <div class="rcrflex">
                         <span id="beds_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="beds" name="beds" min="1" maxlength="2"
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="beds" name="beds" min="1" maxlength="2"
                             value="1" />
                         <span id="beds_plus" class="plus">+</span>
                     </div>
@@ -45,7 +45,7 @@
                     <div class="lbltxt">{% trans "Baths" %}</div>
                     <div class="rcrflex">
                         <span id="baths_minus" class="minus">-</span>
-                        <input style="width: 33px;" type="text" min="1" id="baths" name="baths" min="1" max="99"
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="baths" name="baths" min="1" max="99"
                             value="1" />
                         <span id="baths_plus" class="plus">+</span>
                     </div>
@@ -389,7 +389,7 @@
         }
         var words = title.value.split(' ').filter(word => word.length > 0);
 
-        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 2)) {
+        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 1)) {
             title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be between 4 and 6 words with at least 2 chars long" %}';
             return;
         }
@@ -526,56 +526,84 @@
     document.getElementById("check_out").min = formattedCheckoutDate;
 </script>
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
-
-    var initialLatitude = parseFloat(document.getElementById('latitude').value);
-    var initialLongitude = parseFloat(document.getElementById('longitude').value);
-
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
-        zoom: 13
+    // Function to check the internet connection status
+    function checkOnlineStatus() {
+      return window.navigator.onLine;
+    }
+    
+    function initializeMap() {
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+    
+      var initialLatitude = parseFloat(document.getElementById('latitude').value);
+      var initialLongitude = parseFloat(document.getElementById('longitude').value);
+    
+      var map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
+          zoom: 13
+      });
+    
+      // Add zoom and unzoom controls
+      map.addControl(new mapboxgl.NavigationControl());
+    
+      // Add geolocate control to the map2
+      var geolocate = new mapboxgl.GeolocateControl({
+          positionOptions: {
+              enableHighAccuracy: true
+          },
+          trackUserLocation: true
+      });
+    
+      map.addControl(geolocate);
+    
+      // Create marker
+      var marker = new mapboxgl.Marker({
+          draggable: true
+      }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
+    
+      // Update marker's position when the user's location changes
+      geolocate.on('geolocate', function (event) {
+          var lngLat = [event.coords.longitude, event.coords.latitude];
+          marker.setLngLat(lngLat);
+          document.getElementById('latitude').value = lngLat[1];
+          document.getElementById('longitude').value = lngLat[0];
+      });
+    
+      // Update input fields when marker is dragged
+      marker.on('dragend', function () {
+          var lngLat = marker.getLngLat();
+          document.getElementById('latitude').value = lngLat.lat;
+          document.getElementById('longitude').value = lngLat.lng;
+      });
+    
+      // Update marker's position when the user double-clicks on the map2
+      map.on('dblclick', function (event) {
+          marker.setLngLat(event.lngLat);
+          document.getElementById('latitude').value = event.lngLat.lat;
+          document.getElementById('longitude').value = event.lngLat.lng;
+      });
+    }
+    
+    function displayOfflineMessage() {
+        const roomMapElement = document.getElementById("map");
+        roomMapElement.textContent = "No internet connection. Unable to load the map";
+    }
+    
+    // Initial check for online status
+    if (!checkOnlineStatus()) {
+        displayOfflineMessage();
+    } else {
+        initializeMap();
+    }
+    
+    // Event listeners for online/offline status changes
+    window.addEventListener('online', () => {
+        initializeMap(); // Re-initialize the map or other functionality as needed
     });
-
-    // Add zoom and unzoom controls
-    map.addControl(new mapboxgl.NavigationControl());
-
-    // Add geolocate control to the map2
-    var geolocate = new mapboxgl.GeolocateControl({
-        positionOptions: {
-            enableHighAccuracy: true
-        },
-        trackUserLocation: true
-    });
-
-    map.addControl(geolocate);
-
-    // Create marker
-    var marker = new mapboxgl.Marker({
-        draggable: true
-    }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
-
-    // Update marker's position when the user's location changes
-    geolocate.on('geolocate', function (event) {
-        var lngLat = [event.coords.longitude, event.coords.latitude];
-        marker.setLngLat(lngLat);
-        document.getElementById('latitude').value = lngLat[1];
-        document.getElementById('longitude').value = lngLat[0];
-    });
-
-    // Update input fields when marker is dragged
-    marker.on('dragend', function () {
-        var lngLat = marker.getLngLat();
-        document.getElementById('latitude').value = lngLat.lat;
-        document.getElementById('longitude').value = lngLat.lng;
-    });
-
-    // Update marker's position when the user double-clicks on the map2
-    map.on('dblclick', function (event) {
-        marker.setLngLat(event.lngLat);
-        document.getElementById('latitude').value = event.lngLat.lat;
-        document.getElementById('longitude').value = event.lngLat.lng;
+    
+    window.addEventListener('offline', () => {
+        displayOfflineMessage();
     });
 </script>
 {% endblock %}
