@@ -224,18 +224,29 @@
     {% csrf_token %}
     <div class="htxt">How many guests are there</div>
     <button type="button" class="collapsible">
-        <span class="small-title">Guests</span>
-        <div class="hmadults" id="g_amt">1</div>
+        <div class="lb" style="display: flex; flex-direction: column; align-items: self-start;">
+            <span class="small-title">Guests</span>
+            <div class="hmadults" id="g_amt">1</div>
+        </div>
+        <div class="rb">
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="12" fill="none" viewBox="0 0 16 12">
+                <path fill="currentColor" d="M4.4544 3.691a.9.9 0 0 0-1.1087 1.418l4.0966 3.2033a.9.9 0 0 0 1.1085.0002l4.0999-3.2032a.9.9 0 1 0-1.1082-1.4185L7.9969 6.461l-3.5425-2.77Z"/>
+            </svg >
+        </div>
     </button>
     <div class="colpscol">
-        <div class="gstsform">
-            <span class="small-title">Adults</span>
-            <div class="gstfl">
-                <span id="guestM" class="minus">-</span>
-                <input type="text" id="guests" min="0" max="99" value="1" />
-                <span id="guestP" class="plus">+</span>
+        <div class="gstwinf">
+            <div class="gstsform">
+                <span class="small-title">Adults</span>
+                <div class="gstfl">
+                    <span id="guestM" class="minus">-</span>
+                    <input type="text" id="adults" min="0" max="99" value="1" />
+                    <span id="guestP" class="plus">+</span>
+                </div>
             </div>
+            <div id="ginfo"></div>
         </div>
+
         <div class="gstsform">
             <span class="small-title">Children</span>
             <div class="gstfl">
@@ -327,20 +338,21 @@
 
 {% block scripts %}
 <script>
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
+  document.addEventListener("DOMContentLoaded", function() {
+    var coll = document.getElementsByClassName("collapsible");
 
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var content = this.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    });
-  }
+    for (var i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "flex";
+        }
+      });
+    }
+  });
 </script>
 
 <script>
@@ -348,7 +360,7 @@
         const maxGuests = {{room.guests}}; // Define the maximum number of guests
 
         function updateTotalGuests() {
-            const adults = parseInt($('#guests').val());
+            const adults = parseInt($('#adults').val());
             const children = parseInt($('#children').val());
             const infants = parseInt($('#infants').val());
             const pets = parseInt($('#pets').val());
@@ -362,15 +374,15 @@
             } else {
                 $('.plus').removeClass('disabled');
             }
-            
-            // Enable or disable the plus/minus buttons based on the count
+
+            // Enable or disable the minus buttons based on the count
             updateButtonState();
         }
 
         function updateInputs($input, increment) {
-            let count = parseInt($input.val()) + increment;
-            count = count > 99 ? 99 : count;
-            count = count < 0 ? 0 : count;
+            const currentCount = parseInt($input.val());
+            let newCount = currentCount + increment;
+            newCount = Math.max(0, Math.min(newCount, 99)); // Ensure newCount is within 0 and 99
 
             const totalGuests = parseInt($('#g_amt').text());
 
@@ -378,22 +390,40 @@
                 return;
             }
 
-            $input.val(count);
+            $input.val(newCount);
             $input.change();
 
             updateTotalGuests();
         }
 
         function updateButtonState() {
+            const adults = parseInt($('#adults').val());
+
+            if (adults <= 0 ) {
+              document.getElementById("ginfo").textContent = "There should be at least 1 Adult";
+            }
+            else {
+              document.getElementById("ginfo").textContent = "";
+            }
+
+            // Enable or disable the minus buttons based on the count
             $('.gstfl').each(function() {
                 const $input = $(this).find('input');
                 const count = parseInt($input.val());
                 const totalGuests = parseInt($('#g_amt').text());
 
+
                 if (count <= 0) {
                     $(this).find('.minus').addClass('disabled');
                 } else {
                     $(this).find('.minus').removeClass('disabled');
+                }
+
+                if (adults <= 0 ) {
+                  $(this).find('.plus').addClass('disabled');
+                }
+                else {
+                  $(this).find('.plus').removeClass('disabled');
                 }
 
                 if (totalGuests >= maxGuests) {
@@ -558,7 +588,7 @@
         var initialLongitude = parseFloat(document.getElementById('longitude').value);
 
         // Define custom styles for the map
-        
+
 
         // Initialize the map with custom styles
         var room_map = new google.maps.Map(document.getElementById('room_map'), {
@@ -607,62 +637,6 @@
         }
     });
 </script>
-
-<!-- <script>
-    // Function to check the internet connection status
-    function checkOnlineStatus() {
-        return window.navigator.onLine;
-    }
-
-    function initializeMap() {
-        document.getElementById("room_map").textContent = "";
-        mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
-
-        var initialLatitude = parseFloat(document.getElementById('latitude').value);
-        var initialLongitude = parseFloat(document.getElementById('longitude').value);
-
-        // Initialize the map
-        var room_map = new mapboxgl.Map({
-            container: 'room_map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
-            zoom: 13
-        });
-
-        // Add zoom and unzoom controls
-        room_map.addControl(new mapboxgl.NavigationControl());
-
-        // Create marker
-        var marker = new mapboxgl.Marker({
-            draggable: false
-        }).setLngLat([initialLongitude, initialLatitude]).addTo(room_map);
-    }
-
-    function displayOfflineMessage() {
-        const div = document.createElement('div');
-        div.classList.add('failicn');
-
-        const mapcon = document.getElementById("room_map");
-        mapcon.appendChild(div);
-        mapcon.textContent = "No internet connection. Unable to load the map";
-    }
-
-    // Initial check for online status
-    if (!checkOnlineStatus()) {
-        displayOfflineMessage();
-    } else {
-        initializeMap();
-    }
-
-    // Event listeners for online/offline status changes
-    window.addEventListener('online', () => {
-        initializeMap(); // Re-initialize the map or other functionality as needed
-    });
-
-    window.addEventListener('offline', () => {
-        displayOfflineMessage();
-    });
-</script> -->
 
 <script>
     let currentSlide = 0;
