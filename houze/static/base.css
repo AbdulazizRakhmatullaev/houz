@@ -179,18 +179,41 @@ b {
 }
 
 .row-con-itm {
+  position: relative;
   cursor: pointer;
   color: currentColor;
   text-decoration: none;
   font-size: 12px;
-  /* color: rgba(255, 255, 255, .8); */
   color: #1d1d1f;
   transition: color 0.32s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.row-svg {
+  height: 24px;
+  width: 24px;
+  vertical-align: middle;
+  fill: #1d1d1f;
 }
 
 .row-con-itm:hover {
   /* color: #FFF; */
   color: #000;
+}
+
+.navhvr {
+  cursor: pointer;
+  position: relative;
+  border-radius: 20px;
+  height: 28px;
+  width: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.navhvr:hover {
+  background: #f5f5f7;
 }
 
 .pp {
@@ -378,10 +401,10 @@ b {
   margin: 10px 0;
 }
 
-.roomfl {
-  display: flex;
-  flex-flow: row wrap;
+.rminfocol {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .left-info-column {
@@ -408,15 +431,6 @@ b {
   flex-direction: column;
   box-sizing: border-box;
   background: #fafafc;
-}
-
-.guestfav {
-  font-size: 15px;
-  line-height: 1.17648;
-  font-weight: 400;
-  letter-spacing: -0.022em;
-  margin-top: 8px;
-  white-space: nowrap;
 }
 
 .ratNrev {
@@ -1216,7 +1230,7 @@ b {
 
 #inboxDropdown {
   position: absolute;
-  top: 40px;
+  top: 33px;
   /* Position dropdown below the icon */
   right: 0;
   /* Adjusted to place it at the right */
@@ -1370,16 +1384,26 @@ b {
   background: #f5f5f7;
 }
 
+.language-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .lngsel {
-  border-radius: 20px;
+  cursor: pointer;
   border: none;
-  height: 28px;
-  min-width: 50px;
-  display: grid;
-  place-items: center;
+  background-color: transparent;
+  position: absolute;
+  right: 15px;
+  height: 100%;
+  width: auto;
   font-size: 14px;
-  padding: 0 10px 0 10px;
-  transition: 0.2s;
+  text-align: right;
+  outline: none;
+  color: grey;
 }
 
 .lngsel option {
@@ -2165,11 +2189,16 @@ select {
 
 .revsta {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin: 10px 0 15px;
   gap: 5px;
+}
+
+.revrt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .rstars {
@@ -2532,4 +2561,89 @@ input[type='date']::-webkit-calendar-picker-indicator {
 #ginfo {
   font-size: 12px;
   padding: 2px 0 0 5px;
+}
+
+input:disabled {
+  background: none;
+}
+
+#resinf {
+  font-size: 13px;
+  padding-top: 4px;
+  font-style: italic;
+}
+
+.roomrecs {
+  padding: 0 0 30px;
+}
+
+.revlt {
+  height: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.revrt {
+  height: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#ppDropdown {
+  position: absolute;
+  top: 33px;
+  /* Position dropdown below the icon */
+  right: 0;
+  /* Adjusted to place it at the right */
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  width: 220px;
+  z-index: 11;
+  display: none;
+  border: 1px solid #e8e8ed;
+  padding: 10px 0;
+}
+
+#ppDropdown.active {
+  display: block;
+}
+
+.ppdropmenu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ppdrcol {
+  position: relative;
+  padding: 4px 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.ppdrcol:hover {
+  background-color: #f5f5f7;
+}
+
+.ppdricn svg {
+  height: 23px;
+  width: 23px;
+  vertical-align: middle;
+}
+
+.ppdrnm {
+  padding-left: 10px;
+}
+
+.ppdrInN {
+  display: flex;
+  align-items: center;
+}
+
+.ppdrcon {
+  color: grey;
 }

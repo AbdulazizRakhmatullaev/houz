@@ -237,7 +237,8 @@ def book_room(request, room_id):
                                 request,
                                 "Room's host has been notified, you will get host's response soon",
                             )
-                            return redirect("room_detail_url", room_id)
+                            # return redirect("room_detail_url", room_id)
+                            return JsonResponse({"room_id": room_id})
                         else:
                             messages.info(
                                 request,
@@ -844,6 +845,16 @@ def tou(request):
 def set_language(request):
     user_language = request.GET.get('language')
     if user_language:
+        translation.activate(user_language)
+        response = redirect(request.META.get('HTTP_REFERER', '/'))
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+        return response
+    else:
+        return redirect('/')
+
+def set_currency(request):
+    user_currency = request.GET.get('currency')
+    if user_currency:
         translation.activate(user_language)
         response = redirect(request.META.get('HTTP_REFERER', '/'))
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)

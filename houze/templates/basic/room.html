@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %} {{room.get_city_display}} ({{room.average_rating}}) {% endblock %}
 
@@ -51,7 +52,7 @@
         </div>
     </a>
 </div>
-<div class="roomfl">
+<div class="rminfocol">
     <div class="left-info-column">
         <!-- Your HTML template -->
         <div id="myCarousel" class="carousel">
@@ -111,217 +112,221 @@
                 {% if room.get_desc|length < 1500 %} {{room.get_desc}} {% else %} {{room.get_desc|slice:":1500"}}...
                     <div class="btnsubstart" style="margin-top: 10px;">
                     <button class="btn-white">See more...</button>
+                    <button class="btn-white">See more...</button >
+                {% endif %}
             </div>
-            {% endif %}
         </div>
-    </div>
-    <div class="lbld">
-        <div class="lbl0">Amenities</div>
-        <div class="amenities-col">
-            {% for amenity in room.amenities.all %}
-            <div class="amenity">
-                {{amenity}}
+        <div class="lbld">
+            <div class="lbl0">Amenities</div>
+            <div class="amenities-col">
+                {% for amenity in room.amenities.all %}
+                <div class="amenity">
+                    {{amenity}}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-    </div>
-    <div class="lbld">
-        <div class="lbl0">House rules</div>
-        <div class="hrule-col">
-            {% for rule in room.house_rules.all %}
-            <div class="hrule">
-                {{rule}}
+        <div class="lbld">
+            <div class="lbl0">House rules</div>
+            <div class="hrule-col">
+                {% for rule in room.house_rules.all %}
+                <div class="hrule">
+                    {{rule}}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-    </div>
-    <div class="lbld">
-        <div class="lbl0">Reviews</div>
-        <div class="revsta">
-            <div class="revsta-t">{{room.average_rating}}</div>
-            <div class="rstars">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false">
-                    <path fill-rule="evenodd"
-                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
-                    </path>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false">
-                    <path fill-rule="evenodd"
-                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
-                    </path>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false">
-                    <path fill-rule="evenodd"
-                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
-                    </path>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false">
-                    <path fill-rule="evenodd"
-                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
-                    </path>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
-                    focusable="false">
-                    <path fill-rule="evenodd"
-                        d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
-                    </path>
-                </svg>
-            </div>
-            {% if room.average_rating >= 4.0 %}
-            <div class="guestfav">
-                Most people recommend this place!
-            </div>
-            {% endif %}
-        </div>
-        <div id="room-reviews-content">
-            {% for review in reviews %}
-            <div class="review">
-                <a href="{% url 'user_profile' review.user.username %}">
-                    {% if review.user.profile.avatar.url != null %}
-                    <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
-                    {% else %}
-                    <div class="pp" style="background: linear-gradient({{review.user.profile.avatar_default}});">
-                        <div class="grcn">
-                            {{review.user.profile.name|slice:"0:1"}}
-                        </div>
+        <div class="lbld">
+            <div class="lbl0">Reviews</div>
+            <div class="revsta">
+                <div class="revlt">
+                    <div class="revsta-t">{{room.average_rating}}</div>
+                    <div class="revtxt">{% if room.average_rating == 0 %}No reviews yet{% else %}Most helpful reviews{% endif %}</div>
+                </div>
+                <div class="revrt">
+                    <div class="rstars">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                            focusable="false">
+                            <path fill-rule="evenodd"
+                                d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                            </path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                            focusable="false">
+                            <path fill-rule="evenodd"
+                                d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                            </path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                            focusable="false">
+                            <path fill-rule="evenodd"
+                                d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                            </path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                            focusable="false">
+                            <path fill-rule="evenodd"
+                                d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                            </path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                            focusable="false">
+                            <path fill-rule="evenodd"
+                                d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    {% if room.average_rating >= 4.0 %}
+                    <div class="revtxt">
+                        Most people recommend this place!
                     </div>
                     {% endif %}
-                </a>
-                <div class="n-d">
-                    <div class="n-stayed">
-                        <a href="{% url 'user_profile' review.user.username %}"
-                            class="reviewer-name">{{review.user.profile.name}}</a>
-                        <div class="spr">•</div>
-                        <div class="review-date">{{review.get_date}}</div>
-                    </div>
-                    <!--  -->
-                    <div class="r-stars">
-                        {{review.user_ratings|safe}}
-                    </div>
-                    <div class="review-text">{{review.review_text}}</div>
                 </div>
             </div>
-            {% empty %}
-            <div class="infotxt">No reviews yet.</div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="lbld">
-        <div class="lbl0">Where it's located</div>
-        <div class="collbsh">
-            {{room.address}}, {{room.get_city_display}}, Uzbekistan
-        </div>
-        <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
-        <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
-        <div id="room_map" class="room-location"></div>
-    </div>
-</div>
-<form action="{% url 'book_room' room.id %}" method="post" class="right-info-column">
-    {% csrf_token %}
-    <div class="htxt">How many guests are there</div>
-    <button type="button" class="collapsible">
-        <div class="lb" style="display: flex; flex-direction: column; align-items: self-start;">
-            <span class="small-title">Guests</span>
-            <div class="hmadults" id="g_amt">1</div>
-        </div>
-        <div class="rb">
-            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="12" fill="none" viewBox="0 0 16 12">
-                <path fill="currentColor" d="M4.4544 3.691a.9.9 0 0 0-1.1087 1.418l4.0966 3.2033a.9.9 0 0 0 1.1085.0002l4.0999-3.2032a.9.9 0 1 0-1.1082-1.4185L7.9969 6.461l-3.5425-2.77Z"/>
-            </svg >
-        </div>
-    </button>
-    <div class="colpscol">
-        <div class="gstwinf">
-            <div class="gstsform">
-                <span class="small-title">Adults</span>
-                <div class="gstfl">
-                    <span id="guestM" class="minus">-</span>
-                    <input type="text" id="adults" min="0" max="99" value="1" />
-                    <span id="guestP" class="plus">+</span>
+            <div id="room-reviews-content">
+                {% for review in reviews %}
+                <div class="review">
+                    <a href="{% url 'user_profile' review.user.username %}">
+                        {% if review.user.profile.avatar.url != null %}
+                        <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+                        {% else %}
+                        <div class="pp" style="background: linear-gradient({{review.user.profile.avatar_default}});">
+                            <div class="grcn">
+                                {{review.user.profile.name|slice:"0:1"}}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </a>
+                    <div class="n-d">
+                        <div class="n-stayed">
+                            <a href="{% url 'user_profile' review.user.username %}"
+                                class="reviewer-name">{{review.user.profile.name}}</a>
+                            <div class="spr">•</div>
+                            <div class="review-date">{{review.get_date}}</div>
+                        </div>
+                        <!--  -->
+                        <div class="r-stars">
+                            {{review.user_ratings|safe}}
+                        </div>
+                        <div class="review-text">{{review.review_text}}</div>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            <div id="ginfo"></div>
         </div>
+        <div class="lbld">
+            <div class="lbl0">Where it's located</div>
+            <div class="collbsh">
+                {{room.address}}, {{room.get_city_display}}, Uzbekistan
+            </div>
+            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
+            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
+            <div id="room_map" class="room-location"></div>
+        </div>
+    </div>
+    <form id="reserve-form" action="{% url 'book_room' room.id %}" method="POST" class="right-info-column" onsubmit="submitForm(event)">
+        {% csrf_token %}
+        <div class="htxt">How many guests are there</div>
+        <button type="button" class="collapsible">
+            <div class="lb" style="display: flex; flex-direction: column; align-items: self-start;">
+                <span class="small-title">Guests</span>
+                <div class="hmadults" id="g_amt">1</div>
+            </div>
+            <div class="rb">
+                <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="12" fill="none" viewBox="0 0 16 12">
+                    <path fill="currentColor" d="M4.4544 3.691a.9.9 0 0 0-1.1087 1.418l4.0966 3.2033a.9.9 0 0 0 1.1085.0002l4.0999-3.2032a.9.9 0 1 0-1.1082-1.4185L7.9969 6.461l-3.5425-2.77Z"/>
+                </svg >
+            </div>
+        </button>
+        <div class="colpscol">
+            <div class="gstwinf">
+                <div class="gstsform">
+                    <span class="small-title">Adults</span>
+                    <div class="gstfl">
+                        <span id="guestM" class="minus">-</span>
+                        <input type="text" id="adults" min="0" max="99" value="1" disabled/>
+                        <span id="guestP" class="plus">+</span>
+                    </div>
+                </div>
+                <div id="ginfo"></div>
+            </div>
 
-        <div class="gstsform">
-            <span class="small-title">Children</span>
-            <div class="gstfl">
-                <span id="childM" class="minus">-</span>
-                <input type="text" id="children" min="0" max="99"
-                    value="0" />
-                <span id="childP" class="plus">+</span>
+            <div class="gstsform">
+                <span class="small-title">Children</span>
+                <div class="gstfl">
+                    <span id="childM" class="minus">-</span>
+                    <input type="text" id="children" min="0" max="99" value="0" disabled/>
+                    <span id="childP" class="plus">+</span>
+                </div>
+            </div>
+            <div class="gstsform">
+                <span class="small-title">Infants</span>
+                <div class="gstfl">
+                    <span id="infantM" class="minus">-</span>
+                    <input type="text" id="infants" min="0" max="99" value="0" disabled/>
+                    <span id="infantP" class="plus">+</span>
+                </div>
+            </div>
+            <div class="gstsform">
+                <span class="small-title">Pets</span>
+                <div class="gstfl">
+                    <span id="petM" class="minus">-</span>
+                    <input type="text" id="pets" min="0" max="99" value="0" disabled/>
+                    <span id="petP" class="plus">+</span>
+                </div>
             </div>
         </div>
-        <div class="gstsform">
-            <span class="small-title">Infants</span>
-            <div class="gstfl">
-                <span id="infantM" class="minus">-</span>
-                <input type="text" id="infants" min="0" max="99" value="0" />
-                <span id="infantP" class="plus">+</span>
+        <div class="ahr15"></div>
+        <div class="htxt">When you want to stay</div>
+        <div class="rcrflex" style="margin-top: 13px;">
+            <div class="check-io">
+                <span class="small-title">Check-in</span>
+                <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                    max='{{room.check_out|date:"Y-m-d"}}'>
+            </div>
+            <div class="check-io">
+                <span class="small-title">Check-out</span>
+                <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                    max='{{room.check_out|date:"Y-m-d"}}'>
             </div>
         </div>
-        <div class="gstsform">
-            <span class="small-title">Pets</span>
-            <div class="gstfl">
-                <span id="petM" class="minus">-</span>
-                <input type="text" id="pets" min="0" max="99" value="0" />
-                <span id="petP" class="plus">+</span>
-            </div>
+        {% if room.num_o_days > 3 %}
+        <div class="dayfls">
+            <div class="dfl" data-days="1">1 night</div>
+            {% if room.num_o_days >= 3 %}
+            <div class="dfl" data-days="3">3 nights</div>
+            {% endif %}
+            {% if room.num_o_days >= 7 %}
+            <div class="dfl" data-days="7">7 nights</div>
+            {% endif %}
+            {% if room.num_o_days >= 14 %}
+            <div class="dfl" data-days="14">14 nights</div>
+            {% endif %}
         </div>
-    </div>
-    <div class="ahr15"></div>
-    <div class="htxt">When you want to stay</div>
-    <div class="rcrflex" style="margin-top: 13px;">
-        <div class="check-io">
-            <span class="small-title">Check-in</span>
-            <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
-                max='{{room.check_out|date:"Y-m-d"}}'>
-        </div>
-        <div class="check-io">
-            <span class="small-title">Check-out</span>
-            <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
-                max='{{room.check_out|date:"Y-m-d"}}'>
-        </div>
-    </div>
-    {% if room.num_o_days > 3 %}
-    <div class="dayfls">
-        <div class="dfl" data-days="1">1 night</div>
-        {% if room.num_o_days >= 3 %}
-        <div class="dfl" data-days="3">3 nights</div>
         {% endif %}
-        {% if room.num_o_days >= 7 %}
-        <div class="dfl" data-days="7">7 nights</div>
-        {% endif %}
-        {% if room.num_o_days >= 14 %}
-        <div class="dfl" data-days="14">14 nights</div>
-        {% endif %}
-    </div>
-    {% endif %}
-    <div class="sticky-right-col">
-        <div class="price-info">
-            UZS
-            <span id="total-price" class="room-price">{{room.tot_price}}</span>
-        </div>
-        <div class="actualprice">UZS <span id="actual-price">{{room.get_price}}</span>/night</div>
-        <div class="ahr"></div>
-        <div class="pricing-col">
-            <div class="left-text">UZS {{room.get_price}} x <span id="num-nights">{{room.num_o_days}}</span> nights
+        <div class="sticky-right-col">
+            <div class="price-info">
+                UZS
+                <span id="total-price" class="room-price">{{room.tot_price}}</span>
             </div>
-            <div class="right-text">UZS <span id="bynight-price">{{room.count_nights_price}}</span></div>
+            <div class="actualprice">UZS <span id="actual-price">{{room.get_price}}</span>/night</div>
+            <div class="ahr"></div>
+            <div class="pricing-col">
+                <div class="left-text">UZS {{room.get_price}} x <span id="num-nights">{{room.num_o_days}}</span> nights
+                </div>
+                <div class="right-text">UZS <span id="bynight-price">{{room.count_nights_price}}</span></div>
+            </div>
+            <div class="pricing-col" style="margin-top: 13px;">
+                <div class="left-text">Houze fee</div>
+                <div class="right-text">UZS <span id="houze-fee">{{room.fee}}</span></div>
+            </div>
+            <div class="payment">
+                <button class="btn" id="message-btn">Reserve</button>
+            </div>
+            <div id="resinf"></div>
         </div>
-        <div class="pricing-col" style="margin-top: 13px;">
-            <div class="left-text">Houze fee</div>
-            <div class="right-text">UZS <span id="houze-fee">{{room.fee}}</span></div>
-        </div>
-        <div class="payment">
-            <button class="btn" id="message-btn">Reserve</button>
-        </div>
-    </div>
-</form>
+    </form>
+</div>
 </div>
 
 <div class="roomrecs">
@@ -338,6 +343,47 @@
 
 {% block scripts %}
 <script>
+  const checkOutInput = document.querySelector('input[name="check_out"]');
+  const checkOut = new Date(checkOutInput.value)
+  
+  leastDate = 
+  
+</script>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const guests = parseInt(document.getElementById('g_amt').textContent);
+
+        if (isNaN(guests) || guests < 1) {
+            document.getElementById('resinf').textContent = '{% trans "Guest amount should be at least 1" %}';
+            return;
+        }
+
+        const formData = new FormData(document.getElementById('reserve-form'));
+
+        fetch("{% url 'book_room' room.id %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(data => {
+                    window.location.href = `/rooms/${data.room_id}`;
+                });
+            } else {
+                document.getElementById('resinf').textContent = '{% trans "Error processing the request" %}';
+            }
+        }).catch(error => {
+            document.getElementById('resinf').textContent = '{% trans "Error processing the request" %}';
+        });
+    }
+</script>
+
+<script>
   document.addEventListener("DOMContentLoaded", function() {
     var coll = document.getElementsByClassName("collapsible");
 
@@ -345,7 +391,7 @@
       coll[i].addEventListener("click", function() {
         this.classList.toggle("active");
         var content = this.nextElementSibling;
-        if (content.style.display === "block") {
+        if (content.style.display === "flex") {
           content.style.display = "none";
         } else {
           content.style.display = "flex";
@@ -366,6 +412,7 @@
             const pets = parseInt($('#pets').val());
             const totalGuests = adults + children + infants + pets;
 
+            // Update the g_amt text
             $('#g_amt').text(totalGuests);
 
             // Disable the plus buttons if total guests reach the max limit
@@ -399,39 +446,50 @@
         function updateButtonState() {
             const adults = parseInt($('#adults').val());
 
-            if (adults <= 0 ) {
-              document.getElementById("ginfo").textContent = "There should be at least 1 Adult";
+            if (adults <= 0) {
+                document.getElementById("ginfo").textContent = "There should be at least 1 Adult";
+                resetValues();
+                $('#g_amt').text(0); // Set total guests to 0
+
+                $('.gstfl').each(function () {
+                    const $input = $(this).find('input');
+                    if ($input.attr('id') !== 'adults') {
+                        $(this).find('.minus').addClass('disabled');
+                        $(this).find('.plus').addClass('disabled');
+                    }
+                });
+
+                // Disable minus button for adults if count is 0
+                $('#guestM').addClass('disabled');
+
+            } else {
+                document.getElementById("ginfo").textContent = "";
+                $('#guestM').removeClass('disabled'); // Enable minus button for adults
+
+                $('.gstfl').each(function () {
+                    const $input = $(this).find('input');
+                    const count = parseInt($input.val());
+                    const totalGuests = parseInt($('#g_amt').text());
+
+                    if (count <= 0) {
+                        $(this).find('.minus').addClass('disabled');
+                    } else {
+                        $(this).find('.minus').removeClass('disabled');
+                    }
+
+                    if (totalGuests >= maxGuests) {
+                        $(this).find('.plus').addClass('disabled');
+                    } else {
+                        $(this).find('.plus').removeClass('disabled');
+                    }
+                });
             }
-            else {
-              document.getElementById("ginfo").textContent = "";
-            }
+        }
 
-            // Enable or disable the minus buttons based on the count
-            $('.gstfl').each(function() {
-                const $input = $(this).find('input');
-                const count = parseInt($input.val());
-                const totalGuests = parseInt($('#g_amt').text());
-
-
-                if (count <= 0) {
-                    $(this).find('.minus').addClass('disabled');
-                } else {
-                    $(this).find('.minus').removeClass('disabled');
-                }
-
-                if (adults <= 0 ) {
-                  $(this).find('.plus').addClass('disabled');
-                }
-                else {
-                  $(this).find('.plus').removeClass('disabled');
-                }
-
-                if (totalGuests >= maxGuests) {
-                    $(this).find('.plus').addClass('disabled');
-                } else {
-                    $(this).find('.plus').removeClass('disabled');
-                }
-            });
+        function resetValues() {
+            $('#children').val(0);
+            $('#infants').val(0);
+            $('#pets').val(0);
         }
 
         $('.plus').click(function () {
@@ -574,7 +632,6 @@
     updatePrices();
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVdh2z7vsB9yzk1Rcr1Zmrykkqj-bNwcI&language=en"></script>
 <script>
     // Function to check the internet connection status
     function checkOnlineStatus() {
@@ -583,26 +640,26 @@
 
     function initializeMap() {
         document.getElementById("room_map").textContent = "";
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
 
         var initialLatitude = parseFloat(document.getElementById('latitude').value);
         var initialLongitude = parseFloat(document.getElementById('longitude').value);
 
-        // Define custom styles for the map
-
-
-        // Initialize the map with custom styles
-        var room_map = new google.maps.Map(document.getElementById('room_map'), {
-            center: { lat: initialLatitude, lng: initialLongitude },
+        // Initialize the map
+        var room_map = new mapboxgl.Map({
+            container: 'room_map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
             zoom: 13
-            // styles: mapStyles
         });
+
+        // Add zoom and unzoom controls
+        room_map.addControl(new mapboxgl.NavigationControl());
 
         // Create marker
-        var marker = new google.maps.Marker({
-            position: { lat: initialLatitude, lng: initialLongitude },
-            map: room_map,
+        var marker = new mapboxgl.Marker({
             draggable: false
-        });
+        }).setLngLat([initialLongitude, initialLatitude]).addTo(room_map);
     }
 
     function displayOfflineMessage() {
@@ -628,13 +685,6 @@
 
     window.addEventListener('offline', () => {
         displayOfflineMessage();
-    });
-
-    // Additional event listener to handle the case when the Google Maps script fails to load
-    window.addEventListener('error', (event) => {
-        if (event.target.tagName === 'SCRIPT' && event.target.src.includes('maps.googleapis.com')) {
-            displayOfflineMessage();
-        }
     });
 </script>
 
