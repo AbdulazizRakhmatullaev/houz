@@ -358,7 +358,7 @@ b {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 52px 0 22px;
+  padding: 32px 0 22px;
 }
 
 .brief-name {
@@ -585,15 +585,20 @@ b {
 }
 
 .review {
+  cursor: pointer;
   font-size: 14px;
   padding: 12px;
   width: 300px;
-  height: 100px;
+  height: 110px;
   background: #fff;
   border: 1px solid #d2d2d7;
   border-radius: 18px;
   display: flex;
   align-items: start;
+}
+
+.review:hover {
+  border: 1px solid #1d1d1f;
 }
 
 .reviewer-name {
@@ -682,7 +687,7 @@ b {
 .review-text {
   margin-top: 5px;
   width: 260px;
-  height: 69px;
+  height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   word-break: break-word;
@@ -2181,7 +2186,7 @@ select {
 
 
 .revsta-t {
-  font-size: 30px;
+  font-size: 42px;
   font-weight: 600;
   letter-spacing: 0;
   line-height: 1.1;
@@ -2190,7 +2195,7 @@ select {
 .revsta {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
   margin: 10px 0 15px;
   gap: 5px;
 }
@@ -2207,8 +2212,8 @@ select {
 }
 
 .rstars svg {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   vertical-align: middle;
 }
 
@@ -2578,17 +2583,16 @@ input:disabled {
 }
 
 .revlt {
-  height: 55px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .revrt {
-  height: 55px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 4px;
 }
 
 #ppDropdown {
@@ -2646,4 +2650,8 @@ input:disabled {
 
 .ppdrcon {
   color: grey;
+}
+
+.tnrec {
+  display: flex;
 }

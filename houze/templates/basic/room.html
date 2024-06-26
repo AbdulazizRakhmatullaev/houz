@@ -137,11 +137,21 @@
             </div>
         </div>
         <div class="lbld">
-            <div class="lbl0">Reviews</div>
+            <div class="lbl0">Ratings & Reviews</div>
             <div class="revsta">
                 <div class="revlt">
                     <div class="revsta-t">{{room.average_rating}}</div>
-                    <div class="revtxt">{% if room.average_rating == 0 %}No reviews yet{% else %}Most helpful reviews{% endif %}</div>
+                    <div class="tnrec">
+                        <div class="revtxt">
+                            {% if room.average_rating == 0 %}No reviews yet{% else %}Most helpful reviews{% endif %}
+                        </div>
+                        {% if room.average_rating >= 4.0 %}
+                        <div class="spr">•</div>
+                        <div class="revtxt">
+                            People recommend this place!
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="revrt">
                     <div class="rstars">
@@ -176,9 +186,9 @@
                             </path>
                         </svg>
                     </div>
-                    {% if room.average_rating >= 4.0 %}
+                    {% if room.rating_set.count > 0 %}
                     <div class="revtxt">
-                        Most people recommend this place!
+                        {{room.rating_set.count}} {% if room.rating_set.count == 1 %}Rating{% else %}Ratings{% endif %}
                     </div>
                     {% endif %}
                 </div>
@@ -208,7 +218,13 @@
                         <div class="r-stars">
                             {{review.user_ratings|safe}}
                         </div>
-                        <div class="review-text">{{review.review_text}}</div>
+                        <div class="review-text">
+                            {% if review.review_text|length < 50 %}
+                                {{review.review_text}}
+                            {% else %}
+                                {{review.review_text|slice:":120"}}...
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -342,14 +358,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-  const checkOutInput = document.querySelector('input[name="check_out"]');
-  const checkOut = new Date(checkOutInput.value)
-  
-  leastDate = 
-  
-</script>
-
 <script>
     function submitForm(event) {
         event.preventDefault(); // Prevent the default form submission
