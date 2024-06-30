@@ -75,8 +75,8 @@
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
-                <label class="prlbl" data-domain="UZS">
-                    <input type="text" id="price" name="price" placeholder="{% trans 'min price: 10 000' %}"
+                <label class="prlbl" data-domain="{{currency}}">
+                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}"
                         maxlength="10" />
                     <label>
                         <div id="price-error" class="errTxt"></div>
@@ -193,7 +193,7 @@
     }
 </script>
 
-<script>
+<!-- <script>
     (function ($, undefined) {
         "use strict";
 
@@ -230,7 +230,7 @@
             });
         });
     })(jQuery);
-</script>
+</script> -->
 
 <script>
     $(document).ready(function () {
@@ -397,10 +397,10 @@
             price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price is required" %}';
             return;
         }
-        if (price.value.length < 6) {
-            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price should at least start from 10,000" %}';
-            return;
-        }
+        // if (price.value.length < 6) {
+        //     price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price should at least start from 10,000" %}';
+        //     return;
+        // }
 
         if (description.value.trim() === '') {
             description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description is required" %}';

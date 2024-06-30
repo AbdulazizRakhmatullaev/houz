@@ -379,7 +379,6 @@ b {
   font-weight: 600;
   letter-spacing: -0.022em;
   line-height: 1.1764805882;
-  margin-top: 3px;
   box-sizing: border-box;
   white-space: nowrap;
   color: #b64400;
@@ -746,7 +745,7 @@ b {
 
 .check-io {
   box-sizing: border-box;
-  padding: 10px;
+  padding: 14px;
   width: 100%;
   margin-bottom: 10px;
   border: 1px solid #86868b;
@@ -2068,6 +2067,9 @@ select {
 
 .p-last {
   margin-top: 5px;
+  display: flex;
+  gap: 5px;
+  justify-content: right;
 }
 
 .flex {
@@ -2356,17 +2358,17 @@ input[type='date']::-webkit-calendar-picker-indicator {
   display: flex;
   gap: 5px;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .dfl {
-  margin-bottom: 15px;
   cursor: pointer;
   padding: 8px 13px;
   background: #f5f5f7;
   border-radius: 10px;
 }
 
-.dfl.active {
+.dfl:focus {
   background: #f0f0f0;
 }
 
@@ -2407,7 +2409,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
 .gstsform {
   box-sizing: border-box;
-  padding: 10px;
+  padding: 15px;
   width: 100%;
   border: 1px solid #86868b;
   border-radius: 12px;
@@ -2432,7 +2434,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
 .collapsible {
   cursor: pointer;
-  padding: 10px;
+  padding: 15px;
   box-sizing: border-box;
   width: 100%;
   margin: 13px 0 15px;

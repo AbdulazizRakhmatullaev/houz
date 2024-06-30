@@ -132,7 +132,7 @@ class Profile(models.Model):
         verbose_name_plural = "Profiles"
 
     def my_rating(self):
-        avg = Rating.objects.filter(user=self.user).aggregate(Avg("rating"))[
+        avg = Rating.objects.filter(room__host=self.user).aggregate(Avg("rating"))[
             "rating__avg"
         ]
         if avg is not None:
@@ -145,7 +145,7 @@ class Profile(models.Model):
         return full_name[0]
 
     def badge(self):
-        rt = Rating.objects.filter(user=self.user).aggregate(Avg("rating"))[
+        rt = Rating.objects.filter(room__host=self.user).aggregate(Avg("rating"))[
             "rating__avg"
         ]
         if rt is None:
@@ -206,14 +206,16 @@ class Room(models.Model):
     city = models.CharField(
         max_length=200, null=True, choices=Region_Choices, default="Tashkent"
     )
+    currency = models.CharField("currency", max_length=3, default="UZS", null=False)
     price = models.IntegerField("Price")
     address = models.CharField(max_length=255)
     guests = models.IntegerField("Guests")
     beds = models.IntegerField("Beds")
     bedrooms = models.IntegerField("Bedrooms")
     baths = models.IntegerField("Baths")
-    check_in = models.DateField("Check in")
-    check_out = models.DateField("Check out")
+    is_pets = models.BooleanField("Pets are allowed", default=False)
+    check_in = models.DateTimeField("Check in")
+    check_out = models.DateTimeField("Check out")
     room_type = models.CharField(
         "Room type",
         max_length=255,
@@ -260,14 +262,17 @@ class Room(models.Model):
     def count_nights_price(self):
         days = (self.check_out - self.check_in).days
         total_price = days * self.price
-        return "{:,}".format(total_price)
+        # return "{:,}".format(total_price)
+        return total_price
 
     def fee(self):
         days = (self.check_out - self.check_in).days
         total_price = days * self.price
         fee = 0.33 * total_price
         fee = int(fee)
-        return "{:,}".format(fee)
+
+        # return "{:,}".format(fee)
+        return fee
 
     def tot_price(self):
         days = (self.check_out - self.check_in).days
@@ -340,6 +345,12 @@ class Room(models.Model):
             + " | "
             + str(self.date.strftime("%Y-%m-%d"))
         )
+
+
+class ExchangeRate(models.Model):
+    currency = models.CharField(max_length=3, unique=True)
+    rate_to_uzs = models.DecimalField(max_digits=10, decimal_places=4)  # UZS as base
+    date_updated = models.DateTimeField(auto_now=True)
 
 
 class Reservation(models.Model):

@@ -89,10 +89,8 @@
             </div>
             {% if user == request.user %}
             <div class="p-last">
-                <a href="{% url 'signout' %}" class="btn-white" onclick="return confirmReq()">Edit</a>
-                <div class="btnsubstart">
-                    <a href="{% url 'signout' %}" class="btn-white" onclick="return confirmReq()">Sign out</a>
-                </div>
+                <a href="{% url 'profile_edit' %}" class="btn-white">Edit</a>
+                <a href="{% url 'signout' %}" class="btn-white" onclick="return confirmReq()">Sign out</a>
             </div>
             {% endif %}
         </div>

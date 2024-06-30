@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "location_field.apps.DefaultConfig",
     "channels",
     'rosetta',
-    'payme'
+    'payme',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +58,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # mine
     'django.middleware.locale.LocaleMiddleware',
+    'houze.middleware.CurrencyMiddleware',
 ]
 
 ROOT_URLCONF = "business.urls"

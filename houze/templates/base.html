@@ -128,7 +128,19 @@
                                         </div>
                                         <div class="ppdrnm">Currency:</div>
                                     </div>
-                                    <div class="ppdrcon">UZS</div>
+                                    <div class="ppdrcon">
+                                        <form method="GET" action="{% url 'set_currency' %}" class="language-form">
+                                            <select name="currency" onchange="this.form.submit()" class="lngsel">
+                                                <option value="UZS" {% if request.currency == 'UZS' %}selected{% endif %}>UZS</option>
+                                                <option value="USD" {% if request.currency == 'USD' %}selected{% endif %}>USD</option>
+                                                <option value="RUB" {% if request.currency == 'RUB' %}selected{% endif %}>RUB</option>
+                                                <option value="GBP" {% if request.currency == 'GBP' %}selected{% endif %}>GBP</option>
+                                                <option value="JPY" {% if request.currency == 'JPY' %}selected{% endif %}>JPY</option>
+                                                <option value="CHF" {% if request.currency == 'CHF' %}selected{% endif %}>CHF</option>
+                                                <option value="CNY" {% if request.currency == 'CNY' %}selected{% endif %}>CNY</option>
+                                            </select>
+                                        </form>
+                                    </div>
                                 </div>
                                 <div href="" class="ppdrcol" style="justify-content: space-between;">
                                     <div class="ppdrInN">

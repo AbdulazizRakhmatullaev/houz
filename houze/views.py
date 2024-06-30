@@ -1,3 +1,4 @@
+from requests.sessions import Session
 from .models import (
     Room,
     Profile,
@@ -11,6 +12,7 @@ from .models import (
     Comment,
     Region_Choices,
     RoomTypes,
+    ExchangeRate
 )
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
@@ -35,6 +37,8 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import translation
+import requests
+from google_currency import convert  
 
 
 def is_ajax(request):
@@ -42,25 +46,13 @@ def is_ajax(request):
 
 
 def home(request):
-    # flt = request.GET.get("filter", "city")  # Default to filtering by city
-    # filter_value = request.GET.get(flt)  # Get the value for the selected filter
     rooms = Room.objects.all()
-    # # Handle filtering based on flt value
-    # if flt == "city":
-    #     rooms = rooms.filter(city=filter_value)
-    # elif flt == "rating":
-    #     if filter_value == "highest":
-    #         rooms = rooms.order_by("-rating__rating")
-    #     elif filter_value == "lowest":
-    #         rooms = rooms.order_by("rating__rating")
+    currency = request.session.get('currency', 'UZS')
+    
+    for room in rooms:
+        room.converted_price = convert_price(room.currency, currency, room.price)
 
-    # # Check if it's an AJAX request
-    # if is_ajax(request=request):
-    #     html = render_to_string("temps/room_list.html", {"rooms": rooms})
-    #     return JsonResponse({"html": html})
-
-    return render(request, "basic/home.html", {"rooms": rooms})
-
+    return render(request, "basic/home.html", {"rooms": rooms, "currency": currency})
 
 def create_notification(
     sender,
@@ -473,7 +465,7 @@ def signout(request):
     return redirect("home")
 
 
-def editProfile(request):
+def profile_edit(request):
     if request.user.is_authenticated:
         user_profile = Profile.objects.get(user=request.user)
         user_model = User.objects.get(username=request.user.username)
@@ -509,7 +501,7 @@ def editProfile(request):
 
         return render(
             request,
-            "basic/user.html",
+            "basic/profile_edit.html",
             {"user_profile": user_profile, "user_model": user_model},
         )
     return redirect("home")
@@ -543,6 +535,8 @@ def avatarDelete(request):
 def room_create(request):
     regions = Region_Choices
     room_types = RoomTypes
+    currency = request.session.get('currency', 'UZS')
+    
     if request.user.is_authenticated:
         if request.method == "POST":
             host = request.user
@@ -587,6 +581,7 @@ def room_create(request):
                 title=title,
                 description=description,
                 city=city,
+                currency=currency,
                 price=price,
                 address=address,
                 guests=guests,
@@ -628,7 +623,7 @@ def room_create(request):
         return render(
             request,
             "basic/room_create.html",
-            {"regions": regions, "room_types": room_types},
+            {"regions": regions, "room_types": room_types, "currency": currency},
         )
     return redirect("signin")
 
@@ -740,6 +735,14 @@ def img_delete(request, img_id):
 
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
+    
+    currency = request.session.get('currency', 'UZS')  # Fetch from session
+    
+    room_converted_price = convert_price(room.currency, currency, room.price)
+    room_tot_price = convert_price(room.currency, currency, room.tot_price())
+    room_count_nights_price = convert_price(room.currency, currency, room.count_nights_price())
+    room_fee = convert_price(room.currency, currency, room.fee())
+    
     rooms = Room.objects.exclude(id=room.id).all()
     reservations = Reservation.objects.filter(room=room)
     reviews = room.rating_set.order_by("-date")
@@ -752,6 +755,11 @@ def room_detail(request, room_id):
             "rooms": rooms,
             "reviews": reviews,
             "num_o_days": num_o_days,
+            'currency': currency, 
+            'room_converted_price': room_converted_price,
+            'room_tot_price': room_tot_price,
+            'room_count_nights_price': room_count_nights_price,
+            'room_fee': room_fee,
         },
     )
 
@@ -851,13 +859,13 @@ def set_language(request):
         return response
     else:
         return redirect('/')
-
+        
 def set_currency(request):
-    user_currency = request.GET.get('currency')
-    if user_currency:
-        translation.activate(user_language)
-        response = redirect(request.META.get('HTTP_REFERER', '/'))
-        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
-        return response
-    else:
-        return redirect('/')
+    currency = request.GET.get('currency', 'UZS')
+    request.session['currency'] = currency
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+def convert_price(from_cur, to_cur, price):
+    bef = convert(from_cur, to_cur, price)[1:-1]
+    aft = dict((k.strip()[1:-1], v.strip()) for k,v in (item.split(':') for item in bef.split(',')))["amount"]
+    return "{:,}".format(float(aft[1:-1]))

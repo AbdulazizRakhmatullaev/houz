@@ -8,7 +8,7 @@ urlpatterns = [
     path("signin", views.signin, name="signin"),
     path("signout", views.signout, name="signout"),
     # SETTINGS
-    # path("settings/profile", views.editProfile, name="editProfile"),
+    path("profile/edit", views.profile_edit, name="profile_edit"),
     # path("settings/profile/avatar", views.avatarEdit, name="avatarEdit"),
     # path("settings/profile/avatar/delete", views.avatarDelete, name="ppDelete"),
     # roomING
@@ -39,4 +39,5 @@ urlpatterns = [
     path('set_language/', views.set_language, name='set_language'),
     #
     path("@<str:username>", views.user_profile, name="user_profile"),
+    path('set_currency/', views.set_currency, name='set_currency'),
 ]

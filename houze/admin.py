@@ -5,6 +5,8 @@ from .models import *
 class Profile_list(admin.ModelAdmin):
     list_display = ["user", "name", "phone_number"]
 
+class Currency_list(admin.ModelAdmin):
+    list_display = ["currency", "rate_to_uzs"]
 
 class saveAs(admin.ModelAdmin):
     save_as = True
@@ -19,3 +21,4 @@ admin.site.register(HouseRule)
 admin.site.register(Notification)
 admin.site.register(Reservation)
 admin.site.register(Comment)
+admin.site.register(ExchangeRate, Currency_list)
