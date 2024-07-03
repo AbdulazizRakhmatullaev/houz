@@ -348,8 +348,9 @@ class Room(models.Model):
 
 
 class ExchangeRate(models.Model):
-    currency = models.CharField(max_length=3, unique=True)
-    rate_to_uzs = models.DecimalField(max_digits=10, decimal_places=4)  # UZS as base
+    from_currency = models.CharField("from_currency", max_length=3)
+    to_currency = models.CharField("to_currency", max_length=3)
+    value = models.FloatField("Value")
     date_updated = models.DateTimeField(auto_now=True)
 
 

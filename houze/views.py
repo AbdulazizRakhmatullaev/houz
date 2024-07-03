@@ -47,10 +47,10 @@ def is_ajax(request):
 
 def home(request):
     rooms = Room.objects.all()
-    currency = request.session.get('currency', 'UZS')
+    currency = show_currency(request.session.get('currency', 'UZS'))
     
     for room in rooms:
-        room.converted_price = convert_price(room.currency, currency, room.price)
+        room.converted_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.price)
 
     return render(request, "basic/home.html", {"rooms": rooms, "currency": currency})
 
@@ -360,6 +360,12 @@ def user_profile(request, username):
     user = get_object_or_404(User, username__exact=username)
     is_own_profile = user == request.user
     rooms = user.room_set.all().order_by("-date")
+    
+    currency = show_currency(request.session.get('currency', 'UZS'))
+    
+    for room in rooms:
+        room.converted_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.price)
+        
     comments = Comment.objects.filter(reciever=user).order_by("-created_at")
     reviews = Rating.objects.filter(room__in=rooms).order_by("-date")
     rating_count = reviews.count()
@@ -373,6 +379,7 @@ def user_profile(request, username):
             "comments": comments,
             "reviews": reviews,
             "rating_count": rating_count,
+            "currency": currency
         },
     )
 
@@ -535,7 +542,7 @@ def avatarDelete(request):
 def room_create(request):
     regions = Region_Choices
     room_types = RoomTypes
-    currency = request.session.get('currency', 'UZS')
+    currency = show_currency(request.session.get('currency', 'UZS'))
     
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -639,6 +646,7 @@ def room_delete(request, id):
 
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
+    currency = show_currency(request.session.get('currency', 'UZS'))
 
     cur_city = room.city.capitalize()
     cur_rmtype = room.room_type.capitalize()
@@ -662,6 +670,7 @@ def room_edit(request, username, id):
         "room_types": room_types,
         "amenities": amenities,
         "house_rules": house_rules,
+        "currency": currency
     }
 
     if room.host.username == username:
@@ -736,12 +745,12 @@ def img_delete(request, img_id):
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     
-    currency = request.session.get('currency', 'UZS')  # Fetch from session
+    currency = show_currency(request.session.get('currency', 'UZS'))
     
-    room_converted_price = convert_price(room.currency, currency, room.price)
-    room_tot_price = convert_price(room.currency, currency, room.tot_price())
-    room_count_nights_price = convert_price(room.currency, currency, room.count_nights_price())
-    room_fee = convert_price(room.currency, currency, room.fee())
+    room_converted_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.price)
+    room_tot_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.tot_price())
+    room_count_nights_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.count_nights_price())
+    room_fee = convert_price(room.currency, request.session.get('currency', 'UZS'), room.fee())
     
     rooms = Room.objects.exclude(id=room.id).all()
     reservations = Reservation.objects.filter(room=room)
@@ -866,6 +875,25 @@ def set_currency(request):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 def convert_price(from_cur, to_cur, price):
-    bef = convert(from_cur, to_cur, price)[1:-1]
-    aft = dict((k.strip()[1:-1], v.strip()) for k,v in (item.split(':') for item in bef.split(',')))["amount"]
-    return "{:,}".format(float(aft[1:-1]))
+    if from_cur == to_cur:
+        return "{:,}".format(price)
+    try:
+        bef = convert(from_cur, to_cur, price)[1:-1]
+        aft = dict((k.strip()[1:-1], v.strip()) for k,v in (item.split(':') for item in bef.split(',')))["amount"]
+        aft = aft.replace('"', "")
+
+        return "{:,}".format(float(aft))
+    except:
+        return None
+        
+def show_currency(cur):
+    if cur == "USD":
+        return "$"
+    elif cur == "RUB":
+        return "₽"
+    elif cur == "GBP":
+        return "₤"
+    elif cur == "JPY":
+        return "¥"
+
+    return cur + " "

@@ -76,8 +76,7 @@
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
                 <label class="prlbl" data-domain="{{currency}}">
-                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}"
-                        maxlength="10" />
+                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}">
                     <label>
                         <div id="price-error" class="errTxt"></div>
             </div>
@@ -193,7 +192,7 @@
     }
 </script>
 
-<!-- <script>
+<script>
     (function ($, undefined) {
         "use strict";
 
@@ -204,8 +203,7 @@
 
             $input.on("keyup", function (event) {
 
-
-                // When user select text in the document, also abort.
+                // When user selects text in the document, also abort.
                 var selection = window.getSelection().toString();
                 if (selection !== '') {
                     return;
@@ -221,13 +219,131 @@
                 // Get the value.
                 var input = $this.val();
 
-                var input = input.replace(/[\D\s\._\-]+/g, "");
-                input = input ? parseInt(input, 10) : 0;
+                // Remove anything that's not a number or a decimal point
+                input = input.replace(/[^0-9.]/g, "");
 
-                $this.val(function () {
-                    return (input === 0) ? "" : input.toLocaleString("en-US");
-                });
+                // Split the input on the decimal point
+                var parts = input.split('.');
+                var integerPart = parts[0] ? parseInt(parts[0], 10) : 0;
+                var decimalPart = parts[1] ? parts[1] : '';
+
+                // Determine the selected currency (you should set this dynamically based on your actual implementation)
+                var selectedCurrency = "{{currency}}";
+
+                var formattedValue;
+                if (selectedCurrency === "UZS" || selectedCurrency === "JPY" || selectedCurrency === "CNY" || selectedCurrency === "RUB") {
+                    // For currencies without cents
+                    formattedValue = integerPart.toLocaleString("en-US");
+                } else {
+                    // For currencies with cents (USD, GBP, CHF, etc.)
+                    formattedValue = integerPart.toLocaleString("en-US");
+                    if (decimalPart !== "") {
+                        formattedValue += '.' + decimalPart;
+                    }
+                }
+
+                $this.val(formattedValue);
             });
+
+            // On blur, format the value to include two decimal places if necessary
+            $input.on("blur", function () {
+                var $this = $(this);
+                var input = $this.val();
+                var selectedCurrency = "{{currency}}";
+
+                // Remove anything that's not a number or a decimal point
+                input = input.replace(/[^0-9.]/g, "");
+
+                // Split the input on the decimal point
+                var parts = input.split('.');
+                var integerPart = parts[0] ? parseInt(parts[0], 10) : 0;
+                var decimalPart = parts[1] ? parts[1] : '';
+
+                if (selectedCurrency !== "UZS" && selectedCurrency !== "JPY" && selectedCurrency !== "CNY" && selectedCurrency !== "RUB") {
+                    if (decimalPart.length === 0) {
+                        decimalPart = "00";
+                    } else if (decimalPart.length === 1) {
+                        decimalPart = decimalPart + "0";
+                    }
+                }
+
+                var formattedValue = integerPart.toLocaleString("en-US");
+                if (decimalPart !== "") {
+                    formattedValue += '.' + decimalPart;
+                }
+
+                $this.val(formattedValue);
+            });
+        });
+    })(jQuery);
+</script>
+
+
+<!-- <script>
+    (function ($, undefined) {
+        "use strict";
+
+        // When ready.
+        $(function () {
+
+            var $input = $("#price");
+
+            // Helper function to format the input based on the selected currency
+            function formatInput(input, currency) {
+                var inputNumber = parseFloat(input.replace(/,/g, ""));
+                if (isNaN(inputNumber)) return "";
+
+                if (currency === "UZS" || currency === "JPY" || currency === "CNY" || currency === "RUB") {
+                    // For currencies without cents
+                    return inputNumber.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                } else {
+                    // For currencies with cents (USD, GBP, CHF, etc.)
+                    return inputNumber.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+            }
+
+            // On focus, remove formatting to make editing easier
+            $input.on("focus", function () {
+                var $this = $(this);
+                var value = $this.val().replace(/,/g, '');
+                $this.val(value);
+            });
+
+            // On blur, format the value
+            $input.on("blur", function () {
+                var $this = $(this);
+                var input = $this.val();
+                var selectedCurrency = "{{currency}}";
+
+                $this.val(formatInput(input, selectedCurrency));
+            });
+
+            // Allow typing without immediate formatting
+            $input.on("keyup", function (event) {
+
+                // When user selects text in the document, also abort.
+                var selection = window.getSelection().toString();
+                if (selection !== '') {
+                    return;
+                }
+
+                // When the arrow keys are pressed, abort.
+                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
+                    return;
+                }
+
+                var $this = $(this);
+
+                // Get the value.
+                var input = $this.val();
+
+                // Remove anything that's not a number or a decimal point
+                var input = input.replace(/[^0-9.]/g, "");
+
+                // Set the value back to the input
+                $this.val(input);
+            });
+
         });
     })(jQuery);
 </script> -->

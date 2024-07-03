@@ -6,7 +6,7 @@ class Profile_list(admin.ModelAdmin):
     list_display = ["user", "name", "phone_number"]
 
 class Currency_list(admin.ModelAdmin):
-    list_display = ["currency", "rate_to_uzs"]
+    list_display = ["from_currency", "to_currency", "value", "date_updated"]
 
 class saveAs(admin.ModelAdmin):
     save_as = True

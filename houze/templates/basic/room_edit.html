@@ -43,9 +43,8 @@
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
-                <label class="prlbl" data-domain="UZS">
-                    <input type="text" id="price" name="price" placeholder="{% trans 'min price: 10 000' %}"
-                        maxlength="10" value="{{room.get_price}}" />
+                <label class="prlbl" data-domain="{{currency}}">
+                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}" value="{{room.get_price}}" />
                     <label>
                         <div id="price-error" class="errTxt"></div>
             </div>
@@ -400,10 +399,6 @@
 
         if (price.value.trim() === '') {
             price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price is required" %}';
-            return;
-        }
-        if (price.value.length < 6) {
-            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price should at least start from 10,000" %}';
             return;
         }
 

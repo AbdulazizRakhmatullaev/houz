@@ -322,19 +322,18 @@
         {% endif %} -->
         <div class="sticky-right-col">
             <div class="price-info">
-                {{currency}}
-                <span id="total-price" class="room-price">{{ room_tot_price }}</span>
+                {{currency}}<span id="total-price" class="room-price">{{ room_tot_price }}</span>
             </div>
-            <div class="actualprice">{{currency}} <span id="actual-price">{{room_converted_price}}</span>/night</div>
+            <div class="actualprice">{{currency}}<span id="actual-price">{{room_converted_price}}</span>/night</div>
             <div class="ahr"></div>
             <div class="pricing-col">
-                <div class="left-text">{{currency}} {{room_converted_price}} x <span id="num-nights">{{room.num_o_days}}</span> nights
+                <div class="left-text">{{currency}}{{room_converted_price}} x <span id="num-nights">{{room.num_o_days}}</span> nights
                 </div>
-                <div class="right-text">{{currency}} <span id="bynight-price">{{room_count_nights_price}}</span></div>
+                <div class="right-text">{{currency}}<span id="bynight-price">{{room_count_nights_price}}</span></div>
             </div>
             <div class="pricing-col" style="margin-top: 13px;">
                 <div class="left-text">Houze fee</div>
-                <div class="right-text">{{currency}} <span id="houze-fee">{{room_fee}}</span></div>
+                <div class="right-text">{{currency}}<span id="houze-fee">{{room_fee}}</span></div>
             </div>
             <div class="payment">
                 <button class="btn" id="message-btn">Reserve</button>
