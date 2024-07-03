@@ -647,6 +647,7 @@ def room_delete(request, id):
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
     currency = show_currency(request.session.get('currency', 'UZS'))
+    room.converted_price = convert_price(room.currency, request.session.get("currency", "UZS"), room.price)
 
     cur_city = room.city.capitalize()
     cur_rmtype = room.room_type.capitalize()

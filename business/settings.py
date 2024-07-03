@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     "location_field.apps.DefaultConfig",
     "channels",
     'rosetta',
-    'payme',
+    # 'payme',
+    "djmoney"
 ]
 
 MIDDLEWARE = [

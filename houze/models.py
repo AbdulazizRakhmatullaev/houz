@@ -12,6 +12,7 @@ from .languages import LANGUAGES
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
 
 sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
 

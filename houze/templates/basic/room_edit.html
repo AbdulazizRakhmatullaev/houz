@@ -44,7 +44,7 @@
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
                 <label class="prlbl" data-domain="{{currency}}">
-                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}" value="{{room.get_price}}" />
+                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}" value="{{room.converted_price}}" />
                     <label>
                         <div id="price-error" class="errTxt"></div>
             </div>
