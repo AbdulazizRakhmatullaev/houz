@@ -120,7 +120,7 @@ class Profile(models.Model):
     )
     name = models.CharField("Name", max_length=255)
     bio = models.CharField("Bio", max_length=255, blank=True)
-    email = models.EmailField("Email", max_length=255)
+    email = models.EmailField("Email", max_length=255, blank=True)
     phone_number = models.CharField("Phone", max_length=255, blank=True, null=True)
     city = models.CharField(max_length=200, null=True, choices=Region_Choices)
     languages = models.CharField(

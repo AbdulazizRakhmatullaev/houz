@@ -1,26 +1,23 @@
 <div class="signup-col">
-    <form action="{% url 'signup' %}" method="POST">
+    <form action="{% url 'signup' %}" method="POST" class="signui">
         {% csrf_token %}
-        <div class="lbld">
-            <label for="name">Full name</label>
-            <input type="text" name="name" placeholder="Full name" required />
+        <div class="input-wrapper">
+            <input type="text" name="name" required placeholder=" " />
+            <span>Full name</span>
         </div>
-        <div class="lbld">
-            <label for="username">Username</label>
-            <input type="text" name="username" placeholder="Username" required />
+        <div class="input-wrapper">
+            <input type="text" name="username" required placeholder=" " />
+            <span>Username</span>
         </div>
-        <div class="lbld">
-            <label for="email">Email</label>
-            <input type="text" name="email" placeholder="Email" required />
+        <div class="input-wrapper">
+            <input type="password" name="password" id="signup-pass" required placeholder=" " />
+            <span>Password</span>
         </div>
-        <div class="lbld">
-            <label for="password">Password</label>
-            <input type="password" name="password" placeholder="Password" required />
+        <div class="input-wrapper">
+            <input type="password" name="confirm" id="confirm" required placeholder=" " />
+            <span>Confirm</span>
         </div>
-        <div class="lbld">
-            <label for="confirm">Confirm password</label>
-            <input type="password" name="confirm" placeholder="Confirm password" required />
-        </div>
+        
         <div id="flex-align">
             <input class="showPassword" type="checkbox" id="toggle-signup-password" />
             <div class="showPassword-txt">

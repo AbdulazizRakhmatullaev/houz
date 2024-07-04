@@ -1,13 +1,21 @@
+{% load i18n %}
+
 <div class="signin-col">
-    <form action="{% url 'signin' %}" method="POST" class="signui">
+    <form action="{% url 'signin' %}" method="POST" class="signui" id="signin-form" onsubmit="submitForm(event)">
         {% csrf_token %}
-        <div class="lbld">
-            <label for="title">Email or username</label>
-            <input type="text" name="username" placeholder="Email or username" required />
+        <div class="lbld" id="username">
+            <div class="input-wrapper">
+                <input type="text" name="username" placeholder=" " />
+                <span>Email or username</span>
+            </div>
+            <div class="errTxt"></div>
         </div>
-        <div class="lbld">
-            <label for="title">Password</label>
-            <input type="password" name="password" id="signin-password" placeholder="Password" required />
+        <div class="lbld" id="password">
+            <div class="input-wrapper">
+                <input type="password" name="password" id="signin-password" placeholder=" " />
+                <span>Password</span>
+            </div>
+            <div class="errTxt"></div>
         </div>
         <div id="flex-align">
             <input class="showPassword" type="checkbox" id="toggle-signin-password" />
@@ -23,3 +31,54 @@
         </div>
     </form>
 </div>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const usernameInput = document.querySelector('#username input[name="username"]');
+        const passwordInput = document.querySelector('#password input[name="password"]');
+
+        // Clear previous error messages
+        document.querySelector('#username .errTxt').textContent = '';
+        document.querySelector('#password .errTxt').textContent = '';
+
+        if (usernameInput.value.trim() === '') {
+            document.querySelector('#username .errTxt').textContent = '{% trans "Email or username is required" %}';
+            return;
+        }
+
+        if (passwordInput.value.trim() === '') {
+            document.querySelector('#password .errTxt').textContent = '{% trans "Password is required" %}';
+            return;
+        }
+        if (passwordInput.value.length < 8) {
+            document.querySelector('#password .errTxt').textContent = '{% trans "Password pattern is wrong. It should be at least 8 characters" %}';
+            return;
+        }
+
+        // Create a FormData object to store form data and selected images
+        const formData = new FormData(document.getElementById('signin-form'));
+
+        // Use fetch API to submit form data to server
+        fetch("{% url 'signin' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+          .then((response) => response.json())
+          .then((data) => {
+              // Handle response
+              if (data.is_user) {
+                  window.location.href = `/`; // Adjust the URL as per your project's routing
+              } else {
+                  document.querySelector('#username .errTxt').textContent = '{% trans "Invalid information, Please check your credentials" %}';
+              }
+          }).catch(error => {
+              // Handle error
+              console.error('Error:', error);
+          });
+    }
+</script>

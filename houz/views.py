@@ -390,7 +390,6 @@ def signup(request):
         if request.method == "POST":
             username = request.POST["username"]
             name = request.POST["name"]
-            email = request.POST["email"]
             password = request.POST["password"]
             confirm = request.POST["confirm"]
 
@@ -400,15 +399,10 @@ def signup(request):
                         messages.error(request, "This Username is taken. Try again")
                         return redirect("signup")
 
-                    elif User.objects.filter(email=email).exists():
-                        messages.error(request, "This Email is taken. Try again")
-                        return redirect("signup")
-
                     else:
                         user = User.objects.create_user(
                             username=username,
                             first_name=name,
-                            email=email,
                             password=password,
                         )
                         user.save()
@@ -416,7 +410,7 @@ def signup(request):
                         # create Profile
                         user_model = User.objects.get(username=username)
                         new_profile = Profile.objects.create(
-                            user=user_model, name=name, email=email
+                            user=user_model, name=name
                         )
                         new_profile.save()
                         messages.success(
@@ -450,11 +444,12 @@ def signin(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, "You're now logged in")
-                return redirect("home")
+                return JsonResponse({"is_user": True})
             else:
                 messages.error(
                     request, "Invalid information, Please check your username or email"
                 )
+                return JsonResponse({"is_user": False})
 
         return render(request, "basic/signin.html")
 
