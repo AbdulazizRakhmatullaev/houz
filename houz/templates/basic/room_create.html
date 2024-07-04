@@ -473,10 +473,11 @@
             title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title is required" %}';
             return;
         }
-        var words = title.value.split(' ').filter(word => word.length > 0);
-
-        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 1)) {
-            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be between 4 and 6 words with at least 2 chars long" %}';
+        
+        var words = title.value.split(' ');
+        
+        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4) {
+            title.parentNode.querySelector('.errTxt').textContent = ;
             return;
         }
 

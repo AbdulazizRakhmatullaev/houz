@@ -2607,11 +2607,11 @@ input:disabled {
   background: white;
   border-radius: 14px;
   overflow: hidden;
-  width: 220px;
+  width: 260px;
   z-index: 11;
   display: none;
   border: 1px solid #e8e8ed;
-  padding: 10px;
+  padding: 5px;
 }
 
 #ppDropdown.active {
