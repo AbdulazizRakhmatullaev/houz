@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # other
-    "houze",
+    "houz",
     "django.contrib.humanize",
     "location_field.apps.DefaultConfig",
     "channels",
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # mine
     'django.middleware.locale.LocaleMiddleware',
-    'houze.middleware.CurrencyMiddleware',
+    'houz.middleware.CurrencyMiddleware',
 ]
 
 ROOT_URLCONF = "business.urls"
@@ -91,7 +91,7 @@ WSGI_APPLICATION = "business.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # -- for postgresql
-# DB_NAME = "houze"
+# DB_NAME = "houz"
 # DB_USER = "abdu"
 # DB_PASSWORD = "1528"
 # DATABASES = {
@@ -185,3 +185,5 @@ LOCALE_PATHS = [
 ]
 
 LANGUAGE_COOKIE_NAME = 'django_language'
+
+# CURRENCIES = ('USD')

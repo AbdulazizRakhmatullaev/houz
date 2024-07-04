@@ -1,0 +1,597 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Edit your room" %}{% endblock %}
+
+{% block content %}
+<div class="brief-name">Edit your room</div>
+
+<div class="lbld">
+    <div class="lbltxt">{% trans 'Images' %}</div>
+    <input type="button" value="{% trans 'Browse...' %}"
+        onclick="document.getElementById('roomimginp').click();" style="width: 300px;" />
+    <div id="img-error" class="errTxt"></div>
+    <input type="file" id="roomimginp" name="images" accept="image/jpg, image/jpeg, image/png"
+        onchange="addImage(this)" multiple style="display: none;">
+</div>
+
+<div id="edimage-preview-container">
+{% for img in room.all_photos %}
+<form action="{% url 'img_delete' img.id %}" method="POST">
+    {% csrf_token %}
+    <div class="edimage-container ui-sortable-handle">
+        <img class="edpreview-image" src="{{img.file.url}}">
+        <div class="image-delete-form">
+            <button type="submit" class="objdel" style="position: absolute; right: 7px; top: 7px;">&times;</button>
+        </div>
+    </div>
+</form>
+{% endfor %}
+</div>
+<div id="img-preview-info" class="inpInfo"></div>
+
+<form id="room-edit-form" action="{% url 'room_edit' request.user.username room.id %}" method="POST" class="cecol"
+    enctype="multipart/form-data" onsubmit="submitForm(event)">
+    {% csrf_token %}
+    <div class="rmleft">
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Title' %}</div>
+                <input type="text" id="title" name="title" placeholder='{% trans "e.g. Best cabin near Labi Hawuz" %}'
+                    value="{{room.title}}">
+                <div class="errTxt"></div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Price" %}</div>
+                <label class="prlbl" data-domain="{{currency}}">
+                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}" value="{{room.converted_price}}" />
+                    <label>
+                        <div id="price-error" class="errTxt"></div>
+            </div>
+        </div>
+        <div class="lbld">
+            <div class="lbltxt">{% trans 'Map' %}</div>
+            <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
+            <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
+            <div id="map" class="mapcr"></div>
+        </div>
+        <div class="rcrflexcol" style="flex-direction: row; gap: 10px;">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Guests' %}</div>
+                <div class="rcrflex">
+                    <span id="guests_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="guests" name="guests" min="1"
+                        value="{{room.guests}}" />
+                    <span id="guests_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Beds' %}</div>
+                <div class="rcrflex">
+                    <span id="beds_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="beds" name="beds" min="1"
+                        value="{{room.beds}}" />
+                    <span id="beds_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Bedrooms' %}</div>
+                <div class="rcrflex">
+                    <span id="bedrooms_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
+                        value="{{room.bedrooms}}" />
+                    <span id="bedrooms_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Baths' %}</div>
+                <div class="rcrflex">
+                    <span id="baths_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="baths" name="baths" min="1"
+                        value="{{room.baths}}" />
+                    <span id="baths_plus" class="plus">+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rmright">
+        <div class="lbld">
+            <div class="lbltxt">{% trans 'Description' %}</div>
+            <textarea id="description" name="description" class="descarea"
+                placeholder='{% trans "Tell people about the room and what is near it" %}'>{{room.description}}</textarea>
+            <div class="errTxt"></div>
+        </div>
+
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Address' %}</div>
+                <input type="text" id="address" name="address" placeholder="{% trans 'Address' %}"
+                    value="{{room.address}}">
+                <div class="errTxt"></div>
+            </div>
+            <div class="rcrflex">
+                <div class="lbld">
+                    <div class="lbltxt">{% trans 'City' %}</div>
+                    <select class="room-cy" id="city" name="city">
+                        <option value="{{ cur_city }}">{{ cur_city }}</option>
+                        {% for code, name in regions %}
+                        <option value="{{ code }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="errTxt"></div>
+                </div>
+                <div class="lbld">
+                    <div class="lbltxt">{% trans 'Room type' %}</div>
+                    <select class="room-cy" id="room_type" name="room_type">
+                        <option value="{{ cur_rmtype }}">{{ cur_rmtype }}</option>
+                        {% for code, name in room_types %}
+                        <option value="{{ code }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="errTxt"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Amenities' %}</div>
+                <textarea class="txtar" name="amenities" id="amenities"
+                    placeholder="{% trans 'e.g. Wi-Fi, Kitchen, AC, Washroom' %}">{% for amenity in amenities %}{{amenity.name}}{% if not forloop.last %}, {% endif %}{% endfor %}</textarea>
+                <div class="inpInfo">{% trans 'Enter a comma after each amenity' %}</div>
+                <div class="errTxt"></div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'House rules' %}</div>
+                <textarea class="txtar" name="house_rules" id="house_rules"
+                    placeholder="{% trans 'e.g. No parties or events, No smoking' %}">{% for house_rule in house_rules %}{{house_rule.rule}}{% if not forloop.last %}, {% endif %}{% endfor %}</textarea>
+                <div class="inpInfo">{% trans 'Enter a comma after each rule' %}</div>
+                <div class="errTxt"></div>
+            </div>
+        </div>
+
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Check in' %}</div>
+                <input type="date" id="edcheck_in" name="check_in" value="{{room.check_in|date:'Y-m-d'}}"
+                    class="check_in">
+                <div class="errTxt"></div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Check out' %}</div>
+                <input type="date" id="edcheck_out" name="check_out" value="{{room.check_out|date:'Y-m-d'}}"
+                    class="check_out">
+                <div class="errTxt"></div>
+
+            </div>
+        </div>
+        <div class="btnsubend">
+            <button type="submit" class="btn-primary">{% trans 'Edit' %}</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const checkInInput = document.querySelector('input[name="check_in"]');
+    const checkOutInput = document.querySelector('input[name="check_out"]');
+    const checkInDate = new Date(checkInInput.value);
+    const checkOutDate = new Date(checkOutInput.value);
+
+    if (checkInDate && !isNaN(checkInDate.getTime())) {
+        // Set check-out minimum date to the day after check-in
+        const nextDay = new Date(checkInDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        checkOutInput.min = formatDate(nextDay);
+    }
+
+    if (checkOutDate && !isNaN(checkOutDate.getTime())) {
+        // Set check-in maximum date to the day before check-out
+        const prevDay = new Date(checkOutDate);
+        prevDay.setDate(prevDay.getDate() - 1);
+        checkInInput.max = formatDate(prevDay);
+    }
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        let day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        return `${year}-${month}-${day}`;
+    }
+</script>
+
+<script>
+    (function ($, undefined) {
+        "use strict";
+
+        // When ready.
+        $(function () {
+
+            var $input = $("#price");
+
+            $input.on("keyup", function (event) {
+
+
+                // When user select text in the document, also abort.
+                var selection = window.getSelection().toString();
+                if (selection !== '') {
+                    return;
+                }
+
+                // When the arrow keys are pressed, abort.
+                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
+                    return;
+                }
+
+                var $this = $(this);
+
+                // Get the value.
+                var input = $this.val();
+
+                var input = input.replace(/[\D\s\._\-]+/g, "");
+                input = input ? parseInt(input, 10) : 0;
+
+                $this.val(function () {
+                    return (input === 0) ? "" : input.toLocaleString("en-US");
+                });
+            });
+        });
+    })(jQuery);
+</script>
+
+<script>
+    let selectedImages = [{% for img in room.all_photos %} '{{ img.file.url }}', {% endfor %}];
+    let img_cnt = 0;
+
+    // Make image preview container sortable
+    $("#edimage-preview-container").sortable({
+        placeholder: "sortable-placeholder", // Define the class for the placeholder
+        stop: function (event, ui) {
+            updateSelectedImagesArray();
+        }
+    }).disableSelection(); // Prevent text selection while dragging
+
+    // Function to update selectedImages array based on the new order
+    function updateSelectedImagesArray() {
+        selectedImages = [];
+        $("#edimage-preview-container .edimage-container img").each(function () {
+            selectedImages.push(this.dataset.src || this.file);
+        });
+    }
+
+    // Function to make image preview container sortable
+    function makeSortable() {
+        $("#edimage-preview-container").sortable({
+            placeholder: "sortable-placeholder", // Define the class for the placeholder
+            stop: function (event, ui) {
+                updateSelectedImagesArray();
+            }
+        });
+        $("#edimage-preview-container").disableSelection(); // Prevent text selection while dragging
+    }
+
+    // Function to update selectedImages array based on the new order
+    function updateSelectedImagesArray() {
+        selectedImages = [];
+        $("#edimage-preview-container .edimage-container img").each(function () {
+            selectedImages.push(this.dataset.src || this.file);
+        });
+    }
+
+    function updateImageCount() {
+        img_cnt = selectedImages.length;
+        document.getElementById('img-preview-info').textContent = `{% trans "You chose ${img_cnt} images. Drag to sort them out" %}`;
+    }
+
+    function addImage(input) {
+        const files = input.files;
+        const previewContainer = document.getElementById('edimage-preview-container');
+        const imgInpInfo = document.getElementById('img-preview-info');
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('edimage-container');
+
+            const image = document.createElement('img');
+            image.classList.add('edpreview-image');
+            image.src = URL.createObjectURL(file);
+            image.file = file; // Custom property to store file
+
+            const cancelButton = document.createElement('div');
+            cancelButton.innerHTML = '&times';
+            cancelButton.classList.add('objdel');
+            cancelButton.style = "position: absolute; right: 7px; top: 7px;"
+            cancelButton.onclick = function () {
+                // Remove the corresponding image from the array and the preview
+                const index = selectedImages.indexOf(file);
+                if (index !== -1) {
+                    selectedImages.splice(index, 1);
+                    updateImageCount();
+                }
+                previewContainer.removeChild(imageContainer);
+                if (selectedImages.length === 0) {
+                    imgInpInfo.textContent = '';
+                }
+            };
+
+            imageContainer.appendChild(image);
+            imageContainer.appendChild(cancelButton);
+            previewContainer.insertBefore(imageContainer, previewContainer.firstChild);
+
+            selectedImages.push(file);
+        }
+
+        input.value = ''; // Clear the input value after selecting images
+        updateImageCount();
+        const imgErrorText = document.getElementById('img-error');
+        imgErrorText.textContent = '';
+
+        // Call makeSortable to make the image preview container sortable
+        makeSortable();
+
+        // Call updateSelectedImagesArray to update selectedImages array
+        updateSelectedImagesArray();
+    }
+
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const imgError = document.getElementById('img-error');
+        const title = document.getElementById('title');
+        const price = document.getElementById('price');
+        const description = document.getElementById('description');
+        const address = document.getElementById('address');
+        const city = document.getElementById('city');
+        const roomType = document.getElementById('room_type');
+        const amenities = document.getElementById('amenities');
+        const houseRules = document.getElementById('house_rules');
+        const checkIn = document.getElementById('edcheck_in');
+        const checkOut = document.getElementById('edcheck_out');
+
+        // Clear previous error messages
+        imgError.textContent = '';
+        title.parentNode.querySelector('.errTxt').textContent = '';
+        price.parentNode.querySelector('.errTxt').textContent = '';
+        description.parentNode.querySelector('.errTxt').textContent = '';
+        address.parentNode.querySelector('.errTxt').textContent = '';
+        city.parentNode.querySelector('.errTxt').textContent = '';
+        roomType.parentNode.querySelector('.errTxt').textContent = '';
+        amenities.parentNode.querySelector('.errTxt').textContent = '';
+        houseRules.parentNode.querySelector('.errTxt').textContent = '';
+        checkIn.parentNode.querySelector('.errTxt').textContent = '';
+        checkOut.parentNode.querySelector('.errTxt').textContent = '';
+
+        const imageFiles = [];
+        document.querySelectorAll('#edimage-preview-container .edimage-container img').forEach(img => {
+            if (img.file) {
+                imageFiles.push(img.file);
+            } else {
+                imageFiles.push(img.src);
+            }
+        });
+
+        // Validate fields
+        if (imageFiles.length <= 4) {
+            // Display error message for images
+            imgError.textContent = '{% trans "Please select at least 5 images" %}';
+            return;
+        }
+
+        if (title.value.trim() === '') {
+            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title is required" %}';
+            return;
+        }
+        var words = title.value.split(' ').filter(word => word.length > 0);
+
+        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 1)) {
+            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be between 4 and 6 words, and each word should be at least 2 characters long" %}';
+            return;
+        }
+
+        if (price.value.trim() === '') {
+            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price is required" %}';
+            return;
+        }
+
+        if (description.value.trim() === '') {
+            description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description is required" %}';
+            return;
+        }
+        if (description.value.length < 150) {
+            description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description should be at least 150 characters" %}';
+            return;
+        }
+
+        if (address.value.trim() === '') {
+            address.parentNode.querySelector('.errTxt').textContent = '{% trans "Address is required" %}';
+            return;
+        }
+
+        if (city.value.trim() === 'null') {
+            city.parentNode.querySelector('.errTxt').textContent = '{% trans "City is required" %}';
+            return;
+        }
+
+        if (roomType.value.trim() === 'null') {
+            roomType.parentNode.querySelector('.errTxt').textContent = '{% trans "Room type is required" %}';
+            return;
+        }
+
+        if (amenities.value.trim() === '') {
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Amenities are required" %}';
+            return;
+        }
+        var amenities_ = amenities.value.split(',').map(item => item.trim()).filter(item => item);
+
+        if (amenities_.length < 5) {
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 amenities" %}';
+            return;
+        }
+        if (amenities_.some(item => !/^[a-zA-Z\s]+$/.test(item))) {
+            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Each amenity should be a meaningful word or phrase" %}';
+            return;
+        }
+
+        if (houseRules.value.trim() === '') {
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "House rules are required" %}';
+            return;
+        }
+
+        var houseRules_ = houseRules.value.split(',').map(item => item.trim()).filter(item => item);
+
+        if (houseRules_.length < 5) {
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 rules" %}';
+            return;
+        }
+        if (houseRules_.some(item => !/^[a-zA-Z\s]+$/.test(item))) {
+            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Each rule should be a meaningful word or phrase" %}';
+            return;
+        }
+
+        // Convert check-in and check-out values to Date objects
+        const checkInDate = new Date(checkIn.value);
+        const checkOutDate = new Date(checkOut.value);
+
+        // Check if check-out date is after check-in date
+        if (checkOutDate <= checkInDate) {
+            checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "Check-out date must be after check-in date" %}';
+            return;
+        }
+
+        // Check if there's at least one day gap between check-in and check-out
+        const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+        if ((checkOutDate.getTime() - checkInDate.getTime()) < oneDay) {
+            checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "There should be at least one day gap between check-in and check-out" %}';
+            return;
+        }
+
+        // Create a FormData object to store form data and selected images
+        const formData = new FormData(document.getElementById('room-edit-form'));
+
+        imageFiles.forEach(image => {
+            if (image instanceof File) {
+                formData.append('images', image);
+            } else {
+                // Do nothing for URLs, they are not being re-uploaded
+            }
+        });
+        formData.append('sorted_images', JSON.stringify(selectedImages));
+
+        // Use fetch API to submit form data to server
+        fetch("{% url 'room_edit' request.user.username room.id %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(response => {
+            // Handle response
+            if (response.ok) {
+                // Redirect to the created room
+                response.json().then(data => {
+                    const username = data.username;
+                    window.location.href = `/@${username}`; // Adjust the URL as per your project's routing
+                });
+            } else {
+                // Handle error response
+            }
+        }).catch(error => {
+            // Handle error
+        });
+    }
+</script>
+
+<script>
+    // Function to check the internet connection status
+    function checkOnlineStatus() {
+      return window.navigator.onLine;
+    }
+
+    function initializeMap() {
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
+
+      var initialLatitude = parseFloat(document.getElementById('latitude').value);
+      var initialLongitude = parseFloat(document.getElementById('longitude').value);
+
+      var map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
+          zoom: 13
+      });
+
+      // Disable double click zoom
+      map.doubleClickZoom.disable();
+
+      // Add zoom and unzoom controls
+      map.addControl(new mapboxgl.NavigationControl());
+
+      // Add geolocate control to the map2
+      var geolocate = new mapboxgl.GeolocateControl({
+          positionOptions: {
+              enableHighAccuracy: true
+          },
+          trackUserLocation: true
+      });
+
+      map.addControl(geolocate);
+
+      // Create marker
+      var marker = new mapboxgl.Marker({
+          draggable: true
+      }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
+
+      // Update marker's position when the user's location changes
+      geolocate.on('geolocate', function (event) {
+          var lngLat = [event.coords.longitude, event.coords.latitude];
+          marker.setLngLat(lngLat);
+          document.getElementById('latitude').value = lngLat[1];
+          document.getElementById('longitude').value = lngLat[0];
+      });
+
+      // Update input fields when marker is dragged
+      marker.on('dragend', function () {
+          var lngLat = marker.getLngLat();
+          document.getElementById('latitude').value = lngLat.lat;
+          document.getElementById('longitude').value = lngLat.lng;
+      });
+
+      // Update marker's position when the user double-clicks on the map2
+      map.on('dblclick', function (event) {
+          marker.setLngLat(event.lngLat);
+          document.getElementById('latitude').value = event.lngLat.lat;
+          document.getElementById('longitude').value = event.lngLat.lng;
+      });
+    }
+
+    function displayOfflineMessage() {
+        const roomMapElement = document.getElementById("map");
+        roomMapElement.textContent = "No internet connection. Unable to load the map";
+    }
+
+    // Initial check for online status
+    if (!checkOnlineStatus()) {
+        displayOfflineMessage();
+    } else {
+        initializeMap();
+    }
+
+    // Event listeners for online/offline status changes
+    window.addEventListener('online', () => {
+        initializeMap(); // Re-initialize the map or other functionality as needed
+    });
+
+    window.addEventListener('offline', () => {
+        displayOfflineMessage();
+    });
+</script>
+{% endblock %}
