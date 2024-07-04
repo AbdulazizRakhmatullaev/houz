@@ -474,10 +474,10 @@
             return;
         }
         
-        var words = title.value.split(' ');
+        var words = title.value.split(' ').filter(word => word.replace(/[.,]/g, '').length > 0);
         
-        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4) {
-            title.parentNode.querySelector('.errTxt').textContent = ;
+        if (!/^[a-zA-Z\s.,]+$/.test(title.value) || words.length < 4 || words.length > 7) {
+            title.parentNode.querySelector('.errTxt').textContent = "{% trans 'Title should be between 2 and 7 words' %}";
             return;
         }
 

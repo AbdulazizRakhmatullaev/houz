@@ -104,7 +104,6 @@ Region_Choices = (
     (_("NUKUS"), _("Nukus")),
 )
 
-
 RoomTypes = (
     (_("A ROOM"), _("A room")),
     (_("AN ENTIRE PLACE"), _("An entire place")),

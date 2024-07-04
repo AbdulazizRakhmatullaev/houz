@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "channels",
     'rosetta',
     # 'payme',
-    "djmoney"
 ]
 
 MIDDLEWARE = [
