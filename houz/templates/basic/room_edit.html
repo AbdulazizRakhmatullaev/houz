@@ -43,10 +43,21 @@
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
-                <label class="prlbl" data-domain="{{currency}}">
-                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}" value="{{room.converted_price}}" />
-                    <label>
-                        <div id="price-error" class="errTxt"></div>
+                
+                <div class="priceinp">
+                    <div class="cursel">
+                        <select name="currency" id="currency">
+                            <option value="{{room.currency}}">{{room.currency}}</option>
+                            {% for code, name in currencies %}
+                            <option value="{{code}}">{{name}}</option>
+                            {% endfor %}
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 13.698 6.64 9.232a1 1 0 0 0-1.28 1.536l6 5a1 1 0 0 0 1.28 0l6-5a1 1 0 1 0-1.28-1.536L12 13.698Z"/></svg>
+                    </div>
+                    <input type="text" id="price" data-type="currency" name="price" placeholder="{% trans 'Name your price here' %}" value="{{room.get_price}}">
+                </div>
+            
+                <div id="price-error" class="errTxt"></div>
             </div>
         </div>
         <div class="lbld">
@@ -211,38 +222,97 @@
     (function ($, undefined) {
         "use strict";
 
-        // When ready.
-        $(function () {
-
-            var $input = $("#price");
-
-            $input.on("keyup", function (event) {
-
-
-                // When user select text in the document, also abort.
-                var selection = window.getSelection().toString();
-                if (selection !== '') {
-                    return;
-                }
-
-                // When the arrow keys are pressed, abort.
-                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
-                    return;
-                }
-
-                var $this = $(this);
-
-                // Get the value.
-                var input = $this.val();
-
-                var input = input.replace(/[\D\s\._\-]+/g, "");
-                input = input ? parseInt(input, 10) : 0;
-
-                $this.val(function () {
-                    return (input === 0) ? "" : input.toLocaleString("en-US");
-                });
-            });
+        // Event listener for currency change
+        $("#currency").on("change", function() {
+            $("#price").val("");
         });
+
+        $("input[data-type='currency']").on({
+            keyup: function() {
+                formatCurrency($(this));
+            },
+            blur: function() { 
+                formatCurrency($(this), "blur");
+            }
+        });
+
+        function formatNumber(n) {
+            // format number 1000000 to 1,234,567
+            return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
+
+        function formatCurrency(input, blur) {
+            // get input value
+            var input_val = input.val();
+            
+            // don't validate empty input
+            if (input_val === "") { return; }
+
+            // original length
+            var original_len = input_val.length;
+
+            // initial caret position 
+            var caret_pos = input.prop("selectionStart");
+
+            // Remove leading zeros
+            input_val = input_val.replace(/^0+/, '');
+
+            // Get the selected currency
+            var selectedCurrency = document.getElementById("currency").value;
+            
+            // check for decimal
+            if (input_val.indexOf(".") >= 0) {
+                // get position of first decimal
+                var decimal_pos = input_val.indexOf(".");
+
+                // split number by decimal point
+                var left_side = input_val.substring(0, decimal_pos);
+                var right_side = input_val.substring(decimal_pos);
+
+                // add commas to left side of number
+                left_side = formatNumber(left_side);
+
+                // validate right side
+                right_side = formatNumber(right_side);
+                
+                // On blur make sure 2 numbers after decimal for currencies with cents
+                if (blur === "blur" && !["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
+                    right_side += "00";
+                }
+
+                // Limit decimal to only 2 digits for currencies with cents
+                if (!["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
+                    right_side = right_side.substring(0, 2);
+                    input_val = left_side + "." + right_side;
+                } else {
+                    input_val = left_side;
+                }
+
+            } else {
+                // no decimal entered
+                // add commas to number
+                // remove all non-digits
+                input_val = formatNumber(input_val);
+                
+                // final formatting
+                if (blur === "blur" && !["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
+                    input_val += ".00";
+                }
+            }
+
+            // if the input is empty after removing leading zeros, set it to 0
+            if (input_val === "") {
+                input_val = "0";
+            }
+            
+            // send updated string to input
+            input.val(input_val);
+
+            // put caret back in the right position
+            var updated_len = input_val.length;
+            caret_pos = updated_len - original_len + caret_pos;
+            input[0].setSelectionRange(caret_pos, caret_pos);
+        }
     })(jQuery);
 </script>
 
@@ -360,7 +430,7 @@
         // Clear previous error messages
         imgError.textContent = '';
         title.parentNode.querySelector('.errTxt').textContent = '';
-        price.parentNode.querySelector('.errTxt').textContent = '';
+        document.getElementById("price-error").textContent = '';
         description.parentNode.querySelector('.errTxt').textContent = '';
         address.parentNode.querySelector('.errTxt').textContent = '';
         city.parentNode.querySelector('.errTxt').textContent = '';
@@ -390,15 +460,20 @@
             title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title is required" %}';
             return;
         }
-        var words = title.value.split(' ').filter(word => word.length > 0);
 
-        if (!/^[a-zA-Z\s]+$/.test(title.value) || words.length < 4 || words.length > 6 || words.some(word => word.length < 1)) {
-            title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title should be between 4 and 6 words, and each word should be at least 2 characters long" %}';
+        var words = title.value.split(' ').filter(word => word.replace(/[.,]/g, '').length > 0);
+
+        if (!/^[a-zA-Z\s.,]+$/.test(title.value) || words.length < 4 || words.length > 7) {
+            title.parentNode.querySelector('.errTxt').textContent = "{% trans 'Title should be between 2 and 7 words' %}";
             return;
         }
 
         if (price.value.trim() === '') {
-            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price is required" %}';
+            document.getElementById("price-error").textContent = '{% trans "Price is required" %}';
+            return;
+        }
+        if (parseFloat(price.value) === 0) {
+            document.getElementById("price-error").textContent = '{% trans "Price cannot be 0" %}';
             return;
         }
 
@@ -436,10 +511,6 @@
             amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 amenities" %}';
             return;
         }
-        if (amenities_.some(item => !/^[a-zA-Z\s]+$/.test(item))) {
-            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Each amenity should be a meaningful word or phrase" %}';
-            return;
-        }
 
         if (houseRules.value.trim() === '') {
             houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "House rules are required" %}';
@@ -450,10 +521,6 @@
 
         if (houseRules_.length < 5) {
             houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 rules" %}';
-            return;
-        }
-        if (houseRules_.some(item => !/^[a-zA-Z\s]+$/.test(item))) {
-            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Each rule should be a meaningful word or phrase" %}';
             return;
         }
 

@@ -12,7 +12,6 @@ from .languages import LANGUAGES
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
-from djmoney.models.fields import MoneyField
 
 sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
 
@@ -86,6 +85,15 @@ def avatarColorDefault():
     ]
     return random.choice(combines)
 
+Currencies = (
+    ("UZS", "UZS"),
+    ("USD", "USD"),
+    ("RUB", "RUB"),
+    ("GBP", "GBP"),
+    ("JPY", "JPY"),
+    ("CHF", "CHF"),
+    ("CNY", "CNY"),
+)
 
 Region_Choices = (
     (_("TASHKENT"), _("Tashkent")),
@@ -207,7 +215,7 @@ class Room(models.Model):
         max_length=200, null=True, choices=Region_Choices, default="Tashkent"
     )
     currency = models.CharField("currency", max_length=3, default="UZS", null=False)
-    price = models.IntegerField("Price")
+    price = models.FloatField("Price")
     # price = MoneyField(max_digits=10, decimal_places=2, null=True, default_currency="UZS")
     address = models.CharField(max_length=255)
     guests = models.IntegerField("Guests")

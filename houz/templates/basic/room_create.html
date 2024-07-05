@@ -75,10 +75,22 @@
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
-                <label class="prlbl" data-domain="{{currency}}">
-                    <input type="text" id="price" name="price" placeholder="{% trans 'price' %}">
-                    <label>
-                        <div id="price-error" class="errTxt"></div>
+                
+                <div class="priceinp">
+                    <div class="cursel">
+                        <select name="currency" id="currency">
+                            <option value="{{currency}}">{{currency}}</option>
+                            
+                            {% for code, name in currencies %}
+                            <option value="{{code}}">{{name}}</option>
+                            {% endfor %}
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 13.698 6.64 9.232a1 1 0 0 0-1.28 1.536l6 5a1 1 0 0 0 1.28 0l6-5a1 1 0 1 0-1.28-1.536L12 13.698Z"/></svg>
+                    </div>
+                    <input type="text" id="price" data-type="currency" name="price" placeholder="{% trans 'Name your price here' %}">
+                </div>
+            
+                <div id="price-error" class="errTxt"></div>
             </div>
         </div>
         <div class="lbld">
@@ -191,133 +203,104 @@
         return `${year}-${month}-${day}`;
     }
 </script>
+
 <script>
     (function ($, undefined) {
         "use strict";
 
-        // When ready.
-        $(function () {
-
-            var $input = $("#price");
-
-            $input.on("keyup", function (event) {
-
-                // When user selects text in the document, also abort.
-                var selection = window.getSelection().toString();
-                if (selection !== '') {
-                    return;
-                }
-
-                // When the arrow keys are pressed, abort.
-                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
-                    return;
-                }
-
-                var $this = $(this);
-
-                // Get the value.
-                var input = $this.val();
-
-                // Remove anything that's not a number or a decimal point
-                input = input.replace(/[^0-9.]/g, "");
-
-                // Split the input on the decimal point
-                var parts = input.split('.');
-                var integerPart = parts[0] ? parseInt(parts[0], 10) : 0;
-                var decimalPart = parts[1] ? parts[1] : '';
-
-                // Determine the selected currency (you should set this dynamically based on your actual implementation)
-                var selectedCurrency = "{{currency}}";
-
-                var formattedValue;
-                if (selectedCurrency === "UZS" || selectedCurrency === "JPY" || selectedCurrency === "CNY" || selectedCurrency === "RUB") {
-                    // For currencies without cents
-                    formattedValue = integerPart.toLocaleString("en-US");
-                } else {
-                    // For currencies with cents (USD, GBP, CHF, etc.)
-                    if (decimalPart.length > 2) {
-                        decimalPart = decimalPart.substring(0, 2);
-                    }
-                    formattedValue = integerPart.toLocaleString("en-US");
-                    if (decimalPart !== "") {
-                        formattedValue += '.' + decimalPart;
-                    }
-                }
-
-                $this.val(formattedValue);
-            });
+        // Event listener for currency change
+        $("#currency").on("change", function() {
+            $("#price").val("");
         });
-    })(jQuery);
-</script>
 
-<!-- <script>
-    (function ($, undefined) {
-        "use strict";
+        $("input[data-type='currency']").on({
+            keyup: function() {
+                formatCurrency($(this));
+            },
+            blur: function() { 
+                formatCurrency($(this), "blur");
+            }
+        });
 
-        // When ready.
-        $(function () {
+        function formatNumber(n) {
+            // format number 1000000 to 1,234,567
+            return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
 
-            var $input = $("#price");
+        function formatCurrency(input, blur) {
+            // get input value
+            var input_val = input.val();
+            
+            // don't validate empty input
+            if (input_val === "") { return; }
 
-            // Helper function to format the input based on the selected currency
-            function formatInput(input, currency) {
-                var inputNumber = parseFloat(input.replace(/,/g, ""));
-                if (isNaN(inputNumber)) return "";
+            // original length
+            var original_len = input_val.length;
 
-                if (currency === "UZS" || currency === "JPY" || currency === "CNY" || currency === "RUB") {
-                    // For currencies without cents
-                    return inputNumber.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            // initial caret position 
+            var caret_pos = input.prop("selectionStart");
+
+            // Remove leading zeros
+            input_val = input_val.replace(/^0+/, '');
+
+            // Get the selected currency
+            var selectedCurrency = document.getElementById("currency").value;
+            
+            // check for decimal
+            if (input_val.indexOf(".") >= 0) {
+                // get position of first decimal
+                var decimal_pos = input_val.indexOf(".");
+
+                // split number by decimal point
+                var left_side = input_val.substring(0, decimal_pos);
+                var right_side = input_val.substring(decimal_pos);
+
+                // add commas to left side of number
+                left_side = formatNumber(left_side);
+
+                // validate right side
+                right_side = formatNumber(right_side);
+                
+                // On blur make sure 2 numbers after decimal for currencies with cents
+                if (blur === "blur" && !["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
+                    right_side += "00";
+                }
+
+                // Limit decimal to only 2 digits for currencies with cents
+                if (!["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
+                    right_side = right_side.substring(0, 2);
+                    input_val = left_side + "." + right_side;
                 } else {
-                    // For currencies with cents (USD, GBP, CHF, etc.)
-                    return inputNumber.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    input_val = left_side;
+                }
+
+            } else {
+                // no decimal entered
+                // add commas to number
+                // remove all non-digits
+                input_val = formatNumber(input_val);
+                
+                // final formatting
+                if (blur === "blur" && !["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
+                    input_val += ".00";
                 }
             }
 
-            // On focus, remove formatting to make editing easier
-            $input.on("focus", function () {
-                var $this = $(this);
-                var value = $this.val().replace(/,/g, '');
-                $this.val(value);
-            });
+            // if the input is empty after removing leading zeros, set it to 0
+            if (input_val === "") {
+                input_val = "0";
+            }
+            
+            // send updated string to input
+            input.val(input_val);
 
-            // On blur, format the value
-            $input.on("blur", function () {
-                var $this = $(this);
-                var input = $this.val();
-                var selectedCurrency = "{{currency}}";
-
-                $this.val(formatInput(input, selectedCurrency));
-            });
-
-            // Allow typing without immediate formatting
-            $input.on("keyup", function (event) {
-
-                // When user selects text in the document, also abort.
-                var selection = window.getSelection().toString();
-                if (selection !== '') {
-                    return;
-                }
-
-                // When the arrow keys are pressed, abort.
-                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
-                    return;
-                }
-
-                var $this = $(this);
-
-                // Get the value.
-                var input = $this.val();
-
-                // Remove anything that's not a number or a decimal point
-                var input = input.replace(/[^0-9.]/g, "");
-
-                // Set the value back to the input
-                $this.val(input);
-            });
-
-        });
+            // put caret back in the right position
+            var updated_len = input_val.length;
+            caret_pos = updated_len - original_len + caret_pos;
+            input[0].setSelectionRange(caret_pos, caret_pos);
+        }
     })(jQuery);
-</script> -->
+</script>
 
 <script>
     $(document).ready(function () {
@@ -447,7 +430,7 @@
         // Clear previous error messages
         imgError.textContent = '';
         title.parentNode.querySelector('.errTxt').textContent = '';
-        price.parentNode.querySelector('.errTxt').textContent = '';
+        document.getElementById("price-error").textContent = '';
         description.parentNode.querySelector('.errTxt').textContent = '';
         address.parentNode.querySelector('.errTxt').textContent = '';
         city.parentNode.querySelector('.errTxt').textContent = '';
@@ -473,22 +456,22 @@
             title.parentNode.querySelector('.errTxt').textContent = '{% trans "Title is required" %}';
             return;
         }
-        
+
         var words = title.value.split(' ').filter(word => word.replace(/[.,]/g, '').length > 0);
-        
+
         if (!/^[a-zA-Z\s.,]+$/.test(title.value) || words.length < 4 || words.length > 7) {
             title.parentNode.querySelector('.errTxt').textContent = "{% trans 'Title should be between 2 and 7 words' %}";
             return;
         }
 
         if (price.value.trim() === '') {
-            price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price is required" %}';
+            document.getElementById("price-error").textContent = '{% trans "Price is required" %}';
             return;
         }
-        // if (price.value.length < 6) {
-        //     price.parentNode.querySelector('.errTxt').textContent = '{% trans "Price should at least start from 10,000" %}';
-        //     return;
-        // }
+        if (parseFloat(price.value) === 0) {
+            document.getElementById("price-error").textContent = '{% trans "Price cannot be 0" %}';
+            return;
+        }
 
         if (description.value.trim() === '') {
             description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description is required" %}';
@@ -524,10 +507,6 @@
             amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 amenities" %}';
             return;
         }
-        if (amenities_.some(item => !/^[a-zA-Z\s]+$/.test(item) || item.length < 4)) {
-            amenities.parentNode.querySelector('.errTxt').textContent = '{% trans "Each amenity should be a meaningful word or phrase" %}';
-            return;
-        }
 
         if (houseRules.value.trim() === '') {
             houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "House rules are required" %}';
@@ -540,11 +519,7 @@
             houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Choose at least 5 rules" %}';
             return;
         }
-        if (houseRules_.some(item => !/^[a-zA-Z\s]+$/.test(item) || item.length < 4)) {
-            houseRules.parentNode.querySelector('.errTxt').textContent = '{% trans "Each rule should be a meaningful word or phrase" %}';
-            return;
-        }
-
+        
         // Convert check-in and check-out values to Date objects
         const checkInDate = new Date(checkIn.value);
         const checkOutDate = new Date(checkOut.value);
@@ -617,25 +592,25 @@
     function checkOnlineStatus() {
       return window.navigator.onLine;
     }
-    
+
     function initializeMap() {
       mapboxgl.accessToken = 'pk.eyJ1IjoiY3JhY2tlZHBvb2wiLCJhIjoiY2x2YmZ4cHdzMDg3NDJpcDF2MHc4emkyYSJ9.BsOd8E2wuYCPzUMaNOsqBg';
-    
+
       var initialLatitude = parseFloat(document.getElementById('latitude').value);
       var initialLongitude = parseFloat(document.getElementById('longitude').value);
-    
+
       var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/streets-v11',
           center: [initialLongitude, initialLatitude], // Tashkent, Uzbekistan
           zoom: 13
       });
-      
+
       map.doubleClickZoom.disable();
-    
+
       // Add zoom and unzoom controls
       map.addControl(new mapboxgl.NavigationControl());
-    
+
       // Add geolocate control to the map2
       var geolocate = new mapboxgl.GeolocateControl({
           positionOptions: {
@@ -643,14 +618,14 @@
           },
           trackUserLocation: true
       });
-    
+
       map.addControl(geolocate);
-    
+
       // Create marker
       var marker = new mapboxgl.Marker({
           draggable: true
       }).setLngLat([initialLongitude, initialLatitude]).addTo(map);
-    
+
       // Update marker's position when the user's location changes
       geolocate.on('geolocate', function (event) {
           var lngLat = [event.coords.longitude, event.coords.latitude];
@@ -658,14 +633,14 @@
           document.getElementById('latitude').value = lngLat[1];
           document.getElementById('longitude').value = lngLat[0];
       });
-    
+
       // Update input fields when marker is dragged
       marker.on('dragend', function () {
           var lngLat = marker.getLngLat();
           document.getElementById('latitude').value = lngLat.lat;
           document.getElementById('longitude').value = lngLat.lng;
       });
-    
+
       // Update marker's position when the user double-clicks on the map2
       map.on('dblclick', function (event) {
         marker.setLngLat(event.lngLat);
@@ -673,24 +648,24 @@
         document.getElementById('longitude').value = event.lngLat.lng;
       });
     }
-    
+
     function displayOfflineMessage() {
         const roomMapElement = document.getElementById("map");
         roomMapElement.textContent = "No internet connection. Unable to load the map";
     }
-    
+
     // Initial check for online status
     if (!checkOnlineStatus()) {
         displayOfflineMessage();
     } else {
         initializeMap();
     }
-    
+
     // Event listeners for online/offline status changes
     window.addEventListener('online', () => {
         initializeMap(); // Re-initialize the map or other functionality as needed
     });
-    
+
     window.addEventListener('offline', () => {
         displayOfflineMessage();
     });

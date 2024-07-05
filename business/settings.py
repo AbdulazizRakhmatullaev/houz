@@ -170,9 +170,6 @@ LOCATION_FIELD = {
 
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
-# GDAL_LIBRARY_PATH = "/opt/homebrew/bin/gdalinfo"
-# GEOS_LIBRARY_PATH = '/opt/homebrew/Cellar/geos/3.12.1/lib/libgeos_c.dylib'
-
 LANGUAGES = [
     ('en', _('English')),
     ('ru', _('Russian')),
@@ -184,5 +181,3 @@ LOCALE_PATHS = [
 ]
 
 LANGUAGE_COOKIE_NAME = 'django_language'
-
-# CURRENCIES = ('USD')

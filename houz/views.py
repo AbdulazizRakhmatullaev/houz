@@ -11,6 +11,7 @@ from .models import (
     Amenity,
     Comment,
     Region_Choices,
+    Currencies,
     RoomTypes,
     ExchangeRate
 )
@@ -39,7 +40,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import translation
 import requests
 from google_currency import convert  
-from djmoney.money import Money
 
 
 def is_ajax(request):
@@ -568,7 +568,10 @@ def room_detail(request, room_id):
 def room_create(request):
     regions = Region_Choices
     room_types = RoomTypes
-    currency = show_currency(request.session.get('currency', 'UZS'))
+    currency = request.session.get('currency', 'UZS')
+    currencies = [
+        (code, name) for code, name in Currencies if code != request.session.get('currency', 'UZS')
+    ]
     
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -580,9 +583,11 @@ def room_create(request):
             address = request.POST.get("address")
             city = request.POST.get("city")
             
-            cur = request.session.get("currency", "UZS")
-            price = request.POST.get("price").replace(",", "")
-            price = int(price)
+            cur = request.POST.get("currency")
+            price = float(request.POST.get("price").replace(",", ""))
+            
+            if price.is_integer():
+                price = int(price)
             
             guests = request.POST.get("guests")
             beds = request.POST.get("beds")
@@ -615,7 +620,6 @@ def room_create(request):
                 description=description,
                 city=city,
                 currency=cur,
-                # price=Money(price, cur),
                 price=price,
                 address=address,
                 guests=guests,
@@ -657,7 +661,7 @@ def room_create(request):
         return render(
             request,
             "basic/room_create.html",
-            {"regions": regions, "room_types": room_types, "currency": currency},
+            {"regions": regions, "room_types": room_types, "currency": currency, "currencies": currencies},
         )
     return redirect("signin")
 
@@ -680,6 +684,9 @@ def room_edit(request, username, id):
     cur_rmtype = room.room_type.capitalize()
 
     # Remove the current city and room type from the list of options
+    currencies = [
+        (code, name) for code, name in Currencies if code != room.currency
+    ]
     regions = [
         (code, name) for code, name in Region_Choices if code.lower() != cur_city.lower()
     ]
@@ -698,6 +705,7 @@ def room_edit(request, username, id):
         "room_types": room_types,
         "amenities": amenities,
         "house_rules": house_rules,
+        "currencies": currencies,
         "currency": currency
     }
 
@@ -705,7 +713,12 @@ def room_edit(request, username, id):
         if request.method == "POST":
             room.title = request.POST.get("title", room.title)
             room.description = request.POST.get("description", room.description)
-            room.price = int((request.POST.get("price", room.price).replace(",", "")))
+            
+            room.currency = request.POST.get("currency", room.currency)
+            room.price = float(request.POST.get("price", room.price).replace(",", ""))
+            
+            if room.price.is_integer():
+                room.price = int(room.price)
 
             room.city = request.POST.get("city", room.city)
             room.room_type = request.POST.get("room_type", room.room_type)
