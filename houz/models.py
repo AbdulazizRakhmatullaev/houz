@@ -266,7 +266,12 @@ class Room(models.Model):
         return (self.check_out - self.check_in).days
 
     def get_price(self):
-        return "{:,}".format(self.price)
+        no_cents_currencies = {"UZS", "JPY", "CNY", "RUB"}
+        
+        if self.currency in no_cents_currencies:
+            return "{:,}".format(int(self.price))
+        else:
+            return "{:,}".format(self.price)
 
     def count_nights_price(self):
         days = (self.check_out - self.check_in).days

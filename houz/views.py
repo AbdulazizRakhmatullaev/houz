@@ -29,7 +29,7 @@ from django.http import JsonResponse
 from datetime import datetime, timedelta
 from django.core.serializers import serialize
 from django.forms.models import model_to_dict
-import json, os , string
+import json, os , string, requests
 from django.core.serializers.json import DjangoJSONEncoder
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -38,9 +38,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import translation
-import requests
-from google_currency import convert  
-
+from .tasks import convert_prices_task
 
 def is_ajax(request):
     return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
@@ -51,7 +49,7 @@ def home(request):
     currency = show_currency(request.session.get('currency', 'UZS'))
     
     for room in rooms:
-        room.converted_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.price)
+        room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
 
     return render(request, "basic/home.html", {"rooms": rooms, "currency": currency})
 
@@ -365,7 +363,7 @@ def user_profile(request, username):
     currency = show_currency(request.session.get('currency', 'UZS'))
     
     for room in rooms:
-        room.converted_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.price)
+        room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
         
     comments = Comment.objects.filter(reciever=user).order_by("-created_at")
     reviews = Rating.objects.filter(room__in=rooms).order_by("-date")
@@ -540,10 +538,10 @@ def room_detail(request, room_id):
     
     currency = show_currency(request.session.get('currency', 'UZS'))
     
-    room_converted_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.price)
-    room_tot_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.tot_price())
-    room_count_nights_price = convert_price(room.currency, request.session.get('currency', 'UZS'), room.count_nights_price())
-    room_fee = convert_price(room.currency, request.session.get('currency', 'UZS'), room.fee())
+    room_converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
+    room_tot_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.tot_price())
+    room_count_nights_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.count_nights_price())
+    room_fee = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.fee())
     
     rooms = Room.objects.exclude(id=room.id).all()
     reservations = Reservation.objects.filter(room=room)
@@ -678,7 +676,7 @@ def room_delete(request, id):
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
     currency = show_currency(request.session.get('currency', 'UZS'))
-    room.converted_price = convert_price(room.currency, request.session.get("currency", "UZS"), room.price)
+    room.converted_price = convert_prices_task(room.currency, request.session.get("currency", "UZS"), room.price)    
 
     cur_city = room.city.capitalize()
     cur_rmtype = room.room_type.capitalize()
@@ -715,10 +713,7 @@ def room_edit(request, username, id):
             room.description = request.POST.get("description", room.description)
             
             room.currency = request.POST.get("currency", room.currency)
-            room.price = float(request.POST.get("price", room.price).replace(",", ""))
-            
-            if room.price.is_integer():
-                room.price = int(room.price)
+            room.price = request.POST.get("price", room.price).replace(",", "")
 
             room.city = request.POST.get("city", room.city)
             room.room_type = request.POST.get("room_type", room.room_type)
@@ -885,18 +880,6 @@ def set_currency(request):
     currency = request.GET.get('currency', 'UZS')
     request.session['currency'] = currency
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
-def convert_price(from_cur, to_cur, price):
-    if from_cur == to_cur:
-        return "{:,}".format(price)
-    try:
-        bef = convert(from_cur, to_cur, price)[1:-1]
-        aft = dict((k.strip()[1:-1], v.strip()) for k,v in (item.split(':') for item in bef.split(',')))["amount"]
-        aft = aft.replace('"', "")
-
-        return "{:,}".format(float(aft))
-    except:
-        return None
         
 def show_currency(cur):
     if cur == "USD":

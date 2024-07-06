@@ -2656,156 +2656,192 @@ input:disabled {
 }
 
 #spinner {
-    display: flex;
-    flex-direction: column;
-    gap: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
 }
 
 #spinner img {
-    height: 60px;
-    width: 60px;
-    vertical-align: middle;
+  height: 60px;
+  width: 60px;
+  vertical-align: middle;
 }
 
 .spinner-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
 .spinner {
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #1d1d1f;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1d1d1f;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .input-wrapper {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 }
 
 .input-wrapper input {
-    width: 100%;
-    height: 60px;
-    padding: 16px 16px 0;
-    box-sizing: border-box;
-    border-radius: 14px;
-    border: 1px solid #d2d2d7;
-    font-size: 14px;
-    outline: none;
-    background-color: #fff;
+  width: 100%;
+  height: 60px;
+  padding: 16px 16px 0;
+  box-sizing: border-box;
+  border-radius: 14px;
+  border: 1px solid #d2d2d7;
+  font-size: 14px;
+  outline: none;
+  background-color: #fff;
 }
 
 .input-wrapper span {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 16px;
-    color: rgba(39, 40, 41, 0.6);
-    pointer-events: none;
-    transition: all 0.2s ease;
-    font-size: 15px; /* Default font size */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 16px;
+  color: rgba(39, 40, 41, 0.6);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  font-size: 15px; /* Default font size */
 }
 
 .input-wrapper input:focus {
-    box-shadow: inset 0 0 0 4px rgba(0, 125, 250, 0.6);
-    border: 1px solid rgba(0, 125, 250, 0.6);
+  box-shadow: inset 0 0 0 4px rgba(0, 125, 250, 0.6);
+  border: 1px solid rgba(0, 125, 250, 0.6);
 }
 
 .input-wrapper input:not(:placeholder-shown) ~ span,
 .input-wrapper input:focus ~ span {
-    transform: translateY(-21px);
-    font-size: 13px;
+  transform: translateY(-21px);
+  font-size: 13px;
 }
 
 .input-wrapper input.valid ~ span {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 .signui {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .currency-select {
-    margin-left: 10px; /* Adjust as needed */
-    padding: 5px; /* Adjust as needed */
-    font-size: 1em; /* Adjust as needed */
-    border: 1px solid #ccc; /* Adjust as needed */
-    border-radius: 4px; /* Adjust as needed */
+  margin-left: 10px; /* Adjust as needed */
+  padding: 5px; /* Adjust as needed */
+  font-size: 1em; /* Adjust as needed */
+  border: 1px solid #ccc; /* Adjust as needed */
+  border-radius: 4px; /* Adjust as needed */
 }
 
 .priceinp {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid #d2d2d7;
-    background: #fbfbfd;
-    padding: 4px 7px;
-    font-family:
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      Roboto,
-      Oxygen,
-      Ubuntu,
-      Cantarell,
-      'Open Sans',
-      'Helvetica Neue',
-      sans-serif;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid #d2d2d7;
+  background: #fbfbfd;
+  padding: 4px 7px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
 }
 
 .priceinp select{
-    border: none;
-    height: 100%;
-    outline: none;
-    background: none;
-    color: grey;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10"><path fill="none" stroke="#000" stroke-width="2" d="M1 1l6 6 6-6"/></svg>') no-repeat right 10px center;
+  border: none;
+  height: 100%;
+  outline: none;
+  background: none;
+  color: grey;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10"><path fill="none" stroke="#000" stroke-width="2" d="M1 1l6 6 6-6"/></svg>') no-repeat right 10px center;
 }
 
 .priceinp input{
-    border: none;
-    height: 100%;
-    outline: none;
-    background: none;
-    padding: 0;
-    padding-left: 5px;
+  border: none;
+  height: 100%;
+  outline: none;
+  background: none;
+  padding: 0;
+  padding-left: 5px;
 }
 
 .cursel {
-    display: flex;
-    gap: 2px;
-    align-items: center;
-    width: auto;
-    height: 100%;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  width: auto;
+  height: 100%;
 }
 
 .cursel svg {
-    width: 12px;
-    height: 12px;
-    fill: grey;
+  width: 12px;
+  height: 12px;
+  fill: grey;
+}
+
+.lbfl{ 
+  display: flex;
+  gap: 5px;
+  width: 100%;
+}
+
+.shrt{
+  cursor: pointer;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+  width: 170px;
+  border: 1px solid #d2d2d7;
+  padding: 15px;
+  box-sizing: border-box;
+  min-height: 50px;
+}
+
+.shrt svg {
+  height: 21px;
+  width: 21px;
+  vertical-align: middle;
+}
+
+.shrt:hover {
+  background: #f5f5f7;
+}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-directions {
+  width: 195px !important;
+  min-width: 195px !important;
+  max-width: 195px !important;
 }
