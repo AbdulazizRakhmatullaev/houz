@@ -1,34 +1,136 @@
+{% load i18n %}
+
 <div class="signup-col">
-    <form action="{% url 'signup' %}" method="POST" class="signui">
+    <form id="signup-form" action="{% url 'signup' %}" method="POST" class="signui" onsubmit="submitSignupForm(event)">
         {% csrf_token %}
-        <div class="input-wrapper">
-            <input type="text" name="name" required placeholder=" " />
-            <span>Full name</span>
+        <div class="lbld" id="name">
+            <div class="input-wrapper">
+                <input type="text" name="name" placeholder=" " />
+                <span>{% trans "Full name" %}</span>
+            </div>
+            <div class="errTxt"></div>
         </div>
-        <div class="input-wrapper">
-            <input type="text" name="username" required placeholder=" " />
-            <span>Username</span>
+        <div class="lbld" id="username">
+            <div class="input-wrapper">
+                <input type="text" name="username" placeholder=" " />
+                <span>{% trans "Username" %}</span>
+            </div>
+            <div class="errTxt"></div>
         </div>
-        <div class="input-wrapper">
-            <input type="password" name="password" id="signup-pass" required placeholder=" " />
-            <span>Password</span>
+        <div class="lbld" id="password">
+            <div class="input-wrapper">
+                <input type="password" id="signup-pass" name="password" placeholder=" " />
+                <span>{% trans "Password" %}</span>
+            </div>
+            <div class="errTxt"></div>
         </div>
-        <div class="input-wrapper">
-            <input type="password" name="confirm" id="confirm" required placeholder=" " />
-            <span>Confirm</span>
+        <div class="lbld" id="confirm">
+            <div class="input-wrapper">
+                <input type="password" id="signup-conf" name="confirm" placeholder=" " />
+                <span>{% trans "Confirm" %}</span>
+            </div>
+            <div class="errTxt"></div>
         </div>
         
         <div id="flex-align">
             <input class="showPassword" type="checkbox" id="toggle-signup-password" />
-            <div class="showPassword-txt">
-                Show password
-            </div>
+            <div class="showPassword-txt">{% trans "Show password" %}</div>
         </div>
         <div class="fl-spbn" style="margin-top: 45px;">
-            <div class="c-ripple" onclick="openSigninModal()">Sign in instead</div>
-            <button type="submit" class="btn-primary">
-                Create account
-            </button>
+            <div class="c-ripple" onclick="openSigninModal()">{% trans "Sign in instead" %}</div>
+            <button type="submit" class="btn-primary">{% trans "Create account" %}</button>
         </div>
     </form>
 </div>
+
+<script>
+    function submitSignupForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const nameInput =     document.querySelector('#name     input[name="name"]');
+        const usernameInput = document.querySelector('#username input[name="username"]');
+        const passwordInput = document.querySelector('#password input[name="password"]');
+        const confirmInput =  document.querySelector('#confirm  input[name="confirm"]');
+
+        // Clear previous error messages
+        document.querySelector('#name .errTxt').textContent = '';
+        document.querySelector('#username .errTxt').textContent = '';
+        document.querySelector('#password .errTxt').textContent = '';
+        document.querySelector('#confirm .errTxt').textContent = '';
+
+        if (nameInput.value.trim() === "") {
+            document.querySelector('#name .errTxt').textContent = '{% trans "Full name is required" %}';
+            return;
+        }
+        if (nameInput.value.trim().split(' ').length < 2) {
+            document.querySelector('#name .errTxt').textContent = '{% trans "Please, provide your full name, containing first & last names" %}';
+            return;
+        }
+
+        if (usernameInput.value.trim() === '') {
+            document.querySelector('#username .errTxt').textContent = '{% trans "Username is required" %}';
+            return;
+        }
+
+        if (passwordInput.value.trim() === '') {
+            document.querySelector('#password .errTxt').textContent = '{% trans "Password is required" %}';
+            return;
+        }
+        if (passwordInput.value.length < 8) {
+            document.querySelector('#password .errTxt').textContent = '{% trans "Password pattern should be at least 8 characters" %}';
+            return;
+        }
+        if (confirmInput.value.trim() === '') {
+            document.querySelector('#confirm .errTxt').textContent = '{% trans "Confirm your password" %}';
+            return;
+        }
+        if (passwordInput.value !== confirmInput.value) {
+            document.querySelector('#confirm .errTxt').textContent = '{% trans "Passwords do not match" %}';
+            return;
+        }
+
+        // Create a FormData object to store form data
+        const formData = new FormData(document.getElementById('signup-form'));
+
+        // Use fetch API to submit form data to server
+        fetch("{% url 'signup' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+          .then((response) => response.json())
+          .then((data) => {
+              // Handle response
+              if (data.is_available) {
+                  window.location.href = `/`;
+                  // openSigninModal();
+              } else {
+                  document.querySelector('#username .errTxt').textContent = '{% trans "The username is taken" %}';
+              }
+          }).catch(error => {
+              // Handle error
+              console.error('Error:', error);
+          });
+    }
+</script>
+
+<script>
+    const password = document.getElementById("signup-pass");
+    const password2 = document.getElementById("signup-conf");
+    const togglePassword = document.getElementById(
+        "toggle-signup-password",
+    );
+
+    togglePassword.addEventListener("click", toggleClicked);
+    function toggleClicked() {
+        if (this.checked) {
+            password.type = "text";
+            password2.type = "text";
+        } else {
+            password.type = "password";
+            password2.type = "password";
+        }
+    }
+</script>

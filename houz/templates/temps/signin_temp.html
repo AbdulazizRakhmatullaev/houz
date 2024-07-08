@@ -3,16 +3,16 @@
 <div class="signin-col">
     <form action="{% url 'signin' %}" method="POST" class="signui" id="signin-form" onsubmit="submitForm(event)">
         {% csrf_token %}
-        <div class="lbld" id="username">
+        <div class="lbld" id="usem">
             <div class="input-wrapper">
-                <input type="text" name="username" placeholder=" " />
+                <input type="text" name="usem" placeholder=" " />
                 <span>Email or username</span>
             </div>
             <div class="errTxt"></div>
         </div>
-        <div class="lbld" id="password">
+        <div class="lbld" id="si_password">
             <div class="input-wrapper">
-                <input type="password" name="password" id="signin-password" placeholder=" " />
+                <input type="password" name="pass" id="signin-password" placeholder=" " />
                 <span>Password</span>
             </div>
             <div class="errTxt"></div>
@@ -36,24 +36,24 @@
     function submitForm(event) {
         event.preventDefault(); // Prevent the default form submission
 
-        const usernameInput = document.querySelector('#username input[name="username"]');
-        const passwordInput = document.querySelector('#password input[name="password"]');
+        const usernameInput = document.querySelector('#usem input[name="usem"]');
+        const passwordInput = document.querySelector('#si_password input[name="pass"]');
 
         // Clear previous error messages
-        document.querySelector('#username .errTxt').textContent = '';
-        document.querySelector('#password .errTxt').textContent = '';
+        document.querySelector('#usem .errTxt').textContent = '';
+        document.querySelector('#si_password .errTxt').textContent = '';
 
         if (usernameInput.value.trim() === '') {
-            document.querySelector('#username .errTxt').textContent = '{% trans "Email or username is required" %}';
+            document.querySelector('#usem .errTxt').textContent = '{% trans "Email or username is required" %}';
             return;
         }
 
         if (passwordInput.value.trim() === '') {
-            document.querySelector('#password .errTxt').textContent = '{% trans "Password is required" %}';
+            document.querySelector('#si_password .errTxt').textContent = '{% trans "Password is required" %}';
             return;
         }
         if (passwordInput.value.length < 8) {
-            document.querySelector('#password .errTxt').textContent = '{% trans "Password pattern is wrong. It should be at least 8 characters" %}';
+            document.querySelector('#si_password .errTxt').textContent = '{% trans "Password pattern should be at least 8 characters" %}';
             return;
         }
 
@@ -74,7 +74,7 @@
               if (data.is_user) {
                   window.location.href = `/`; // Adjust the URL as per your project's routing
               } else {
-                  document.querySelector('#username .errTxt').textContent = '{% trans "Invalid information, Please check your credentials" %}';
+                  document.querySelector('#usem .errTxt').textContent = '{% trans "Invalid information, Please check your credentials" %}';
               }
           }).catch(error => {
               // Handle error

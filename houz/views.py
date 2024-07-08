@@ -391,37 +391,27 @@ def signup(request):
             password = request.POST["password"]
             confirm = request.POST["confirm"]
 
-            if len(password) >= 8:
-                if password == confirm:
-                    if User.objects.filter(username=username).exists():
-                        messages.error(request, "This Username is taken. Try again")
-                        return redirect("signup")
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({"is_available": False})
 
-                    else:
-                        user = User.objects.create_user(
-                            username=username,
-                            first_name=name,
-                            password=password,
-                        )
-                        user.save()
-
-                        # create Profile
-                        user_model = User.objects.get(username=username)
-                        new_profile = Profile.objects.create(
-                            user=user_model, name=name
-                        )
-                        new_profile.save()
-                        messages.success(
-                            request, "Successfuly created your account, now sign in"
-                        )
-                        return redirect("signin")
-
-                else:
-                    messages.error(request, "Those passwords didn't match. Try again.")
-                    return redirect("signup")
             else:
-                messages.error(request, "Use 8 characters or more for your password")
-                return redirect("signup")
+                user = User.objects.create_user(
+                    username=username,
+                    first_name=name,
+                    password=password,
+                )
+                user.save()
+
+                # create Profile
+                user_model = User.objects.get(username=username)
+                new_profile = Profile.objects.create(
+                    user=user_model, name=name
+                )
+                new_profile.save()
+                messages.success(
+                    request, "Successfuly created your account, now sign in"
+                )
+                return JsonResponse({"is_available": True})
 
         else:
             return render(request, "basic/signup.html")
@@ -431,12 +421,13 @@ def signup(request):
 def signin(request):
     if not request.user.is_authenticated:
         if request.method == "POST":
-            userinput = request.POST["username"]
+            userinput = request.POST["usem"]
             try:
                 username = User.objects.get(email=userinput).username
             except User.DoesNotExist:
-                username = request.POST["username"]
-            password = request.POST["password"]
+                username = request.POST["usem"]
+                
+            password = request.POST["pass"]
             user = authenticate(username=username, password=password)
 
             if user is not None:
@@ -444,9 +435,6 @@ def signin(request):
                 messages.info(request, "You're now logged in")
                 return JsonResponse({"is_user": True})
             else:
-                messages.error(
-                    request, "Invalid information, Please check your username or email"
-                )
                 return JsonResponse({"is_user": False})
 
         return render(request, "basic/signin.html")
@@ -543,7 +531,14 @@ def room_detail(request, room_id):
     room_count_nights_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.count_nights_price())
     room_fee = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.fee())
     
+    
     rooms = Room.objects.exclude(id=room.id).all()
+    filtered_rs = []
+    for rec in rooms:
+        rec.converted_price = convert_prices_task(rec.currency, request.session.get('currency', 'UZS'), rec.price)
+        if (rec.converted_price < room_converted_price):
+            filtered_rs.append(rec)
+        
     reservations = Reservation.objects.filter(room=room)
     reviews = room.rating_set.order_by("-date")
     num_o_days = (room.check_out - room.check_in).days
@@ -552,7 +547,7 @@ def room_detail(request, room_id):
         "basic/room.html",
         {
             "room": room,
-            "rooms": rooms,
+            "rooms": filtered_rs,
             "reviews": reviews,
             "num_o_days": num_o_days,
             'currency': currency, 

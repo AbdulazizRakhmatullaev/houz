@@ -609,6 +609,7 @@
       map.doubleClickZoom.disable();
 
       // Add zoom and unzoom controls
+      map.addControl(new mapboxgl.FullscreenControl());
       map.addControl(new mapboxgl.NavigationControl());
 
       // Add geolocate control to the map2

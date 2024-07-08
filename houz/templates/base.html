@@ -71,8 +71,8 @@
                 <li class="row-con-itm">
 
                 </li>
-                {% if request.user.is_authenticated %}
                 <ul class="row-content">
+                    {% if request.user.is_authenticated %}
                     <li class="createroom">
                         <div class="nav-host row-svg" onclick="location.href='/become-a-host';">
                             <svg class="row-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -92,8 +92,11 @@
                             {% notifications request %}
                         </div>
                     </li>
-                    <li class="row-con-itm" style="">
+                    {% endif %}
+                    <li class="row-con-itm">
                         <div id="ppDrBtn" class="nav-icn">
+                            {% if request.user.is_authenticated %}
+                            
                             {% if request.user.profile.avatar.url != null %}
                             <img src="{{request.user.profile.avatar.url}}" alt="" class="pp" />
                             {% else %}
@@ -104,9 +107,24 @@
                                 </div>
                             </div>
                             {% endif %}
+                            
+                            {% else %}
+                            <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+                                <title>user_circle_outline_28</title>
+                                <desc>Created with Sketch.</desc>
+                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="user_circle_outline_28">
+                                        <polygon points="0 0 28 0 28 28 0 28"></polygon>
+                                        <path d="M14,2 C20.627417,2 26,7.372583 26,14 C26,20.627417 20.627417,26 14,26 C7.372583,26 2,20.627417 2,14 C2,7.372583 7.372583,2 14,2 Z M14,20.5 C11.9140585,20.5 9.92003841,21.0819877 8.20321268,22.1490263 C9.83817315,23.3145604 11.8390401,24 14,24 C16.1605163,24 18.1610053,23.3148418 19.7960379,22.1499545 C18.0794784,21.0818382 16.0856823,20.5 14,20.5 Z M14,4 C8.4771525,4 4,8.4771525 4,14 C4,16.6156772 5.00425519,18.9967981 6.64822833,20.7788253 C8.78562177,19.3081977 11.3309834,18.5 14,18.5 C16.6692926,18.5 19.214928,19.3083599 21.3526704,20.7774111 C22.9961172,18.995915 24,16.6151922 24,14 C24,8.4771525 19.5228475,4 14,4 Z M14,7.5 C16.6241597,7.5 18.75,9.62584025 18.75,12.25 C18.75,14.8741597 16.6241597,17 14,17 C11.3758403,17 9.25,14.8741597 9.25,12.25 C9.25,9.62584025 11.3758403,7.5 14,7.5 Z M14,9.5 C12.4804097,9.5 11.25,10.7304097 11.25,12.25 C11.25,13.7695903 12.4804097,15 14,15 C15.5195903,15 16.75,13.7695903 16.75,12.25 C16.75,10.7304097 15.5195903,9.5 14,9.5 Z" id="↳-Icon-Color" fill="currentColor" fill-rule="nonzero"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            {% endif %}
                         </div>
                         <div id="ppDropdown">
                             <div class="ppdropmenu">
+                                {% if request.user.is_authenticated %}
                                 <a href="{% url 'user_profile' request.user.username %}" class="ppdrcol">
                                     <div class="ppdricn">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 8.8a1.7 1.7 0 1 0 0 3.4 1.7 1.7 0 0 0 0-3.4Zm-3.5 1.7a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0Z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M12 2.1A9.872 9.872 0 0 0 5 5a9.872 9.872 0 0 0-2.9 7c0 2.733 1.11 5.21 2.9 7a9.872 9.872 0 0 0 7 2.9c2.733 0 5.21-1.11 7-2.9a9.872 9.872 0 0 0 2.9-7c0-2.734-1.11-5.21-2.9-7a9.872 9.872 0 0 0-7-2.9Zm4.382 16.713A7.067 7.067 0 0 0 12 17.3a7.066 7.066 0 0 0-4.382 1.513A8.06 8.06 0 0 0 12 20.1a8.06 8.06 0 0 0 4.382-1.287ZM6.272 6.273A8.072 8.072 0 0 1 12 3.9c2.237 0 4.26.906 5.727 2.372A8.072 8.072 0 0 1 20.1 12a8.07 8.07 0 0 1-2.297 5.651A8.868 8.868 0 0 0 12 15.5a8.869 8.869 0 0 0-5.803 2.151A8.07 8.07 0 0 1 3.9 12c0-2.237.906-4.26 2.372-5.728ZM8.5 10.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0ZM12 8.8a1.7 1.7 0 1 0 0 3.4 1.7 1.7 0 0 0 0-3.4Z" clip-rule="evenodd"/></svg>
@@ -127,8 +145,18 @@
                                     </div>
                                     <div class="ppdrnm">Reservations</div>
                                 </a>
+                                {% else %}
+                                <div class="ppdrcol" onclick="openSigninModal()">
+                                    <div class="ppdrInN">
+                                        <div class="ppdricn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.754 20.366c-.763.407-1.512.534-3.082.534H13a.9.9 0 1 1 0-1.8h2.672c1.487 0 1.87-.128 2.233-.322.336-.18.594-.438.773-.773.194-.362.322-.746.322-2.233V8.228c0-1.487-.128-1.871-.322-2.233a1.847 1.847 0 0 0-.773-.774c-.362-.193-.746-.321-2.233-.321H13a.9.9 0 1 1 0-1.8h2.672c1.57 0 2.32.127 3.082.534.65.347 1.164.863 1.512 1.512.407.762.534 1.512.534 3.082v7.544c0 1.57-.127 2.32-.534 3.082a3.647 3.647 0 0 1-1.512 1.512Z"/><path d="m9.364 15.364 2.463-2.464H3.9a.9.9 0 0 1 0-1.8h7.927L9.364 8.636a.9.9 0 1 1 1.272-1.272l4 4a.9.9 0 0 1 0 1.272l-4 4a.9.9 0 0 1-1.272-1.272Z"/></svg>
+                                        </div>
+                                        <div class="ppdrnm">Sign in</div>
+                                    </div>
+                                </div>
+                                {% endif %}
                                 <div class="hr" style="width: 91%; margin: 5px auto;"></div>
-                                <div href="" class="ppdrcol" style="justify-content: space-between;">
+                                <div class="ppdrcol" style="justify-content: space-between;">
                                     <div class="ppdrInN">
                                         <div class="ppdricn">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10.606 1.987a.75.75 0 0 1-.217.835 5.795 5.795 0 0 0 6.387 9.58.75.75 0 0 1 1.031.965A8.502 8.502 0 0 1 1.5 10a8.5 8.5 0 0 1 8.395-8.5.75.75 0 0 1 .711.487ZM8.004 3.288a7 7 0 1 0 7.421 11.137A7.295 7.295 0 0 1 8.004 3.288Z" clip-rule="evenodd"/></svg>
@@ -139,7 +167,7 @@
                                         Off
                                     </div>
                                 </div>
-                                <div href="" class="ppdrcol" style="justify-content: space-between;">
+                                <div class="ppdrcol" style="justify-content: space-between;">
                                     <div class="ppdrInN">
                                         <div class="ppdricn">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.002 3.8a3.849 3.849 0 0 0-3.85 3.847c0 2.457 1.457 5.1 2.788 6.977.551.778 1.6.776 2.149-.004 1.32-1.875 2.763-4.517 2.763-6.973a3.849 3.849 0 0 0-3.85-3.847Zm-5.65 3.847c0-3.12 2.53-5.647 5.65-5.647 3.12 0 5.65 2.528 5.65 5.647 0 3.048-1.737 6.084-3.091 8.009-1.265 1.797-3.819 1.801-5.09.01-1.364-1.926-3.119-4.966-3.119-8.02Z M13.752 7.75a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0Z M17.211 14.32a.9.9 0 0 1 1.268-.109c.833.7 1.526 1.589 1.526 2.789 0 1.753-1.064 3.038-2.539 3.836-1.456.789-3.394 1.166-5.466 1.166-2.09 0-4.027-.432-5.475-1.244C5.077 19.945 4 18.669 4 17c0-1.189.712-2.096 1.514-2.783a.9.9 0 1 1 1.172 1.366c-.652.559-.886 1.01-.886 1.417 0 .789.492 1.563 1.605 2.188 1.112.623 2.725 1.014 4.595 1.014 1.888 0 3.502-.349 4.609-.948 1.087-.59 1.596-1.356 1.596-2.254 0-.42-.22-.853-.884-1.411a.9.9 0 0 1-.11-1.268Z" clip-rule="evenodd"/></svg>
@@ -150,7 +178,7 @@
                                         Uzbekistan
                                     </div>
                                 </div>
-                                <div href="" class="ppdrcol" style="justify-content: space-between;">
+                                <div class="ppdrcol" style="justify-content: space-between;">
                                     <div class="ppdrInN">
                                         <div class="ppdricn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 28 28"><path fill-rule="evenodd" d="M7.759 5.5H20.24c.805 0 1.47 0 2.01.044.563.046 1.08.145 1.565.392a4 4 0 0 1 1.748 1.748c.247.485.346 1.002.392 1.564.044.541.044 1.206.044 2.01v5.483c0 .805 0 1.47-.044 2.01-.046.563-.145 1.08-.392 1.565a4 4 0 0 1-1.748 1.748c-.485.247-1.002.346-1.564.392-.541.044-1.206.044-2.01.044H7.758c-.805 0-1.47 0-2.01-.044-.563-.046-1.08-.145-1.565-.392a4 4 0 0 1-1.748-1.748c-.247-.485-.346-1.002-.392-1.564C2 18.21 2 17.546 2 16.742v-5.483c0-.805 0-1.47.044-2.01.046-.563.145-1.08.392-1.565a4 4 0 0 1 1.748-1.748c.485-.247 1.002-.346 1.564-.392C6.29 5.5 6.954 5.5 7.758 5.5ZM5.91 7.538c-.438.035-.663.1-.819.18a2 2 0 0 0-.874.874c-.08.156-.145.38-.18.819C4 9.861 4 10.443 4 11.3v5.4c0 .857 0 1.439.038 1.889.035.438.1.663.18.819a2 2 0 0 0 .874.874c.156.08.38.145.819.18.45.037 1.032.038 1.889.038H9V17a3 3 0 1 1 0-6V7.5H7.8c-.857 0-1.439 0-1.889.038ZM17 20.5h-6v-13h6v13Zm2 0h1.2c.857 0 1.439 0 1.889-.038.438-.035.663-.1.819-.18a2 2 0 0 0 .874-.874c.08-.156.145-.38.18-.819.037-.45.038-1.032.038-1.889v-5.4c0-.857 0-1.439-.038-1.889-.035-.438-.1-.663-.18-.819a2 2 0 0 0-.874-.874c-.156-.08-.38-.145-.819-.18-.45-.037-1.032-.038-1.889-.038H19V11a3 3 0 1 1 0 6v3.5Z" clip-rule="evenodd"/></svg>
@@ -171,7 +199,7 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div href="" class="ppdrcol" style="justify-content: space-between;">
+                                <div class="ppdrcol" style="justify-content: space-between;">
                                     <div class="ppdrInN">
                                         <div class="ppdricn">
                                             <svg id="lngbtn" class="row-svg" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -196,8 +224,9 @@
                                         </form>
                                     </div>
                                 </div>
+                                {% if request.user.is_authenticated %}
                                 <div class="hr" style="width: 91%; margin: 5px auto;"></div>
-                                <div href="" class="ppdrcol">
+                                <div class="ppdrcol">
                                     <div class="ppdrInN">
                                         <div class="ppdricn">
                                             <svg viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -221,15 +250,11 @@
                                         <div class="ppdrnm" onclick="confirmReq()">Signout</div>
                                     </div>
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </li>
                 </ul>
-                {% else %}
-                <li class="row-con-itm">
-                    <div onclick="openSigninModal()">Sign in</div>
-                </li>
-                {% endif %}
             </ul>
         </div>
     </nav>
@@ -539,24 +564,6 @@
                 $(document).on("mouseup", onDocumentMouseUp);
             }
         });
-    </script>
-    <script>
-        const password = document.getElementById("signup-pass");
-        const password2 = document.getElementById("confirm");
-        const togglePassword = document.getElementById(
-            "toggle-signup-password",
-        );
-
-        togglePassword.addEventListener("click", toggleClicked);
-        function toggleClicked() {
-            if (this.checked) {
-                password.type = "text";
-                password2.type = "text";
-            } else {
-                password.type = "password";
-                password2.type = "password";
-            }
-        }
     </script>
     <script>
         const signinModal = document.getElementById("signinModal");
