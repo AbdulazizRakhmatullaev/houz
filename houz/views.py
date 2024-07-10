@@ -45,9 +45,9 @@ def is_ajax(request):
 
 
 def home(request):
-    rooms = Room.objects.all()
+    rooms = Room.objects.filter(public=True).all()
     currency = show_currency(request.session.get('currency', 'UZS'))
-    
+
     for room in rooms:
         room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
 
@@ -359,12 +359,12 @@ def user_profile(request, username):
     user = get_object_or_404(User, username__exact=username)
     is_own_profile = user == request.user
     rooms = user.room_set.all().order_by("-date")
-    
+
     currency = show_currency(request.session.get('currency', 'UZS'))
-    
+
     for room in rooms:
         room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
-        
+
     comments = Comment.objects.filter(reciever=user).order_by("-created_at")
     reviews = Rating.objects.filter(room__in=rooms).order_by("-date")
     rating_count = reviews.count()
@@ -386,10 +386,10 @@ def user_profile(request, username):
 def signup(request):
     if not request.user.is_authenticated:
         if request.method == "POST":
-            username = request.POST["username"]
-            name = request.POST["name"]
-            password = request.POST["password"]
-            confirm = request.POST["confirm"]
+            username = request.POST.get("username")[0:15]
+            name = request.POST.get("name")
+            password = request.POST.get("password")
+            confirm = request.POST.get("confirm")
 
             if User.objects.filter(username=username).exists():
                 return JsonResponse({"is_available": False})
@@ -405,7 +405,8 @@ def signup(request):
                 # create Profile
                 user_model = User.objects.get(username=username)
                 new_profile = Profile.objects.create(
-                    user=user_model, name=name
+                    user=user_model,
+                    name=name
                 )
                 new_profile.save()
                 messages.success(
@@ -426,7 +427,7 @@ def signin(request):
                 username = User.objects.get(email=userinput).username
             except User.DoesNotExist:
                 username = request.POST["usem"]
-                
+
             password = request.POST["pass"]
             user = authenticate(username=username, password=password)
 
@@ -523,22 +524,22 @@ def avatarDelete(request):
 # ROOM
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
-    
+
     currency = show_currency(request.session.get('currency', 'UZS'))
-    
+
     room_converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
     room_tot_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.tot_price())
     room_count_nights_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.count_nights_price())
     room_fee = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.fee())
-    
-    
+
+
     rooms = Room.objects.exclude(id=room.id).all()
     filtered_rs = []
     for rec in rooms:
         rec.converted_price = convert_prices_task(rec.currency, request.session.get('currency', 'UZS'), rec.price)
         if (rec.converted_price < room_converted_price):
             filtered_rs.append(rec)
-        
+
     reservations = Reservation.objects.filter(room=room)
     reviews = room.rating_set.order_by("-date")
     num_o_days = (room.check_out - room.check_in).days
@@ -550,14 +551,14 @@ def room_detail(request, room_id):
             "rooms": filtered_rs,
             "reviews": reviews,
             "num_o_days": num_o_days,
-            'currency': currency, 
+            'currency': currency,
             'room_converted_price': room_converted_price,
             'room_tot_price': room_tot_price,
             'room_count_nights_price': room_count_nights_price,
             'room_fee': room_fee,
         },
     )
-    
+
 def room_create(request):
     regions = Region_Choices
     room_types = RoomTypes
@@ -565,7 +566,7 @@ def room_create(request):
     currencies = [
         (code, name) for code, name in Currencies if code != request.session.get('currency', 'UZS')
     ]
-    
+
     if request.user.is_authenticated:
         if request.method == "POST":
             host = request.user
@@ -575,13 +576,13 @@ def room_create(request):
 
             address = request.POST.get("address")
             city = request.POST.get("city")
-            
+
             cur = request.POST.get("currency")
             price = float(request.POST.get("price").replace(",", ""))
-            
+
             if price.is_integer():
                 price = int(price)
-            
+
             guests = request.POST.get("guests")
             beds = request.POST.get("beds")
             bedrooms = request.POST.get("bedrooms")
@@ -671,7 +672,7 @@ def room_delete(request, id):
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
     currency = show_currency(request.session.get('currency', 'UZS'))
-    room.converted_price = convert_prices_task(room.currency, request.session.get("currency", "UZS"), room.price)    
+    room.converted_price = convert_prices_task(room.currency, request.session.get("currency", "UZS"), room.price)
 
     cur_city = room.city.capitalize()
     cur_rmtype = room.room_type.capitalize()
@@ -706,7 +707,7 @@ def room_edit(request, username, id):
         if request.method == "POST":
             room.title = request.POST.get("title", room.title)
             room.description = request.POST.get("description", room.description)
-            
+
             room.currency = request.POST.get("currency", room.currency)
             room.price = request.POST.get("price", room.price).replace(",", "")
 
@@ -870,12 +871,12 @@ def set_language(request):
         return response
     else:
         return redirect('/')
-        
+
 def set_currency(request):
     currency = request.GET.get('currency', 'UZS')
     request.session['currency'] = currency
     return redirect(request.META.get('HTTP_REFERER', '/'))
-        
+
 def show_currency(cur):
     if cur == "USD":
         return "$"
@@ -887,3 +888,44 @@ def show_currency(cur):
         return "¥"
 
     return cur + " "
+
+
+def to_buyer(request):
+    user_profile = Profile.objects.get(user=request.user)
+    rooms = Room.objects.filter(host=request.user).all()
+
+    if request.method == "POST":
+        user_profile.type = "buyer"
+        user_profile.save()
+        
+        for room in rooms:
+            room.public = False
+            room.save()
+
+        messages.info(request, "You have successfully switced to Buyer mode")
+        return redirect("user_profile", request.user.username)
+
+    return redirect("home")
+
+def to_seller(request):
+    user_profile = Profile.objects.get(user=request.user)
+
+    if request.method == "POST":
+        bio = request.POST.get("bio")
+        email = request.POST.get("email")
+        phone_number = request.POST.get("phone_number")
+        city = request.POST.get("city")
+        languages = request.POST.get("languages")
+        
+        user_profile.type = "seller"
+        user_profile.bio = bio
+        user_profile.email = email
+        user_profile.phone_number = phone_number
+        user_profile.city = city
+        user_profile.languages = languages
+
+        user_profile.save()
+        messages.info(request, "You have successfully switched to Seller mode")
+        return redirect("user_profile", request.user.username)
+
+    return redirect("home")

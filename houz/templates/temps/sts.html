@@ -1,0 +1,101 @@
+{% load i18n %}
+
+<div class="sts-col">
+    <div class="colte">Before switching, We need more information about you.</div>
+    <form id="switch-form" action="{% url 'signup' %}" method="POST" class="signui" onsubmit="submitSwitch(event)">
+        {% csrf_token %}
+        <div class="lbld" id="email">
+            <div class="input-wrapper">
+                <input type="text" name="email" placeholder=" " />
+                <span>{% trans "Email" %}</span>
+            </div>
+            <div class="errTxt"></div>
+        </div>
+        <div class="lbld" id="phone">
+            <div class="input-wrapper">
+                <input type="text" name="phone_num" placeholder=" " />
+                <span>{% trans "Phone number" %}</span>
+            </div>
+            <div class="errTxt"></div>
+        </div>
+        <div class="lbld" id="bio">
+            <div class="input-wrapper">
+                <input type="text" name="bio" placeholder=" " />
+                <span>{% trans "Tell us about yourself" %}</span>
+            </div>
+            <div class="errTxt"></div>
+        </div>
+        <div class="lbld" id="city">
+            <div class="input-wrapper">
+                <input type="text" name="city" placeholder=" " />
+                <span>{% trans "Where are you from" %}</span>
+            </div>
+            <div class="errTxt"></div>
+        </div>
+        <div class="lbld" id="languages">
+            <div class="input-wrapper">
+                <input type="text" name="languages" placeholder=" " />
+                <span>{% trans "What languages can you speak" %}</span>
+            </div>
+            <div class="errTxt"></div>
+        </div>
+
+        <div class="navig" style="margin-top: 15px;">
+            <button type="submit" class="btn-primary">{% trans "Switch" %}</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function submitSwitch(event) {
+        event.preventDefault();
+        
+        const emailInp = document.querySelector("#email input[name='email']")
+        const phoneInp = document.querySelector("#phone input[name='phone_num']")
+        const bioInp = document.querySelector("#bio input[name='bio']")
+        
+        document.querySelectorAll('.errTxt').forEach(elem => elem.textContent = '');
+        
+        if (emailInp.value.trim() === "") {
+            document.querySelector('#email .errTxt').textContent = '{% trans "Email is required" %}';
+            return;
+        }
+        
+        if (phoneInp.value.trim() === "") {
+            document.querySelector('#email .errTxt').textContent = '{% trans "Phone number is required" %}';
+            return;
+        }
+        
+        if (bioInp.value.trim() === "") {
+            document.querySelector('#email .errTxt').textContent = '{% trans "Bio is required" %}';
+            return;
+        }
+        if (bioInp.value.length < 150) {
+            document.querySelector('#email .errTxt').textContent = '{% trans "Bio should be at least 150 characters" %}';
+            return;
+        }
+        
+        const formData = new FormData(document.getElementById('switch-form'));
+        
+        // Use fetch API to submit form data to server
+        fetch("{% url 'to_seller' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            // Handle response
+            if (data.is_available) {
+                window.location.href = `/`;
+            } else {
+                document.querySelector('#email .errTxt').textContent = '{% trans "The email is taken" %}';
+            }
+        }).catch(error => {
+            // Handle error
+            console.error('Error:', error);
+        });
+    }
+</script>

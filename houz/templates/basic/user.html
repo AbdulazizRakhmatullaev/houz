@@ -100,7 +100,7 @@
         <div class="user-roomscol">
             {% if user.profile.bio %}
             <div class="lbld">
-                <div class="lbl0">About {{user.profile.first_name}}</div>
+                <div class="lbl0">About {% if is_own_profile %} Me {% else %} {{user.profile.first_name}} {% endif %}</div>
                 <div class="prbio collb">
                     {{user.profile.bio}}
                 </div>

@@ -708,11 +708,7 @@
     }
 
     function displayOfflineMessage() {
-        const div = document.createElement('div');
-        div.classList.add('failicn');
-
         const mapcon = document.getElementById("room_map");
-        mapcon.appendChild(div);
         mapcon.textContent = "No internet connection. Unable to load the map";
     }
 

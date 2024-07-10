@@ -34,32 +34,47 @@
         </div>
     </div>
     {% endfor %} {% endif %}
+    <!-- modals -->
     <div id="signinModal" class="modal">
-        <div class="modal-content">
-            <div class="container">
-                <div class="modal-title">
-                    Sign in
-                    <span onclick="closeSigninModal()" class="close modalclose">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
-                    </span>
+        <div class="modal-cont">
+            <div class="modal-header">
+                <div class="modal-title">Sign in</div>
+                <div class="close modalclose" onclick="closeSigninModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
                 </div>
+            </div>
+            <div class="modalcon">
                 {% include 'temps/signin_temp.html' %}
             </div>
         </div>
     </div>
     <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <div class="container">
-                <div class="modal-title">
-                    Sign up
-                    <span onclick="closeSignupModal()" class="close modalclose">
-                        <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
-                    </span>
+        <div class="modal-cont">
+            <div class="modal-header">
+                <div class="modal-title">Sign up</div>
+                <div class="close modalclose" onclick="closeSignupModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
                 </div>
+            </div>
+            <div class="modalcon">
                 {% include 'temps/signup_temp.html' %}
             </div>
         </div>
     </div>
+    <div id="stsModal" class="modal">
+        <div class="modal-cont">
+            <div class="modal-header">
+                <div class="modal-title">Switch to Seller mode</div>
+                <div class="close modalclose" onclick="closeStsModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
+                </div>
+            </div>
+            <div class="modalcon">
+                {% include 'temps/sts.html' %}
+            </div>
+        </div>
+    </div>
+    <!--  -->
     <nav id="navbar">
         <div id="row">
             <ul class="row-content">
@@ -131,7 +146,15 @@
                                     </div>
                                     <div class="ppdrnm">Profile</div>
                                 </a>
+                                {% if request.user.profile.type == "seller" %}
+                                <div class="hr" style="width: 91%; margin: 5px auto;"></div>
                                 <a href="{% url 'reservation' %}" class="ppdrcol">
+                                    <div class="ppdricn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M2.1 19a.9.9 0 0 1 .9-.9h18a.9.9 0 0 1 0 1.8H3a.9.9 0 0 1-.9-.9ZM16.5 5.9a.9.9 0 1 1 0-1.8H21a.9.9 0 0 1 .9.9v4.5a.9.9 0 0 1-1.8 0V7.173l-5.964 5.963a.9.9 0 0 1-1.272 0L9.5 9.773l-5.864 5.863a.9.9 0 0 1-1.272-1.272l6.5-6.5a.9.9 0 0 1 1.272 0l3.364 3.363L18.827 5.9H16.5Z" clip-rule="evenodd"/></svg>
+                                    </div>
+                                    <div class="ppdrnm">Analytics</div>
+                                </a>
+                                <a href="" class="ppdrcol">
                                     <div class="ppdricn">
                                         <svg class="row-svg" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
                                             <g fill="currentColor">
@@ -145,6 +168,7 @@
                                     </div>
                                     <div class="ppdrnm">Reservations</div>
                                 </a>
+                                {% endif %}
                                 {% else %}
                                 <div class="ppdrcol" onclick="openSigninModal()">
                                     <div class="ppdrInN">
@@ -224,8 +248,28 @@
                                         </form>
                                     </div>
                                 </div>
-                                {% if request.user.is_authenticated %}
+                                {% if request.user.profile.type == "buyer" %}
                                 <div class="hr" style="width: 91%; margin: 5px auto;"></div>
+                                <div class="ppdrcol" onclick="openStS()">
+                                    <div class="ppdricn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5 5a9.872 9.872 0 0 1 7-2.9c2.734 0 5.21 1.11 7 2.9a9.872 9.872 0 0 1 2.9 7c0 2.733-1.11 5.21-2.9 7a9.872 9.872 0 0 1-7 2.9A9.872 9.872 0 0 1 5 19a9.872 9.872 0 0 1-2.9-7c0-2.734 1.11-5.21 2.9-7Zm7-1.1c-2.237 0-4.26.906-5.728 2.372A8.072 8.072 0 0 0 3.9 12c0 2.237.906 4.26 2.372 5.727A8.072 8.072 0 0 0 12 20.1c2.237 0 4.26-.906 5.728-2.373A8.072 8.072 0 0 0 20.1 12c0-2.237-.906-4.26-2.372-5.728A8.072 8.072 0 0 0 12 3.9Z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M9.748 7.768c.626-.463 1.418-.668 2.18-.668 1.252 0 2.61.543 3.087 1.8a.9.9 0 1 1-1.683.639c-.103-.273-.538-.639-1.404-.639-.463 0-.856.128-1.11.315a.838.838 0 0 0-.36.722c0 .196.042.308.084.38a.784.784 0 0 0 .267.249c.323.203.792.335 1.45.51l.055.014c.573.152 1.312.347 1.898.722.321.204.628.48.851.86.226.384.337.824.337 1.309 0 1.033-.52 1.802-1.232 2.277-.68.454-1.526.642-2.301.642-1.264 0-2.432-.449-3.109-1.434a.9.9 0 0 1 1.484-1.019c.243.354.756.653 1.624.653.517 0 .989-.13 1.302-.34.282-.187.432-.428.432-.78a.753.753 0 0 0-.088-.395.787.787 0 0 0-.269-.257c-.322-.205-.79-.339-1.445-.513l-.071-.018c-.569-.15-1.298-.344-1.877-.708a2.56 2.56 0 0 1-.853-.85 2.5 2.5 0 0 1-.34-1.302c0-.943.44-1.687 1.09-2.169Z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M12 5.6a.9.9 0 0 1 .9.9v1a.9.9 0 1 1-1.8 0v-1a.9.9 0 0 1 .9-.9Zm0 10a.9.9 0 0 1 .9.9v1a.9.9 0 0 1-1.8 0v-1a.9.9 0 0 1 .9-.9Z" clip-rule="evenodd"/></svg>
+                                    </div>
+                                    <div class="ppdrnm">Switch to seller</div>
+                                </div >
+                                {% endif %}
+                                {% if request.user.profile.type == "seller" %}
+                                <div class="hr" style="width: 91%; margin: 5px auto;"></div>
+                                <form action="{% url 'to_buyer' %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="ppdrcol nanbn">
+                                        <div class="ppdricn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.935 4.817a14.055 14.055 0 0 0-.94-.017H2.9a.9.9 0 0 1 0-1.8h.127c.401 0 .751 0 1.043.022.31.023.618.075.923.21a2.7 2.7 0 0 1 1.139.952c.094.138.167.28.227.427l11.586.362c.64.02 1.18.037 1.611.09.445.053.892.156 1.284.424a2.7 2.7 0 0 1 1.116 1.655c.101.465.03.917-.088 1.35-.113.42-.3.927-.522 1.527l-.511 1.387c-.495 1.345-.828 2.248-1.426 2.93a4.9 4.9 0 0 1-1.938 1.352c-.848.324-1.81.324-3.243.323H9.804c-.402 0-.752 0-1.043-.022a2.727 2.727 0 0 1-.924-.21 2.7 2.7 0 0 1-1.139-.951 2.726 2.726 0 0 1-.37-.872 14.876 14.876 0 0 1-.208-1.022L4.944 6.428a14.146 14.146 0 0 0-.183-.921c-.052-.199-.092-.273-.118-.312a.9.9 0 0 0-.38-.317c-.043-.02-.123-.046-.328-.061Zm2.838 1.608 1.113 6.158c.079.434.13.711.184.921.051.199.091.273.118.313a.9.9 0 0 0 .38.317c.042.019.123.045.328.06a14 14 0 0 0 .939.017h4.213c1.682 0 2.283-.014 2.78-.204a3.1 3.1 0 0 0 1.227-.855c.35-.401.571-.96 1.153-2.538l.435-1.179c.24-.649.398-1.08.487-1.412.089-.328.078-.449.067-.497a.9.9 0 0 0-.372-.552c-.04-.028-.149-.084-.486-.125-.342-.041-.8-.057-1.491-.078L6.773 6.425Z M10 19.25a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0ZM16.75 21a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5Z"/></svg>
+                                        </div>
+                                        <div class="ppdrnm">Switch to buyer</div>
+                                    </button>
+                                </form>
+                                {% endif %}
+                                {% if request.user.is_authenticated %}
                                 <div class="ppdrcol">
                                     <div class="ppdrInN">
                                         <div class="ppdricn">
@@ -247,7 +291,7 @@
                                         <div class="ppdricn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.754 20.366c-.763.407-1.512.534-3.082.534H13a.9.9 0 1 1 0-1.8h2.672c1.487 0 1.87-.128 2.233-.322.336-.18.594-.438.773-.773.194-.362.322-.746.322-2.233V8.228c0-1.487-.128-1.871-.322-2.233a1.847 1.847 0 0 0-.773-.774c-.362-.193-.746-.321-2.233-.321H13a.9.9 0 1 1 0-1.8h2.672c1.57 0 2.32.127 3.082.534.65.347 1.164.863 1.512 1.512.407.762.534 1.512.534 3.082v7.544c0 1.57-.127 2.32-.534 3.082a3.647 3.647 0 0 1-1.512 1.512Z"/><path d="m9.364 15.364 2.463-2.464H3.9a.9.9 0 0 1 0-1.8h7.927L9.364 8.636a.9.9 0 1 1 1.272-1.272l4 4a.9.9 0 0 1 0 1.272l-4 4a.9.9 0 0 1-1.272-1.272Z"/></svg>
                                         </div>
-                                        <div class="ppdrnm" onclick="confirmReq()">Signout</div>
+                                        <div class="ppdrnm">Signout</div>
                                     </div>
                                 </a>
                                 {% endif %}
@@ -346,6 +390,17 @@
 
     {% block scripts %}
     {% endblock %}
+    <script>
+        $(document).ready(function () {
+            $("#username input[name='username']").on('input', function () {
+                if (this.value.length > 15) {
+                    this.value = this.value.substring(0, 15);
+                }
+                this.value = this.value.replace(/ /g, "_");
+            });
+        });
+    </script>
+    
     <script>
         const $ppDrpMenu = $("[id=ppDropdown]");
 
@@ -566,10 +621,19 @@
         });
     </script>
     <script>
-        const signinModal = document.getElementById("signinModal");
-        const signupModal = document.getElementById("signupModal");
-
+        // switch to seller
+        const sts = document.getElementById("stsModal");
+        
+        function openStS() {
+            sts.classList.add("show");
+        }
+        function closeStS() {
+            sts.classList.remove("show");
+        }
+        
         // signin
+        const signinModal = document.getElementById("signinModal");
+        
         function openSigninModal() {
             signinModal.classList.add("show");
             signupModal.classList.remove("show");
@@ -577,7 +641,10 @@
         function closeSigninModal() {
             signinModal.classList.remove("show");
         }
+        
         // signup
+        const signupModal = document.getElementById("signupModal");
+        
         function openSignupModal() {
             signinModal.classList.remove("show");
             signupModal.classList.add("show");

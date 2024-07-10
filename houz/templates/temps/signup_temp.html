@@ -31,13 +31,13 @@
             </div>
             <div class="errTxt"></div>
         </div>
-        
+
         <div id="flex-align">
             <input class="showPassword" type="checkbox" id="toggle-signup-password" />
             <div class="showPassword-txt">{% trans "Show password" %}</div>
         </div>
         <div class="fl-spbn" style="margin-top: 45px;">
-            <div class="c-ripple" onclick="openSigninModal()">{% trans "Sign in instead" %}</div>
+            <div class="c-ripple" onclick="openSigninModal()">{% trans "Back" %}</div>
             <button type="submit" class="btn-primary">{% trans "Create account" %}</button>
         </div>
     </form>
@@ -47,16 +47,13 @@
     function submitSignupForm(event) {
         event.preventDefault(); // Prevent the default form submission
 
-        const nameInput =     document.querySelector('#name     input[name="name"]');
+        const nameInput = document.querySelector('#name input[name="name"]');
         const usernameInput = document.querySelector('#username input[name="username"]');
         const passwordInput = document.querySelector('#password input[name="password"]');
-        const confirmInput =  document.querySelector('#confirm  input[name="confirm"]');
+        const confirmInput = document.querySelector('#confirm input[name="confirm"]');
 
         // Clear previous error messages
-        document.querySelector('#name .errTxt').textContent = '';
-        document.querySelector('#username .errTxt').textContent = '';
-        document.querySelector('#password .errTxt').textContent = '';
-        document.querySelector('#confirm .errTxt').textContent = '';
+        document.querySelectorAll('.errTxt').forEach(elem => elem.textContent = '');
 
         if (nameInput.value.trim() === "") {
             document.querySelector('#name .errTxt').textContent = '{% trans "Full name is required" %}';
@@ -69,6 +66,10 @@
 
         if (usernameInput.value.trim() === '') {
             document.querySelector('#username .errTxt').textContent = '{% trans "Username is required" %}';
+            return;
+        }
+        if (usernameInput.value.length > 16) {
+            document.querySelector('#username .errTxt').textContent = '{% trans "Your username must be shorter than 16 characters" %}';
             return;
         }
 
@@ -100,28 +101,23 @@
                 'X-CSRFToken': '{{ csrf_token }}'
             }
         })
-          .then((response) => response.json())
-          .then((data) => {
-              // Handle response
-              if (data.is_available) {
-                  window.location.href = `/`;
-                  // openSigninModal();
-              } else {
-                  document.querySelector('#username .errTxt').textContent = '{% trans "The username is taken" %}';
-              }
-          }).catch(error => {
-              // Handle error
-              console.error('Error:', error);
-          });
+        .then((response) => response.json())
+        .then((data) => {
+            // Handle response
+            if (data.is_available) {
+                window.location.href = `/`;
+            } else {
+                document.querySelector('#username .errTxt').textContent = '{% trans "The username is taken" %}';
+            }
+        }).catch(error => {
+            // Handle error
+            console.error('Error:', error);
+        });
     }
-</script>
 
-<script>
     const password = document.getElementById("signup-pass");
     const password2 = document.getElementById("signup-conf");
-    const togglePassword = document.getElementById(
-        "toggle-signup-password",
-    );
+    const togglePassword = document.getElementById("toggle-signup-password");
 
     togglePassword.addEventListener("click", toggleClicked);
     function toggleClicked() {

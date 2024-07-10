@@ -40,4 +40,7 @@ urlpatterns = [
     #
     path("@<str:username>", views.user_profile, name="user_profile"),
     path('set_currency/', views.set_currency, name='set_currency'),
+    
+    path("switch-to-buyer", views.to_buyer, name="to_buyer"),
+    path("switch-to-seller", views.to_seller, name="to_seller"),
 ]

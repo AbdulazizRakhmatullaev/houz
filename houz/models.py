@@ -120,7 +120,8 @@ RoomTypes = (
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, max_length=10)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    type = models.CharField("Buyer or Seller", max_length=6, default="buyer")
     avatar = models.ImageField("Avatar", blank=True, upload_to="users/avatars/%Y/%m/%d")
     avatar_default = models.CharField(
         "Default Avatar", max_length=255, default=avatarColorDefault
@@ -129,7 +130,7 @@ class Profile(models.Model):
     bio = models.CharField("Bio", max_length=255, blank=True)
     email = models.EmailField("Email", max_length=255, blank=True)
     phone_number = models.CharField("Phone", max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=200, null=True, choices=Region_Choices)
+    city = models.CharField(max_length=200, null=True, blank=True, choices=Region_Choices),
     languages = models.CharField(
         "Languages", max_length=200, choices=sorted_languages, default="English"
     )
@@ -233,12 +234,15 @@ class Room(models.Model):
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
     location = PlainLocationField(based_fields=["city"], zoom=7, max_length=255)
+    
+    public = models.BooleanField("Public or not", default=True)
     date = models.DateTimeField("Date", default=datetime.now)
 
     class Meta:
         verbose_name = "Room"
         verbose_name_plural = "Rooms"
         ordering = ["-date"]
+        
 
     def get_desc(self):
         lines = self.description.split("\n")
