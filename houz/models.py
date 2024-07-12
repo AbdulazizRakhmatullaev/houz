@@ -130,7 +130,7 @@ class Profile(models.Model):
     bio = models.CharField("Bio", max_length=255, blank=True)
     email = models.EmailField("Email", max_length=255, blank=True)
     phone_number = models.CharField("Phone", max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=200, null=True, blank=True, choices=Region_Choices),
+    country = models.CharField("Country", max_length=255, null=True, blank=True),
     languages = models.CharField(
         "Languages", max_length=200, choices=sorted_languages, default="English"
     )

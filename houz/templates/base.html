@@ -10,10 +10,16 @@
     <title>Houz / {% block title %}{% endblock %}</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    
+    <!-- static -->
     <link rel="icon" type="image/x-icon" href="{% static 'icons/houz_h.png' %}" />
-
     <link rel="stylesheet" href="{% static 'base.css' %}" />
+    
+    <!-- other -->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" />
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    
 </head>
 
 <body>
@@ -65,7 +71,7 @@
         <div class="modal-cont">
             <div class="modal-header">
                 <div class="modal-title">Switch to Seller mode</div>
-                <div class="close modalclose" onclick="closeStsModal()">
+                <div class="close modalclose" onclick="closeSts()">
                     <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
                 </div>
             </div>
@@ -250,7 +256,7 @@
                                 </div>
                                 {% if request.user.profile.type == "buyer" %}
                                 <div class="hr" style="width: 91%; margin: 5px auto;"></div>
-                                <div class="ppdrcol" onclick="openStS()">
+                                <div class="ppdrcol" onclick="openSts()">
                                     <div class="ppdricn">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5 5a9.872 9.872 0 0 1 7-2.9c2.734 0 5.21 1.11 7 2.9a9.872 9.872 0 0 1 2.9 7c0 2.733-1.11 5.21-2.9 7a9.872 9.872 0 0 1-7 2.9A9.872 9.872 0 0 1 5 19a9.872 9.872 0 0 1-2.9-7c0-2.734 1.11-5.21 2.9-7Zm7-1.1c-2.237 0-4.26.906-5.728 2.372A8.072 8.072 0 0 0 3.9 12c0 2.237.906 4.26 2.372 5.727A8.072 8.072 0 0 0 12 20.1c2.237 0 4.26-.906 5.728-2.373A8.072 8.072 0 0 0 20.1 12c0-2.237-.906-4.26-2.372-5.728A8.072 8.072 0 0 0 12 3.9Z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M9.748 7.768c.626-.463 1.418-.668 2.18-.668 1.252 0 2.61.543 3.087 1.8a.9.9 0 1 1-1.683.639c-.103-.273-.538-.639-1.404-.639-.463 0-.856.128-1.11.315a.838.838 0 0 0-.36.722c0 .196.042.308.084.38a.784.784 0 0 0 .267.249c.323.203.792.335 1.45.51l.055.014c.573.152 1.312.347 1.898.722.321.204.628.48.851.86.226.384.337.824.337 1.309 0 1.033-.52 1.802-1.232 2.277-.68.454-1.526.642-2.301.642-1.264 0-2.432-.449-3.109-1.434a.9.9 0 0 1 1.484-1.019c.243.354.756.653 1.624.653.517 0 .989-.13 1.302-.34.282-.187.432-.428.432-.78a.753.753 0 0 0-.088-.395.787.787 0 0 0-.269-.257c-.322-.205-.79-.339-1.445-.513l-.071-.018c-.569-.15-1.298-.344-1.877-.708a2.56 2.56 0 0 1-.853-.85 2.5 2.5 0 0 1-.34-1.302c0-.943.44-1.687 1.09-2.169Z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M12 5.6a.9.9 0 0 1 .9.9v1a.9.9 0 1 1-1.8 0v-1a.9.9 0 0 1 .9-.9Zm0 10a.9.9 0 0 1 .9.9v1a.9.9 0 0 1-1.8 0v-1a.9.9 0 0 1 .9-.9Z" clip-rule="evenodd"/></svg>
                                     </div>
@@ -367,8 +373,6 @@
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <!-- Other -->
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" />
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css" type="text/css" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"></script>
     <!--  -->
@@ -624,10 +628,10 @@
         // switch to seller
         const sts = document.getElementById("stsModal");
         
-        function openStS() {
+        function openSts() {
             sts.classList.add("show");
         }
-        function closeStS() {
+        function closeSts() {
             sts.classList.remove("show");
         }
         

@@ -107,46 +107,11 @@
             </div>
             {% endif %}
             <div class="lbld">
-                <div class="lbl0">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} comments</div>
-                <div id="room-reviews-content">
-                    {% for comment in comments %}
-                    <div class="review">
-                        <div class="revleft">
-                            <a href="{% url 'user_profile' comment.author.username %}">
-                                {% if comment.author.profile.avatar.url != null %}
-                                <img src="{{comment.author.profile.avatar.url}}" alt="" class="pp">
-                                {% else %}
-                                <div class="pp"
-                                    style="background: linear-gradient({{comment.author.profile.avatar_default}});">
-                                    <div class="grcn">
-                                        {{comment.author.profile.name|slice:"0:1"}}
-                                    </div>
-                                </div>
-                                {% endif %}
-                            </a>
-                        </div>
-                        <div class="n-d">
-                            <div class="n-stayed">
-                                <a href="{% url 'user_profile' comment.author.username %}"
-                                    class="reviewer-name">{{comment.author.profile.name}}</a>
-                                <div class="spr">•</div>
-                                <div class="review-date">{{comment.get_date}}</div>
-                            </div>
-                            <!--  -->
-                            <div class="review-text">{{comment.text}}</div>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="infotxt coll0">No comments yet...</div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="lbld">
                 <div class="lbl0">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} listings</div>
                 <div class="p-rooms">
                     {% for room in rooms %}
                     <div class="p-room">
-                        
+                        <div class="public" style="{% if room.public %}background: green;{% else %}background: red;{% endif %}" title="{% if room.public %}It's public{% else %}It's private{% endif %}"></div>
                         {% if is_own_profile %}
                         <div class="roomtools">
                             <button class="objdel" onclick="location.href='@{{user.username}}/rooms/{{room.id}}/edit';">
@@ -243,6 +208,41 @@
                     </div>
                     {% empty %}
                     <div class="infotxt coll0">No reviews yet...</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbl0">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} comments</div>
+                <div id="room-reviews-content">
+                    {% for comment in comments %}
+                    <div class="review">
+                        <div class="revleft">
+                            <a href="{% url 'user_profile' comment.author.username %}">
+                                {% if comment.author.profile.avatar.url != null %}
+                                <img src="{{comment.author.profile.avatar.url}}" alt="" class="pp">
+                                {% else %}
+                                <div class="pp"
+                                    style="background: linear-gradient({{comment.author.profile.avatar_default}});">
+                                    <div class="grcn">
+                                        {{comment.author.profile.name|slice:"0:1"}}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="n-d">
+                            <div class="n-stayed">
+                                <a href="{% url 'user_profile' comment.author.username %}"
+                                    class="reviewer-name">{{comment.author.profile.name}}</a>
+                                <div class="spr">•</div>
+                                <div class="review-date">{{comment.get_date}}</div>
+                            </div>
+                            <!--  -->
+                            <div class="review-text">{{comment.text}}</div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="infotxt coll0">No comments yet...</div>
                     {% endfor %}
                 </div>
             </div>

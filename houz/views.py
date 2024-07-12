@@ -358,7 +358,10 @@ def confirm_room(request, noty_id):
 def user_profile(request, username):
     user = get_object_or_404(User, username__exact=username)
     is_own_profile = user == request.user
-    rooms = user.room_set.all().order_by("-date")
+    rooms = user.room_set.filter(public=True).all().order_by("-date")
+    
+    if is_own_profile:
+        rooms = user.room_set.all().order_by("-date")
 
     currency = show_currency(request.session.get('currency', 'UZS'))
 
@@ -913,19 +916,25 @@ def to_seller(request):
     if request.method == "POST":
         bio = request.POST.get("bio")
         email = request.POST.get("email")
-        phone_number = request.POST.get("phone_number")
-        city = request.POST.get("city")
+        phone_number = request.POST.get("phone_num")
+        country = request.POST.get("country")
         languages = request.POST.get("languages")
         
-        user_profile.type = "seller"
-        user_profile.bio = bio
-        user_profile.email = email
-        user_profile.phone_number = phone_number
-        user_profile.city = city
-        user_profile.languages = languages
-
-        user_profile.save()
-        messages.info(request, "You have successfully switched to Seller mode")
-        return redirect("user_profile", request.user.username)
+        if not Profile.objects.filter(email=email).exists():
+            if not Profile.object.filter(phone_number=phone_number).exists():
+                user_profile.type = "seller"
+                user_profile.bio = bio
+                user_profile.email = email
+                user_profile.phone_number = phone_number
+                user_profile.country = country
+                user_profile.languages = languages
+    
+                user_profile.save()
+                messages.info(request, "You have successfully switched to Seller mode")
+                return JsonResponse({"phnum_avb": False, "url": request.user.username})
+            else:
+                return JsonResponse({"phnum_avb": True})
+        else:
+            return JsonResponse({"email_avb": True})
 
     return redirect("home")
