@@ -130,10 +130,10 @@ class Profile(models.Model):
     bio = models.CharField("Bio", max_length=255, blank=True)
     email = models.EmailField("Email", max_length=255, blank=True)
     phone_number = models.CharField("Phone", max_length=255, blank=True, null=True)
-    country = models.CharField("Country", max_length=255, null=True, blank=True),
-    languages = models.CharField(
-        "Languages", max_length=200, choices=sorted_languages, default="English"
-    )
+    country = models.CharField("Country", max_length=255, null=True, blank=True)
+    languages = models.CharField("Languages", max_length=255, default="English", blank=True)
+
+    previously_seller = models.BooleanField("Previously seller", default=False)
     created_at = models.DateTimeField("Created at", default=datetime.now)
 
     class Meta:

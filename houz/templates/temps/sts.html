@@ -278,9 +278,113 @@
             <div class="errTxt"></div>
         </div>
         <div class="lbld" id="languages">
-            <div class="input-wrapper">
-                <input type="text" name="languages" placeholder=" " />
-                <span>{% trans "What languages can you speak" %}</span>
+            <div class="lngsdv">
+                <label>
+                    <input mbsc-input id="demo-multiple-select-input" placeholder="Please select..." data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" />
+                </label>
+                <select id="demo-multiple-select" name="languages" multiple>
+                    <option value="Afrikaans">Afrikaans</option>
+                    <option value="Albanian">Albanian</option>
+                    <option value="Amharic">Amharic</option>
+                    <option value="Arabic">Arabic</option>
+                    <option value="Armenian">Armenian</option>
+                    <option value="Azerbaijani">Azerbaijani</option>
+                    <option value="Basque">Basque</option>
+                    <option value="Belarusian">Belarusian</option>
+                    <option value="Bengali">Bengali</option>
+                    <option value="Bosnian">Bosnian</option>
+                    <option value="Bulgarian">Bulgarian</option>
+                    <option value="Catalan">Catalan</option>
+                    <option value="Cebuano">Cebuano</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Corsican">Corsican</option>
+                    <option value="Croatian">Croatian</option>
+                    <option value="Czech">Czech</option>
+                    <option value="Danish">Danish</option>
+                    <option value="Dutch">Dutch</option>
+                    <option value="English">English</option>
+                    <option value="Esperanto">Esperanto</option>
+                    <option value="Estonian">Estonian</option>
+                    <option value="Finnish">Finnish</option>
+                    <option value="French">French</option>
+                    <option value="Galician">Galician</option>
+                    <option value="Georgian">Georgian</option>
+                    <option value="German">German</option>
+                    <option value="Greek">Greek</option>
+                    <option value="Gujarati">Gujarati</option>
+                    <option value="Haitian Creole">Haitian Creole</option>
+                    <option value="Hausa">Hausa</option>
+                    <option value="Hawaiian">Hawaiian</option>
+                    <option value="Hebrew">Hebrew</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="Hmong">Hmong</option>
+                    <option value="Hungarian">Hungarian</option>
+                    <option value="Icelandic">Icelandic</option>
+                    <option value="Igbo">Igbo</option>
+                    <option value="Indonesian">Indonesian</option>
+                    <option value="Irish">Irish</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Javanese">Javanese</option>
+                    <option value="Kannada">Kannada</option>
+                    <option value="Kazakh">Kazakh</option>
+                    <option value="Khmer">Khmer</option>
+                    <option value="Korean">Korean</option>
+                    <option value="Kurdish">Kurdish</option>
+                    <option value="Kyrgyz">Kyrgyz</option>
+                    <option value="Lao">Lao</option>
+                    <option value="Latin">Latin</option>
+                    <option value="Latvian">Latvian</option>
+                    <option value="Lithuanian">Lithuanian</option>
+                    <option value="Luxembourgish">Luxembourgish</option>
+                    <option value="Macedonian">Macedonian</option>
+                    <option value="Malagasy">Malagasy</option>
+                    <option value="Malay">Malay</option>
+                    <option value="Malayalam">Malayalam</option>
+                    <option value="Maltese">Maltese</option>
+                    <option value="Maori">Maori</option>
+                    <option value="Marathi">Marathi</option>
+                    <option value="Mongolian">Mongolian</option>
+                    <option value="Myanmar (Burmese)">Myanmar (Burmese)</option>
+                    <option value="Nepali">Nepali</option>
+                    <option value="Norwegian">Norwegian</option>
+                    <option value="Nyanja (Chichewa)">Nyanja (Chichewa)</option>
+                    <option value="Pashto">Pashto</option>
+                    <option value="Persian">Persian</option>
+                    <option value="Polish">Polish</option>
+                    <option value="Portuguese">Portuguese</option>
+                    <option value="Punjabi">Punjabi</option>
+                    <option value="Romanian">Romanian</option>
+                    <option value="Russian">Russian</option>
+                    <option value="Samoan">Samoan</option>
+                    <option value="Scots Gaelic">Scots Gaelic</option>
+                    <option value="Serbian">Serbian</option>
+                    <option value="Sesotho">Sesotho</option>
+                    <option value="Shona">Shona</option>
+                    <option value="Sindhi">Sindhi</option>
+                    <option value="Sinhala (Sinhalese)">Sinhala (Sinhalese)</option>
+                    <option value="Slovak">Slovak</option>
+                    <option value="Slovenian">Slovenian</option>
+                    <option value="Somali">Somali</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="Sundanese">Sundanese</option>
+                    <option value="Swahili">Swahili</option>
+                    <option value="Swedish">Swedish</option>
+                    <option value="Tajik">Tajik</option>
+                    <option value="Tamil">Tamil</option>
+                    <option value="Telugu">Telugu</option>
+                    <option value="Thai">Thai</option>
+                    <option value="Turkish">Turkish</option>
+                    <option value="Ukrainian">Ukrainian</option>
+                    <option value="Urdu">Urdu</option>
+                    <option value="Uzbek">Uzbek</option>
+                    <option value="Vietnamese">Vietnamese</option>
+                    <option value="Welsh">Welsh</option>
+                    <option value="Xhosa">Xhosa</option>
+                    <option value="Yiddish">Yiddish</option>
+                    <option value="Yoruba">Yoruba</option>
+                    <option value="Zulu">Zulu</option>
+                </select>
             </div>
             <div class="errTxt"></div>
         </div>
@@ -293,6 +397,20 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    mobiscroll.setOptions({
+      theme: 'ios',
+      themeVariant: 'white'
+    });
+    
+    mobiscroll.select('#demo-multiple-select', {
+      inputElement: document.getElementById('demo-multiple-select-input'),
+    });
+</script>
 
 <script>
     const phoneInputField = document.querySelector("#phone_num");
@@ -327,11 +445,10 @@
             document.querySelector('#bio .errTxt').textContent = '{% trans "Bio is required" %}';
             return;
         }
-        if (bioInp.value.length < 150) {
-            document.querySelector('#bio .errTxt').textContent = '{% trans "Bio should be at least 150 characters" %}';
+        if (bioInp.value.length < 70) {
+            document.querySelector('#bio .errTxt').textContent = '{% trans "Bio should be at least 70 characters" %}';
             return;
         }
-        
         // Set the full phone number in the input field
         phoneInp.value = phoneInput.getNumber();
         
@@ -348,8 +465,12 @@
         .then((response) => response.json())
         .then((data) => {
             // Handle response
-            if (data.email_avb) {
-                window.location.href = `/`;
+            if (!data.is_email) {
+                if (!data.is_phone) {
+                    window.location.href = data.url;
+                } else {
+                    document.querySelector('#phone .errTxt').textContent = '{% trans "The phone number is taken" %}';
+                }
             } else {
                 document.querySelector('#email .errTxt').textContent = '{% trans "The email is taken" %}';
             }

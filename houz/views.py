@@ -570,7 +570,7 @@ def room_create(request):
         (code, name) for code, name in Currencies if code != request.session.get('currency', 'UZS')
     ]
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and not request.user.profile.type == "buyer":
         if request.method == "POST":
             host = request.user
 
@@ -758,7 +758,8 @@ def room_edit(request, username, id):
 
             # room.room_type = request.POST.get("room_type", room.room_type)
             room.location = f'{request.POST.get("latitude", room.fst_loc)},{request.POST.get("longitude", room.sec_loc)}'
-
+            
+            room.public = request.POST.get("public", room.public)
             room.save()
 
             return JsonResponse({"username": request.user.username})
@@ -905,10 +906,21 @@ def to_buyer(request):
             room.public = False
             room.save()
 
-        messages.info(request, "You have successfully switced to Buyer mode")
+        messages.info(request, "You have switced to Buyer mode. All your shared rooms will be always to Private mode.")
         return redirect("user_profile", request.user.username)
 
     return redirect("home")
+    
+def back_to_seller(request):
+    user = Profile.objects.get(user=request.user)
+    if request.method == "POST":
+        user.type = "seller"
+        user.save()
+        
+        messages.info(request, "You have successfully switched back to Seller mode")
+        return redirect("user_profile", request.user.username)
+    return redirect("home")
+
 
 def to_seller(request):
     user_profile = Profile.objects.get(user=request.user)
@@ -918,23 +930,25 @@ def to_seller(request):
         email = request.POST.get("email")
         phone_number = request.POST.get("phone_num")
         country = request.POST.get("country")
-        languages = request.POST.get("languages")
+        languages = request.POST.getlist("languages")
         
         if not Profile.objects.filter(email=email).exists():
-            if not Profile.object.filter(phone_number=phone_number).exists():
+            if not Profile.objects.filter(phone_number=phone_number).exists():
                 user_profile.type = "seller"
+                user_profile.previously_seller = True
+                
                 user_profile.bio = bio
                 user_profile.email = email
                 user_profile.phone_number = phone_number
                 user_profile.country = country
-                user_profile.languages = languages
+                user_profile.languages = ",".join(languages)
     
                 user_profile.save()
                 messages.info(request, "You have successfully switched to Seller mode")
-                return JsonResponse({"phnum_avb": False, "url": request.user.username})
+                return JsonResponse({"is_phone": False, "url": f'@{request.user.username}'})
             else:
-                return JsonResponse({"phnum_avb": True})
+                return JsonResponse({"is_phone": True})
         else:
-            return JsonResponse({"email_avb": True})
+            return JsonResponse({"is_email": True})
 
     return redirect("home")

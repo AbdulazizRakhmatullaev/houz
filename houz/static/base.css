@@ -2922,3 +2922,82 @@ input:disabled {
   border-top-left-radius: 14px !important;
   border-bottom-left-radius: 14px !important;
 }
+
+.chosen-container-multi .chosen-choices {
+  padding: 16px !important;
+  border: 1px solid #d2d2d7 !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 14px;
+}
+
+.input-wrapper div {
+  width: 100% !important;
+}
+
+.chosen-search-input {
+  color: grey !important;
+  border: 
+}
+
+.chosen-container-multi .chosen-choices li.search-field input[type=text] {
+  margin: 0 !important;
+  font-size: 15px !important;
+}
+
+.mbsc-ios.mbsc-textfield-wrapper-box, .mbsc-ios.mbsc-textfield-wrapper-outline {
+  margin: 0 !important;
+}
+
+.mbsc-ios.mbsc-textarea-inner.mbsc-textfield-inner-outline {
+  border-color: #d2d2d7 !important;
+  overflow: hidden;
+}
+
+.mbsc-ios.mbsc-textarea-inner.mbsc-textfield-inner-outline {
+  border-radius: 14px !important;
+}
+
+.mbsc-ios.mbsc-textfield {
+  padding: 16px !important;
+}
+
+.mbsc-ios.mbsc-textfield.mbsc-textfield-tags {
+  height: 60px !important;
+}
+
+.mbsc-textfield-tags-placeholder {
+  opacity: 1 !important;
+  color: grey !important;
+  line-height: 2 !important;
+}
+
+.mbsc-textfield.mbsc-textfield-tags.mbsc-textarea {
+  overflow: hidden !important;
+}
+
+.mbsc-ios.mbsc-select-icon.mbsc-ltr {
+  top: 21px !important;
+}
+
+.mbsc-textfield {
+  font-size: 15px !important;
+}
+
+.mbsc-popup {
+  min-width: 13.5em !important;
+}
+
+.mbsc-textfield-tag.mbsc-ltr {
+  padding: 2px 6px !important;
+}
+
+.mbsc-ios.mbsc-textfield-tag {
+  background: #f5f5f7 !important;
+  border-radius: 7px !important;
+}
+
+.mbsc-textfield-tag {
+  margin: 0 !important;
+  margin-right: 6px !important;
+}

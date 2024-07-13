@@ -101,8 +101,13 @@
             {% if user.profile.bio %}
             <div class="lbld">
                 <div class="lbl0">About {% if is_own_profile %} Me {% else %} {{user.profile.first_name}} {% endif %}</div>
-                <div class="prbio collb">
-                    {{user.profile.bio}}
+                <div class="aboutcol">
+                    <div class="bio">
+                        {{user.profile.bio}}
+                    </div>
+                    <div class="country">
+                        {{user.profile.country}}
+                    </div>
                 </div>
             </div>
             {% endif %}

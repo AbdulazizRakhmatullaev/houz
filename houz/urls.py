@@ -43,4 +43,5 @@ urlpatterns = [
     
     path("switch-to-buyer", views.to_buyer, name="to_buyer"),
     path("switch-to-seller", views.to_seller, name="to_seller"),
+    path("switch-back-to-seller", views.back_to_seller, name="back_to_seller"),
 ]
