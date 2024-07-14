@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "location_field.apps.DefaultConfig",
     "channels",
     'rosetta',
+    'djstripe',
     # 'payme',
 ]
 
@@ -191,3 +192,13 @@ CACHES = {
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Django stripe settings:
+STRIPE_TEST_PUBLIC_KEY = 'your_test_public_key'
+STRIPE_TEST_SECRET_KEY = 'your_test_secret_key'
+STRIPE_LIVE_PUBLIC_KEY = 'your_live_public_key'
+STRIPE_LIVE_SECRET_KEY = 'your_live_secret_key'
+
+STRIPE_LIVE_MODE = False  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = 'your_webhook_secret'
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # For Django 3.1+

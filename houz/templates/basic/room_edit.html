@@ -177,7 +177,7 @@
             </div>
         </div>
         
-        {% if request.user.profile.type == "buyer" %}
+        {% if request.user.profile.type == "seller" %}
         <div class="lbld" style="flex-direction: row; gap: 5px; align-items: center;">
             <input type="checkbox" class="pubcheck" name="public" {% if room.public %}checked{% endif %}>
             <span>Public</span>

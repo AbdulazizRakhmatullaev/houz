@@ -107,7 +107,7 @@
     <div class="right-pp-col">
         <div class="user-roomscol">
             <div class="lbld">
-                <div class="lbl0">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} listings</div>
+                <div class="lbl0" style="padding-top: 0;">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} listings</div>
                 <div class="p-rooms">
                     {% for room in rooms %}
                     <div class="p-room">
