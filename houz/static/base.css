@@ -1179,7 +1179,7 @@ b {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 20px;
+  gap: 15px;
 }
 
 .p-name {
@@ -1189,9 +1189,12 @@ b {
 
 .p-usname,
 .p-email,
-.p-pnum {
+.p-pnum,
+.p-txt,
+.p-badge{
   font-size: 14px;
-  color: rgb(83, 100, 113);
+  color: #585858;
+  fill: #585858;
 }
 
 .p-badge {
@@ -1202,8 +1205,8 @@ b {
 }
 
 .p-badge svg {
-  height: 20px;
-  width: 20px;
+  height: 21px;
+  width: 21px;
   vertical-align: middle;
 }
 
@@ -1698,15 +1701,15 @@ select {
 .p-col {
   display: flex;
   justify-content: space-between;
-  gap: 15px;
+  gap: 25px;
 }
 
 .left-pp-col {
-  width: 30%;
+  width: 35%;
 }
 
 .right-pp-col {
-  width: 69%;
+  width: 65%;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -2060,10 +2063,8 @@ select {
     sans-serif;
 }
 
-.p-sec {}
-
 .p-last {
-  margin-top: 5px;
+  margin-top: 15px;
   display: flex;
   gap: 5px;
   justify-content: right;
@@ -3023,6 +3024,12 @@ input:disabled {
 .licn {
   height: 25px;
   width: 25px;
+  vertical-align: middle;
+}
+
+.pplicn {
+  height: 21px;
+  width: 21px;
   vertical-align: middle;
 }
 
