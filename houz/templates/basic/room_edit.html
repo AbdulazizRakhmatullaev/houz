@@ -43,7 +43,7 @@
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
-                
+
                 <div class="priceinp">
                     <div class="cursel">
                         <select name="currency" id="currency">
@@ -56,7 +56,7 @@
                     </div>
                     <input type="text" id="price" data-type="currency" name="price" placeholder="{% trans 'Name your price here' %}" value="{{room.get_price}}">
                 </div>
-            
+
                 <div id="price-error" class="errTxt"></div>
             </div>
         </div>
@@ -176,6 +176,14 @@
 
             </div>
         </div>
+        
+        {% if request.user.profile.type == "buyer" %}
+        <div class="lbld" style="flex-direction: row; gap: 5px; align-items: center;">
+            <input type="checkbox" class="pubcheck" name="public" {% if room.public %}checked{% endif %}>
+            <span>Public</span>
+        </div>
+        {% endif %}
+        
         <div class="btnsubend">
             <button type="submit" class="btn-primary">{% trans 'Edit' %}</button>
         </div>
@@ -231,7 +239,7 @@
             keyup: function() {
                 formatCurrency($(this));
             },
-            blur: function() { 
+            blur: function() {
                 formatCurrency($(this), "blur");
             }
         });
@@ -244,14 +252,14 @@
         function formatCurrency(input, blur) {
             // get input value
             var input_val = input.val();
-            
+
             // don't validate empty input
             if (input_val === "") { return; }
 
             // original length
             var original_len = input_val.length;
 
-            // initial caret position 
+            // initial caret position
             var caret_pos = input.prop("selectionStart");
 
             // Remove leading zeros
@@ -259,7 +267,7 @@
 
             // Get the selected currency
             var selectedCurrency = document.getElementById("currency").value;
-            
+
             // check for decimal
             if (input_val.indexOf(".") >= 0) {
                 // get position of first decimal
@@ -274,7 +282,7 @@
 
                 // validate right side
                 right_side = formatNumber(right_side);
-                
+
                 // On blur make sure 2 numbers after decimal for currencies with cents
                 if (blur === "blur" && !["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
                     right_side += "00";
@@ -293,7 +301,7 @@
                 // add commas to number
                 // remove all non-digits
                 input_val = formatNumber(input_val);
-                
+
                 // final formatting
                 if (blur === "blur" && !["UZS", "JPY", "CNY", "RUB"].includes(selectedCurrency)) {
                     input_val += ".00";
@@ -304,7 +312,7 @@
             if (input_val === "") {
                 input_val = "0";
             }
-            
+
             // send updated string to input
             input.val(input_val);
 
@@ -491,7 +499,7 @@
             return;
         }
 
-        if (city.value.trim() === 'null') {
+        if (city.value === 'null') {
             city.parentNode.querySelector('.errTxt').textContent = '{% trans "City is required" %}';
             return;
         }

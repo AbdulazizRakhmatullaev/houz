@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-23 19:08+0500\n"
+"POT-Creation-Date: 2024-07-14 01:34+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,478 +18,627 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: business/settings.py:175 houze/templates/base.html:151
+#: business/settings.py:174 houz/templates/base.html:258
 msgid "English"
 msgstr "Inglizcha"
 
-#: business/settings.py:176 houze/templates/base.html:152
+#: business/settings.py:175 houz/templates/base.html:259
 msgid "Russian"
 msgstr "Rus"
 
-#: business/settings.py:177 houze/templates/base.html:153
+#: business/settings.py:176 houz/templates/base.html:260
 msgid "Uzbek"
 msgstr "O'zbek tili"
 
-#: houze/models.py:90
+#: houz/models.py:99
 msgid "TASHKENT"
 msgstr "Toshkent"
 
-#: houze/models.py:90
+#: houz/models.py:99
 msgid "Tashkent"
 msgstr "Toshkent"
 
-#: houze/models.py:91
+#: houz/models.py:100
 msgid "ANDIJAN"
 msgstr "Andijonlik"
 
-#: houze/models.py:91
+#: houz/models.py:100
 msgid "Andijan"
 msgstr "Andijonlik"
 
-#: houze/models.py:92
+#: houz/models.py:101
 msgid "BUKHARA"
 msgstr "Buxoro"
 
-#: houze/models.py:92
+#: houz/models.py:101
 msgid "Bukhara"
 msgstr "Buxoro"
 
-#: houze/models.py:93
+#: houz/models.py:102
 msgid "FERGANA"
 msgstr "Farg'ona"
 
-#: houze/models.py:93
+#: houz/models.py:102
 msgid "Fergana"
 msgstr "Farg'ona"
 
-#: houze/models.py:94
+#: houz/models.py:103
 msgid "JIZZAKH"
 msgstr "Jizzax"
 
-#: houze/models.py:94
+#: houz/models.py:103
 msgid "Jizzakh"
 msgstr "Jizzax"
 
-#: houze/models.py:95
+#: houz/models.py:104
 msgid "NAMANGAN"
 msgstr "Na'biy"
 
-#: houze/models.py:95
+#: houz/models.py:104
 msgid "Namangan"
 msgstr "Na'biy"
 
-#: houze/models.py:96
+#: houz/models.py:105
 msgid "NAVOIY"
 msgstr "Navoiylik"
 
-#: houze/models.py:96
+#: houz/models.py:105
 msgid "Navoiy"
 msgstr "Navoiylik"
 
-#: houze/models.py:97
+#: houz/models.py:106
 msgid "KARSHI"
 msgstr "Qorshiq"
 
-#: houze/models.py:97
+#: houz/models.py:106
 msgid "Karshi"
 msgstr "Qorshiq"
 
-#: houze/models.py:98
+#: houz/models.py:107
 msgid "SAMARKAND"
 msgstr "Samarqand"
 
-#: houze/models.py:98
+#: houz/models.py:107
 msgid "Samarkand"
 msgstr "Samarqand"
 
-#: houze/models.py:99
+#: houz/models.py:108
 msgid "GULISTON"
 msgstr "Guliston"
 
-#: houze/models.py:99
+#: houz/models.py:108
 msgid "Guliston"
 msgstr "Guliston"
 
-#: houze/models.py:100
+#: houz/models.py:109
 msgid "TERMEZ"
 msgstr "Termiz"
 
-#: houze/models.py:100
+#: houz/models.py:109
 msgid "Termez"
 msgstr "Termiz"
 
-#: houze/models.py:101
+#: houz/models.py:110
 msgid "NURAFSHON"
 msgstr "Niqafshon"
 
-#: houze/models.py:101
+#: houz/models.py:110
 msgid "Nurafshon"
 msgstr "Niqafshon"
 
-#: houze/models.py:102
+#: houz/models.py:111
 msgid "URGENCH"
 msgstr "Urganch"
 
-#: houze/models.py:102
+#: houz/models.py:111
 msgid "Urgench"
 msgstr "Urganch"
 
-#: houze/models.py:103
+#: houz/models.py:112
 msgid "NUKUS"
 msgstr "Nukus"
 
-#: houze/models.py:103
+#: houz/models.py:112
 msgid "Nukus"
 msgstr "Nukus"
 
-#: houze/models.py:108
+#: houz/models.py:116
 msgid "A ROOM"
 msgstr "Xona"
 
-#: houze/models.py:108
+#: houz/models.py:116
 msgid "A room"
 msgstr "Xona"
 
-#: houze/models.py:109
+#: houz/models.py:117
 msgid "AN ENTIRE PLACE"
 msgstr "Butun joy"
 
-#: houze/models.py:109
+#: houz/models.py:117
 msgid "An entire place"
 msgstr "Butun joy"
 
-#: houze/models.py:110
+#: houz/models.py:118
 msgid "A SHARED ROOM"
 msgstr "Umumiy xona"
 
-#: houze/models.py:110
+#: houz/models.py:118
 msgid "A shared room"
 msgstr "Umumiy xona"
 
-#: houze/templates/basic/reservation.html:4
-#: houze/templates/basic/reservation.html:8
+#: houz/templates/basic/profile_edit.html:4
+msgid "Profile edit"
+msgstr ""
+
+#: houz/templates/basic/reservation.html:4
+#: houz/templates/basic/reservation.html:8
 msgid "Reservations"
 msgstr "Rezervasyon"
 
-#: houze/templates/basic/reservation.html:55
-#: houze/templates/basic/room_create.html:144
-#: houze/templates/basic/room_edit.html:156
-#: houze/templates/temps/notifications.html:32
+#: houz/templates/basic/reservation.html:55
+#: houz/templates/basic/room_create.html:155
+#: houz/templates/basic/room_edit.html:166
+#: houz/templates/temps/notifications.html:32
 msgid "Check in"
 msgstr "Belgilanish"
 
-#: houze/templates/basic/reservation.html:74
-#: houze/templates/temps/notifications.html:40
+#: houz/templates/basic/reservation.html:74
+#: houz/templates/temps/notifications.html:40
 msgid "Checkout"
 msgstr "Ro'yxatdan o'chirilish"
 
-#: houze/templates/basic/reservation.html:92
+#: houz/templates/basic/reservation.html:92
 msgid "No reservations for now..."
 msgstr "Hozirgacha hech qanday shartlar yo'q ..."
 
-#: houze/templates/basic/room.html:352
+#: houz/templates/basic/room.html:374
 #, fuzzy
 #| msgid "Description should be at least 150 characters"
 msgid "Guest amount should be at least 1"
 msgstr "Ta'rif kamida 150 belgidan iborat bo'lishi kerak"
 
-#: houze/templates/basic/room.html:370 houze/templates/basic/room.html:373
+#: houz/templates/basic/room.html:392 houz/templates/basic/room.html:395
 msgid "Error processing the request"
 msgstr "So'rovni qayta ko'rib chiqish"
 
-#: houze/templates/basic/room_create.html:7
+#: houz/templates/basic/room_create.html:7
 msgid "Create a new room"
 msgstr "Yangi xona yarating"
 
-#: houze/templates/basic/room_create.html:15
-#: houze/templates/basic/room_edit.html:61
+#: houz/templates/basic/room_create.html:15
+#: houz/templates/basic/room_edit.html:71
 msgid "Guests"
 msgstr "Mehmonlar"
 
-#: houze/templates/basic/room_create.html:24
-#: houze/templates/basic/room_edit.html:79
+#: houz/templates/basic/room_create.html:24
+#: houz/templates/basic/room_edit.html:89
 msgid "Bedrooms"
 msgstr "Yotoq xonalari"
 
-#: houze/templates/basic/room_create.html:33
-#: houze/templates/basic/room_edit.html:70
+#: houz/templates/basic/room_create.html:33
+#: houz/templates/basic/room_edit.html:80
 msgid "Beds"
 msgstr "To'shak"
 
-#: houze/templates/basic/room_create.html:42
-#: houze/templates/basic/room_edit.html:88
+#: houz/templates/basic/room_create.html:42
+#: houz/templates/basic/room_edit.html:98
 msgid "Baths"
 msgstr "Vanna"
 
-#: houze/templates/basic/room_create.html:52
-#: houze/templates/basic/room_edit.html:54
+#: houz/templates/basic/room_create.html:52
+#: houz/templates/basic/room_edit.html:64
 msgid "Map"
 msgstr "Xaritasi"
 
-#: houze/templates/basic/room_create.html:59
-#: houze/templates/basic/room_edit.html:10
+#: houz/templates/basic/room_create.html:59
+#: houz/templates/basic/room_edit.html:10
 msgid "Images"
 msgstr "Rasmlar"
 
-#: houze/templates/basic/room_create.html:60
-#: houze/templates/basic/room_edit.html:11
+#: houz/templates/basic/room_create.html:60
+#: houz/templates/basic/room_edit.html:11
 msgid "Browse..."
 msgstr "Ko'rish ..."
 
-#: houze/templates/basic/room_create.html:72
-#: houze/templates/basic/room_edit.html:39
+#: houz/templates/basic/room_create.html:72
+#: houz/templates/basic/room_edit.html:39
 msgid "Title"
 msgstr "Sarlavha"
 
-#: houze/templates/basic/room_create.html:73
-#: houze/templates/basic/room_edit.html:40
+#: houz/templates/basic/room_create.html:73
+#: houz/templates/basic/room_edit.html:40
 msgid "e.g. Best cabin near Labi Hawuz"
 msgstr "E.G.Labi Hawuz yaqinidagi eng yaxshi kabinalar"
 
-#: houze/templates/basic/room_create.html:77
-#: houze/templates/basic/room_edit.html:45
+#: houz/templates/basic/room_create.html:77
+#: houz/templates/basic/room_edit.html:45
 msgid "Price"
 msgstr "Narx"
 
-#: houze/templates/basic/room_create.html:79
-#: houze/templates/basic/room_edit.html:47
-msgid "min price: 10 000"
-msgstr "min narxi: 10 000"
+#: houz/templates/basic/room_create.html:90
+#: houz/templates/basic/room_edit.html:57
+msgid "Name your price here"
+msgstr ""
 
-#: houze/templates/basic/room_create.html:86
-#: houze/templates/basic/room_edit.html:100
+#: houz/templates/basic/room_create.html:97
+#: houz/templates/basic/room_edit.html:110
 msgid "Description"
 msgstr "Tavsif"
 
-#: houze/templates/basic/room_create.html:88
-#: houze/templates/basic/room_edit.html:102
+#: houz/templates/basic/room_create.html:99
+#: houz/templates/basic/room_edit.html:112
 #, fuzzy
 #| msgid "Tell people about the room and what's near it"
 msgid "Tell people about the room and what is near it"
 msgstr "Odamlarga xona haqida va bu yaqinda ayting"
 
-#: houze/templates/basic/room_create.html:94
-#: houze/templates/basic/room_create.html:95
-#: houze/templates/basic/room_edit.html:108
-#: houze/templates/basic/room_edit.html:109
+#: houz/templates/basic/room_create.html:105
+#: houz/templates/basic/room_create.html:106
+#: houz/templates/basic/room_edit.html:118
+#: houz/templates/basic/room_edit.html:119
 msgid "Address"
 msgstr "Manzil"
 
-#: houze/templates/basic/room_create.html:100
-#: houze/templates/basic/room_edit.html:115
+#: houz/templates/basic/room_create.html:111
+#: houz/templates/basic/room_edit.html:125
 msgid "City"
 msgstr "Shahar"
 
-#: houze/templates/basic/room_create.html:102
+#: houz/templates/basic/room_create.html:113
 #, fuzzy
 #| msgid "Select city"
 msgid "Select a city"
 msgstr "Shaharni tanlang"
 
-#: houze/templates/basic/room_create.html:110
-#: houze/templates/basic/room_edit.html:125
+#: houz/templates/basic/room_create.html:121
+#: houz/templates/basic/room_edit.html:135
 msgid "Room type"
 msgstr "Xona turi"
 
-#: houze/templates/basic/room_create.html:112
+#: houz/templates/basic/room_create.html:123
 msgid "Select a room type"
 msgstr "Xona turini tanlang"
 
-#: houze/templates/basic/room_create.html:123
-#: houze/templates/basic/room_edit.html:139
+#: houz/templates/basic/room_create.html:134
+#: houz/templates/basic/room_edit.html:149
 msgid "Amenities"
 msgstr "Xulq-atvor"
 
-#: houze/templates/basic/room_create.html:126
-#: houze/templates/basic/room_create.html:128
-#: houze/templates/basic/room_edit.html:141
+#: houz/templates/basic/room_create.html:137
+#: houz/templates/basic/room_create.html:139
+#: houz/templates/basic/room_edit.html:151
 msgid "e.g. Wi-Fi, Kitchen, AC, Washroom"
 msgstr "E.G.Wi-Fi, oshxona, ac, yuvinish xonasi"
 
-#: houze/templates/basic/room_create.html:130
-#: houze/templates/basic/room_edit.html:142
+#: houz/templates/basic/room_create.html:141
+#: houz/templates/basic/room_edit.html:152
 msgid "Enter a comma after each amenity"
 msgstr "Har bir qulaylikdan keyin vergulni kiriting"
 
-#: houze/templates/basic/room_create.html:134
-#: houze/templates/basic/room_edit.html:146
+#: houz/templates/basic/room_create.html:145
+#: houz/templates/basic/room_edit.html:156
 msgid "House rules"
 msgstr "Uy qoidalari"
 
-#: houze/templates/basic/room_create.html:136
-#: houze/templates/basic/room_edit.html:148
+#: houz/templates/basic/room_create.html:147
+#: houz/templates/basic/room_edit.html:158
 msgid "e.g. No parties or events, No smoking"
 msgstr "E.G.Tomonlar yoki voqealar, chekish yo'q"
 
-#: houze/templates/basic/room_create.html:137
-#: houze/templates/basic/room_edit.html:149
+#: houz/templates/basic/room_create.html:148
+#: houz/templates/basic/room_edit.html:159
 msgid "Enter a comma after each rule"
 msgstr "Har bir qoidadan keyin vergulni kiriting"
 
-#: houze/templates/basic/room_create.html:149
-#: houze/templates/basic/room_edit.html:162
+#: houz/templates/basic/room_create.html:160
+#: houz/templates/basic/room_edit.html:172
 msgid "Check out"
 msgstr "Ro'yxatdan o'chirilish"
 
-#: houze/templates/basic/room_create.html:155
+#: houz/templates/basic/room_create.html:166
 msgid "Create"
 msgstr "Yaratmoq"
 
-#: houze/templates/basic/room_create.html:287
-#: houze/templates/basic/room_edit.html:291
+#: houz/templates/basic/room_create.html:357
+#: houz/templates/basic/room_edit.html:360
 #, fuzzy, python-brace-format
 #| msgid "Drag images to sort them out"
 msgid "You chose ${img_cnt} images. Drag to sort them out"
 msgstr "Ularni saralash uchun rasmlarni torting"
 
-#: houze/templates/basic/room_create.html:381
-#: houze/templates/basic/room_edit.html:386
+#: houz/templates/basic/room_create.html:451
+#: houz/templates/basic/room_edit.html:455
 msgid "Please select at least 5 images"
 msgstr "Iltimos, kamida 5 ta rasmni tanlang"
 
-#: houze/templates/basic/room_create.html:386
-#: houze/templates/basic/room_edit.html:391
+#: houz/templates/basic/room_create.html:456
+#: houz/templates/basic/room_edit.html:460
 msgid "Title is required"
 msgstr "Sarlavha talab qilinadi"
 
-#: houze/templates/basic/room_create.html:392
-msgid "Title should be between 4 and 6 words with at least 2 chars long"
-msgstr "Sarlavha kamida 2 ta va 6 tadan iborat bo'lishi kerak"
+#: houz/templates/basic/room_create.html:463
+#: houz/templates/basic/room_edit.html:467
+#, fuzzy
+msgid "Title should be between 2 and 7 words"
+msgstr "Sarlavha kamida 20 ta belgidan iborat bo'lishi kerak"
 
-#: houze/templates/basic/room_create.html:397
-#: houze/templates/basic/room_edit.html:402
+#: houz/templates/basic/room_create.html:468
+#: houz/templates/basic/room_edit.html:472
 msgid "Price is required"
 msgstr "Narx talab qilinadi"
 
-#: houze/templates/basic/room_create.html:401
-#: houze/templates/basic/room_edit.html:406
-msgid "Price should at least start from 10,000"
-msgstr "Narx kamida 10,000 dan boshlanishi kerak"
+#: houz/templates/basic/room_create.html:472
+#: houz/templates/basic/room_edit.html:476
+msgid "Price cannot be 0"
+msgstr ""
 
-#: houze/templates/basic/room_create.html:406
-#: houze/templates/basic/room_edit.html:411
+#: houz/templates/basic/room_create.html:477
+#: houz/templates/basic/room_edit.html:481
 #, fuzzy
 #| msgid "Description"
 msgid "Description is required"
 msgstr "Tavsif"
 
-#: houze/templates/basic/room_create.html:410
-#: houze/templates/basic/room_edit.html:415
+#: houz/templates/basic/room_create.html:481
+#: houz/templates/basic/room_edit.html:485
 msgid "Description should be at least 150 characters"
 msgstr "Ta'rif kamida 150 belgidan iborat bo'lishi kerak"
 
-#: houze/templates/basic/room_create.html:415
-#: houze/templates/basic/room_edit.html:420
+#: houz/templates/basic/room_create.html:486
+#: houz/templates/basic/room_edit.html:490
 msgid "Address is required"
 msgstr "Manzil talab qilinadi"
 
-#: houze/templates/basic/room_create.html:420
-#: houze/templates/basic/room_edit.html:425
+#: houz/templates/basic/room_create.html:491
+#: houz/templates/basic/room_edit.html:495
 msgid "City is required"
 msgstr "Shahar talab qilinadi"
 
-#: houze/templates/basic/room_create.html:425
-#: houze/templates/basic/room_edit.html:430
+#: houz/templates/basic/room_create.html:496
+#: houz/templates/basic/room_edit.html:500
 #, fuzzy
 #| msgid "Room type"
 msgid "Room type is required"
 msgstr "Xona turi"
 
-#: houze/templates/basic/room_create.html:430
-#: houze/templates/basic/room_edit.html:435
+#: houz/templates/basic/room_create.html:501
+#: houz/templates/basic/room_edit.html:505
 msgid "Amenities are required"
 msgstr "Qulayliklar talab qilinadi"
 
-#: houze/templates/basic/room_create.html:436
-#: houze/templates/basic/room_edit.html:441
+#: houz/templates/basic/room_create.html:507
+#: houz/templates/basic/room_edit.html:511
 msgid "Choose at least 5 amenities"
 msgstr "Kamida 5 ta qulaylikni tanlang"
 
-#: houze/templates/basic/room_create.html:440
-#: houze/templates/basic/room_edit.html:445
-msgid "Each amenity should be a meaningful word or phrase"
-msgstr "Har bir nulaylik mazmunli so'z yoki ibora bo'lishi kerak"
-
-#: houze/templates/basic/room_create.html:445
-#: houze/templates/basic/room_edit.html:450
+#: houz/templates/basic/room_create.html:512
+#: houz/templates/basic/room_edit.html:516
 #, fuzzy
 #| msgid "House rules"
 msgid "House rules are required"
 msgstr "Uy qoidalari"
 
-#: houze/templates/basic/room_create.html:452
-#: houze/templates/basic/room_edit.html:457
+#: houz/templates/basic/room_create.html:519
+#: houz/templates/basic/room_edit.html:523
 msgid "Choose at least 5 rules"
 msgstr "Kamida 5 qoidani tanlang"
 
-#: houze/templates/basic/room_create.html:456
-#: houze/templates/basic/room_edit.html:461
-msgid "Each rule should be a meaningful word or phrase"
-msgstr "Har bir qoida mazmunli so'z yoki ibora bo'lishi kerak"
-
-#: houze/templates/basic/room_create.html:466
-#: houze/templates/basic/room_edit.html:471
+#: houz/templates/basic/room_create.html:529
+#: houz/templates/basic/room_edit.html:533
 msgid "Check-out date must be after check-in date"
 msgstr "Tekshiruv sanasi tekshiruvdan keyin bo'lishi kerak"
 
-#: houze/templates/basic/room_create.html:473
-#: houze/templates/basic/room_edit.html:478
+#: houz/templates/basic/room_create.html:536
+#: houz/templates/basic/room_edit.html:540
 msgid "There should be at least one day gap between check-in and check-out"
 msgstr ""
 "Chek-ichish va tekshirish o'rtasida kamida bir kunlik farq bo'lishi kerak"
 
-#: houze/templates/basic/room_edit.html:4
+#: houz/templates/basic/room_edit.html:4
 msgid "Edit your room"
 msgstr "Xonangizni tahrirlash"
 
-#: houze/templates/basic/room_edit.html:170
+#: houz/templates/basic/room_edit.html:180
 msgid "Edit"
 msgstr "Tahrirlamoq"
 
-#: houze/templates/basic/room_edit.html:397
-msgid ""
-"Title should be between 4 and 6 words, and each word should be at least 2 "
-"characters long"
-msgstr ""
-"Sarlavha 4 dan 6 gacha so'z bo'lishi kerak va har bir so'z kamida 2 ta "
-"belgidan iborat bo'lishi kerak"
-
-#: houze/templates/temps/notifications.html:3
-msgid "Notifications"
-msgstr "Bildirishnoma"
-
-#: houze/templates/temps/notifications.html:54
-msgid "Confirm"
-msgstr "Tasdiqlamoq"
-
-#: houze/templates/temps/notifications.html:57
-msgid "Cancel"
-msgstr "Bekor qilmoq"
-
-#: houze/templates/temps/notifications.html:65
-msgid "confirmed"
-msgstr "tasdiqlangan"
-
-#: houze/templates/temps/room_list.html:7
+#: houz/templates/basic/user.html:142 houz/templates/temps/room_list.html:7
 msgid "Room Image"
 msgstr "Xona rasm"
 
-#: houze/templates/temps/room_list.html:9
+#: houz/templates/basic/user.html:144 houz/templates/temps/room_list.html:9
 msgid "no image"
 msgstr "Rasm yo'q"
 
-#: houze/templates/temps/room_list.html:15
+#: houz/templates/basic/user.html:150 houz/templates/temps/room_list.html:15
 #, python-format
 msgid "%(city)s, Uzbekistan"
 msgstr "% (shahar), O'zbekiston"
 
-#: houze/templates/temps/room_list.html:29
+#: houz/templates/basic/user.html:164 houz/templates/temps/room_list.html:29
 msgid "night"
 msgstr "kechasi"
 
-#: houze/templates/temps/room_list.html:36
+#: houz/templates/temps/notifications.html:3
+msgid "Notifications"
+msgstr "Bildirishnoma"
+
+#: houz/templates/temps/notifications.html:54
+#: houz/templates/temps/signup_temp.html:30
+msgid "Confirm"
+msgstr "Tasdiqlamoq"
+
+#: houz/templates/temps/notifications.html:57
+msgid "Cancel"
+msgstr "Bekor qilmoq"
+
+#: houz/templates/temps/notifications.html:65
+msgid "confirmed"
+msgstr "tasdiqlangan"
+
+#: houz/templates/temps/room_list.html:36
 msgid "Rooms aren't available"
 msgstr "Xonalar mavjud emas"
+
+#: houz/templates/temps/signin_temp.html:47
+#, fuzzy
+#| msgid "Title is required"
+msgid "Email or username is required"
+msgstr "Sarlavha talab qilinadi"
+
+#: houz/templates/temps/signin_temp.html:52
+#: houz/templates/temps/signup_temp.html:77
+#, fuzzy
+#| msgid "Price is required"
+msgid "Password is required"
+msgstr "Narx talab qilinadi"
+
+#: houz/templates/temps/signin_temp.html:56
+#: houz/templates/temps/signup_temp.html:81
+#, fuzzy
+#| msgid "Description should be at least 150 characters"
+msgid "Password pattern should be at least 8 characters"
+msgstr "Ta'rif kamida 150 belgidan iborat bo'lishi kerak"
+
+#: houz/templates/temps/signin_temp.html:77
+msgid "Invalid information, Please check your credentials"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:9
+msgid "Full name"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:16
+msgid "Username"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:23
+msgid "Password"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:37
+msgid "Show password"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:40
+msgid "Back"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:41
+#, fuzzy
+#| msgid "Create"
+msgid "Create account"
+msgstr "Yaratmoq"
+
+#: houz/templates/temps/signup_temp.html:59
+#, fuzzy
+#| msgid "Title is required"
+msgid "Full name is required"
+msgstr "Sarlavha talab qilinadi"
+
+#: houz/templates/temps/signup_temp.html:63
+msgid "Please, provide your full name, containing first & last names"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:68
+#, fuzzy
+#| msgid "Price is required"
+msgid "Username is required"
+msgstr "Narx talab qilinadi"
+
+#: houz/templates/temps/signup_temp.html:72
+msgid "Your username must be shorter than 16 characters"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:85
+msgid "Confirm your password"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:89
+msgid "Passwords do not match"
+msgstr ""
+
+#: houz/templates/temps/signup_temp.html:110
+msgid "The username is taken"
+msgstr ""
+
+#: houz/templates/temps/sts.html:10
+msgid "Email"
+msgstr ""
+
+#: houz/templates/temps/sts.html:17
+msgid "Phone number"
+msgstr ""
+
+#: houz/templates/temps/sts.html:24
+msgid "Tell us about yourself"
+msgstr ""
+
+#: houz/templates/temps/sts.html:31
+msgid "What country are you from?"
+msgstr ""
+
+#: houz/templates/temps/sts.html:393
+msgid "Switch"
+msgstr ""
+
+#: houz/templates/temps/sts.html:431
+#, fuzzy
+#| msgid "Title is required"
+msgid "Email is required"
+msgstr "Sarlavha talab qilinadi"
+
+#: houz/templates/temps/sts.html:435
+msgid "Email patter is incorrect"
+msgstr ""
+
+#: houz/templates/temps/sts.html:440
+#, fuzzy
+#| msgid "Price is required"
+msgid "Phone number is required"
+msgstr "Narx talab qilinadi"
+
+#: houz/templates/temps/sts.html:445
+#, fuzzy
+#| msgid "City is required"
+msgid "Bio is required"
+msgstr "Shahar talab qilinadi"
+
+#: houz/templates/temps/sts.html:449
+#, fuzzy
+#| msgid "Description should be at least 150 characters"
+msgid "Bio should be at least 70 characters"
+msgstr "Ta'rif kamida 150 belgidan iborat bo'lishi kerak"
+
+#: houz/templates/temps/sts.html:472
+msgid "The phone number is taken"
+msgstr ""
+
+#: houz/templates/temps/sts.html:475
+msgid "The email is taken"
+msgstr ""
+
+#~ msgid "min price: 10 000"
+#~ msgstr "min narxi: 10 000"
+
+#~ msgid "Title should be between 4 and 6 words with at least 2 chars long"
+#~ msgstr "Sarlavha kamida 2 ta va 6 tadan iborat bo'lishi kerak"
+
+#~ msgid "Price should at least start from 10,000"
+#~ msgstr "Narx kamida 10,000 dan boshlanishi kerak"
+
+#~ msgid "Each amenity should be a meaningful word or phrase"
+#~ msgstr "Har bir nulaylik mazmunli so'z yoki ibora bo'lishi kerak"
+
+#~ msgid "Each rule should be a meaningful word or phrase"
+#~ msgstr "Har bir qoida mazmunli so'z yoki ibora bo'lishi kerak"
+
+#~ msgid ""
+#~ "Title should be between 4 and 6 words, and each word should be at least 2 "
+#~ "characters long"
+#~ msgstr ""
+#~ "Sarlavha 4 dan 6 gacha so'z bo'lishi kerak va har bir so'z kamida 2 ta "
+#~ "belgidan iborat bo'lishi kerak"
 
 #~ msgid "ENG"
 #~ msgstr "Yengil"
@@ -499,10 +648,6 @@ msgstr "Xonalar mavjud emas"
 
 #~ msgid "UZB"
 #~ msgstr "Uzb"
-
-#, fuzzy
-#~ msgid "Title should be at least 4 words"
-#~ msgstr "Sarlavha kamida 20 ta belgidan iborat bo'lishi kerak"
 
 #~ msgid "Drag images to sort them out"
 #~ msgstr "Ularni saralash uchun rasmlarni torting"

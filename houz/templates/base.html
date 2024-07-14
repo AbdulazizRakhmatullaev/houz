@@ -226,13 +226,13 @@
                                     <div class="ppdrcon">
                                         <form method="GET" action="{% url 'set_currency' %}" class="language-form">
                                             <select name="currency" onchange="this.form.submit()" class="lngsel">
-                                                <option value="UZS" {% if request.currency == 'UZS' %}selected{% endif %}>UZS</option>
-                                                <option value="USD" {% if request.currency == 'USD' %}selected{% endif %}>USD</option>
-                                                <option value="RUB" {% if request.currency == 'RUB' %}selected{% endif %}>RUB</option>
-                                                <option value="GBP" {% if request.currency == 'GBP' %}selected{% endif %}>GBP</option>
-                                                <option value="JPY" {% if request.currency == 'JPY' %}selected{% endif %}>JPY</option>
-                                                <option value="CHF" {% if request.currency == 'CHF' %}selected{% endif %}>CHF</option>
-                                                <option value="CNY" {% if request.currency == 'CNY' %}selected{% endif %}>CNY</option>
+                                                <option value="UZS" {% if request.currency == 'UZS' %}selected{% endif %}>UZS - Uzbek soums</option>
+                                                <option value="USD" {% if request.currency == 'USD' %}selected{% endif %}>USD - US dollars</option>
+                                                <option value="RUB" {% if request.currency == 'RUB' %}selected{% endif %}>RUB - Russian rubles</option>
+                                                <option value="GBP" {% if request.currency == 'GBP' %}selected{% endif %}>GBP - British pounds</option>
+                                                <option value="JPY" {% if request.currency == 'JPY' %}selected{% endif %}>JPY - Japanese yen</option>
+                                                <option value="CHF" {% if request.currency == 'CHF' %}selected{% endif %}>CHF - Swiss francs</option>
+                                                <option value="CNY" {% if request.currency == 'CNY' %}selected{% endif %}>CNY - Chinese yuan</option>
                                             </select>
                                         </form>
                                     </div>

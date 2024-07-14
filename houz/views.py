@@ -759,7 +759,7 @@ def room_edit(request, username, id):
             # room.room_type = request.POST.get("room_type", room.room_type)
             room.location = f'{request.POST.get("latitude", room.fst_loc)},{request.POST.get("longitude", room.sec_loc)}'
             
-            room.public = request.POST.get("public", room.public)
+            room.public = 'public' in request.POST
             room.save()
 
             return JsonResponse({"username": request.user.username})
@@ -941,7 +941,7 @@ def to_seller(request):
                 user_profile.email = email
                 user_profile.phone_number = phone_number
                 user_profile.country = country
-                user_profile.languages = ",".join(languages)
+                user_profile.languages = ", ".join(languages)
     
                 user_profile.save()
                 messages.info(request, "You have successfully switched to Seller mode")
