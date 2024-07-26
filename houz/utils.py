@@ -21,7 +21,7 @@ def convert_price(from_cur, to_cur, price):
         if from_cur in no_cents_currencies:
             return "{:,}".format(int(price))
         else:
-            return "{:,}".format(price)
+            return "{:,.2f}".format(price)
     try:
         rate = get_conversion_rate(from_cur, to_cur)
         if rate is None:
@@ -32,7 +32,8 @@ def convert_price(from_cur, to_cur, price):
         if to_cur in no_cents_currencies:
             # Remove trailing zeros for currencies without cents
             converted_price = int(converted_price)
-                
-        return "{:,}".format(converted_price)
+            return "{:,}".format(converted_price)
+        else:
+            return "{:,.2f}".format(converted_price)
     except:
         return None

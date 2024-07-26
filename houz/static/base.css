@@ -600,6 +600,19 @@ b {
   border: 1px solid #1d1d1f;
 }
 
+.comment {
+  position: relative;
+  font-size: 14px;
+  padding: 12px;
+  width: 300px;
+  height: 110px;
+  background: #fff;
+  border: 1px solid #d2d2d7;
+  border-radius: 18px;
+  display: flex;
+  align-items: start;
+}
+
 .reviewer-name {
   display: block;
   font-size: 14px;
@@ -1809,6 +1822,42 @@ select {
 }
 
 .objdel:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.comtools {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.combtn svg {
+  height: 15px;
+  width: 15px;
+  vertical-align: middle;
+  fill: #fff;
+}
+
+.combtn {
+  cursor: pointer;
+  height: 28px;
+  width: 28px;
+  font-size: 25px;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: saturate(7) blur(2px);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  transition: 0.2s;
+}
+
+.combtn:hover {
   background: rgba(0, 0, 0, 0.6);
 }
 

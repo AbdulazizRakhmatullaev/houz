@@ -98,7 +98,7 @@
             
             {% if user == request.user %}
             <div class="p-last">
-                <a href="{% url 'profile_edit' %}" class="btn-white">Edit</a>
+                <a href="{% url 'profile_edit' %}" class="btn-white">Profile edit</a>
                 <a href="{% url 'signout' %}" class="btn-white" onclick="return confirmReq()">Sign out</a>
             </div>
             {% endif %}
@@ -106,6 +106,8 @@
     </div>
     <div class="right-pp-col">
         <div class="user-roomscol">
+            
+            {% if is_own_profile %}
             <div class="lbld">
                 <div class="lbl0" style="padding-top: 0;">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} listings</div>
                 <div class="p-rooms">
@@ -211,11 +213,169 @@
                     {% endfor %}
                 </div>
             </div>
+            {% endif %}
+            
+            {% if request.user != user and user.profile.type == "seller" %}
             <div class="lbld">
+                <div class="lbl0" style="padding-top: 0;">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} listings</div>
+                <div class="p-rooms">
+                    {% for room in rooms %}
+                    <div class="p-room">
+                        <a href="{% url 'room_detail_url' room.id %}">
+                            <div class="room-img">
+                                {% if room.first_photo %}
+                                <img src="{{ room.first_photo }}" alt="{% trans 'Room Image' %}">
+                                {% else %}
+                                {% trans 'no image' %}
+                                {% endif %}
+                            </div>
+                            <div class="room-info">
+                                <div class="room-fl">
+                                    <div class="ci-cy">
+                                        {% blocktrans with city=room.get_city_display %}{{ city }}, Uzbekistan{% endblocktrans %}
+                                    </div>
+                                    <div class="rating">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
+                                            focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                                            <path fill-rule="evenodd"
+                                                d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z">
+                                            </path>
+                                        </svg>
+                                        {{ room.average_rating }}
+                                    </div>
+                                </div>
+                                <div class="in-out">{{ room.av_dates }}</div>
+                                <div class="r-price">
+                                    {{currency}}{{room.converted_price}}/{% trans "night" %}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% empty %}
+                    <div class="infotxt coll0">No rooms were shared yet...</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbl0">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} reviews</div>
+                <div id="room-reviews-content">
+                    {% for review in reviews %}
+                    <div class="revren">
+                        <a href="{% url 'room_detail_url' review.room.id %}" class="ren">
+                            <div class="rente">{{review.room.title}}</div>
+                            <img class="renimg" src="{{review.room.first_photo}}" alt="">
+                        </a>
+                        <div class="hr"></div>
+                        <div class="rev">
+                            <div class="revleft">
+                                <a href="{% url 'user_profile' review.user.username %}">
+                                    {% if review.user.profile.avatar.url != null %}
+                                    <img src="{{review.user.profile.avatar.url}}" alt="" class="pp">
+                                    {% else %}
+                                    <div class="pp"
+                                        style="background: linear-gradient({{review.user.profile.avatar_default}});">
+                                        <div class="grcn">
+                                            {{review.user.profile.name|slice:"0:1"}}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="n-d">
+                                <div class="n-stayed">
+                                    <a href="{% url 'user_profile' review.user.username %}"
+                                        class="reviewer-name">{{review.user.profile.name}}</a>
+                                    <div class="spr">•</div>
+                                    <div class="review-date">{{review.get_date}}</div>
+                                </div>
+                                <!--  -->
+                                <div class="r-stars">
+                                    {{review.user_ratings|safe}}
+                                </div>
+                                <div class="review-text">{{review.review_text}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="infotxt coll0">No reviews yet...</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="lbld">
+                
                 <div class="lbl0">{% if is_own_profile %} My {% else %} {{user.profile.first_name}}'s {% endif %} comments</div>
+                
+                {% if user != request.user %}
+                <button class="btn-white" onclick="openComModal()" style="margin-bottom: 10px;">
+                    Add comment
+                </button>
+                
+                <div id="comModal" class="modal">
+                    <div class="modal-cont">
+                        <div class="modal-header">
+                            <div class="modal-title">Comment on {{user.profile.name}}</div>
+                            <div class="close modalclose" onclick="closeComModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
+                            </div>
+                        </div>
+                        <div class="modalcon">
+                            <form action="{% url 'comment_create' user.username %}" method="POST">
+                                {% csrf_token %}
+                                <div class="input-wrapper">
+                                    <input type="text" name="text" placeholder=" " />
+                                    <span>{% trans "Your text" %}</span>
+                                </div>
+                                <button class="btn" style="margin-top: 15px;">submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
                 <div id="room-reviews-content">
                     {% for comment in comments %}
-                    <div class="review">
+                    <div class="comment">
+                        {% if comment.author == request.user %}
+                        <div class="comtools">
+                            <button class="combtn" onclick="openComEdModal()">
+                                <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <path
+                                        d="M14.1882588,6.27301517 L17.7278487,9.81260506 L9.10415743,18.4354891 C8.33089999,19.2086803 7.3795132,19.7800394 6.33365949,20.0993225 L3.43116121,20.9854108 C3.2548849,21.0392252 3.06835948,20.9399503 3.01454502,20.763674 C2.99515549,20.700161 2.99515549,20.6323075 3.01454502,20.5687946 L3.90054461,17.6665868 C4.21988422,16.620548 4.79138805,15.6690125 5.5647823,14.8956845 L14.1882588,6.27301517 Z M15.2489686,5.21240463 L17.017722,3.44381677 C17.6035158,2.85807317 18.5532282,2.85809351 19.1389969,3.4438622 L20.5573573,4.86204088 C21.1431438,5.44782732 21.1431438,6.39757479 20.5573573,6.98336123 C20.5573422,6.98337637 20.5573271,6.98339152 20.5573119,6.98340666 L18.7885585,8.75199452 L15.2489686,5.21240463 Z"
+                                        id="Mask"></path>
+                                </svg>
+                            </button>
+                            <form action="{% url 'comment_delete' comment.id %}" method="POST">
+                                {% csrf_token %}
+                                <button class="combtn" type="submit" onclick="return confirmReq()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M14.556 8.102a.9.9 0 0 1 .842.954l-.5 8a.9.9 0 0 1-1.796-.112l.5-8a.9.9 0 0 1 .954-.842Zm-5.112 0a.9.9 0 0 0-.842.954l.5 8a.9.9 0 1 0 1.796-.112l-.5-8a.9.9 0 0 0-.954-.842Z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M3 4.1a.9.9 0 1 0 0 1.8h1.18l1.155 12.316c.045.484.084.898.143 1.237.062.359.157.704.351 1.03a2.9 2.9 0 0 0 1.249 1.137c.342.162.695.225 1.057.253.344.027.76.027 1.246.027h5.238c.486 0 .902 0 1.246-.027.362-.028.715-.09 1.057-.253a2.9 2.9 0 0 0 1.249-1.137c.194-.326.289-.671.35-1.03.06-.34.099-.753.144-1.237L19.82 5.9H21a.9.9 0 1 0 0-1.8h-5.204a3.901 3.901 0 0 0-7.592 0H3Zm4.124 13.915c.05.526.082.869.128 1.13.043.252.087.356.124.417a1.1 1.1 0 0 0 .474.432c.064.03.172.065.426.085.265.02.61.021 1.138.021h5.172c.528 0 .873 0 1.138-.021.254-.02.362-.055.426-.085a1.1 1.1 0 0 0 .474-.432c.037-.06.08-.166.124-.416.046-.262.079-.605.128-1.131L18.012 5.9H5.988l1.136 12.115ZM12 2.9a2.1 2.1 0 0 0-1.898 1.2h3.796A2.1 2.1 0 0 0 12 2.9Z" clip-rule="evenodd"/></svg>
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div id="comEditModal" class="modal">
+                            <div class="modal-cont">
+                                <div class="modal-header">
+                                    <div class="modal-title">Edit comment</div>
+                                    <div class="close modalclose" onclick="closeComEdModal()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
+                                    </div>
+                                </div>
+                                <div class="modalcon">
+                                    <form action="{% url 'comment_edit' comment.pk %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="input-wrapper">
+                                            <input type="text" name="text" placeholder=" " value="{{comment.text}}"/>
+                                            <span>{% trans "Your text" %}</span>
+                                        </div>
+                                        <button class="btn" style="margin-top: 15px;">submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                         <div class="revleft">
                             <a href="{% url 'user_profile' comment.author.username %}">
                                 {% if comment.author.profile.avatar.url != null %}
@@ -236,6 +396,10 @@
                                     class="reviewer-name">{{comment.author.profile.name}}</a>
                                 <div class="spr">•</div>
                                 <div class="review-date">{{comment.get_date}}</div>
+                                {% if comment.edited %}
+                                <div class="spr">•</div>
+                                <div class="review-date">edited</div>
+                                {% endif %}
                             </div>
                             <!--  -->
                             <div class="review-text">{{comment.text}}</div>
@@ -253,4 +417,25 @@
 {% endblock %}
 
 {% block footer %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const comModal = document.getElementById("comModal");
+    const comEdModal = document.getElementById("comEditModal");
+    
+    function openComModal() {
+        comModal.classList.add("show");
+    }
+    function closeComModal() {
+        comModal.classList.remove("show");
+    }
+    
+    function openComEdModal() {
+        comEdModal.classList.add("show");
+    }
+    function closeComEdModal() {
+        comEdModal.classList.remove("show");
+    }
+</script>
 {% endblock %}

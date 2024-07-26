@@ -500,30 +500,6 @@ def profile_edit(request):
     return redirect("home")
 
 
-def avatarEdit(request):
-    if request.user.is_authenticated:
-        user_profile = Profile.objects.get(user=request.user)
-
-        if request.method == "POST":
-            avatar = request.FILES.get("avatar")
-            user_profile.avatar = avatar
-            user_profile.save()
-
-            messages.success(request, "Avatar successfuly saved")
-
-        return render(request, "basic/user.html", {"user_profile": user_profile})
-
-    return redirect("home")
-
-
-def avatarDelete(request):
-    user_profile = Profile.objects.get(user=request.user)
-    if request.method == "POST":
-        user_profile.avatar.delete()
-        messages.info(request, "Avatar successfuly deleted")
-    return render(request, "basic/user.html")
-
-
 # ROOM
 def room_detail(request, room_id):
     room = get_object_or_404(Room, id=room_id)
@@ -540,7 +516,7 @@ def room_detail(request, room_id):
     filtered_rs = []
     for rec in rooms:
         rec.converted_price = convert_prices_task(rec.currency, request.session.get('currency', 'UZS'), rec.price)
-        if (rec.converted_price < room_converted_price):
+        if float(rec.converted_price.replace(',', '')) < float(room_converted_price.replace(',', '')):
             filtered_rs.append(rec)
 
     reservations = Reservation.objects.filter(room=room)
@@ -797,24 +773,6 @@ def rating_delete(request, id, pk):
     return HttpResponseRedirect(currentPage)
 
 
-def rating_edit(request, id, pk):
-    room = Room.objects.get(id__exact=id)
-    rating = room.rating_set.get(pk=pk)
-    currentPage = request.POST.get("currentPage")
-    if request.user.id == rating.author.id:
-        if request.method == "POST":
-            text = request.POST.get("text")
-            if request.POST.get("text") != rating.text:
-                rating.text = text
-                rating.edited = True
-                rating.save()
-                messages.info(request, "Your rating has been edited")
-            else:
-                return HttpResponseRedirect(currentPage)
-        return HttpResponseRedirect(currentPage)
-    return HttpResponseRedirect(currentPage)
-
-
 # OTHER
 @csrf_exempt
 def img_delete(request, img_id):
@@ -836,31 +794,9 @@ def search(request):
         return render(request, "basic/search.html", context)
 
 
-def savePost(request, id, slug):
-    room = Room.objects.get(id__exact=id, slug__exact=slug)
-    if request.method == "POST":
-        if request.user.is_authenticated:
-            if not room.savep_set.filter(user=request.user).exists():
-                room.savep_set.create(user=request.user)
-                messages.success(request, "Room saved to bookmarks")
-            else:
-                saveRP = request.user.savep_set.get(room=room)
-                saveRP.delete()
-                messages.info(request, "Room has been unsaved")
-        else:
-            return redirect("signin")
-    return redirect("home")
-
-
 def bookmarks(request):
     bookmarks = RoomSave.objects.all()
     return render(request, "basic/bookmarks.html", {"bookmarks": bookmarks})
-
-
-def share(request):
-    if request.method == "POST":
-        messages.success(request, "Link successfuly copied")
-    return render(request, "basic/home.html")
 
 
 def tou(request):
@@ -952,3 +888,42 @@ def to_seller(request):
             return JsonResponse({"is_email": True})
 
     return redirect("home")
+
+def comment_create(request, recievername):
+    reciever = User.objects.get(username__exact=recievername)
+    author = request.user
+    
+    if request.method == "POST":
+        if author != reciever:
+            txt = request.POST.get("text")
+            
+            comment = Comment.objects.create(reciever=reciever, author=author, text=txt)
+            comment.save()
+            return redirect("user_profile", recievername)
+
+        else:
+            return redirect("user_profile", recievername)
+    return redirect("user_profile", recievername)
+    
+def comment_edit(request, pk):
+    comment = Comment.objects.get(pk=pk)
+    
+    if request.method == "POST":
+        txt = request.POST.get("text")
+        
+        comment.text = txt
+        comment.edited = True
+        comment.save()
+        return redirect("user_profile", comment.reciever.username)
+    return redirect("user_profile", comment.reciever.username)
+    
+    
+def comment_delete(request, pk):
+    comment = Comment.objects.get(pk=pk)
+    
+    if request.method == "POST":
+        
+        comment.delete()
+        return redirect("user_profile", comment.reciever.username)
+    
+    return redirect("user_profile", comment.reciever.username)

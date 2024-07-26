@@ -548,6 +548,17 @@
     }
 
     // Update prices and min/max attributes based on date input changes with animation
+    const noCentsCurrencies = ["UZS", "JPY", "CNY", "RUB"];
+    const currency = "{{ currency }}";
+
+    function formatPrice(value) {
+        if (noCentsCurrencies.includes(currency)) {
+            return Math.floor(value).toLocaleString();
+        } else {
+            return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+    }
+
     function updatePrices() {
         const checkInInput = document.querySelector('input[name="check_in"]');
         const checkOutInput = document.querySelector('input[name="check_out"]');
@@ -556,14 +567,12 @@
         const actualPrice = parseFloat(document.getElementById('actual-price').textContent.replace(/,/g, ''));
 
         if (checkInDate && !isNaN(checkInDate.getTime())) {
-            // Set check-out minimum date to the day after check-in
             const nextDay = new Date(checkInDate);
             nextDay.setDate(nextDay.getDate() + 1);
             checkOutInput.min = formatDate(nextDay);
         }
 
         if (checkOutDate && !isNaN(checkOutDate.getTime())) {
-            // Set check-in maximum date to the day before check-out
             const prevDay = new Date(checkOutDate);
             prevDay.setDate(prevDay.getDate() - 1);
             checkInInput.max = formatDate(prevDay);
@@ -580,12 +589,17 @@
             const totalPriceElement = document.getElementById('total-price');
             const feeElement = document.getElementById('houz-fee');
 
-            function animateValue(element, start, end, duration) {
+            function animateValue(element, start, end, duration, isNoCents) {
                 let startTimestamp = null;
                 const step = (timestamp) => {
                     if (!startTimestamp) startTimestamp = timestamp;
                     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    element.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
+                    const value = progress * (end - start) + start;
+                    if (isNoCents) {
+                        element.textContent = Math.floor(value).toLocaleString();
+                    } else {
+                        element.textContent = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    }
                     if (progress < 1) {
                         window.requestAnimationFrame(step);
                     }
@@ -593,10 +607,12 @@
                 window.requestAnimationFrame(step);
             }
 
-            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 800);
-            animateValue(totalPriceElement, parseFloat(totalPriceElement.textContent.replace(/,/g, '')), totalPrice, 500);
-            animateValue(bynightElement, parseFloat(bynightElement.textContent.replace(/,/g, '')), bynightPrice, 500);
-            animateValue(feeElement, parseFloat(feeElement.textContent.replace(/,/g, '')), fee, 500);
+            const isNoCents = noCentsCurrencies.includes(currency);
+
+            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 800, isNoCents);
+            animateValue(totalPriceElement, parseFloat(totalPriceElement.textContent.replace(/,/g, '')), totalPrice, 500, isNoCents);
+            animateValue(bynightElement, parseFloat(bynightElement.textContent.replace(/,/g, '')), bynightPrice, 500, isNoCents);
+            animateValue(feeElement, parseFloat(feeElement.textContent.replace(/,/g, '')), fee, 500, isNoCents);
         }
     }
 

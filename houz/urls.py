@@ -25,7 +25,6 @@ urlpatterns = [
         views.rating_delete,
         name="rating_delete",
     ),
-    path("room/<str:id>/rating/<int:pk>/edit", views.rating_edit, name="rating_edit"),
     # Other
     path("search/", views.search, name="search"),
     path("bookmarks", views.bookmarks, name="bookmarks"),
@@ -44,4 +43,8 @@ urlpatterns = [
     path("switch-to-buyer", views.to_buyer, name="to_buyer"),
     path("switch-to-seller", views.to_seller, name="to_seller"),
     path("switch-back-to-seller", views.back_to_seller, name="back_to_seller"),
+    # comment
+    path("@<str:recievername>/comment", views.comment_create, name="comment_create"),
+    path("comments/<int:pk>/edit", views.comment_edit, name="comment_edit"),
+    path("comments/<int:pk>/delete", views.comment_delete, name="comment_delete"),
 ]

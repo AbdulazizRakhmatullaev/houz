@@ -14,7 +14,7 @@ from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 
 sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
-
+no_cents_currencies = {"UZS", "JPY", "CNY", "RUB"}
 
 class RangedIntegerField(models.IntegerField):
     def __init__(self, min_value=None, max_value=None, **kwargs):
@@ -287,10 +287,13 @@ class Room(models.Model):
         days = (self.check_out - self.check_in).days
         total_price = days * self.price
         fee = 0.33 * total_price
-        fee = int(fee)
-
-        # return "{:,}".format(fee)
-        return fee
+        
+        fee = int(fee) if self.currency in no_cents_currencies else round(fee, 2)
+        
+        if self.currency in no_cents_currencies:
+            return "{:,}".format(fee)
+        else:
+            return "{:,.2f}".format(fee)
 
     def tot_price(self):
         days = (self.check_out - self.check_in).days
