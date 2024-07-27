@@ -177,6 +177,19 @@
             </div>
         </div>
         
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Check in time (Before)" %}</div>
+                <input type="time" name="checkin_time" id="checkin_time" class="checkin_time" value="{{room.checkin_time|time:'h:i:s'}}">
+                <div id="checkin_time-error" class="errTxt"></div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Check out time (After)" %}</div>
+                <input type="time" name="checkout_time" id="checkout_time" class="checkout_time" value="{{room.checkout_time|time:'H:i:s'}}">
+                <div id="checkout_time-error" class="errTxt"></div>
+            </div>
+        </div>
+        
         {% if request.user.profile.type == "seller" %}
         <div class="lbld" style="flex-direction: row; gap: 5px; align-items: center;">
             <input type="checkbox" class="pubcheck" name="public" {% if room.public %}checked{% endif %}>
@@ -547,6 +560,14 @@
         if ((checkOutDate.getTime() - checkInDate.getTime()) < oneDay) {
             checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "There should be at least one day gap between check-in and check-out" %}';
             return;
+        }
+        
+        const checkIn_time = document.getElementById('checkin_time');
+        const checkOut_time = document.getElementById('checkout_time');
+        
+        if (checkOut_time.value <= checkIn_time.value){
+          checkOut_time.parentNode.querySelector('.errTxt').textContent = '{% trans "Check-out time should be after check-in time" %}';
+          return;
         }
 
         // Create a FormData object to store form data and selected images

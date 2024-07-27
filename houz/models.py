@@ -224,13 +224,18 @@ class Room(models.Model):
     bedrooms = models.IntegerField("Bedrooms")
     baths = models.IntegerField("Baths")
     is_pets = models.BooleanField("Pets are allowed", default=False)
-    check_in = models.DateTimeField("Check in")
-    check_out = models.DateTimeField("Check out")
+    
+    check_in = models.DateField("Check in")
+    checkin_time = models.TimeField("Check in time", default="10:00")
+    check_out = models.DateField("Check out")
+    checkout_time = models.TimeField("Check out time", default ="23:00")
+    
     room_type = models.CharField(
         "Room type",
         max_length=255,
         choices=RoomTypes,
     )
+    
     amenities = models.ManyToManyField(Amenity, related_name="rooms", blank=True)
     house_rules = models.ManyToManyField(HouseRule, related_name="rooms", blank=True)
     location = PlainLocationField(based_fields=["city"], zoom=7, max_length=255)
@@ -288,12 +293,7 @@ class Room(models.Model):
         total_price = days * self.price
         fee = 0.33 * total_price
         
-        fee = int(fee) if self.currency in no_cents_currencies else round(fee, 2)
-        
-        if self.currency in no_cents_currencies:
-            return "{:,}".format(fee)
-        else:
-            return "{:,.2f}".format(fee)
+        return fee
 
     def tot_price(self):
         days = (self.check_out - self.check_in).days

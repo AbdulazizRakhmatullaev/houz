@@ -304,13 +304,19 @@
         <div class="rcrflex" style="margin-top: 13px; flex-direction: column;">
             <div class="check-io">
                 <span class="small-title">Check-in</span>
-                <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
-                    max='{{room.check_out|date:"Y-m-d"}}'>
+                <div class="fl-spbn">
+                    <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                        max='{{room.check_out|date:"Y-m-d"}}'>
+                    <div class="chtm">{{room.checkin_time|time:"H:i A"}}</div>
+                </div>
             </div>
             <div class="check-io">
                 <span class="small-title">Check-out</span>
-                <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
-                    max='{{room.check_out|date:"Y-m-d"}}'>
+                <div class="fl-spbn">
+                    <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                        max='{{room.check_out|date:"Y-m-d"}}'>
+                    <div class="chtm">{{room.checkout_time|time:"H:i A"}}</div>
+                </div>
             </div>
         </div>
         <!-- {% if room.num_o_days > 3 %}
@@ -547,18 +553,18 @@
         return `${year}-${month}-${day}`;
     }
 
-    // Update prices and min/max attributes based on date input changes with animation
-    const noCentsCurrencies = ["UZS", "JPY", "CNY", "RUB"];
-    const currency = "{{ currency }}";
-
+    // Function to format price based on currency
     function formatPrice(value) {
-        if (noCentsCurrencies.includes(currency)) {
+        const noDecimalCurrencies = ["UZS", "JPY", "CNY", "RUB"];
+        const currency = "{{ request.currency }}";
+        if (noDecimalCurrencies.includes(currency)) {
             return Math.floor(value).toLocaleString();
         } else {
             return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
     }
 
+    // Update prices and min/max attributes based on date input changes with animation
     function updatePrices() {
         const checkInInput = document.querySelector('input[name="check_in"]');
         const checkOutInput = document.querySelector('input[name="check_out"]');
@@ -567,12 +573,14 @@
         const actualPrice = parseFloat(document.getElementById('actual-price').textContent.replace(/,/g, ''));
 
         if (checkInDate && !isNaN(checkInDate.getTime())) {
+            // Set check-out minimum date to the day after check-in
             const nextDay = new Date(checkInDate);
             nextDay.setDate(nextDay.getDate() + 1);
             checkOutInput.min = formatDate(nextDay);
         }
 
         if (checkOutDate && !isNaN(checkOutDate.getTime())) {
+            // Set check-in maximum date to the day before check-out
             const prevDay = new Date(checkOutDate);
             prevDay.setDate(prevDay.getDate() - 1);
             checkInInput.max = formatDate(prevDay);
@@ -589,17 +597,13 @@
             const totalPriceElement = document.getElementById('total-price');
             const feeElement = document.getElementById('houz-fee');
 
-            function animateValue(element, start, end, duration, isNoCents) {
+            function animateValue(element, start, end, duration, isInteger) {
                 let startTimestamp = null;
                 const step = (timestamp) => {
                     if (!startTimestamp) startTimestamp = timestamp;
                     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    const value = progress * (end - start) + start;
-                    if (isNoCents) {
-                        element.textContent = Math.floor(value).toLocaleString();
-                    } else {
-                        element.textContent = value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    }
+                    const currentValue = progress * (end - start) + start;
+                    element.textContent = isInteger ? Math.floor(currentValue).toLocaleString() : formatPrice(currentValue);
                     if (progress < 1) {
                         window.requestAnimationFrame(step);
                     }
@@ -607,12 +611,10 @@
                 window.requestAnimationFrame(step);
             }
 
-            const isNoCents = noCentsCurrencies.includes(currency);
-
-            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 800, isNoCents);
-            animateValue(totalPriceElement, parseFloat(totalPriceElement.textContent.replace(/,/g, '')), totalPrice, 500, isNoCents);
-            animateValue(bynightElement, parseFloat(bynightElement.textContent.replace(/,/g, '')), bynightPrice, 500, isNoCents);
-            animateValue(feeElement, parseFloat(feeElement.textContent.replace(/,/g, '')), fee, 500, isNoCents);
+            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 800, true);
+            animateValue(totalPriceElement, parseFloat(totalPriceElement.textContent.replace(/,/g, '')), totalPrice, 500, false);
+            animateValue(bynightElement, parseFloat(bynightElement.textContent.replace(/,/g, '')), bynightPrice, 500, false);
+            animateValue(feeElement, parseFloat(feeElement.textContent.replace(/,/g, '')), fee, 500, false);
         }
     }
 
@@ -638,19 +640,6 @@
     // Add event listeners to the day filter elements
     document.querySelectorAll('.dfl').forEach(function(element) {
         element.addEventListener('click', handleDayFilterClick);
-
-        // element.addEventListener('click', function() {
-        //     // Remove the "active" class from all elements
-        //     document.querySelectorAll('.dfl').forEach(function(el) {
-        //         el.classList.remove('active');
-        //     });
-
-        //     // Add the "active" class to the clicked element
-        //     element.classList.add('active');
-
-        //     // Call handleDayFilterClick if it needs to do additional work
-        //     handleDayFilterClick();
-        // });
     });
 
     // Add event listeners to date inputs

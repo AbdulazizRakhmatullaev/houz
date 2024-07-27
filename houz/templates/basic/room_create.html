@@ -10,6 +10,32 @@
     {% csrf_token %}
     <div class="rmleft">
         <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Title" %}</div>
+                <input type="text" id="title" name="title" placeholder='{% trans "e.g. Best cabin near Labi Hawuz" %}'>
+                <div id="title-error" class="errTxt"></div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Price" %}</div>
+
+                <div class="priceinp">
+                    <div class="cursel">
+                        <select name="currency" id="currency">
+                            <option value="{{currency}}">{{currency}}</option>
+
+                            {% for code, name in currencies %}
+                            <option value="{{code}}">{{name}}</option>
+                            {% endfor %}
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 13.698 6.64 9.232a1 1 0 0 0-1.28 1.536l6 5a1 1 0 0 0 1.28 0l6-5a1 1 0 1 0-1.28-1.536L12 13.698Z"/></svg>
+                    </div>
+                    <input type="text" id="price" data-type="currency" name="price" placeholder="{% trans 'Name your price here' %}">
+                </div>
+
+                <div id="price-error" class="errTxt"></div>
+            </div>
+        </div>
+        <div class="rcrflex">
             <div class="rcrflexcol">
                 <div class="lbld">
                     <div class="lbltxt">{% trans "Guests" %}</div>
@@ -67,32 +93,6 @@
         <div id="img-preview-info" class="inpInfo"></div>
     </div>
     <div class="rmright">
-        <div class="rcrflex">
-            <div class="lbld">
-                <div class="lbltxt">{% trans "Title" %}</div>
-                <input type="text" id="title" name="title" placeholder='{% trans "e.g. Best cabin near Labi Hawuz" %}'>
-                <div id="title-error" class="errTxt"></div>
-            </div>
-            <div class="lbld">
-                <div class="lbltxt">{% trans "Price" %}</div>
-
-                <div class="priceinp">
-                    <div class="cursel">
-                        <select name="currency" id="currency">
-                            <option value="{{currency}}">{{currency}}</option>
-
-                            {% for code, name in currencies %}
-                            <option value="{{code}}">{{name}}</option>
-                            {% endfor %}
-                        </select>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 13.698 6.64 9.232a1 1 0 0 0-1.28 1.536l6 5a1 1 0 0 0 1.28 0l6-5a1 1 0 1 0-1.28-1.536L12 13.698Z"/></svg>
-                    </div>
-                    <input type="text" id="price" data-type="currency" name="price" placeholder="{% trans 'Name your price here' %}">
-                </div>
-
-                <div id="price-error" class="errTxt"></div>
-            </div>
-        </div>
         <div class="lbld">
             <div class="lbltxt">{% trans "Description" %}</div>
             <textarea id="description" name="description" class="descarea"
@@ -160,6 +160,18 @@
                 <div class="lbltxt">{% trans "Check out" %}</div>
                 <input type="date" name="check_out" id="check_out" class="check_out">
                 <div id="check_out-error" class="errTxt"></div>
+            </div>
+        </div>
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Check in time (Before)" %}</div>
+                <input type="time" name="checkin_time" id="checkin_time" class="checkin_time" value="11:00">
+                <div id="checkin_time-error" class="errTxt"></div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Check out time (After)" %}</div>
+                <input type="time" name="checkout_time" id="checkout_time" class="checkout_time" value="16:00">
+                <div id="checkout_time-error" class="errTxt"></div>
             </div>
         </div>
         <div class=" btnsubend">
@@ -487,7 +499,7 @@
             return;
         }
 
-        if (city.value.trim() === 'null') {
+        if (city.value === 'null') {
             city.parentNode.querySelector('.errTxt').textContent = '{% trans "City is required" %}';
             return;
         }
@@ -535,6 +547,14 @@
         if ((checkOutDate.getTime() - checkInDate.getTime()) < oneDay) {
             checkOut.parentNode.querySelector('.errTxt').textContent = '{% trans "There should be at least one day gap between check-in and check-out" %}';
             return;
+        }
+        
+        const checkIn_time = document.getElementById('checkin_time');
+        const checkOut_time = document.getElementById('checkout_time');
+        
+        if (checkOut_time.value <= checkIn_time.value){
+          checkOut_time.parentNode.querySelector('.errTxt').textContent = '{% trans "Check-out time should be after check-in time" %}';
+          return;
         }
 
         // Create a FormData object to store form data and selected images
