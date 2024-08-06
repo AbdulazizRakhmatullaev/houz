@@ -7,7 +7,7 @@
 <div class="room-title">
     <div class="brief-left-info">
         <div class="detailed-ci-cy">
-            {{ room.get_city_display }}, Uzbekistan
+            {{ room.city.name }}, {{room.country}}
         </div>
         <div class="brief-name">
             {{ room.title }}
@@ -290,13 +290,18 @@
                     <span id="infantP" class="plus">+</span>
                 </div>
             </div>
-            <div class="gstsform">
-                <span class="small-title">Pets</span>
-                <div class="gstfl">
-                    <span id="petM" class="minus">-</span>
-                    <input type="text" id="pets" min="0" max="99" value="0" disabled/>
-                    <span id="petP" class="plus">+</span>
+            <div class="gstwinf">
+                <div class="gstsform" {% if room.pets == 0 %}style="opacity: 0.4; pointer-events: none;"{% endif %}>
+                    <span class="small-title">Pets</span>
+                    <div class="gstfl">
+                        <span id="petM" class="minus">-</span>
+                        <input type="text" id="pets" min="0" max="99" value="0" disabled/>
+                        <span id="petP" class="plus">+</span>
+                    </div>
                 </div>
+                {% if room.pets == 0 %}
+                <div id="psnfo">Pets are not allowed</div>
+                {% endif %}
             </div>
         </div>
         <div class="ahr15"></div>
@@ -319,7 +324,7 @@
                 </div>
             </div>
         </div>
-        <!-- {% if room.num_o_days > 3 %}
+        {% if room.num_o_days > 2 %}
         <div class="dayfls">
             <div class="dfl" data-days="1">1 night</div>
             {% if room.num_o_days >= 3 %}
@@ -332,7 +337,7 @@
             <div class="dfl" data-days="14">14 nights</div>
             {% endif %}
         </div>
-        {% endif %} -->
+        {% endif %}
         <div class="sticky-right-col">
             <div class="price-info">
                 {{currency}}<span id="total-price" class="room-price">{{ room_tot_price }}</span>
@@ -358,7 +363,7 @@
 
 <div class="roomrecs">
     <div class="botmaint">There's always more to explore.</div>
-    <div id="room-posts">
+    <div id="room-container">
         {% include 'temps/room_list.html' %}
     </div>
 </div>

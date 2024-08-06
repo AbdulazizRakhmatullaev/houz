@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
+{% load el_pagination_tags %}
+{% load static %}
 
 {% block title %} Home {% endblock %}
 
 {% block content %}
 
-
-<div>
-
+<div id="room-container">
+    {% paginate rooms %}
+        {% include "temps/room_list.html" %}
+    {% show_pages %}
 </div>
 
-<div id="room-posts">
-    {% include 'temps/room_list.html' %}
-</div>
 
 {% endblock %}
 
 {% block footer %}
-
 {% endblock %}
 
 {% block scripts %}

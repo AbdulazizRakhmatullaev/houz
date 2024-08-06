@@ -10,11 +10,11 @@ from .models import (
     HouseRule,
     Amenity,
     Comment,
-    Region_Choices,
     Currencies,
     RoomTypes,
     ExchangeRate
 )
+from cities_light.models import Country, City
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -39,19 +39,50 @@ from asgiref.sync import async_to_sync
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import translation
 from .tasks import convert_prices_task
+from django.views.decorators.http import require_GET
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def is_ajax(request):
     return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
 
-
 def home(request):
     rooms = Room.objects.filter(public=True).all()
-    currency = show_currency(request.session.get('currency', 'UZS'))
-
     for room in rooms:
         room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
+    
+    currency = show_currency(request.session.get('currency', 'UZS'))
+    
+    context = {
+        'rooms': rooms,
+        "currency": currency
+    }
+    
+    return render(request, "basic/home.html", context)
 
-    return render(request, "basic/home.html", {"rooms": rooms, "currency": currency})
+@require_GET
+def load_more_rooms(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        offset = int(request.GET.get('offset', 0))
+        limit = 4
+        rooms = Room.objects.filter(public=True)[offset:offset + limit]
+        
+        # Check if there are more rooms
+        has_more_rooms = Room.objects.filter(public=True)[offset + limit:].exists()
+
+        rooms_data = []
+        for room in rooms:
+            rooms_data.append({
+                'id': room.id,
+                'first_photo': room.first_photo(),
+                'city': room.city.name if room.city else '',
+                'country': room.country.name if room.country else '',
+                'average_rating': room.average_rating(),
+                'av_dates': room.av_dates(),
+                'converted_price': convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price),
+            })
+
+        return JsonResponse({'rooms': rooms_data, 'has_more': has_more_rooms})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def create_notification(
     sender,
@@ -513,10 +544,11 @@ def room_detail(request, room_id):
 
 
     rooms = Room.objects.exclude(id=room.id).all()
+    
     filtered_rs = []
     for rec in rooms:
         rec.converted_price = convert_prices_task(rec.currency, request.session.get('currency', 'UZS'), rec.price)
-        if float(rec.converted_price.replace(',', '')) < float(room_converted_price.replace(',', '')):
+        if rec.converted_price <= room_converted_price:
             filtered_rs.append(rec)
 
     reservations = Reservation.objects.filter(room=room)
@@ -527,7 +559,7 @@ def room_detail(request, room_id):
         "basic/room.html",
         {
             "room": room,
-            "rooms": filtered_rs,
+            "rooms": filtered_rs[:8],
             "reviews": reviews,
             "num_o_days": num_o_days,
             'currency': currency,
@@ -539,7 +571,9 @@ def room_detail(request, room_id):
     )
 
 def room_create(request):
-    regions = Region_Choices
+    countries = Country.objects.all()
+    cities = City.objects.all()
+    
     room_types = RoomTypes
     currency = request.session.get('currency', 'UZS')
     currencies = [
@@ -552,9 +586,12 @@ def room_create(request):
 
             title = request.POST.get("title")
             description = request.POST.get("description")
-
             address = request.POST.get("address")
-            city = request.POST.get("city")
+            
+            country_id = request.POST.get("country")
+            city_id = request.POST.get("city")
+            country = get_object_or_404(Country, id=country_id)
+            city = get_object_or_404(City, id=city_id)
 
             cur = request.POST.get("currency")
             price = float(request.POST.get("price").replace(",", ""))
@@ -566,6 +603,7 @@ def room_create(request):
             beds = request.POST.get("beds")
             bedrooms = request.POST.get("bedrooms")
             baths = request.POST.get("baths")
+            pets = request.POST.get("pets")
 
             check_in = request.POST.get("check_in")
             check_out = request.POST.get("check_out")
@@ -591,6 +629,7 @@ def room_create(request):
                 host=host,
                 title=title,
                 description=description,
+                country=country,
                 city=city,
                 currency=cur,
                 price=price,
@@ -599,6 +638,7 @@ def room_create(request):
                 beds=beds,
                 bedrooms=bedrooms,
                 baths=baths,
+                pets=pets,
                 location=location,
                 check_in=check_in,
                 check_out=check_out,
@@ -634,7 +674,13 @@ def room_create(request):
         return render(
             request,
             "basic/room_create.html",
-            {"regions": regions, "room_types": room_types, "currency": currency, "currencies": currencies},
+            {
+                "countries": countries, 
+                "cities": cities, 
+                "room_types": room_types, 
+                "currency": currency, 
+                "currencies": currencies
+            },
         )
     return redirect("signin")
 
@@ -652,16 +698,18 @@ def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
     currency = show_currency(request.session.get('currency', 'UZS'))
     room.converted_price = convert_prices_task(room.currency, request.session.get("currency", "UZS"), room.price)
-
-    cur_city = room.city.capitalize()
+    
     cur_rmtype = room.room_type.capitalize()
 
     # Remove the current city and room type from the list of options
     currencies = [
         (code, name) for code, name in Currencies if code != room.currency
     ]
-    regions = [
-        (code, name) for code, name in Region_Choices if code.lower() != cur_city.lower()
+    countries = [
+        country for country in Country.objects.all() if country != room.country
+    ]
+    cities = [
+        city for city in City.objects.all() if city != room.city
     ]
     room_types = [
         (code, name) for code, name in RoomTypes if code.lower() != cur_rmtype.lower()
@@ -672,9 +720,9 @@ def room_edit(request, username, id):
 
     context = {
         "room": room,
-        "cur_city": cur_city,
-        "cur_rmtype": cur_rmtype,
-        "regions": regions,
+        'cur_rmtype': cur_rmtype,
+        "countries": countries,
+        "cities": cities,
         "room_types": room_types,
         "amenities": amenities,
         "house_rules": house_rules,
@@ -690,7 +738,17 @@ def room_edit(request, username, id):
             room.currency = request.POST.get("currency", room.currency)
             room.price = request.POST.get("price", room.price).replace(",", "")
 
-            room.city = request.POST.get("city", room.city)
+            country_id = request.POST.get("country")
+            city_id = request.POST.get("city")
+            
+            if country_id:
+                country = get_object_or_404(Country, id=country_id)
+                room.country = country
+            
+            if city_id:
+                city = get_object_or_404(City, id=city_id)
+                room.city = city
+            
             room.room_type = request.POST.get("room_type", room.room_type)
             room.address = request.POST.get("address", room.address)
 
@@ -698,6 +756,7 @@ def room_edit(request, username, id):
             room.beds = request.POST.get("beds", room.beds)
             room.bedrooms = request.POST.get("bedrooms", room.bedrooms)
             room.baths = request.POST.get("baths", room.baths)
+            room.pets = request.POST.get("pets", room.pets)
 
             for file in request.FILES.getlist("images"):
                 img = Image.objects.create(file=file)
@@ -927,3 +986,8 @@ def comment_delete(request, pk):
         return redirect("user_profile", comment.reciever.username)
     
     return redirect("user_profile", comment.reciever.username)
+    
+    
+def get_cities(request, country_id):
+    cities = City.objects.filter(country_id=country_id).values('id', 'name')
+    return JsonResponse({'cities': list(cities)})

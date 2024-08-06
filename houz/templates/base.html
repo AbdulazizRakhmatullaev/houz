@@ -2,7 +2,6 @@
 {% load notifications %}
 {% load i18n %}
 
-
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}" style="overflow: auto scroll">
 
@@ -24,8 +23,8 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
     
-    <link href="{% static 'sel_css/mobiscroll.javascript.min.css' %}" rel="stylesheet" />
-    <script src="{% static 'sel_js/mobiscroll.javascript.min.js' %}"></script>
+    <link href="{% static 'js/sel_css/mobiscroll.javascript.min.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/sel_js/mobiscroll.javascript.min.js' %}"></script>
 </head>
 
 <body>
@@ -407,8 +406,8 @@
       });
     </script>
 
-    <script src="{% static 'autoNumeric.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'websocket.js' %}"></script>
+    <script src="{% static 'js/autoNumeric.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/websocket.js' %}"></script>
     <!--  -->
 
     {% block scripts %}
@@ -577,6 +576,23 @@
                 return false;
             });
             $('#baths_plus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) + 1;
+                count = count > 99 ? 99 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            
+            $('#pets_minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 0 ? 0 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#pets_plus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) + 1;
                 count = count > 99 ? 99 : count;

@@ -144,7 +144,7 @@
                             <div class="room-info">
                                 <div class="room-fl">
                                     <div class="ci-cy">
-                                        {% blocktrans with city=room.get_city_display %}{{ city }}, Uzbekistan{% endblocktrans %}
+                                        {{room.city.name}}, {{room.country.name}}
                                     </div>
                                     <div class="rating">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"
@@ -232,7 +232,7 @@
                             <div class="room-info">
                                 <div class="room-fl">
                                     <div class="ci-cy">
-                                        {% blocktrans with city=room.get_city_display %}{{ city }}, Uzbekistan{% endblocktrans %}
+                                        {{room.city.name}}, {{room.country.name}}
                                     </div>
                                     <div class="rating">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation"

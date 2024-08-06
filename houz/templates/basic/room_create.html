@@ -17,7 +17,6 @@
             </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans "Price" %}</div>
-
                 <div class="priceinp">
                     <div class="cursel">
                         <select name="currency" id="currency">
@@ -35,6 +34,11 @@
                 <div id="price-error" class="errTxt"></div>
             </div>
         </div>
+        <div class="lbld">
+            <div class="lbltxt">{% trans "Address" %}</div>
+            <input type="text" id="address" name="address" placeholder="{% trans 'Address' %}">
+            <div id="address-error" class="errTxt"></div>
+        </div>
         <div class="rcrflex">
             <div class="rcrflexcol">
                 <div class="lbld">
@@ -50,8 +54,7 @@
                     <div class="lbltxt">{% trans "Bedrooms" %}</div>
                     <div class="rcrflex">
                         <span id="bedrooms_minus" class="minus">-</span>
-                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="bedrooms" name="bedrooms" min="1"
-                            maxlength="2" value="1" />
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="bedrooms" name="bedrooms" min="1" max="99" value="1" />
                         <span id="bedrooms_plus" class="plus">+</span>
                     </div>
                 </div>
@@ -59,7 +62,7 @@
                     <div class="lbltxt">{% trans "Beds" %}</div>
                     <div class="rcrflex">
                         <span id="beds_minus" class="minus">-</span>
-                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="beds" name="beds" min="1" maxlength="2"
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="beds" name="beds" min="1" max="99"
                             value="1" />
                         <span id="beds_plus" class="plus">+</span>
                     </div>
@@ -68,9 +71,17 @@
                     <div class="lbltxt">{% trans "Baths" %}</div>
                     <div class="rcrflex">
                         <span id="baths_minus" class="minus">-</span>
-                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="baths" name="baths" min="1" max="99"
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="baths" name="baths" min="1" max="99"
                             value="1" />
                         <span id="baths_plus" class="plus">+</span>
+                    </div>
+                </div>
+                <div class="lbld">
+                    <div class="lbltxt">{% trans "Pets" %}</div>
+                    <div class="rcrflex">
+                        <span id="pets_minus" class="minus">-</span>
+                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="pets" name="pets" min="0" max="99" value="0"/>
+                        <span id="pets_plus" class="plus">+</span>
                     </div>
                 </div>
             </div>
@@ -99,34 +110,37 @@
                 placeholder='{% trans "Tell people about the room and what is near it" %}'></textarea>
             <div id="description-error" class="errTxt"></div>
         </div>
-
+        
         <div class="rcrflex">
             <div class="lbld">
-                <div class="lbltxt">{% trans "Address" %}</div>
-                <input type="text" id="address" name="address" placeholder="{% trans 'Address' %}">
-                <div id="address-error" class="errTxt"></div>
+                <div class="lbltxt">{% trans "Country" %}</div>
+                <select class="room-cy" id="country_cr" name="country">
+                    <option hidden value="null">{% trans "Select a country" %}</option>
+                    {% for country in countries %}
+                    <option value="{{ country.id }}">{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+                <div id="city-error" class="errTxt"></div>
             </div>
-            <div class="rcrflex">
-                <div class="lbld">
-                    <div class="lbltxt">{% trans "City" %}</div>
-                    <select class="room-cy" id="city" name="city">
-                        <option hidden value="null">{% trans "Select a city" %}</option>
-                        {% for code, name in regions %}
-                        <option value="{{ code }}">{{ name }}</option>
-                        {% endfor %}
-                    </select>
-                    <div id="city-error" class="errTxt"></div>
-                </div>
-                <div class="lbld">
-                    <div class="lbltxt">{% trans "Room type" %}</div>
-                    <select class="room-cy" id="room_type" name="room_type">
-                        <option hidden value="null">{% trans "Select a room type" %}</option>
-                        {% for code, name in room_types %}
-                        <option class="otherOption" value="{{ code }}">{{ name }}</option>
-                        {% endfor %}
-                    </select>
-                    <div id="roomtype-error" class="errTxt"></div>
-                </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "City" %}</div>
+                <select class="room-cy" id="city_cr" name="city">
+                    <option hidden value="null">{% trans "Select a city" %}</option>
+                    {% for city in cities %}
+                    <option value="{{ city.id }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+                <div id="city-error" class="errTxt"></div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Room type" %}</div>
+                <select class="room-cy" id="room_type" name="room_type">
+                    <option hidden value="null">{% trans "Select a room type" %}</option>
+                    {% for code, name in room_types %}
+                    <option class="otherOption" value="{{ code }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+                <div id="roomtype-error" class="errTxt"></div>
             </div>
         </div>
         <div class="rcrflex">
@@ -182,6 +196,23 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+  document.getElementById('country_cr').addEventListener('change', function() {
+      var countryId = this.value;
+      fetch('/get_cities/' + countryId + '/')
+          .then(response => response.json())
+          .then(data => {
+              var citySelect = document.getElementById('city_cr');
+              citySelect.innerHTML = '';
+              data.cities.forEach(city => {
+                  var option = document.createElement('option');
+                  option.value = city.id;
+                  option.text = city.name;
+                  citySelect.appendChild(option);
+              });
+          });
+  });
+</script>
 <script>
     const checkInInput = document.querySelector('input[name="check_in"]');
     const checkOutInput = document.querySelector('input[name="check_out"]');
@@ -432,7 +463,8 @@
         const price = document.getElementById('price');
         const description = document.getElementById('description');
         const address = document.getElementById('address');
-        const city = document.getElementById('city');
+        const country = document.getElementById('country_cr');
+        const city = document.getElementById('city_cr');
         const roomType = document.getElementById('room_type');
         const amenities = document.getElementById('amenities');
         const houseRules = document.getElementById('house_rules');
@@ -445,6 +477,7 @@
         document.getElementById("price-error").textContent = '';
         description.parentNode.querySelector('.errTxt').textContent = '';
         address.parentNode.querySelector('.errTxt').textContent = '';
+        country.parentNode.querySelector('.errTxt').textContent = '';
         city.parentNode.querySelector('.errTxt').textContent = '';
         roomType.parentNode.querySelector('.errTxt').textContent = '';
         amenities.parentNode.querySelector('.errTxt').textContent = '';
@@ -484,6 +517,11 @@
             document.getElementById("price-error").textContent = '{% trans "Price cannot be 0" %}';
             return;
         }
+        
+        if (address.value.trim() === '') {
+            address.parentNode.querySelector('.errTxt').textContent = '{% trans "Address is required" %}';
+            return;
+        }
 
         if (description.value.trim() === '') {
             description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description is required" %}';
@@ -493,9 +531,9 @@
             description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description should be at least 150 characters" %}';
             return;
         }
-
-        if (address.value.trim() === '') {
-            address.parentNode.querySelector('.errTxt').textContent = '{% trans "Address is required" %}';
+        
+        if (country.value === 'null') {
+            country.parentNode.querySelector('.errTxt').textContent = '{% trans "Country is required" %}';
             return;
         }
 

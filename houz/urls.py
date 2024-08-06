@@ -47,4 +47,6 @@ urlpatterns = [
     path("@<str:recievername>/comment", views.comment_create, name="comment_create"),
     path("comments/<int:pk>/edit", views.comment_edit, name="comment_edit"),
     path("comments/<int:pk>/delete", views.comment_delete, name="comment_delete"),
+    path('get_cities/<int:country_id>/', views.get_cities, name='get_cities'),
+    path('load-more-rooms/', views.load_more_rooms, name='load_more_rooms'),
 ]

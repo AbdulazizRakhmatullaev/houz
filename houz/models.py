@@ -1,3 +1,4 @@
+from typing_extensions import DefaultDict
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -8,12 +9,11 @@ from django.db.models import Avg
 from django.core.validators import MaxValueValidator, MinValueValidator
 from location_field.models.plain import PlainLocationField
 from django.utils.timezone import localtime
-from .languages import LANGUAGES
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
+from cities_light.models import Country, City
 
-sorted_languages = sorted(LANGUAGES, key=lambda lang: lang[1])
 no_cents_currencies = {"UZS", "JPY", "CNY", "RUB"}
 
 class RangedIntegerField(models.IntegerField):
@@ -93,23 +93,6 @@ Currencies = (
     ("JPY", "JPY"),
     ("CHF", "CHF"),
     ("CNY", "CNY"),
-)
-
-Region_Choices = (
-    (_("TASHKENT"), _("Tashkent")),
-    (_("ANDIJAN"), _("Andijan")),
-    (_("BUKHARA"), _("Bukhara")),
-    (_("FERGANA"), _("Fergana")),
-    (_("JIZZAKH"), _("Jizzakh")),
-    (_("NAMANGAN"), _("Namangan")),
-    (_("NAVOIY"), _("Navoiy")),
-    (_("KARSHI"), _("Karshi")),
-    (_("SAMARKAND"), _("Samarkand")),
-    (_("GULISTON"), _("Guliston")),
-    (_("TERMEZ"), _("Termez")),
-    (_("NURAFSHON"), _("Nurafshon")),
-    (_("URGENCH"), _("Urgench")),
-    (_("NUKUS"), _("Nukus")),
 )
 
 RoomTypes = (
@@ -212,9 +195,10 @@ class Room(models.Model):
     title = models.CharField(max_length=150, null=True)
     description = models.TextField("Description")
     images = models.ManyToManyField("Image", blank=True)
-    city = models.CharField(
-        max_length=200, null=True, choices=Region_Choices, default="Tashkent"
-    )
+    
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, default=False)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=False)
+    
     currency = models.CharField("currency", max_length=3, default="UZS", null=False)
     price = models.FloatField("Price")
     # price = MoneyField(max_digits=10, decimal_places=2, null=True, default_currency="UZS")
@@ -223,7 +207,7 @@ class Room(models.Model):
     beds = models.IntegerField("Beds")
     bedrooms = models.IntegerField("Bedrooms")
     baths = models.IntegerField("Baths")
-    is_pets = models.BooleanField("Pets are allowed", default=False)
+    pets = models.IntegerField("Pets")
     
     check_in = models.DateField("Check in")
     checkin_time = models.TimeField("Check in time", default="10:00")

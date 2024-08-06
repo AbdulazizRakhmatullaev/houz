@@ -61,6 +61,12 @@
             </div>
         </div>
         <div class="lbld">
+            <div class="lbltxt">{% trans 'Address' %}</div>
+            <input type="text" id="address" name="address" placeholder="{% trans 'Address' %}"
+                value="{{room.address}}">
+            <div class="errTxt"></div>
+        </div>
+        <div class="lbld">
             <div class="lbltxt">{% trans 'Map' %}</div>
             <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
             <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
@@ -103,6 +109,14 @@
                     <span id="baths_plus" class="plus">+</span>
                 </div>
             </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Pets" %}</div>
+                <div class="rcrflex">
+                    <span id="pets_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="pets" name="pets" min="0" max="99" value="0"/>
+                    <span id="pets_plus" class="plus">+</span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="rmright">
@@ -114,19 +128,23 @@
         </div>
 
         <div class="rcrflex">
-            <div class="lbld">
-                <div class="lbltxt">{% trans 'Address' %}</div>
-                <input type="text" id="address" name="address" placeholder="{% trans 'Address' %}"
-                    value="{{room.address}}">
-                <div class="errTxt"></div>
-            </div>
             <div class="rcrflex">
                 <div class="lbld">
+                    <div class="lbltxt">{% trans 'Country' %}</div>
+                    <select class="room-cy" id="country_cr" name="country">
+                        <option value="{{ room.country.id }}">{{ room.country.name }}</option>
+                        {% for country in countries %}
+                        <option value="{{ country.id }}">{{ country.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="errTxt"></div>
+                </div>
+                <div class="lbld">
                     <div class="lbltxt">{% trans 'City' %}</div>
-                    <select class="room-cy" id="city" name="city">
-                        <option value="{{ cur_city }}">{{ cur_city }}</option>
-                        {% for code, name in regions %}
-                        <option value="{{ code }}">{{ name }}</option>
+                    <select class="room-cy" id="city_cr" name="city">
+                        <option value="{{ room.city.id }}">{{ room.city.name }}</option>
+                        {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
                         {% endfor %}
                     </select>
                     <div class="errTxt"></div>
@@ -338,6 +356,24 @@
 </script>
 
 <script>
+  document.getElementById('country_cr').addEventListener('change', function() {
+      var countryId = this.value;
+      fetch('/get_cities/' + countryId + '/')
+          .then(response => response.json())
+          .then(data => {
+              var citySelect = document.getElementById('city_cr');
+              citySelect.innerHTML = '';
+              data.cities.forEach(city => {
+                  var option = document.createElement('option');
+                  option.value = city.id;
+                  option.text = city.name;
+                  citySelect.appendChild(option);
+              });
+          });
+  });
+</script>
+
+<script>
     let selectedImages = [{% for img in room.all_photos %} '{{ img.file.url }}', {% endfor %}];
     let img_cnt = 0;
 
@@ -441,7 +477,8 @@
         const price = document.getElementById('price');
         const description = document.getElementById('description');
         const address = document.getElementById('address');
-        const city = document.getElementById('city');
+        const country = document.getElementById('country_cr');
+        const city = document.getElementById('city_cr');
         const roomType = document.getElementById('room_type');
         const amenities = document.getElementById('amenities');
         const houseRules = document.getElementById('house_rules');
@@ -454,6 +491,7 @@
         document.getElementById("price-error").textContent = '';
         description.parentNode.querySelector('.errTxt').textContent = '';
         address.parentNode.querySelector('.errTxt').textContent = '';
+        country.parentNode.querySelector('.errTxt').textContent = '';
         city.parentNode.querySelector('.errTxt').textContent = '';
         roomType.parentNode.querySelector('.errTxt').textContent = '';
         amenities.parentNode.querySelector('.errTxt').textContent = '';
@@ -497,6 +535,11 @@
             document.getElementById("price-error").textContent = '{% trans "Price cannot be 0" %}';
             return;
         }
+        
+        if (address.value.trim() === '') {
+            address.parentNode.querySelector('.errTxt').textContent = '{% trans "Address is required" %}';
+            return;
+        }
 
         if (description.value.trim() === '') {
             description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description is required" %}';
@@ -506,9 +549,9 @@
             description.parentNode.querySelector('.errTxt').textContent = '{% trans "Description should be at least 150 characters" %}';
             return;
         }
-
-        if (address.value.trim() === '') {
-            address.parentNode.querySelector('.errTxt').textContent = '{% trans "Address is required" %}';
+        
+        if (country.value === 'null') {
+            country.parentNode.querySelector('.errTxt').textContent = '{% trans "Country is required" %}';
             return;
         }
 
