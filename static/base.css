@@ -3127,3 +3127,21 @@ input:disabled {
   height: 15px !important;
   width: 15px !important;
 }
+
+.pagination {
+  margin: 45px 0 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pgitm {
+  padding: 5px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 9px;
+}
+
+.pgitm:hover {
+  border-color: #1d1d1f;
+}

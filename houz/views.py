@@ -52,6 +52,16 @@ def home(request):
     
     currency = show_currency(request.session.get('currency', 'UZS'))
     
+    paginator = Paginator(rooms, 12)  # Show 16 rooms per page
+    page = request.GET.get('page')
+
+    try:
+        rooms = paginator.page(page)
+    except PageNotAnInteger:
+        rooms = paginator.page(1)
+    except EmptyPage:
+        rooms = paginator.page(paginator.num_pages)
+
     context = {
         'rooms': rooms,
         "currency": currency

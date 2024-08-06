@@ -1,17 +1,30 @@
 {% extends 'base.html' %}
-{% load el_pagination_tags %}
-{% load static %}
 
 {% block title %} Home {% endblock %}
 
 {% block content %}
 
 <div id="room-container">
-    {% paginate rooms %}
-        {% include "temps/room_list.html" %}
-    {% show_pages %}
+    {% include "temps/room_list.html" %}
 </div>
 
+<div class="pagination">
+    <span class="step-links">
+        {% if rooms.has_previous %}
+            <a href="?page=1" class="pgitm">&laquo; first</a>
+            <a href="?page={{ rooms.previous_page_number }}" class="pgitm">previous</a>
+        {% endif %}
+
+        <span class="current" class="pgitm">
+            Page {{ rooms.number }} of {{ rooms.paginator.num_pages }}
+        </span>
+
+        {% if rooms.has_next %}
+            <a href="?page={{ rooms.next_page_number }}" class="pgitm">next</a>
+            <a href="?page={{ rooms.paginator.num_pages }}" class="pgitm">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 
 {% endblock %}
 
