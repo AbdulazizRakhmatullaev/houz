@@ -8,23 +8,23 @@
     {% include "temps/room_list.html" %}
 </div>
 
+{% if rooms.paginator.num_pages != 1 %}
 <div class="pagination">
-    <span class="step-links">
-        {% if rooms.has_previous %}
-            <a href="?page=1" class="pgitm">&laquo; first</a>
-            <a href="?page={{ rooms.previous_page_number }}" class="pgitm">previous</a>
-        {% endif %}
+    {% if rooms.has_previous %}
+        <a href="?page=1" class="pgitm">First</a>
+        <a href="?page={{ rooms.previous_page_number }}" class="pgitm">Prev</a>
+    {% endif %}
 
-        <span class="current" class="pgitm">
-            Page {{ rooms.number }} of {{ rooms.paginator.num_pages }}
-        </span>
-
-        {% if rooms.has_next %}
-            <a href="?page={{ rooms.next_page_number }}" class="pgitm">next</a>
-            <a href="?page={{ rooms.paginator.num_pages }}" class="pgitm">last &raquo;</a>
-        {% endif %}
+    <span class="pgdum">
+        Page {{ rooms.number }} of {{ rooms.paginator.num_pages }}
     </span>
+
+    {% if rooms.has_next %}
+        <a href="?page={{ rooms.next_page_number }}" class="pgitm">Next</a>
+        <a href="?page={{ rooms.paginator.num_pages }}" class="pgitm">Last</a>
+    {% endif %}
 </div>
+{% endif %}
 
 {% endblock %}
 

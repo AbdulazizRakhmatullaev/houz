@@ -855,6 +855,7 @@ b {
   transform: translateY(-50%);
   cursor: pointer;
   background-color: rgba(210, 210, 215, 0.64);
+  backdrop-filter: saturate(7) blur(2px);
   color: rgba(0, 0, 0, 0.56);
   width: 3rem;
   height: 3rem;
@@ -878,7 +879,7 @@ b {
 
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
-  background-color: rgba(210, 210, 215, 0.774);
+  background-color: rgba(210, 210, 215, 0.8);
 }
 
 .carousel-control-prev {
@@ -2243,6 +2244,31 @@ select {
   opacity: .4;
 }
 
+#petM,
+#petP {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background: #f5f5f7;
+  padding: 0px 7px;
+  font-size: 17px;
+  box-sizing: border-box;
+}
+
+#petM:hover,
+#petP:hover {
+  background: #e6e6e8;
+}
+
+#petM.disabled, #petP.disabled{
+  cursor: not-allowed;
+  opacity: .4;
+}
 
 .revsta-t {
   font-size: 42px;
@@ -2581,7 +2607,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
   z-index: 99;
   border: none;
   outline: none;
-  background: #d1d1d1;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: saturate(7) blur(4px);
   color: white;
   cursor: pointer;
   height: 55px;
@@ -2590,7 +2617,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: grid;
   place-items: center;
-  transition: .4s;
+  transition: .2s;
   visibility: hidden;
 }
 
@@ -2600,7 +2627,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 #goTop:hover {
-  background: #b0b0b0;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 #goTop svg {
@@ -3134,14 +3161,26 @@ input:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
 }
 
-.pgitm {
+.pgdum {
+  box-sizing: border-box;
+  display: block;
   padding: 5px 12px;
   border: 1px solid rgba(0, 0, 0, 0.16);
   border-radius: 9px;
 }
 
+.pgitm {
+  box-sizing: border-box;
+  display: block;
+  padding: 5px 12px;
+  background: #f5f5f5;
+  border-radius: 9px;
+  
+}
+
 .pgitm:hover {
-  border-color: #1d1d1f;
+  background: #ededed;
 }

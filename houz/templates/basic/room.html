@@ -289,19 +289,16 @@
                     <input type="text" id="infants" min="0" max="99" value="0" disabled/>
                     <span id="infantP" class="plus">+</span>
                 </div>
-            </div>
+            </div>  
             <div class="gstwinf">
                 <div class="gstsform" {% if room.pets == 0 %}style="opacity: 0.4; pointer-events: none;"{% endif %}>
-                    <span class="small-title">Pets</span>
+                    <span class="small-title">Pets {% if room.pets == 0 %} (not allowed) {% endif %}</span>
                     <div class="gstfl">
-                        <span id="petM" class="minus">-</span>
-                        <input type="text" id="pets" min="0" max="99" value="0" disabled/>
-                        <span id="petP" class="plus">+</span>
+                        <span id="petM" {% if room.pets == 0 %} class="disabled" {% endif %}>-</span>
+                        <input type="text" id="pets" min="0" max="{{room.pets}}" value="0" disabled/>
+                        <span id="petP" {% if room.pets == 0 %} class="disabled" {% endif %}>+</span>
                     </div>
                 </div>
-                {% if room.pets == 0 %}
-                <div id="psnfo">Pets are not allowed</div>
-                {% endif %}
             </div>
         </div>
         <div class="ahr15"></div>
@@ -427,17 +424,95 @@
 
 <script>
     $(document).ready(function () {
+        function updateTotalPets() {
+            const adults = parseInt($('#adults').val());
+            const children = parseInt($('#children').val());
+            const infants = parseInt($('#infants').val());
+            const pets = parseInt($('#pets').val());
+            const totalGuests = adults + children + infants;
+            
+            if (pets > 0) {
+                if (pets <= 1) {
+                  $('#g_amt').text(`${totalGuests} (${pets} Pet)`);
+                }
+                else {
+                  $('#g_amt').text(`${totalGuests} (${pets} Pets)`);
+                }
+            }
+            else {
+              $('#g_amt').text(totalGuests);
+            }
+    
+            // Disable the plus button if total pets reach the max limit
+            if (pets >= {{room.pets}}) {
+                $('#petP').addClass('disabled');
+            } else {
+                $('#petP').removeClass('disabled');
+            }
+
+            // Disable the minus button if pets are at the minimum limit
+            if (pets <= 0) {
+                $('#petM').addClass('disabled');
+            } else {
+                $('#petM').removeClass('disabled');
+            }
+        }
+        
+        function updatePetInp($input, increment) {
+            const currentCount = parseInt($input.val());
+            let newCount = currentCount + increment;
+            newCount = Math.max(0, Math.min(newCount, {{room.pets}})); // Ensure newCount is within 0 and max pets limit
+    
+            $input.val(newCount);
+            $input.change();
+            
+            updateTotalPets();
+        }
+        
+        $('#petP').click(function () {
+            if ($(this).hasClass('disabled')) return false;
+            
+            const $input = $(this).parent().find('input');
+            updatePetInp($input, 1);
+            return false;
+        });
+    
+        $('#petM').click(function () {
+            if ($(this).hasClass('disabled')) return false;
+    
+            const $input = $(this).parent().find('input');
+            updatePetInp($input, -1);
+            return false;
+        });
+        
+        // Initial call to set the state of the buttons
+        updateTotalPets();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
         const maxGuests = {{room.guests}}; // Define the maximum number of guests
 
         function updateTotalGuests() {
             const adults = parseInt($('#adults').val());
             const children = parseInt($('#children').val());
             const infants = parseInt($('#infants').val());
-            const pets = parseInt($('#pets').val());
-            const totalGuests = adults + children + infants + pets;
+            const totalGuests = adults + children + infants;
 
-            // Update the g_amt text
-            $('#g_amt').text(totalGuests);
+            const pets = parseInt($('#pets').val());
+
+            if (pets > 0) {
+                if (pets <= 1) {
+                  $('#g_amt').text(`${totalGuests} (${pets} Pet)`);
+                }
+                else {
+                  $('#g_amt').text(`${totalGuests} (${pets} Pets)`);
+                }
+            }
+            else {
+              $('#g_amt').text(totalGuests);
+            }
 
             // Disable the plus buttons if total guests reach the max limit
             if (totalGuests >= maxGuests) {
@@ -471,9 +546,8 @@
             const adults = parseInt($('#adults').val());
 
             if (adults <= 0) {
-                document.getElementById("ginfo").textContent = "There should be at least 1 Adult";
                 resetValues();
-                $('#g_amt').text(0); // Set total guests to 0
+                $('#g_amt').text('0 (There should be at least 1 Adult)'); // Set total guests to 0
 
                 $('.gstfl').each(function () {
                     const $input = $(this).find('input');
@@ -485,11 +559,17 @@
 
                 // Disable minus button for adults if count is 0
                 $('#guestM').addClass('disabled');
-
+                
+                $('#pets').val(0);
+                $('#petP').addClass('disabled');
+                $('#petM').addClass('disabled');
             } else {
-                document.getElementById("ginfo").textContent = "";
                 $('#guestM').removeClass('disabled'); // Enable minus button for adults
-
+                
+                if ($('#pets').val() <= {{room.pets}}) {
+                  $('#petP').removeClass('disabled');
+                }
+                
                 $('.gstfl').each(function () {
                     const $input = $(this).find('input');
                     const count = parseInt($input.val());
@@ -513,7 +593,6 @@
         function resetValues() {
             $('#children').val(0);
             $('#infants').val(0);
-            $('#pets').val(0);
         }
 
         $('.plus').click(function () {

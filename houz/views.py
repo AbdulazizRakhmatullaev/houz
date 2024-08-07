@@ -52,7 +52,7 @@ def home(request):
     
     currency = show_currency(request.session.get('currency', 'UZS'))
     
-    paginator = Paginator(rooms, 12)  # Show 16 rooms per page
+    paginator = Paginator(rooms, 16)  # Show 16 rooms per page
     page = request.GET.get('page')
 
     try:
@@ -552,8 +552,7 @@ def room_detail(request, room_id):
     room_count_nights_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.count_nights_price())
     room_fee = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.fee())
 
-
-    rooms = Room.objects.exclude(id=room.id).all()
+    rooms = Room.objects.exclude(id=room.id).filter(public=True).all()
     
     filtered_rs = []
     for rec in rooms:
