@@ -109,10 +109,14 @@
         <div class="lbld">
             <div class="lbl0">Description</div>
             <div class="desc">
-                {% if room.get_desc|length < 1500 %} {{room.get_desc}} {% else %} {{room.get_desc|slice:":1500"}}...
+                {% if room.get_desc|length < 1500 %}
+                    {{room.get_desc}}
+                {% else %}
+                    {{room.get_desc|slice:":1500"}}...
                     <div class="btnsubstart" style="margin-top: 10px;">
-                    <button class="btn-white">See more...</button>
-                    <button class="btn-white">See more...</button >
+                        <button class="btn-white">See more...</button>
+                        <button class="btn-white">See more...</button>
+                    </div>
                 {% endif %}
             </div>
         </div>
@@ -267,7 +271,7 @@
                     <span class="small-title">Adults</span>
                     <div class="gstfl">
                         <span id="guestM" class="minus">-</span>
-                        <input type="text" id="adults" min="0" max="99" value="1" disabled/>
+                        <input type="text" id="adults" value="1" disabled/>
                         <span id="guestP" class="plus">+</span>
                     </div>
                 </div>
@@ -278,7 +282,7 @@
                 <span class="small-title">Children</span>
                 <div class="gstfl">
                     <span id="childM" class="minus">-</span>
-                    <input type="text" id="children" min="0" max="99" value="0" disabled/>
+                    <input type="text" id="children" value="0" disabled/>
                     <span id="childP" class="plus">+</span>
                 </div>
             </div>
@@ -286,7 +290,7 @@
                 <span class="small-title">Infants</span>
                 <div class="gstfl">
                     <span id="infantM" class="minus">-</span>
-                    <input type="text" id="infants" min="0" max="99" value="0" disabled/>
+                    <input type="text" id="infants" value="0" disabled/>
                     <span id="infantP" class="plus">+</span>
                 </div>
             </div>  
@@ -295,7 +299,7 @@
                     <span class="small-title">Pets {% if room.pets == 0 %} (not allowed) {% endif %}</span>
                     <div class="gstfl">
                         <span id="petM" {% if room.pets == 0 %} class="disabled" {% endif %}>-</span>
-                        <input type="text" id="pets" min="0" max="{{room.pets}}" value="0" disabled/>
+                        <input type="text" id="pets" value="0" disabled/>
                         <span id="petP" {% if room.pets == 0 %} class="disabled" {% endif %}>+</span>
                     </div>
                 </div>
@@ -377,11 +381,6 @@
 
         const guests = parseInt(document.getElementById('g_amt').textContent);
 
-        if (isNaN(guests) || guests < 1) {
-            document.getElementById('resinf').textContent = '{% trans "Guest amount should be at least 1" %}';
-            return;
-        }
-
         const formData = new FormData(document.getElementById('reserve-form'));
 
         fetch("{% url 'book_room' room.id %}", {
@@ -432,15 +431,9 @@
             const totalGuests = adults + children + infants;
             
             if (pets > 0) {
-                if (pets <= 1) {
-                  $('#g_amt').text(`${totalGuests} (${pets} Pet)`);
-                }
-                else {
-                  $('#g_amt').text(`${totalGuests} (${pets} Pets)`);
-                }
-            }
-            else {
-              $('#g_amt').text(totalGuests);
+                $('#g_amt').text(`${totalGuests} (${pets} Pet${pets > 1 ? 's' : ''})`);
+            } else {
+                $('#g_amt').text(totalGuests);
             }
     
             // Disable the plus button if total pets reach the max limit
@@ -503,15 +496,9 @@
             const pets = parseInt($('#pets').val());
 
             if (pets > 0) {
-                if (pets <= 1) {
-                  $('#g_amt').text(`${totalGuests} (${pets} Pet)`);
-                }
-                else {
-                  $('#g_amt').text(`${totalGuests} (${pets} Pets)`);
-                }
-            }
-            else {
-              $('#g_amt').text(totalGuests);
+                $('#g_amt').text(`${totalGuests} (${pets} Pet${pets > 1 ? 's' : ''})`);
+            } else {
+                $('#g_amt').text(totalGuests);
             }
 
             // Disable the plus buttons if total guests reach the max limit
@@ -526,9 +513,11 @@
         }
 
         function updateInputs($input, increment) {
+            const id = $input.attr('id');
+            const maxCount = parseInt(id === 'adults' ? {{room.adults}} : id === 'children' ? {{room.children}} : id === 'infants' ? {{room.infants}} : 99);
             const currentCount = parseInt($input.val());
             let newCount = currentCount + increment;
-            newCount = Math.max(0, Math.min(newCount, 99)); // Ensure newCount is within 0 and 99
+            newCount = Math.max(id === 'adults' ? 1 : 0, Math.min(newCount, maxCount)); // Ensure newCount is within the proper range
 
             const totalGuests = parseInt($('#g_amt').text());
 
@@ -545,48 +534,36 @@
         function updateButtonState() {
             const adults = parseInt($('#adults').val());
 
-            if (adults <= 0) {
-                resetValues();
-                $('#g_amt').text('0 (There should be at least 1 Adult)'); // Set total guests to 0
+            $('.gstfl').each(function () {
+                const $input = $(this).find('input');
+                const count = parseInt($input.val());
+                const totalGuests = parseInt($('#g_amt').text());
+                const id = $input.attr('id');
+                const maxCount = parseInt(id === 'adults' ? {{room.adults}} : id === 'children' ? {{room.children}} : id === 'infants' ? {{room.infants}} : 99);
 
-                $('.gstfl').each(function () {
-                    const $input = $(this).find('input');
-                    if ($input.attr('id') !== 'adults') {
+                if ($input.attr('id') === 'adults') {
+                    if (adults <= 1) {
                         $(this).find('.minus').addClass('disabled');
-                        $(this).find('.plus').addClass('disabled');
+                    } else {
+                        $(this).find('.minus').removeClass('disabled');
                     }
-                });
-
-                // Disable minus button for adults if count is 0
-                $('#guestM').addClass('disabled');
-                
-                $('#pets').val(0);
-                $('#petP').addClass('disabled');
-                $('#petM').addClass('disabled');
-            } else {
-                $('#guestM').removeClass('disabled'); // Enable minus button for adults
-                
-                if ($('#pets').val() <= {{room.pets}}) {
-                  $('#petP').removeClass('disabled');
-                }
-                
-                $('.gstfl').each(function () {
-                    const $input = $(this).find('input');
-                    const count = parseInt($input.val());
-                    const totalGuests = parseInt($('#g_amt').text());
-
+                } else {
                     if (count <= 0) {
                         $(this).find('.minus').addClass('disabled');
                     } else {
                         $(this).find('.minus').removeClass('disabled');
                     }
+                }
 
-                    if (totalGuests >= maxGuests) {
-                        $(this).find('.plus').addClass('disabled');
-                    } else {
-                        $(this).find('.plus').removeClass('disabled');
-                    }
-                });
+                if (count >= maxCount) {
+                    $(this).find('.plus').addClass('disabled');
+                } else {
+                    $(this).find('.plus').removeClass('disabled');
+                }
+            });
+
+            if ($('#pets').val() <= {{room.pets}}) {
+                $('#petP').removeClass('disabled');
             }
         }
 

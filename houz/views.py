@@ -608,11 +608,15 @@ def room_create(request):
             if price.is_integer():
                 price = int(price)
 
-            guests = request.POST.get("guests")
             beds = request.POST.get("beds")
             bedrooms = request.POST.get("bedrooms")
             baths = request.POST.get("baths")
+            
+            adults = request.POST.get("adults")
+            children = request.POST.get("children")
+            infants = request.POST.get("infants")
             pets = request.POST.get("pets")
+            guests = int(adults) + int(children) + int(infants)
 
             check_in = request.POST.get("check_in")
             check_out = request.POST.get("check_out")
@@ -643,6 +647,9 @@ def room_create(request):
                 currency=cur,
                 price=price,
                 address=address,
+                adults=adults,
+                children=children,
+                infants=infants,
                 guests=guests,
                 beds=beds,
                 bedrooms=bedrooms,
@@ -761,11 +768,17 @@ def room_edit(request, username, id):
             room.room_type = request.POST.get("room_type", room.room_type)
             room.address = request.POST.get("address", room.address)
 
-            room.guests = request.POST.get("guests", room.guests)
+            
+            room.adults = request.POST.get("adults", room.adults)
+            room.children = request.POST.get("children", room.children)
+            room.infants = request.POST.get("infants", room.infants)
+            room.pets = request.POST.get("pets", room.pets)
+            
+            room.guests = int(room.adults) + int(room.children) + int(room.infants)
+            
             room.beds = request.POST.get("beds", room.beds)
             room.bedrooms = request.POST.get("bedrooms", room.bedrooms)
             room.baths = request.POST.get("baths", room.baths)
-            room.pets = request.POST.get("pets", room.pets)
 
             for file in request.FILES.getlist("images"):
                 img = Image.objects.create(file=file)

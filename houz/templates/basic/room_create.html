@@ -76,14 +76,6 @@
                         <span id="baths_plus" class="plus">+</span>
                     </div>
                 </div>
-                <div class="lbld">
-                    <div class="lbltxt">{% trans "Pets" %}</div>
-                    <div class="rcrflex">
-                        <span id="pets_minus" class="minus">-</span>
-                        <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="pets" name="pets" min="0" max="99" value="0"/>
-                        <span id="pets_plus" class="plus">+</span>
-                    </div>
-                </div>
             </div>
             <div class="lbld" style="margin-left: 10px;">
                 <div class="lbltxt">{% trans "Map" %}</div>
@@ -104,6 +96,40 @@
         <div id="img-preview-info" class="inpInfo"></div>
     </div>
     <div class="rmright">
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Adults' %}</div>
+                <div class="rcrflex">
+                    <span id="adults_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="adults" name="adults" value="1" />
+                    <span id="adults_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Children' %}</div>
+                <div class="rcrflex">
+                    <span id="children_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="children" name="children" value="0" />
+                    <span id="children_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Infants' %}</div>
+                <div class="rcrflex">
+                    <span id="infants_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="infants" name="infants" value="0" />
+                    <span id="infants_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Pets" %}</div>
+                <div class="rcrflex">
+                    <span id="pets_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="pets" name="pets" value="0"/>
+                    <span id="pets_plus" class="plus">+</span>
+                </div>
+            </div>
+        </div>
         <div class="lbld">
             <div class="lbltxt">{% trans "Description" %}</div>
             <textarea id="description" name="description" class="descarea"

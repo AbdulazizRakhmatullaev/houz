@@ -201,13 +201,17 @@ class Room(models.Model):
     
     currency = models.CharField("currency", max_length=3, default="UZS", null=False)
     price = models.FloatField("Price")
-    # price = MoneyField(max_digits=10, decimal_places=2, null=True, default_currency="UZS")
     address = models.CharField(max_length=255)
+    
+    adults = models.IntegerField("Adults", default=1)
+    children = models.IntegerField("Children", default=0)
+    infants = models.IntegerField("Infants", default=0)
+    pets = models.IntegerField("Pets")
     guests = models.IntegerField("Guests")
+    
     beds = models.IntegerField("Beds")
     bedrooms = models.IntegerField("Bedrooms")
     baths = models.IntegerField("Baths")
-    pets = models.IntegerField("Pets")
     
     check_in = models.DateField("Check in")
     checkin_time = models.TimeField("Check in time", default="10:00")

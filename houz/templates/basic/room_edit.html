@@ -66,6 +66,43 @@
                 value="{{room.address}}">
             <div class="errTxt"></div>
         </div>
+        <div class="rcrflex">
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Adults' %}</div>
+                <div class="rcrflex">
+                    <span id="adults_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="adults" name="adults" min="1"
+                        value="{{room.adults}}" />
+                    <span id="adults_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Children' %}</div>
+                <div class="rcrflex">
+                    <span id="children_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="children" name="children" min="1"
+                        value="{{room.children}}" />
+                    <span id="children_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans 'Infants' %}</div>
+                <div class="rcrflex">
+                    <span id="infants_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="infants" name="infants" min="1"
+                        value="{{room.infants}}" />
+                    <span id="infants_plus" class="plus">+</span>
+                </div>
+            </div>
+            <div class="lbld">
+                <div class="lbltxt">{% trans "Pets" %}</div>
+                <div class="rcrflex">
+                    <span id="pets_minus" class="minus">-</span>
+                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="pets" name="pets" min="0" max="99" value="{{room.pets}}"/>
+                    <span id="pets_plus" class="plus">+</span>
+                </div>
+            </div>
+        </div>
         <div class="lbld">
             <div class="lbltxt">{% trans 'Map' %}</div>
             <input type="hidden" id="latitude" name="latitude" value="{{room.fst_loc}}">
@@ -73,15 +110,6 @@
             <div id="map" class="mapcr"></div>
         </div>
         <div class="rcrflexcol" style="flex-direction: row; gap: 10px;">
-            <div class="lbld">
-                <div class="lbltxt">{% trans 'Guests' %}</div>
-                <div class="rcrflex">
-                    <span id="guests_minus" class="minus">-</span>
-                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="guests" name="guests" min="1"
-                        value="{{room.guests}}" />
-                    <span id="guests_plus" class="plus">+</span>
-                </div>
-            </div>
             <div class="lbld">
                 <div class="lbltxt">{% trans 'Beds' %}</div>
                 <div class="rcrflex">
@@ -107,14 +135,6 @@
                     <input style="width: 33px; background: none; border: none; text-align: center;" type="text" min="1" id="baths" name="baths" min="1"
                         value="{{room.baths}}" />
                     <span id="baths_plus" class="plus">+</span>
-                </div>
-            </div>
-            <div class="lbld">
-                <div class="lbltxt">{% trans "Pets" %}</div>
-                <div class="rcrflex">
-                    <span id="pets_minus" class="minus">-</span>
-                    <input style="width: 33px; background: none; border: none; text-align: center;" type="text" id="pets" name="pets" min="0" max="99" value="{{room.pets}}"/>
-                    <span id="pets_plus" class="plus">+</span>
                 </div>
             </div>
         </div>

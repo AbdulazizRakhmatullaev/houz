@@ -516,7 +516,7 @@
     </script>
     <script>
         $(document).ready(function () {
-            $('#guests_minus').click(function () {
+            $('#adults_minus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) - 1;
                 count = count < 1 ? 1 : count;
@@ -524,7 +524,39 @@
                 $input.change();
                 return false;
             });
-            $('#guests_plus').click(function () {
+            $('#adults_plus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) + 1;
+                count = count > 99 ? 99 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#children_minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 0 ? 0 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#children_plus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) + 1;
+                count = count > 99 ? 99 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#infants_minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 0 ? 0 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('#infants_plus').click(function () {
                 var $input = $(this).parent().find('input');
                 var count = parseInt($input.val()) + 1;
                 count = count > 99 ? 99 : count;
