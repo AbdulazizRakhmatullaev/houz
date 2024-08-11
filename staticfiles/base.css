@@ -35,6 +35,11 @@ a {
   color: currentColor;
 }
 
+a:hover {
+  text-decoration: none;
+  color: currentColor;
+}
+
 #main {
   margin: 0 auto;
   min-height: 100% !important;
@@ -804,7 +809,7 @@ b {
   margin-top: 23px;
 }
 
-.btn {
+.btnbl {
   font-size: 14px;
   line-height: 1.17648;
   font-weight: 400;
@@ -822,7 +827,7 @@ b {
   border-radius: 8px;
 }
 
-.btn:hover {
+.btnbl:hover {
   background: #0175e9;
 }
 
@@ -855,6 +860,7 @@ b {
   transform: translateY(-50%);
   cursor: pointer;
   background-color: rgba(210, 210, 215, 0.64);
+  backdrop-filter: saturate(7) blur(2px);
   color: rgba(0, 0, 0, 0.56);
   width: 3rem;
   height: 3rem;
@@ -878,7 +884,7 @@ b {
 
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
-  background-color: rgba(210, 210, 215, 0.774);
+  background-color: rgba(210, 210, 215, 0.8);
 }
 
 .carousel-control-prev {
@@ -905,14 +911,21 @@ b {
 .modal-cont {
   background-color: white;
   border-radius: 18px;
-  width: auto;
-  min-width: 400px;
-  max-width: 730px;
+  width: 500px;
   position: relative;
   margin: 1rem;
   padding: 25px;
   display: flex;
   flex-direction: column;
+}
+
+.modalcon {
+  display: flex;
+  justify-content: center;
+}
+
+.modalcon form {
+  width: 100%;
 }
 
 .open-modal {
@@ -1143,7 +1156,7 @@ b {
   color: #224ca1;
 }
 
-.btn-white {
+.btn-white, .endless_more {
   font-size: 14px;
   line-height: 1.17648;
   font-weight: 400;
@@ -1166,7 +1179,7 @@ b {
   border: 1px solid #d2d2d7;
 }
 
-.btn-white:hover {
+.btn-white:hover, .endless_more:hover {
   border-color: #1d1d1f;
 }
 
@@ -1824,7 +1837,7 @@ select {
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: saturate(7) blur(2px);
+  backdrop-filter: blur(2px);
   border: none;
   border-radius: 50%;
   color: #fff;
@@ -2243,6 +2256,31 @@ select {
   opacity: .4;
 }
 
+#petM,
+#petP {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background: #f5f5f7;
+  padding: 0px 7px;
+  font-size: 17px;
+  box-sizing: border-box;
+}
+
+#petM:hover,
+#petP:hover {
+  background: #e6e6e8;
+}
+
+#petM.disabled, #petP.disabled{
+  cursor: not-allowed;
+  opacity: .4;
+}
 
 .revsta-t {
   font-size: 42px;
@@ -2581,7 +2619,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
   z-index: 99;
   border: none;
   outline: none;
-  background: #d1d1d1;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: saturate(7) blur(4px);
   color: white;
   cursor: pointer;
   height: 55px;
@@ -2590,7 +2629,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: grid;
   place-items: center;
-  transition: .4s;
+  transition: .2s;
   visibility: hidden;
 }
 
@@ -2600,7 +2639,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 #goTop:hover {
-  background: #b0b0b0;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 #goTop svg {
@@ -2948,12 +2987,15 @@ input:disabled {
 
 .public {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  border: 1px solid #010101;
+  top: 12px;
+  left: 12px;
+  border-radius: 25px;
+  padding: 2px 11px;
+  font-size: 14px;
+  /* border: 1px solid #010101; */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  color: #fff;
 }
 
 #phone_num {
@@ -3126,4 +3168,47 @@ input:disabled {
 .pubcheck {
   height: 15px !important;
   width: 15px !important;
+}
+
+.pagination {
+  margin: 45px 0 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.pgdum {
+  box-sizing: border-box;
+  display: block;
+  padding: 5px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 9px;
+}
+
+.pgitm {
+  box-sizing: border-box;
+  display: block;
+  padding: 5px 12px;
+  background: #f5f5f5;
+  border-radius: 9px;
+  
+}
+
+.pgitm:hover {
+  background: #ededed;
+}
+
+.mbsc-ios.mbsc-select-icon.mbsc-ltr {
+  display: none;
+}
+
+.sts-col {
+  width: 100%;
+}
+
+#lngsel option {
+  padding: 5px 7px;
+  border-radius: 8px;
 }
