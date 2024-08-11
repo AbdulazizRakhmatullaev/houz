@@ -3,7 +3,7 @@ from .models import *
 
 
 class Profile_list(admin.ModelAdmin):
-    list_display = ["user", "name", "phone_number"]
+    list_display = ["user", "name", "email", "phone_number"]
 
 class Currency_list(admin.ModelAdmin):
     list_display = ["from_currency", "to_currency", "value", "date_updated"]

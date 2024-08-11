@@ -25,6 +25,9 @@
     
     <link href="{% static 'js/sel_css/mobiscroll.javascript.min.css' %}" rel="stylesheet" />
     <script src="{% static 'js/sel_js/mobiscroll.javascript.min.js' %}"></script>
+    
+    <link href="{% static 'js/select2/css/select2.min.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/select2/js/select2.min.js' %}"></script>
 </head>
 
 <body>
@@ -48,7 +51,7 @@
     <!-- modals -->
     <div id="signinModal" class="modal">
         <div class="modal-cont">
-            <div class="modal-header">
+            <div class="modhead">
                 <div class="modal-title">Sign in</div>
                 <div class="close modalclose" onclick="closeSigninModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
@@ -61,7 +64,7 @@
     </div>
     <div id="signupModal" class="modal">
         <div class="modal-cont">
-            <div class="modal-header">
+            <div class="modhead">
                 <div class="modal-title">Sign up</div>
                 <div class="close modalclose" onclick="closeSignupModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
@@ -74,7 +77,7 @@
     </div>
     <div id="stsModal" class="modal">
         <div class="modal-cont">
-            <div class="modal-header">
+            <div class="modhead">
                 <div class="modal-title">Switch to Seller mode</div>
                 <div class="close modalclose" onclick="closeSts()">
                     <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
@@ -391,6 +394,11 @@
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <!-- Other -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+    <!--  -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"></script>
     <!--  -->

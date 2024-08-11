@@ -35,6 +35,11 @@ a {
   color: currentColor;
 }
 
+a:hover {
+  text-decoration: none;
+  color: currentColor;
+}
+
 #main {
   margin: 0 auto;
   min-height: 100% !important;
@@ -804,7 +809,7 @@ b {
   margin-top: 23px;
 }
 
-.btn {
+.btnbl {
   font-size: 14px;
   line-height: 1.17648;
   font-weight: 400;
@@ -822,7 +827,7 @@ b {
   border-radius: 8px;
 }
 
-.btn:hover {
+.btnbl:hover {
   background: #0175e9;
 }
 
@@ -906,14 +911,21 @@ b {
 .modal-cont {
   background-color: white;
   border-radius: 18px;
-  width: auto;
-  min-width: 400px;
-  max-width: 730px;
+  width: 500px;
   position: relative;
   margin: 1rem;
   padding: 25px;
   display: flex;
   flex-direction: column;
+}
+
+.modalcon {
+  display: flex;
+  justify-content: center;
+}
+
+.modalcon form {
+  width: 100%;
 }
 
 .open-modal {
@@ -1825,7 +1837,7 @@ select {
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: saturate(7) blur(2px);
+  backdrop-filter: blur(2px);
   border: none;
   border-radius: 50%;
   color: #fff;
@@ -2975,12 +2987,15 @@ input:disabled {
 
 .public {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  border: 1px solid #010101;
+  top: 12px;
+  left: 12px;
+  border-radius: 25px;
+  padding: 2px 11px;
+  font-size: 14px;
+  /* border: 1px solid #010101; */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  color: #fff;
 }
 
 #phone_num {
@@ -3183,4 +3198,17 @@ input:disabled {
 
 .pgitm:hover {
   background: #ededed;
+}
+
+.mbsc-ios.mbsc-select-icon.mbsc-ltr {
+  display: none;
+}
+
+.sts-col {
+  width: 100%;
+}
+
+#lngsel option {
+  padding: 5px 7px;
+  border-radius: 8px;
 }

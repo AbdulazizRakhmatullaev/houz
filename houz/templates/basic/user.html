@@ -113,7 +113,7 @@
                 <div class="p-rooms">
                     {% for room in rooms %}
                     <div class="p-room">
-                        <div class="public" style="{% if room.public %}background: #00f200;{% else %}background: red;{% endif %}" title="{% if room.public %}It's public{% else %}It's private{% endif %}"></div>
+                        <div class="public">{% if room.public %}Public{% else %}Private{% endif %}</div>
                         {% if is_own_profile %}
                         <div class="roomtools">
                             <button class="objdel" onclick="location.href='@{{user.username}}/rooms/{{room.id}}/edit';">
@@ -314,7 +314,7 @@
                 
                 <div id="comModal" class="modal">
                     <div class="modal-cont">
-                        <div class="modal-header">
+                        <div class="modhead">
                             <div class="modal-title">Comment on {{user.profile.name}}</div>
                             <div class="close modalclose" onclick="closeComModal()">
                                 <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
@@ -327,7 +327,7 @@
                                     <input type="text" name="text" placeholder=" " />
                                     <span>{% trans "Your text" %}</span>
                                 </div>
-                                <button class="btn" style="margin-top: 15px;">submit</button>
+                                <button class="btnbl" style="margin-top: 15px;">submit</button>
                             </form>
                         </div>
                     </div>
@@ -357,7 +357,7 @@
                         
                         <div id="comEditModal" class="modal">
                             <div class="modal-cont">
-                                <div class="modal-header">
+                                <div class="modhead">
                                     <div class="modal-title">Edit comment</div>
                                     <div class="close modalclose" onclick="closeComEdModal()">
                                         <svg xmlns="http://www.w3.org/2000/svg" ill="currentColor" viewBox="0 0 24 24"><path d="M9.737 8.464a.9.9 0 1 0-1.273 1.273L10.727 12l-2.263 2.263a.9.9 0 0 0 1.273 1.273L12 13.273l2.263 2.263a.9.9 0 1 0 1.273-1.273L13.273 12l2.263-2.263a.9.9 0 0 0-1.273-1.273L12 10.727 9.737 8.464Z"/><path fill-rule="evenodd" d="M12 2.1c-5.468 0-9.9 4.432-9.9 9.9s4.432 9.9 9.9 9.9 9.9-4.432 9.9-9.9-4.432-9.9-9.9-9.9ZM3.9 12a8.1 8.1 0 1 1 16.2 0 8.1 8.1 0 0 1-16.2 0Z" clip-rule="evenodd"/></svg>
@@ -370,7 +370,7 @@
                                             <input type="text" name="text" placeholder=" " value="{{comment.text}}"/>
                                             <span>{% trans "Your text" %}</span>
                                         </div>
-                                        <button class="btn" style="margin-top: 15px;">submit</button>
+                                        <button class="btnbl" style="margin-top: 15px;">submit</button>
                                     </form>
                                 </div>
                             </div>

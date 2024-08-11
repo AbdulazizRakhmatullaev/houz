@@ -131,16 +131,6 @@
             </div>
         </div>
         <div class="lbld">
-            <div class="lbl0">House rules</div>
-            <div class="hrule-col">
-                {% for rule in room.house_rules.all %}
-                <div class="hrule">
-                    {{rule}}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="lbld">
             <div class="lbl0">Ratings & Reviews</div>
             <div class="revsta">
                 <div class="revlt">
@@ -250,6 +240,22 @@
             <input type="hidden" id="longitude" name="longitude" value="{{room.sec_loc}}">
             <div id="room_map" class="room-location"></div>
         </div>
+        <div class="lbld">
+            <div class="lbl0">House rules</div>
+            <div class="hrule-col">
+                <div class="hrule">
+                    Check-in: {{room.checkin_time|time:"H:i A"}}
+                </div>
+                <div class="hrule">
+                    Check-out: {{room.checkout_time|time:"H:i A"}}
+                </div>
+                {% for rule in room.house_rules.all %}
+                <div class="hrule">
+                    {{rule}}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <form class="right-info-column" id="reserve-form" action="{% url 'book_room' room.id %}" method="POST" onsubmit="submitForm(event)">
         {% csrf_token %}
@@ -355,7 +361,7 @@
                 <div class="right-text">{{currency}}<span id="houz-fee">{{room_fee}}</span></div>
             </div>
             <div class="payment">
-                <button class="btn" id="message-btn">Reserve</button>
+                <button class="btnbl" id="message-btn">Reserve</button>
             </div>
             <div id="resinf"></div>
         </div>

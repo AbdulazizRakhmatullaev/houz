@@ -947,9 +947,27 @@ def to_seller(request):
         email = request.POST.get("email")
         phone_number = request.POST.get("phone_num")
         country = request.POST.get("country")
-        languages = request.POST.getlist("languages")
+        languages = request.POST.get("selected_languages")
         
-        if not Profile.objects.filter(email=email).exists():
+        if Profile.objects.filter(email=email).exists():
+            if Profile.objects.filter(email=email).first() == request.user.profile:
+                if not Profile.objects.filter(phone_number=phone_number).exclude(user=request.user).exists():
+                    user_profile.type = "seller"
+                    user_profile.previously_seller = True
+                    
+                    user_profile.bio = bio
+                    user_profile.phone_number = phone_number
+                    user_profile.country = country
+                    user_profile.languages = languages
+        
+                    user_profile.save()
+                    messages.info(request, "You have successfully switched to Seller mode")
+                    return JsonResponse({"is_phone": False, "url": f'@{request.user.username}'})
+                else:
+                    return JsonResponse({"is_phone": True})
+            else:
+                return JsonResponse({"is_email": True})
+        else:
             if not Profile.objects.filter(phone_number=phone_number).exists():
                 user_profile.type = "seller"
                 user_profile.previously_seller = True
@@ -958,15 +976,13 @@ def to_seller(request):
                 user_profile.email = email
                 user_profile.phone_number = phone_number
                 user_profile.country = country
-                user_profile.languages = ", ".join(languages)
+                user_profile.languages = languages
     
                 user_profile.save()
                 messages.info(request, "You have successfully switched to Seller mode")
                 return JsonResponse({"is_phone": False, "url": f'@{request.user.username}'})
             else:
                 return JsonResponse({"is_phone": True})
-        else:
-            return JsonResponse({"is_email": True})
 
     return redirect("home")
 

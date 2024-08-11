@@ -6,21 +6,21 @@
         {% csrf_token %}
         <div class="lbld" id="email">
             <div class="input-wrapper">
-                <input type="text" name="email" placeholder=" " />
+                <input type="text" name="email" value="{{request.user.profile.email}}" placeholder=" " />
                 <span>{% trans "Email" %}</span>
             </div>
             <div class="errTxt"></div>
         </div>
         <div id="phone">
             <div class="phinp-wrapper">
-                <input type="tel" id="phone_num" name="phone_num" placeholder="Phone number" />
+                <input type="tel" id="phone_num" name="phone_num" {% if request.user.profile.phone_number %} value="{{request.user.profile.phone_number}}" {% endif %} placeholder="Phone number" />
                 <!-- <span class="phinp-span">{% trans "Phone number" %}</span> -->
             </div>
             <div class="errTxt"></div>
         </div>
         <div class="lbld" id="bio">
             <div class="input-wrapper">
-                <input type="text" name="bio" placeholder=" " />
+                <input type="text" name="bio" value="{{request.user.profile.bio}}" placeholder=" " />
                 <span>{% trans "Tell us about yourself" %}</span>
             </div>
             <div class="errTxt"></div>
@@ -28,7 +28,10 @@
         <div class="lbld" id="city">
             <div class="input-wrapper">
                 <select id="country" name="country">
-                    <option hidden value="null" style="color: grey;">{% trans "What country are you from?" %}</option>
+                    {% if request.user.profile.country %}
+                    <option selected value="{{request.user.profile.country}}">{{request.user.profile.country}}</option>
+                    {% endif %}
+                    <option hidden value="null">{% trans "What country are you from?" %}</option>
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Åland Islands">Åland Islands</option>
                     <option value="Albania">Albania</option>
@@ -274,15 +277,14 @@
                     <option value="Zambia">Zambia</option>
                     <option value="Zimbabwe">Zimbabwe</option>
                 </select>
+                <div class="errTxt"></div>
             </div>
-            <div class="errTxt"></div>
         </div>
         <div class="lbld" id="languages">
-            <div class="lngsdv">
-                <label>
-                    <input mbsc-input id="demo-multiple-select-input" placeholder="Please select..." data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" />
-                </label>
-                <select id="demo-multiple-select" name="languages" multiple>
+            <input type="hidden" id="selected-languages" name="selected_languages">
+            <div class="input-wrapper">
+                <select id="lngsel" name="languages" multiple style="padding: 0 9px;">
+                    <option value="null" disabled>What languages do you speak?</option>
                     <option value="Afrikaans">Afrikaans</option>
                     <option value="Albanian">Albanian</option>
                     <option value="Amharic">Amharic</option>
@@ -388,7 +390,6 @@
             </div>
             <div class="errTxt"></div>
         </div>
-
         <div class="navig" style="margin-top: 15px;">
             <button type="submit" class="btn-primary">{% trans "Switch" %}</button>
         </div>
@@ -402,6 +403,30 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    $(document).ready(function() {
+        $('option').mousedown(function(e) {
+            e.preventDefault();
+            $(this).prop('selected', !$(this).prop('selected'));
+
+            // Update hidden input after changing selection
+            updateHiddenInput();
+
+            return false;
+        });
+
+        function updateHiddenInput() {
+            let selectedLanguages = [];
+
+            $('#lngsel option:selected').each(function() {
+                selectedLanguages.push($(this).val());
+            });
+
+            $('#selected-languages').val(selectedLanguages.join(', '));
+        }
+    });
+</script>
+
+<script>
     mobiscroll.setOptions({
       theme: 'ios',
       themeVariant: 'white'
@@ -409,6 +434,20 @@
     
     mobiscroll.select('#demo-multiple-select', {
       inputElement: document.getElementById('demo-multiple-select-input'),
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+      $('#country').css('color','grey');
+      $('#country').change(function() {
+          var current = $('#select').val();
+          if (current != 'null') {
+              $('#country').css('color','black');
+          } else {
+              $('#country').css('color','grey');
+          }
+      }); 
     });
 </script>
 
@@ -424,6 +463,8 @@
         const emailInp = document.querySelector("#email input[name='email']")
         const phoneInp = document.querySelector("#phone input[name='phone_num']")
         const bioInp = document.querySelector("#bio input[name='bio']")
+        const counInp = document.querySelector("#country")
+        const langInp = document.querySelector('#selected-languages');
         
         document.querySelectorAll('.errTxt').forEach(elem => elem.textContent = '');
         
@@ -432,7 +473,7 @@
             return;
         }
         if (!/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(emailInp.value)) {
-            document.querySelector('#email .errTxt').textContent = '{% trans "Email patter is incorrect" %}';
+            document.querySelector('#email .errTxt').textContent = '{% trans "Email is incorrect" %}';
             return;
         }
         
@@ -451,6 +492,16 @@
         }
         // Set the full phone number in the input field
         phoneInp.value = phoneInput.getNumber();
+        
+        if (counInp.value == "null") {
+            document.querySelector('#country + .errTxt').textContent = '{% trans "Country is required" %}';
+            return;
+        }
+        
+        if (langInp.value === "") {
+            document.querySelector('#languages .errTxt').textContent = '{% trans "Choose at least one language" %}';
+            return;
+        }
         
         const formData = new FormData(document.getElementById('switch-form'));
         
