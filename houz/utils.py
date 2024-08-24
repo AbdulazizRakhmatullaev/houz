@@ -1,5 +1,6 @@
 from google_currency import convert
 from django.core.cache import cache
+import requests
 
 no_cents_currencies = {"UZS", "JPY", "CNY", "RUB"}
 

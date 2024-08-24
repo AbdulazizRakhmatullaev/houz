@@ -61,6 +61,7 @@ MIDDLEWARE = [
     # mine
     'django.middleware.locale.LocaleMiddleware',
     'houz.middleware.CurrencyMiddleware',
+    'houz.middleware.GetClientIPMiddleware',
 ]
 
 ROOT_URLCONF = "business.urls"
@@ -77,6 +78,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'django.template.context_processors.i18n',
+                'houz.context_processors.client_ip',
             ],
         },
     },

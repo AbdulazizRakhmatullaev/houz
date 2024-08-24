@@ -42,10 +42,13 @@ from .tasks import convert_prices_task
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
 def is_ajax(request):
     return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
 
 def home(request):
+    client_ip = request.client_ip
+    
     rooms = Room.objects.filter(public=True).all()
     for room in rooms:
         room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
@@ -64,7 +67,8 @@ def home(request):
 
     context = {
         'rooms': rooms,
-        "currency": currency
+        "currency": currency,
+        'client_ip': client_ip
     }
     
     return render(request, "basic/home.html", context)

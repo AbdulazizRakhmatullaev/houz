@@ -280,8 +280,7 @@
                 <div class="errTxt"></div>
             </div>
         </div>
-        <div class="lbld" id="languages">
-            <input type="hidden" id="selected-languages" name="selected_languages">
+        <div class="lbld" id="languages">   
             <div class="input-wrapper">
                 <select id="lngsel" name="languages" multiple style="padding: 0 9px;">
                     <option value="null" disabled>What languages do you speak?</option>
@@ -389,6 +388,7 @@
                 </select>
             </div>
             <div class="errTxt"></div>
+            <input type="text" id="selected-languages" name="selected_languages" readonly>
         </div>
         <div class="navig" style="margin-top: 15px;">
             <button type="submit" class="btn-primary">{% trans "Switch" %}</button>

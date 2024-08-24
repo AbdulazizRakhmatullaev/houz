@@ -4,6 +4,104 @@
 {% block title %} {{room.get_city_display}} ({{room.average_rating}}) {% endblock %}
 
 {% block content %}
+<form class="toprescol" id="reserve-form" action="{% url 'book_room' room.id %}" method="POST" onsubmit="submitForm(event)">
+    {% csrf_token %}
+    <button type="button" class="collapsible">
+        <div class="lb" style="display: flex; flex-direction: column; align-items: self-start;">
+            <span class="small-title">Guests</span>
+            <div class="hmadults" id="g_amt">1</div>
+        </div>
+        <div class="rb">
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="12" fill="none" viewBox="0 0 16 12">
+                <path fill="currentColor" d="M4.4544 3.691a.9.9 0 0 0-1.1087 1.418l4.0966 3.2033a.9.9 0 0 0 1.1085.0002l4.0999-3.2032a.9.9 0 1 0-1.1082-1.4185L7.9969 6.461l-3.5425-2.77Z"/>
+            </svg >
+        </div>
+    </button>
+    <div class="colpscol">
+        <div class="gstwinf">
+            <div class="gstsform">
+                <span class="small-title">Adults</span>
+                <div class="gstfl">
+                    <span id="guestM" class="minus">-</span>
+                    <input type="text" id="adults" value="1" disabled/>
+                    <span id="guestP" class="plus">+</span>
+                </div>
+            </div>
+            <div id="ginfo"></div>
+        </div>
+
+        <div class="gstsform">
+            <span class="small-title">Children</span>
+            <div class="gstfl">
+                <span id="childM" class="minus">-</span>
+                <input type="text" id="children" value="0" disabled/>
+                <span id="childP" class="plus">+</span>
+            </div>
+        </div>
+        <div class="gstsform">
+            <span class="small-title">Infants</span>
+            <div class="gstfl">
+                <span id="infantM" class="minus">-</span>
+                <input type="text" id="infants" value="0" disabled/>
+                <span id="infantP" class="plus">+</span>
+            </div>
+        </div>  
+        <div class="gstwinf" style="margin-bottom: 15px;">
+            <div class="gstsform" {% if room.pets == 0 %}style="opacity: 0.4; pointer-events: none;"{% endif %}>
+                <span class="small-title">Pets {% if room.pets == 0 %} (not allowed) {% endif %}</span>
+                <div class="gstfl">
+                    <span id="petM" {% if room.pets == 0 %} class="disabled" {% endif %}>-</span>
+                    <input type="text" id="pets" value="0" disabled/>
+                    <span id="petP" {% if room.pets == 0 %} class="disabled" {% endif %}>+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rcrflex">
+        <div class="check-io">
+            <span class="small-title">Check-in</span>
+            <div class="fl-spbn">
+                <input type="date" name="check_in" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                    max='{{room.check_out|date:"Y-m-d"}}'>
+                <div class="chtm">
+                    {{room.checkin_time|time:"H:i"}}
+                    <span style="font-size: 10px;">{{room.checkin_time|time:"A"}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="check-io">
+            <span class="small-title">Check-out</span>
+            <div class="fl-spbn">
+                <input type="date" name="check_out" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                    max='{{room.check_out|date:"Y-m-d"}}'>
+                <div class="chtm">
+                    {{room.checkout_time|time:"H:i"}}
+                    <span style="font-size: 10px;">{{room.checkin_time|time:"A"}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sticky-right-col">
+        <div class="price-info">
+            {{currency}}<span id="total-price" class="room-price">{{ room_tot_price }}</span>
+        </div>
+        <div class="actualprice">{{currency}}<span id="actual-price">{{room_converted_price}}</span>/night</div>
+        <div class="ahr"></div>
+        <div class="pricing-col">
+            <div class="left-text">{{currency}}{{room_converted_price}} x <span id="num-nights">{{room.num_o_days}}</span> nights
+            </div>
+            <div class="right-text">{{currency}}<span id="bynight-price">{{room_count_nights_price}}</span></div>
+        </div>
+        <div class="pricing-col" style="margin-top: 13px;">
+            <div class="left-text">Houz fee</div>
+            <div class="right-text">{{currency}}<span id="houz-fee">{{room_fee}}</span></div>
+        </div>
+        <div class="payment">
+            <button class="btnbl" id="message-btn">Reserve</button>
+        </div>
+        <div id="resinf"></div>
+    </div>
+</form >
 <div class="room-title">
     <div class="brief-left-info">
         <div class="detailed-ci-cy">

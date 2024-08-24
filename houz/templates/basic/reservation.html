@@ -7,7 +7,7 @@
 
 <div class="brief-name">{% trans "Reservations" %}</div>
 <div class="bookgrd">
-  {% for reservation in reservation %}
+  {% for reservation in reservations %}
   <div class="reservation">
     <a
       href="{% url 'user_profile' reservation.user.username %}"
