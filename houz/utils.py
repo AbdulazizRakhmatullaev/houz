@@ -1,40 +1,62 @@
-from google_currency import convert
-from django.core.cache import cache
 import requests
+from decimal import Decimal
+from django.core.cache import cache
+from houz.models import ExchangeRate
+from bs4 import BeautifulSoup
 
-no_cents_currencies = {"UZS", "JPY", "CNY", "RUB"}
+def scrape_and_cache_exchange_rates():
+    url = "https://cbu.uz/ru/"
+    html_txt = requests.get(url).text
+    soup = BeautifulSoup(html_txt, "html.parser")
+    tags = soup.find_all("div", class_="exchange__item_value")
 
-def get_conversion_rate(from_cur, to_cur):
-    cache_key = f"{from_cur}_{to_cur}_rate"
-    rate = cache.get(cache_key)
-    if not rate:
-        try:
-            response = convert(from_cur, to_cur, 1)
-            data = dict((k.strip()[1:-1], v.strip()) for k, v in (item.split(':') for item in response[1:-1].split(',')))
-            rate = float(data["amount"].replace('"', ''))
-            cache.set(cache_key, rate, timeout=60*60)  # Cache for 1 hour
-        except:
-            return None
-    return rate
+    # Google Finance USD to UZS conversion
+    google_url = "https://www.google.com/finance/quote/USD-UZS?sa=X&ved=2ahUKEwiEyfKknK39AhVLRvEDHfLBAQMQ_AUoAXoECAEQAw"
+    ge = requests.get(google_url, timeout=3).text
+    gesoup = BeautifulSoup(ge, "html.parser")
+    uzs_atr = gesoup.find("div", class_="YMlKec fxKbKc").text.replace(",", '')[:5]
 
-def convert_price(from_cur, to_cur, price):
-    if from_cur == to_cur:
-        if from_cur in no_cents_currencies:
-            return "{:,}".format(int(price))
-        else:
-            return "{:,.2f}".format(price)
-    try:
-        rate = get_conversion_rate(from_cur, to_cur)
-        if rate is None:
-            return None
-        converted_price = price * rate
-        converted_price = round(converted_price, 2)
+    # Dictionary to store rates with UZS as the base currency
+    dt = {"USD": Decimal(uzs_atr)}
+
+    # Parse cbu.uz for other currency rates
+    for tag in tags:
+        name = str(tag.text[:3])
+        rate = Decimal(tag.text[5:])
+        dt[name] = rate
         
-        if to_cur in no_cents_currencies:
-            # Remove trailing zeros for currencies without cents
-            converted_price = int(converted_price)
-            return "{:,}".format(converted_price)
-        else:
-            return "{:,.2f}".format(converted_price)
-    except:
+    try:
+        for currency, rate in dt.items():
+            # Update the DB and cache
+            ExchangeRate.objects.update_or_create(from_currency=currency, to_currency='UZS', defaults={'value': rate})
+            cache.set(f"UZS_{currency}_rate", rate, timeout=60*60)  # Cache for 1 hour
+            
+    except Exception as e:
+        print(f"Error updating exchange rates: {e}")
+
+def get_conversion_rate(from_currency, to_currency):
+    if from_currency == to_currency:
+        return Decimal(1)
+    
+    # Fetch rates from cache or DB
+    uzs_to_from_rate = cache.get(f"UZS_{from_currency}_rate")
+    uzs_to_to_rate = cache.get(f"UZS_{to_currency}_rate")
+    
+    if uzs_to_from_rate is None or uzs_to_to_rate is None:
+        try:
+            uzs_to_from_rate = ExchangeRate.objects.get(from_currency=from_currency, to_currency='UZS').value
+            uzs_to_to_rate = ExchangeRate.objects.get(from_currency=to_currency, to_currency='UZS').value
+            cache.set(f"UZS_{from_currency}_rate", uzs_to_from_rate, timeout=60*60)
+            cache.set(f"UZS_{to_currency}_rate", uzs_to_to_rate, timeout=60*60)
+        except ExchangeRate.DoesNotExist:
+            return None
+    
+    # Convert between currencies using UZS as a pivot
+    conversion_rate = Decimal(uzs_to_to_rate) / Decimal(uzs_to_from_rate)
+    return conversion_rate
+
+def convert_price(from_currency, to_currency, amount):
+    rate = get_conversion_rate(from_currency, to_currency)
+    if rate is None:
         return None
+    return round(Decimal(amount) * rate, 2)

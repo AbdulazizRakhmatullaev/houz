@@ -28,6 +28,10 @@ body {
   color: #1d1d1f;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 /* #86868b */
 
 a {
@@ -46,7 +50,7 @@ a:hover {
   height: auto;
   max-width: 1180px;
   padding: 0 22px;
-  box-sizing: border-box;
+  
 }
 
 .main-content {
@@ -70,7 +74,7 @@ a:hover {
   height: 44px;
   max-width: 1024px;
   padding: 0 22px;
-  box-sizing: border-box;
+  
 }
 
 .navig {
@@ -101,11 +105,11 @@ a:hover {
   height: auto;
   max-height: 400px;
   white-space: normal;
-  box-sizing: border-box;
+  
 }
 
 .room-info {
-  box-sizing: border-box;
+  
   padding: 15px;
   width: 100%;
   white-space: normal;
@@ -308,7 +312,7 @@ b {
 .search-inp {
   width: 500px;
   height: 33px;
-  box-sizing: border-box;
+  
   border: 1px solid transparent;
   font-size: 14px;
   padding: 5px 12px;
@@ -366,7 +370,7 @@ b {
   height: 448px;
   object-fit: cover;
   border-radius: 24px;
-  box-sizing: border-box;
+  
 }
 
 .room-title {
@@ -394,7 +398,7 @@ b {
   font-weight: 600;
   letter-spacing: -0.022em;
   line-height: 1.1764805882;
-  box-sizing: border-box;
+  
   white-space: nowrap;
   color: #b64400;
 }
@@ -425,7 +429,7 @@ b {
   width: calc(100% - 25rem);
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  
   gap: 15px;
   padding-inline-end: 2.5rem;
 }
@@ -434,7 +438,7 @@ b {
   width: 25rem;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  
 }
 
 .toprescol {
@@ -447,7 +451,7 @@ b {
   top: 15px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  
   background: #fafafc;
 }
 
@@ -526,7 +530,7 @@ b {
 
 .desc {
   font-size: 14px;
-  box-sizing: border-box;
+  
   word-wrap: break-word;
 }
 
@@ -542,7 +546,7 @@ b {
   pointer-events: none;
   font-size: 14px;
   padding: 10px 15px;
-  box-sizing: border-box;
+  
   min-width: 30px;
   background: #f5f5f7;
   border-radius: 14px;
@@ -563,7 +567,7 @@ b {
   pointer-events: none;
   font-size: 14px;
   padding: 10px 15px;
-  box-sizing: border-box;
+  
   min-width: 30px;
   background: #f5f5f7;
   border-radius: 14px;
@@ -738,7 +742,7 @@ b {
   padding: 10px 22px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  
 }
 
 .infotxt {
@@ -777,7 +781,7 @@ b {
 }
 
 .check-io {
-  box-sizing: border-box;
+  
   padding: 14px;
   width: 100%;
   margin-bottom: 10px;
@@ -1031,7 +1035,7 @@ b {
 
 .left-content {
   width: 40%;
-  box-sizing: border-box;
+  
 }
 
 /*
@@ -1203,7 +1207,7 @@ b {
   width: 400px;
   margin: 0 auto;
   padding: 20px;
-  box-sizing: border-box;
+  
 }
 
 .p-main {
@@ -1301,7 +1305,7 @@ b {
   max-height: 80vh;
   overflow-y: scroll;
   padding: 15px;
-  box-sizing: border-box;
+  
 }
 
 #notcol::-webkit-scrollbar {
@@ -1344,7 +1348,7 @@ b {
   right: 15px;
   height: 26px;
   width: 26px;
-  box-sizing: border-box;
+  
   display: grid;
   place-items: center;
   background: #ffffff;
@@ -1365,7 +1369,7 @@ b {
   height: 24px;
   width: 24px;
   font-size: 15px;
-  box-sizing: border-box;
+  
   display: grid;
   place-items: center;
   background: #ffffff;
@@ -1648,7 +1652,7 @@ select {
   width: 100%;
   white-space: normal;
   padding: 15px;
-  box-sizing: border-box;
+  
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -1667,7 +1671,7 @@ select {
   width: 100%;
   height: 9rem;
   white-space: normal;
-  box-sizing: border-box;
+  
 }
 
 .b-name {
@@ -1698,7 +1702,7 @@ select {
   font-size: 14px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  
 }
 
 .rmce {
@@ -1706,7 +1710,7 @@ select {
   justify-content: space-between;
   gap: 5px;
   width: 100%;
-  box-sizing: border-box;
+  
 }
 
 .rmedit {
@@ -1714,7 +1718,7 @@ select {
   justify-content: space-between;
   gap: 5px;
   width: 550px;
-  box-sizing: border-box;
+  
 }
 
 .editcol {
@@ -1727,7 +1731,7 @@ select {
 .editcol input {
   width: 100%;
   height: 30px;
-  box-sizing: border-box;
+  
   border-radius: 6px;
   border: 1px solid #d2d2d7;
   background: #fbfbfd;
@@ -1791,7 +1795,7 @@ select {
   border-radius: 18px;
   min-width: 270px;
   max-width: 270px;
-  box-sizing: border-box;
+  
 }
 
 .p-room:hover, .room:hover {
@@ -1838,7 +1842,7 @@ select {
   height: 35px;
   width: 35px;
   font-size: 25px;
-  box-sizing: border-box;
+  
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.4);
@@ -1874,7 +1878,7 @@ select {
   height: 28px;
   width: 28px;
   font-size: 25px;
-  box-sizing: border-box;
+  
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.4);
@@ -1897,7 +1901,7 @@ select {
   border: 1px solid #d2d2d7;
   background: #fbfbfd;
   padding: 4px 7px;
-  box-sizing: border-box;
+  
   font-family:
     system-ui,
     -apple-system,
@@ -1923,7 +1927,7 @@ select {
   border: 1px solid #d2d2d7;
   background: #fbfbfd;
   padding: 4px 7px;
-  box-sizing: border-box;
+  
   font-family:
     system-ui,
     -apple-system,
@@ -1942,7 +1946,7 @@ select {
 .room-cy {
   width: 100%;
   height: 30px;
-  box-sizing: border-box;
+  
   border-radius: 6px;
   border: 1px solid #d2d2d7;
   background: #fbfbfd;
@@ -2038,7 +2042,7 @@ select {
 .cecol input {
   width: 100%;
   height: 30px;
-  box-sizing: border-box;
+  
   border-radius: 6px;
   border: 1px solid #d2d2d7;
   background: #fbfbfd;
@@ -2076,14 +2080,14 @@ select {
 .coll {
   background: #f5f5f7;
   padding: 15px;
-  box-sizing: border-box;
+  
   min-height: 50px;
 }
 
 .coll0 {
   background: #f5f5f7;
   padding: 15px;
-  box-sizing: border-box;
+  
   border-radius: 18px;
   min-height: 50px;
 }
@@ -2091,7 +2095,7 @@ select {
 .collsp {
   background: #f5f5f7;
   padding: 15px;
-  box-sizing: border-box;
+  
   border-radius: 1;
   min-height: 50px;
 }
@@ -2099,7 +2103,7 @@ select {
 .collb {
   border: 1px solid #d2d2d7;
   padding: 15px;
-  box-sizing: border-box;
+  
   border-radius: 18px;
   min-height: 50px;
 }
@@ -2107,7 +2111,7 @@ select {
 .collbsh {
   border: 1px solid #d2d2d7;
   padding: 15px;
-  box-sizing: border-box;
+  
   min-height: 50px;
   display: flex;
   align-items: center;
@@ -2122,7 +2126,7 @@ select {
   outline: none;
   width: 100%;
   height: 30px;
-  box-sizing: border-box;
+  
   border-radius: 6px;
   border: 1px solid #d2d2d7;
   background: #fbfbfd;
@@ -2217,7 +2221,7 @@ select {
   flex-direction: column;
   margin-top: 15px;
   padding: 0 22px;
-  box-sizing: border-box;
+  
 }
 
 .botmaint {
@@ -2250,7 +2254,7 @@ select {
   background: #f5f5f7;
   padding: 0px 7px;
   font-size: 17px;
-  box-sizing: border-box;
+  
 }
 
 .minus:hover,
@@ -2263,8 +2267,8 @@ select {
   opacity: .4;
 }
 
-#petM,
-#petP {
+#petM, #petM_ph,
+#petP, #petP_ph {
   cursor: pointer;
   width: 30px;
   height: 30px;
@@ -2276,15 +2280,16 @@ select {
   background: #f5f5f7;
   padding: 0px 7px;
   font-size: 17px;
-  box-sizing: border-box;
+  
 }
 
-#petM:hover,
-#petP:hover {
+#petM:hover, #petM_ph:hover
+#petP:hover, #petP_ph:hover {
   background: #e6e6e8;
 }
 
-#petM.disabled, #petP.disabled{
+#petM.disabled, #petP.disabled,
+#petM_ph.disabled, #petP_ph.disabled{
   cursor: not-allowed;
   opacity: .4;
 }
@@ -2355,7 +2360,7 @@ select {
 .prlbl {
   position: relative;
   display: block;
-  box-sizing: border-box;
+  
 }
 
 .prlbl::after {
@@ -2504,12 +2509,12 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 .gstsform {
-  box-sizing: border-box;
   padding: 15px;
   width: 100%;
   border: 1px solid #86868b;
   border-radius: 12px;
   display: flex;
+  gap: 30px;
   align-items: center;
   justify-content: space-between;
 }
@@ -2517,12 +2522,12 @@ input[type='date']::-webkit-calendar-picker-indicator {
 .gstfl {
   display: flex;
   gap: 5px;
-  box-sizing: border-box;
+  
 }
 
 .gstfl input {
   width: 25px;
-  box-sizing: border-box;
+  
   border: none;
   text-align: center;
   outline: none;
@@ -2531,7 +2536,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 .collapsible {
   cursor: pointer;
   padding: 15px;
-  box-sizing: border-box;
+  
   width: 100%;
   margin: 13px 0 15px;
   border: 1px solid #86868b;
@@ -2544,6 +2549,13 @@ input[type='date']::-webkit-calendar-picker-indicator {
   font-size: 17px;
   font-weight: 600;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.colfl {
+  display: flex;
+  gap: 5px;
+  overflow-x: scroll;
+  margin-bottom: 10px;
 }
 
 .rb svg {
@@ -2829,7 +2841,7 @@ input:disabled {
   width: 100%;
   height: 60px;
   padding: 16px 16px 0;
-  box-sizing: border-box;
+  
   border-radius: 14px;
   border: 1px solid #d2d2d7;
   font-size: 14px;
@@ -2887,7 +2899,7 @@ input:disabled {
   height: 30px;
   display: flex;
   align-items: center;
-  box-sizing: border-box;
+  
   border-radius: 6px;
   border: 1px solid #d2d2d7;
   background: #fbfbfd;
@@ -2957,7 +2969,7 @@ input:disabled {
   width: 170px;
   border: 1px solid #d2d2d7;
   padding: 15px;
-  box-sizing: border-box;
+  
   min-height: 50px;
 }
 
@@ -3007,7 +3019,7 @@ input:disabled {
   height: 60px;
   padding: 16px;
   padding-left: 65px;
-  box-sizing: border-box;
+  
   border-radius: 14px;
   border: 1px solid #d2d2d7;
   font-size: 14px;
@@ -3184,7 +3196,7 @@ input:disabled {
 }
 
 .pgdum {
-  box-sizing: border-box;
+  
   display: block;
   padding: 5px 12px;
   border: 1px solid rgba(0, 0, 0, 0.16);
@@ -3192,7 +3204,7 @@ input:disabled {
 }
 
 .pgitm {
-  box-sizing: border-box;
+  
   display: block;
   padding: 5px 12px;
   background: #f5f5f5;
@@ -3248,12 +3260,16 @@ input:disabled {
   }
   
   .toprescol {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
     z-index: 9;
     background-color: #fff;
     display: flex;
     flex-direction: column;
+    border-top: 1px solid #d2d2d7;
   }
   
   .sticky-right-col {

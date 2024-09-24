@@ -1,4 +1,3 @@
-from requests.sessions import Session
 from .models import (
     Room,
     Profile,
@@ -11,11 +10,10 @@ from .models import (
     Amenity,
     Comment,
     Currencies,
-    RoomTypes,
-    ExchangeRate
+    RoomTypes
 )
 from cities_light.models import Country, City
-from django.db.models import Q, Max
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -23,22 +21,17 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from datetime import datetime, timedelta
-from django.core.serializers import serialize
-from django.forms.models import model_to_dict
-import json, os , string, requests
-from django.core.serializers.json import DjangoJSONEncoder
-from django.template.loader import render_to_string
+import string
 from django.conf import settings
-from django.db.models import Count
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import translation
-from .tasks import convert_prices_task
+from .tasks import convert_prices_task, scrape_currency_rates
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -47,9 +40,11 @@ def is_ajax(request):
     return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
 
 def home(request):
-    client_ip = request.client_ip
+    # client_ip = request.client_ip
     
     rooms = Room.objects.filter(public=True).all()
+
+    scrape_currency_rates()
     for room in rooms:
         room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
     
@@ -68,7 +63,7 @@ def home(request):
     context = {
         'rooms': rooms,
         "currency": currency,
-        'client_ip': client_ip
+        # 'client_ip': client_ip
     }
     
     return render(request, "basic/home.html", context)
@@ -84,6 +79,8 @@ def load_more_rooms(request):
         has_more_rooms = Room.objects.filter(public=True)[offset + limit:].exists()
 
         rooms_data = []
+        scrape_currency_rates()
+
         for room in rooms:
             rooms_data.append({
                 'id': room.id,
@@ -410,6 +407,7 @@ def user_profile(request, username):
 
     currency = show_currency(request.session.get('currency', 'UZS'))
 
+    scrape_currency_rates()
     for room in rooms:
         room.converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
 
@@ -551,6 +549,7 @@ def room_detail(request, room_id):
 
     currency = show_currency(request.session.get('currency', 'UZS'))
 
+    scrape_currency_rates()
     room_converted_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.price)
     room_tot_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.tot_price())
     room_count_nights_price = convert_prices_task(room.currency, request.session.get('currency', 'UZS'), room.count_nights_price())
@@ -717,6 +716,8 @@ def room_delete(request, id):
 def room_edit(request, username, id):
     room = Room.objects.get(pk=id)
     currency = show_currency(request.session.get('currency', 'UZS'))
+
+    scrape_currency_rates()
     room.converted_price = convert_prices_task(room.currency, request.session.get("currency", "UZS"), room.price)
     
     cur_rmtype = room.room_type.capitalize()

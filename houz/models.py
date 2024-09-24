@@ -14,6 +14,9 @@ from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 from cities_light.models import Country, City
 
+# to import cities data use:
+    # "./manage.py cities_light" or ./manage.py cities_light
+
 no_cents_currencies = {"UZS", "JPY", "CNY", "RUB"}
 
 class RangedIntegerField(models.IntegerField):
