@@ -2418,6 +2418,7 @@ select {
   font-size: 14px;
   letter-spacing: -.016em;
   line-height: 1.4285914286;
+  gap: 15px;
 }
 
 .left-text {
@@ -3243,6 +3244,11 @@ input:disabled {
   padding: 0;
 }
 
+.hrv {
+  width: 1px;
+  background-color: #d2d2d7;
+}
+
 /* PHONE STYLING */
 
 @media screen and (max-width: 805px){
@@ -3325,5 +3331,27 @@ input:disabled {
   
   .rmright {
     width: 100%;
+  }
+  
+  .detailed-ci-cy {
+    font-size: 15px;
+  }
+  
+  .ratNrev-t {
+    font-size: 19px;
+  }
+  
+  #room-container {
+    padding-bottom: 115px;
+  }
+  
+  .colpscol {
+    gap: 0;
+  }
+  
+  .stfl {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
   }
 }

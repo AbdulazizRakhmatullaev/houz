@@ -8,8 +8,7 @@
     {% csrf_token %}
     <button type="button" class="collapsible">
         <div class="lb" style="display: flex; flex-direction: column; align-items: self-start;">
-            <span class="small-title">Guests</span>
-            <div class="hmadults" id="g_amt_ph">1</div>
+            <span class="small-title">Reserve details</span>
         </div>
         <div class="rb">
             <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="12" fill="none" viewBox="0 0 16 12">
@@ -55,45 +54,51 @@
                 </div>
             </div>
         </div> 
-    </div>
-    <div class="rcrflex">
-        <div class="check-io">
-            <span class="small-title">Check-in</span>
-            <div class="fl-spbn">
-                <input type="date" name="check_in_ph" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
-                    max='{{room.check_out|date:"Y-m-d"}}'>
-                <div class="chtm">
-                    {{room.checkin_time|time:"H:i"}}
-                    <span style="font-size: 10px;">{{room.checkin_time|time:"A"}}</span>
+        <div class="rcrflex">
+            <div class="check-io">
+                <span class="small-title">Check-in</span>
+                <div class="fl-spbn">
+                    <input type="date" name="check_in_ph" value='{{room.check_in|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                        max='{{room.check_out|date:"Y-m-d"}}'>
+                    <div class="chtm">
+                        {{room.checkin_time|time:"H:i"}}
+                        <span style="font-size: 10px;">{{room.checkin_time|time:"A"}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="check-io">
+                <span class="small-title">Check-out</span>
+                <div class="fl-spbn">
+                    <input type="date" name="check_out_ph" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
+                        max='{{room.check_out|date:"Y-m-d"}}'>
+                    <div class="chtm">
+                        {{room.checkout_time|time:"H:i"}}
+                        <span style="font-size: 10px;">{{room.checkin_time|time:"A"}}</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="check-io">
-            <span class="small-title">Check-out</span>
-            <div class="fl-spbn">
-                <input type="date" name="check_out_ph" value='{{room.check_out|date:"Y-m-d"}}' min='{{room.check_in|date:"Y-m-d"}}'
-                    max='{{room.check_out|date:"Y-m-d"}}'>
-                <div class="chtm">
-                    {{room.checkout_time|time:"H:i"}}
-                    <span style="font-size: 10px;">{{room.checkin_time|time:"A"}}</span>
-                </div>
-            </div>
-        </div>
+        <div class="hr"></div>
     </div>
     <div class="sticky-right-col">
-        <div class="price-info">
-            {{currency}}<span id="total-price_ph" class="room-price">{{ room_tot_price }}</span>
-        </div>
-        <div class="actualprice">{{currency}}<span id="actual-price_ph">{{room_converted_price}}</span>/night</div>
-        <div class="ahr"></div>
-        <div class="pricing-col">
-            <div class="left-text">{{currency}}{{room_converted_price}} x <span id="num-nights_ph">{{room.num_o_days}}</span> nights
+        <div class="stfl">
+            <div class="stlf">
+                <div class="price-info">
+                    {{currency}}<span id="total-price_ph" class="room-price">{{ room_tot_price }}</span>
+                </div>
+                <div class="hmadults" id="g_amt_ph">1</div>
             </div>
-            <div class="right-text">{{currency}}<span id="bynight-price_ph">{{room_count_nights_price}}</span></div>
-        </div>
-        <div class="pricing-col" style="margin-top: 13px;">
-            <div class="left-text">Houz fee</div>
-            <div class="right-text">{{currency}}<span id="houz-fee_ph">{{room_fee}}</span></div>
+            <div class="strgt">
+                <div class="pricing-col">
+                    <div class="left-text">{{currency}}{{room_converted_price}} x <span id="num-nights_ph">{{room.num_o_days}}</span> nights
+                    </div>
+                    <div class="right-text">{{currency}}<span id="bynight-price_ph">{{room_count_nights_price}}</span></div>
+                </div>
+                <div class="pricing-col" style="margin-top: 13px;">
+                    <div class="left-text">Houz fee</div>
+                    <div class="right-text">{{currency}}<span id="houz-fee_ph">{{room_fee}}</span></div>
+                </div>
+            </div>
         </div>
         <div class="payment">
             <button class="btnbl" id="message-btn_ph">Reserve</button>
@@ -198,7 +203,7 @@
                         {{room.host.profile.name}}
                     </a>
                     <div class="host-date">
-                        Joinded {{room.host.profile.created_at|date:"N Y"}}
+                        Joined {{room.host.profile.created_at|date:"N Y"}}
                     </div>
                 </div>
             </div>
