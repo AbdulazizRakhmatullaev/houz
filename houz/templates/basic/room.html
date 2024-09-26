@@ -22,7 +22,7 @@
                 <span class="small-title">Adults</span>
                 <div class="gstfl">
                     <span id="guestM_ph" class="minus">-</span>
-                    <input type="text" id="adults_ph" value="0" disabled/>
+                    <input type="text" id="adults_ph" value="1" disabled/>
                     <span id="guestP_ph" class="plus">+</span>
                 </div>
             </div>
@@ -81,24 +81,27 @@
         <div class="hr"></div>
     </div>
     <div class="sticky-right-col">
-        <div class="stfl">
-            <div class="stlf">
-                <div class="price-info">
-                    {{currency}}<span id="total-price_ph" class="room-price">{{ room_tot_price }}</span>
-                </div>
-                <div class="hmadults" id="g_amt_ph">1</div>
+        <div class="price-info">
+            {{currency}}<span id="total-price_ph" class="room-price">{{ room_tot_price }}</span>
+        </div>
+        <div class="hmadults" id="g_amt_ph">1 Guest</div>
+        <div class="ahr"></div>
+        <div class="pricing-col">
+            <div class="left-text">Staying</div>
+            <div class="right-text" id="chi_inf"></div>
+        </div>
+        <div class="pricing-col">
+            <div class="left-text">Leaving</div>
+            <div class="right-text" id="cho_inf"></div>
+        </div>
+        <div class="pricing-col">
+            <div class="left-text">{{currency}}{{room_converted_price}} x <span id="num-nights_ph">{{room.num_o_days}}</span> nights
             </div>
-            <div class="strgt">
-                <div class="pricing-col">
-                    <div class="left-text">{{currency}}{{room_converted_price}} x <span id="num-nights_ph">{{room.num_o_days}}</span> nights
-                    </div>
-                    <div class="right-text">{{currency}}<span id="bynight-price_ph">{{room_count_nights_price}}</span></div>
-                </div>
-                <div class="pricing-col" style="margin-top: 13px;">
-                    <div class="left-text">Houz fee</div>
-                    <div class="right-text">{{currency}}<span id="houz-fee_ph">{{room_fee}}</span></div>
-                </div>
-            </div>
+            <div class="right-text">{{currency}}<span id="bynight-price_ph">{{room_count_nights_price}}</span></div>
+        </div>
+        <div class="pricing-col">
+            <div class="left-text">Houz fee</div>
+            <div class="right-text">{{currency}}<span id="houz-fee_ph">{{room_fee}}</span></div>
         </div>
         <div class="payment">
             <button class="btnbl" id="message-btn_ph">Reserve</button>
@@ -156,7 +159,6 @@
 </div>
 <div class="rminfocol">
     <div class="left-info-column">
-        <!-- Your HTML template -->
         <div id="myCarousel" class="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
@@ -406,7 +408,7 @@
                 <div class="gstsform" {% if room.pets == 0 %}style="opacity: 0.4; pointer-events: none;"{% endif %}>
                     <span class="small-title">Pets {% if room.pets == 0 %} (not allowed) {% endif %}</span>
                     <div class="gstfl">
-                        <span id="petM" {% if room.pets == 0 %} class="disabled" {% endif %}>-</span>
+                        <span id="petM" class="minus" {% if room.pets == 0 %} class="disabled" {% endif %}>-</span>
                         <input type="text" id="pets" value="0" disabled/>
                         <span id="petP" {% if room.pets == 0 %} class="disabled" {% endif %}>+</span>
                     </div>
@@ -590,7 +592,6 @@
         updateTotalPets();
     });
 </script>
-
 <script>
     $(document).ready(function () {
         const maxGuests = {{room.guests}}; // Define the maximum number of guests
@@ -702,6 +703,67 @@
 
 <script>
     $(document).ready(function () {
+        function updateTotalPets() {
+            const adults = parseInt($('#adults_ph').val());
+            const children = parseInt($('#children_ph').val());
+            const infants = parseInt($('#infants_ph').val());
+            const pets = parseInt($('#pets_ph').val());
+            const totalGuests = adults + children + infants;
+            
+            if (pets > 0) {
+                $('#g_amt_ph').text(`${totalGuests} Guest${totalGuests > 1 ? 's' : ''} (${pets} Pet${pets > 1 ? 's' : ''})`);
+            } else {
+                $('#g_amt_ph').text(`${totalGuests} Guest${totalGuests > 1 ? 's' : ''}`);
+            }
+    
+            // Disable the plus button if total pets reach the max limit
+            if (pets >= {{room.pets}}) {
+                $('#petP_ph').addClass('disabled');
+            } else {
+                $('#petP_ph').removeClass('disabled');
+            }
+
+            // Disable the minus button if pets are at the minimum limit
+            if (pets <= 0) {
+                $('#petM_ph').addClass('disabled');
+            } else {
+                $('#petM_ph').removeClass('disabled');
+            }
+        }
+        
+        function updatePetInp($input, increment) {
+            const currentCount = parseInt($input.val());
+            let newCount = currentCount + increment;
+            newCount = Math.max(0, Math.min(newCount, {{room.pets}})); // Ensure newCount is within 0 and max pets limit
+    
+            $input.val(newCount);
+            $input.change();
+            
+            updateTotalPets();
+        }
+        
+        $('#petP_ph').click(function () {
+            if ($(this).hasClass('disabled')) return false;
+            
+            const $input = $(this).parent().find('input');
+            updatePetInp($input, 1);
+            return false;
+        });
+    
+        $('#petM_ph').click(function () {
+            if ($(this).hasClass('disabled')) return false;
+    
+            const $input = $(this).parent().find('input');
+            updatePetInp($input, -1);
+            return false;
+        });
+        
+        // Initial call to set the state of the buttons
+        updateTotalPets();
+    });
+</script>
+<script>
+    $(document).ready(function () {
         const maxGuests = {{room.guests}}; // Define the maximum number of guests
 
         function updateTotalGuests() {
@@ -713,9 +775,9 @@
             const pets = parseInt($('#pets_ph').val());
 
             if (pets > 0) {
-                $('#g_amt_ph').text(`${totalGuests} (${pets} Pet${pets > 1 ? 's' : ''})`);
+                $('#g_amt_ph').text(`${totalGuests} Guest${totalGuests > 1 ? 's' : ''} (${pets} Pet${pets > 1 ? 's' : ''})`);
             } else {
-                $('#g_amt_ph').text(totalGuests);
+              $('#g_amt_ph').text(`${totalGuests} Guest${totalGuests > 1 ? 's' : ''}`);
             }
 
             // Disable the plus buttons if total guests reach the max limit
@@ -848,6 +910,7 @@
         const checkOutInput = document.querySelector('input[name="check_out"]');
         const checkInDate = new Date(checkInInput.value);
         const checkOutDate = new Date(checkOutInput.value);
+        
         const actualPrice = parseFloat(document.getElementById('actual-price').textContent.replace(/,/g, ''));
 
         if (checkInDate && !isNaN(checkInDate.getTime())) {
@@ -923,7 +986,112 @@
     // Add event listeners to date inputs
     document.querySelector('input[name="check_in"]').addEventListener('change', updatePrices);
     document.querySelector('input[name="check_out"]').addEventListener('change', updatePrices);
+    
+    // Initial call to update prices on page load
+    updatePrices();
+</script>
 
+<script>
+    // Helper function to calculate date difference in days
+    function dateDiffInDays(date1, date2) {
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    }
+
+    // Helper function to format date as "YYYY-MM-DD"
+    function formatDate(date) {
+        const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        let day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        return `${year}-${month}-${day}`;
+    }
+
+    // Function to format price based on currency
+    function formatPrice(value) {
+        const noDecimalCurrencies = ["UZS", "JPY", "CNY", "RUB"];
+        const currency = "{{ request.currency }}";
+        if (noDecimalCurrencies.includes(currency)) {
+            return Math.floor(value).toLocaleString();
+        } else {
+            return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+    }
+
+    // Update prices and min/max attributes based on date input changes with animation
+    function updatePrices() {
+        const checkInInput = document.querySelector('input[name="check_in_ph"]');
+        const checkOutInput = document.querySelector('input[name="check_out_ph"]');
+        const checkInDate = new Date(checkInInput.value);
+        const checkOutDate = new Date(checkOutInput.value);
+        
+        const months = ['January', 'February', 'March', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        document.getElementById("chi_inf").textContent = `${months[checkInDate.getMonth()]} ${checkInDate.getDate()}`;
+        document.getElementById("cho_inf").textContent = `${months[checkOutDate.getMonth()]} ${checkOutDate.getDate()}`;
+        
+        const actualPrice = parseFloat(document.getElementById('actual-price_ph').textContent.replace(/,/g, ''));
+
+        if (checkInDate && !isNaN(checkInDate.getTime())) {
+            // Set check-out minimum date to the day after check-in
+            const nextDay = new Date(checkInDate);
+            nextDay.setDate(nextDay.getDate() + 1);
+            checkOutInput.min = formatDate(nextDay);
+        }
+
+        if (checkOutDate && !isNaN(checkOutDate.getTime())) {
+            // Set check-in maximum date to the day before check-out
+            const prevDay = new Date(checkOutDate);
+            prevDay.setDate(prevDay.getDate() - 1);
+            checkInInput.max = formatDate(prevDay);
+        }
+
+        if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+            const numNights = dateDiffInDays(checkInDate, checkOutDate);
+            const bynightPrice = actualPrice * numNights;
+            const fee = 0.33 * bynightPrice;
+            const totalPrice = fee + bynightPrice;
+
+            const numNightsElement = document.getElementById('num-nights_ph');
+            const bynightElement = document.getElementById('bynight-price_ph');
+            const totalPriceElement = document.getElementById('total-price_ph');
+            const feeElement = document.getElementById('houz-fee_ph');
+
+            function animateValue(element, start, end, duration, isInteger) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const currentValue = progress * (end - start) + start;
+                    element.textContent = isInteger ? Math.floor(currentValue).toLocaleString() : formatPrice(currentValue);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            animateValue(numNightsElement, parseInt(numNightsElement.textContent), numNights, 800, true);
+            animateValue(totalPriceElement, parseFloat(totalPriceElement.textContent.replace(/,/g, '')), totalPrice, 500, false);
+            animateValue(bynightElement, parseFloat(bynightElement.textContent.replace(/,/g, '')), bynightPrice, 500, false);
+            animateValue(feeElement, parseFloat(feeElement.textContent.replace(/,/g, '')), fee, 500, false);
+        }
+    }
+
+    // Add event listeners to the day filter elements
+    document.querySelectorAll('.dfl').forEach(function(element) {
+        element.addEventListener('click', handleDayFilterClick);
+    });
+
+    // Add event listeners to date inputs
+    document.querySelector('input[name="check_in_ph"]').addEventListener('change', updatePrices);
+    document.querySelector('input[name="check_out_ph"]').addEventListener('change', updatePrices);
+    
     // Initial call to update prices on page load
     updatePrices();
 </script>

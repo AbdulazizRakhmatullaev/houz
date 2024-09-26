@@ -2419,6 +2419,7 @@ select {
   letter-spacing: -.016em;
   line-height: 1.4285914286;
   gap: 15px;
+  margin-bottom: 10px;
 }
 
 .left-text {
@@ -3347,11 +3348,5 @@ input:disabled {
   
   .colpscol {
     gap: 0;
-  }
-  
-  .stfl {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
   }
 }
